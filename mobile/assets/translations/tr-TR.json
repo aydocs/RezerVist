@@ -1,0 +1,80 @@
+{
+  "app_title": "Rezervist.com",
+  "auth": {
+    "login": {
+      "title": "Hesabınız yok mu?",
+      "welcome_title": "Tekrar Hoş Geldiniz",
+      "welcome_subtitle": "Rezervasyonlarınıza devam etmek için giriş yapın",
+      "email_label": "E-posta",
+      "password_label": "Şifre",
+      "remember_me": "Beni hatırla",
+      "forgot_password": "Şifremi unuttum",
+      "login_button": "Giriş Yap",
+      "or_divider": "veya",
+      "no_account": "Hesabınız yok mu?",
+      "register_button": "Kayıt olun"
+    },
+    "register": {
+      "title": "Hemen Katılın",
+      "subtitle": "Yeni mekanlar keşfedin ve kolayca rezervasyon yapın",
+      "name_label": "Ad Soyad",
+      "name_hint": "Ahmet Yılmaz",
+      "phone_label": "Telefon (İsteğe bağlı)",
+      "phone_hint": "5XX XXX XX XX",
+      "email_label": "E-posta Adresi",
+      "email_hint": "ornek@email.com",
+      "referral_label": "Referans Kodu (Opsiyonel)",
+      "referral_hint": "Arkadaşınızın davet kodu varsa buraya yazın",
+      "password_label": "Şifreniz",
+      "password_hint": "En az 8 karakter",
+      "confirm_password_label": "Şifre Tekrar",
+      "confirm_password_hint": "Şifrenizi tekrar girin",
+      "terms_title": "Yasal Belgeler & Onay",
+      "terms_subtitle": "Devam etmek için Kullanım Koşulları ve Gizlilik Politikası'nı inceleyin.",
+      "view_terms": "İncele & Onayla",
+      "button": "Hesap Oluştur",
+      "have_account": "Zaten hesabınız var mı?",
+      "login_link": "Giriş yapın"
+    },
+    "name": "Ad Soyad",
+    "email": "E-Posta",
+    "password": "Şifre",
+    "no_account": "Hesabın yok mu? Kayıt Ol",
+    "login_success": "Giriş Başarılı!",
+    "register_success": "Kayıt Başarılı!",
+    "field_required": "Bu alan zorunludur",
+    "invalid_email": "Geçerli bir e-posta girin",
+    "password_min_length": "Şifre en az 6 karakter olmalıdır",
+    "referral_code_optional": "Referans Kodu (Opsiyonel)",
+    "error_prefix": "Hata: ",
+    "error_invalid_credentials": "E-posta veya şifre hatalı",
+    "error_email_taken": "Bu e-posta adresi zaten kullanımda",
+    "error_weak_password": "Şifreniz çok güçsüz. En az 8 karakter, harf ve rakam içermelidir",
+    "error_unknown": "Bilinmeyen bir hata oluştu"
+  },
+  "home": {
+    "title": "Rezervist.com",
+    "hero_title_prefix": "Türkiye'nin",
+    "hero_title_highlight": "Premium",
+    "hero_title_suffix": "Rezervasyon Platformu",
+    "hero_subtitle": "En iyi restoran, kafe ve güzellik merkezlerini keşfedin, saniyeler içinde ücretsiz yerinizi ayırın.",
+    "search_location": "Konum",
+    "search_date": "Tarih",
+    "search_guests": "Kişi",
+    "search_button": "Hemen Bul",
+    "no_address": "Adres yok",
+    "error_loading": "Yüklenirken hata oluştu: "
+  },
+  "business": {
+    "tabs": {
+      "info": "Bilgiler",
+      "menu": "Menü"
+    },
+    "about": "Hakkında",
+    "address": "Adres",
+    "no_description": "Açıklama yok.",
+    "no_address_info": "Adres bilgisi yok.",
+    "no_menu": "Henüz menü eklenmemiş.",
+    "book_button": "Rezervasyon Yap"
+  }
+}

@@ -1,0 +1,38 @@
+{
+    "appId": "com.rezerveet.pos",
+    "productName": "RezerVistA POS",
+    "copyright": "Copyright © 2026 RezerveEt",
+    "directories": {
+        "output": "release"
+    },
+    "files": [
+        "dist/**/*",
+        "dist-electron/**/*"
+    ],
+    "win": {
+        "target": [
+            {
+                "target": "nsis",
+                "arch": [
+                    "x64"
+                ]
+            }
+        ]
+    },
+    "nsis": {
+        "oneClick": false,
+        "perMachine": false,
+        "allowToChangeInstallationDirectory": true,
+        "deleteAppDataOnUninstall": true,
+        "createDesktopShortcut": true,
+        "createStartMenuShortcut": true,
+        "shortcutName": "RezerVistA",
+        "runAfterFinish": true
+    },
+    "publish": [
+        {
+            "provider": "generic",
+            "url": "https://api.rezerveet.com/updates/"
+        }
+    ]
+}

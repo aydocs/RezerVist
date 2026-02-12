@@ -1,0 +1,102 @@
+# ===========================
+# OS & IDE
+# ===========================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+*.sublime-*
+
+# ===========================
+# Laravel (core/)
+# ===========================
+core/vendor/
+core/node_modules/
+core/.env
+core/.env.backup
+core/.env.production
+core/storage/*.key
+core/storage/logs/
+core/storage/framework/cache/data/
+core/storage/framework/sessions/
+core/storage/framework/views/
+core/storage/debugbar/
+core/bootstrap/cache/
+core/public/hot
+core/public/storage
+core/public/build/
+core/.phpunit.result.cache
+core/Homestead.json
+core/Homestead.yaml
+core/auth.json
+core/npm-debug.log
+core/yarn-error.log
+
+# ===========================
+# Flutter (mobile/)
+# ===========================
+mobile/.dart_tool/
+mobile/.packages
+mobile/.pub-cache/
+mobile/.pub/
+mobile/build/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/.flutter-pid
+mobile/android/.gradle/
+mobile/android/app/debug/
+mobile/android/app/profile/
+mobile/android/app/release/
+mobile/android/local.properties
+mobile/android/key.properties
+mobile/android/*.jks
+mobile/ios/Pods/
+mobile/ios/.symlinks/
+mobile/ios/Flutter/Flutter.framework
+mobile/ios/Flutter/Flutter.podspec
+mobile/ios/Flutter/Generated.xcconfig
+mobile/ios/Flutter/app.flx
+mobile/ios/Flutter/engine/
+mobile/ios/ServiceDefinitions.json
+mobile/ios/Runner/GeneratedPluginRegistrant.*
+mobile/.flutter-pid
+
+# ===========================
+# POS Desktop (pos/)
+# ===========================
+pos/node_modules/
+pos/dist/
+pos/build/
+pos/build-out/
+pos/release/
+pos/release-new/
+pos/out/
+pos/.env
+pos/.env.local
+pos/.env.*.local
+pos/npm-debug.log*
+pos/yarn-debug.log*
+pos/yarn-error.log*
+
+# ===========================
+# General
+# ===========================
+*.zip
+*.rar
+*.tar.gz
+*.7z
+*.mp4
+*.avi
+*.mov
+*.exe
+*.dll
+*.log
+*.pid
+*.seed
+*.pid.lock
+.env
+.env.*
+!.env.example

@@ -1,0 +1,68 @@
+{
+  "app_title": "Rezervist.com",
+  "auth": {
+    "login": {
+      "title": "Login",
+      "welcome_title": "Welcome Back",
+      "welcome_subtitle": "Login to continue your reservations",
+      "email_label": "Email",
+      "password_label": "Password",
+      "remember_me": "Remember me",
+      "forgot_password": "Forgot password",
+      "login_button": "Login",
+      "or_divider": "or",
+      "no_account": "Don't have an account?",
+      "register_button": "Register"
+    },
+    "register": {
+      "title": "Join Now",
+      "subtitle": "Discover new places and make easy reservations",
+      "name_label": "Full Name",
+      "name_hint": "John Doe",
+      "phone_label": "Phone (Optional)",
+      "phone_hint": "5XX XXX XX XX",
+      "email_label": "Email Address",
+      "email_hint": "example@email.com",
+      "referral_label": "Referral Code (Optional)",
+      "referral_hint": "Write your friend's invite code here",
+      "password_label": "Your Password",
+      "password_hint": "At least 8 characters",
+      "confirm_password_label": "Confirm Password",
+      "confirm_password_hint": "Enter your password again",
+      "terms_title": "Legal Documents & Approval",
+      "terms_subtitle": "Review Terms of Use and Privacy Policy to continue.",
+      "view_terms": "Review & Approve",
+      "button": "Create Account",
+      "have_account": "Already have an account?",
+      "login_link": "Login here"
+    },
+    "name": "Full Name",
+    "email": "Email",
+    "password": "Password",
+    "no_account": "Don't have an account? Register",
+    "login_success": "Login Successful!",
+    "register_success": "Registration Successful!",
+    "field_required": "This field is required",
+    "invalid_email": "Enter a valid email",
+    "password_min_length": "Password must be at least 6 characters",
+    "referral_code_optional": "Referral Code (Optional)",
+    "error_prefix": "Error: "
+  },
+  "home": {
+    "title": "Rezervist.com",
+    "no_address": "No address",
+    "error_loading": "Error loading: "
+  },
+  "business": {
+    "tabs": {
+      "info": "Info",
+      "menu": "Menu"
+    },
+    "about": "About",
+    "address": "Address",
+    "no_description": "No description.",
+    "no_address_info": "No address info.",
+    "no_menu": "No menu items yet.",
+    "book_button": "Make Reservation"
+  }
+}

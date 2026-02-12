@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Business;
+use Illuminate\Support\Facades\Storage;
+
+class MediaController extends Controller
+{
+    public function upload(Request $request, $businessId)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $business = Business::findOrFail($businessId);
+
+        // Ensure user owns this business
+        if ($request->user()->id !== $business->owner_id && $request->user()->role !== 'admin') {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('business_images', 'public');
+            
+            $image = $business->images()->create([
+                'image_path' => $path
+            ]);
+
+            return response()->json(['url' => asset('storage/' . $path), 'id' => $image->id]);
+        }
+
+        return response()->json(['message' => 'Upload failed'], 500);
+    }
+}

@@ -1,0 +1,50 @@
+<?php
+
+return [
+    'failed' => 'Bu kimlik bilgileri kayıtlarımızla eşleşmiyor.',
+    'password' => 'Girilen şifre yanlış.',
+    'throttle' => 'Çok fazla giriş denemesi. Lütfen :seconds saniye sonra tekrar deneyin.',
+    'login' => [
+        'title' => 'Tekrar Hoş Geldiniz',
+        'subtitle' => 'Rezervasyonlarınıza devam etmek için giriş yapın',
+        'email' => 'E-posta',
+        'password' => 'Şifre',
+        'remember_me' => 'Beni hatırla',
+        'forgot_password' => 'Şifremi unuttum',
+        'login_button' => 'Giriş Yap',
+        'no_account' => 'Hesabınız yok mu?',
+        'register_link' => 'Kayıt olun',
+        'or' => 'veya',
+        'hero_title' => 'Keyifli Anlar Sizi Bekliyor',
+        'hero_subtitle' => 'Favori mekanlarınızda yeriniz hazır. Tek tıkla rezervasyon yapın, puan toplayın.',
+        'stats' => [
+            'places' => 'Mekan',
+            'members' => 'Mutlu Üye',
+            'rating' => 'Puan',
+        ],
+    ],
+    'register' => [
+        'title' => 'Hemen Katılın',
+        'subtitle' => 'Yeni mekanlar keşfedin ve kolayca rezervasyon yapın',
+        'name' => 'Ad Soyad',
+        'email' => 'E-posta Adresi',
+        'password' => 'Şifreniz',
+        'password_confirmation' => 'Şifre Tekrar',
+        'register_button' => 'Hesap Oluştur',
+        'has_account' => 'Zaten hesabınız var mı?',
+        'login_link' => 'Giriş yapın',
+        'hero_title' => 'Şehrin Tadını Çıkarın',
+        'hero_subtitle' => 'En iyi restoranları, kafeleri ve etkinlikleri keşfedin. Saniyeler içinde yerinizi ayırtın.',
+        'features' => [
+            'discover' => 'Binlerce mekanı keşfedin',
+            'reviews' => 'Gerçek kullanıcı yorumları',
+            'online' => 'Anında online rezervasyon',
+        ],
+        'terms' => [
+            'terms_link' => 'Kullanım Koşulları',
+            'and' => ' ve ',
+            'privacy_link' => 'Gizlilik Politikası',
+            'accept' => '\'nı kabul ediyorum',
+        ],
+    ],
+];

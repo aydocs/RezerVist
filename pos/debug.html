@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Helper</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #00ff00;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            background: #2a2a2a;
+            border-radius: 8px;
+        }
+        button {
+            background: #00ff00;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #00cc00;
+        }
+        pre {
+            background: #000;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 POS Debug Helper</h1>
+    
+    <div class="section">
+        <h2>LocalStorage Durumu</h2>
+        <button onclick="showLocalStorage()">LocalStorage'ı Göster</button>
+        <button onclick="clearAll()">Tümünü Temizle</button>
+        <button onclick="clearToken()">Sadece Token'ı Temizle</button>
+        <pre id="localStorage-output"></pre>
+    </div>
+
+    <div class="section">
+        <h2>Test Lisans Anahtarı</h2>
+        <p>Eğer lisans anahtarınız yoksa, test için bir tane oluşturalım:</p>
+        <button onclick="generateTestKey()">Test Anahtarı Oluştur</button>
+        <pre id="test-key-output"></pre>
+    </div>
+
+    <div class="section">
+        <h2>API Bağlantı Testi</h2>
+        <input type="text" id="apiUrl" value="http://localhost:8000/api/pos" style="width: 400px; padding: 8px;">
+        <button onclick="testConnection()">Bağlantıyı Test Et</button>
+        <pre id="connection-output"></pre>
+    </div>
+
+    <script>
+        function showLocalStorage() {
+            const output = document.getElementById('localStorage-output');
+            const data = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                data[key] = localStorage.getItem(key);
+            }
+            output.textContent = JSON.stringify(data, null, 2);
+        }
+
+        function clearAll() {
+            if (confirm('Tüm localStorage verilerini silmek istediğinize emin misiniz?')) {
+                localStorage.clear();
+                alert('✅ Tüm veriler temizlendi!');
+                showLocalStorage();
+            }
+        }
+
+        function clearToken() {
+            localStorage.removeItem('pos_token');
+            localStorage.removeItem('business_name');
+            localStorage.removeItem('pos_staff_session');
+            alert('✅ Token ve oturum verileri temizlendi!');
+            showLocalStorage();
+        }
+
+        function generateTestKey() {
+            const testKey = 'rez_live_' + Math.random().toString(36).substring(2, 15);
+            document.getElementById('test-key-output').textContent = 
+                'Test Anahtarı: ' + testKey + '\n\n' +
+                'NOT: Bu sadece format örneğidir. Gerçek bir lisans anahtarı için backend\'den almalısınız.';
+        }
+
+        async function testConnection() {
+            const output = document.getElementById('connection-output');
+            const apiUrl = document.getElementById('apiUrl').value;
+            
+            output.textContent = 'Bağlantı test ediliyor...\n';
+            
+            try {
+                const response = await fetch(apiUrl + '/activate', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer test_key_12345',
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                output.textContent += `\nDurum Kodu: ${response.status}\n`;
+                output.textContent += `Durum: ${response.statusText}\n\n`;
+                
+                const data = await response.text();
+                output.textContent += 'Yanıt:\n' + data;
+                
+            } catch (error) {
+                output.textContent += '\n❌ HATA: ' + error.message;
+                output.textContent += '\n\nMuhtemel Sebepler:';
+                output.textContent += '\n- Backend çalışmıyor olabilir';
+                output.textContent += '\n- API URL yanlış olabilir';
+                output.textContent += '\n- CORS sorunu olabilir';
+            }
+        }
+
+        // Sayfa yüklendiğinde localStorage'ı göster
+        window.onload = showLocalStorage;
+    </script>
+</body>
+</html>
