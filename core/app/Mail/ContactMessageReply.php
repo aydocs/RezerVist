@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -14,6 +13,7 @@ class ContactMessageReply extends Mailable
     use Queueable, SerializesModels;
 
     public $contactMessage;
+
     public $replyContent;
 
     /**
@@ -31,7 +31,7 @@ class ContactMessageReply extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Mesajınız Hakkında: ' . $this->contactMessage->subject,
+            subject: 'Mesajınız Hakkında: '.$this->contactMessage->subject,
         );
     }
 

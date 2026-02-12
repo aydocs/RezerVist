@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Services\FileUploadService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use App\Services\FileUploadService;
-use Exception;
 
 class ProfileApiController extends Controller
 {
@@ -20,7 +20,7 @@ class ProfileApiController extends Controller
 
         $validated = $request->validate([
             'name' => 'sometimes|string|max:255',
-            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $user->id,
+            'email' => 'sometimes|string|email|max:255|unique:users,email,'.$user->id,
             'phone' => 'nullable|string|max:20',
             'current_password' => 'sometimes|required_with:password|current_password',
             'password' => 'sometimes|string|min:8|confirmed',
@@ -100,7 +100,7 @@ class ProfileApiController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Ayarlar güncellendi.',
-            'notifications_enabled' => $user->notifications_enabled
+            'notifications_enabled' => $user->notifications_enabled,
         ]);
     }
 }

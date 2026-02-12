@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Post;
 use App\Models\PostCategory;
 use App\Models\User;
-use Illuminate\Support\Str;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class BlogSeeder extends Seeder
 {
@@ -27,7 +27,7 @@ class BlogSeeder extends Seeder
             'Sistem Özellikleri' => 'Rezervist panelinin güçlü özelliklerini keşfedin.',
             'İşletme Yönetimi' => 'İşletmenizi büyütmek için ipuçları ve stratejiler.',
             'Dijitalleşme' => 'Kağıt-kalemden dijital dünyaya geçiş rehberleri.',
-            'Müşteri İlişkileri' => 'Müşteri memnuniyetini artırmanın yolları.'
+            'Müşteri İlişkileri' => 'Müşteri memnuniyetini artırmanın yolları.',
         ];
 
         $categories = [];
@@ -35,7 +35,7 @@ class BlogSeeder extends Seeder
             $categories[$name] = PostCategory::create([
                 'name' => $name,
                 'slug' => Str::slug($name),
-                'description' => $desc
+                'description' => $desc,
             ]);
         }
 
@@ -55,7 +55,7 @@ class BlogSeeder extends Seeder
 
                     <h3>Özelleştirilebilir Mesajlar</h3>
                     <p>Panel üzerinden mesaj şablonlarını işletmenizin diline göre düzenleyebilir, özel kampanya notları ekleyebilirsiniz.</p>
-                '
+                ',
             ],
             [
                 'title' => 'Gelişmiş Finansal Raporlar ile Gelirinizi Takip Edin',
@@ -72,9 +72,9 @@ class BlogSeeder extends Seeder
                     </ul>
                     
                     <p>Veriye dayalı kararlar alarak işletmenizi karlı bir şekilde büyütün.</p>
-                '
+                ',
             ],
-             [
+            [
                 'title' => 'Mobil Uygulama İle İşletmeniz Cebinizde',
                 'category' => 'Sistem Özellikleri',
                 'image' => 'blog/post_3.jpg',
@@ -87,7 +87,7 @@ class BlogSeeder extends Seeder
                         <li><strong>Takvim Yönetimi:</strong> Hareket halindeyken randevuları düzenleyin, onaylayın.</li>
                         <li><strong>Hızlı Satış:</strong> POS özelliği ile cepten adisyon açın.</li>
                     </ul>
-                '
+                ',
             ],
             [
                 'title' => 'Neden Personeliniz İçin Dijital Takvim Kullanmalısınız?',
@@ -101,7 +101,7 @@ class BlogSeeder extends Seeder
                     
                     <h3>Mola ve İzin Yönetimi</h3>
                     <p>Personelinizin yemek molalarını ve izin günlerini sisteme tanımlayarak, o saatlerin müşteriye kapalı görünmesini sağlayın.</p>
-                '
+                ',
             ],
             [
                 'title' => 'Online Ödeme Entegrasyonu: Güvenli ve Hızlı',
@@ -111,7 +111,7 @@ class BlogSeeder extends Seeder
                     <p>No-Show (Randevuya gelmeme) oranlarını azaltmanın en etkili yolu ön ödeme almaktır. Rezervist, güvenli ödeme altyapısıyla bunu kolaylaştırır.</p>
                     
                     <p>Müşterileriniz randevu alırken hizmet bedelinin tamamını veya bir kısmını kapora olarak ödeyebilir. Bu sayede randevu ciddiyeti artar ve geliriniz garanti altına alınır.</p>
-                '
+                ',
             ],
             [
                 'title' => 'Müşteri Sadakati: CRM Özellikleri',
@@ -122,9 +122,9 @@ class BlogSeeder extends Seeder
                     
                     <h3>Müşteri Profili</h3>
                     <p>Her müşterinin aldığı hizmet geçmişini, notlarını (örneğin: "Kahve sevmiyor, çay ikram edin") ve ödeme alışkanlıklarını tek ekranda görüntüleyin.</p>
-                '
+                ',
             ],
-             [
+            [
                 'title' => '7/24 Randevu: Siz Uyurken İşletmeniz Çalışsın',
                 'category' => 'Dijitalleşme',
                 'image' => 'blog/post_7.jpg',
@@ -132,7 +132,7 @@ class BlogSeeder extends Seeder
                     <p>Telefon trafiğinden kurtulun. Müşterileriniz gecenin 3\'ünde bile web siteniz veya uygulamanız üzerinden müsaitlik durumunu görüp randevu alabilsin.</p>
                     
                     <p>Bu özellik sayesinde randevu alma bariyerleri kalkar ve potansiyel müşteri kaybı önlenir. Sanal asistanınız Rezervist, 7/24 resepsiyon görevi görür.</p>
-                '
+                ',
             ],
             [
                 'title' => 'Stok Takibi ile Maliyetleri Kontrol Altına Alın',
@@ -142,7 +142,7 @@ class BlogSeeder extends Seeder
                     <p>Kullandığınız ürünlerin takibini yapmak kar marjınızı artırır. Hangi boyadan ne kadar kullanıldı? Şampuan stoku bitiyor mu?</p>
                     
                     <p>Hizmetlerle ürünleri eşleştirerek, her işlem yapıldığında stoktan otomatik düşülmesini sağlayın. Kritik stok seviyesine gelindiğinde uyarı alın.</p>
-                '
+                ',
             ],
             [
                 'title' => 'Web Siteniz: İşletmenizin Dijital Vitrini',
@@ -152,9 +152,9 @@ class BlogSeeder extends Seeder
                     <p>Rezervist, size sadece bir panel değil, aynı zamanda modern ve SEO uyumlu bir web sitesi sunar. İşletmenizin fotoğraflarını, ekibini ve hizmetlerini en şık şekilde sergileyin.</p>
                     
                     <p>Google haritalar entegrasyonu ve sosyal medya bağlantılarıyla müşterilerinizin size ulaşmasını kolaylaştırın.</p>
-                '
+                ',
             ],
-             [
+            [
                 'title' => 'Yapay Zeka Destekli Asistan (Pek Yakında)',
                 'category' => 'Sistem Özellikleri',
                 'image' => 'blog/post_10.jpg',
@@ -165,8 +165,8 @@ class BlogSeeder extends Seeder
                         <li><strong>Akıllı Öneriler:</strong> Boş saatleri doldurmak için kampanya önerileri.</li>
                         <li><strong>Chatbot:</strong> Müşteri sorularını otomatik yanıtlayan sanal asistan.</li>
                     </ul>
-                '
-            ]
+                ',
+            ],
         ];
 
         foreach ($posts as $post) {
@@ -183,7 +183,7 @@ class BlogSeeder extends Seeder
                 'featured_image' => $post['image'],
                 'meta_title' => $post['title'],
                 'meta_description' => Str::limit(strip_tags($post['content']), 150),
-                'tags' => ['rezervist', 'sistem', Str::slug($post['category']), 'yönetim']
+                'tags' => ['rezervist', 'sistem', Str::slug($post['category']), 'yönetim'],
             ]);
         }
     }

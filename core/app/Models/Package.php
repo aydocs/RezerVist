@@ -12,14 +12,14 @@ class Package extends Model
         'price_monthly',
         'price_yearly',
         'features',
-        'is_active'
+        'is_active',
     ];
 
     protected $casts = [
         'features' => 'array',
         'price_monthly' => 'decimal:2',
         'price_yearly' => 'decimal:2',
-        'is_active' => 'boolean'
+        'is_active' => 'boolean',
     ];
 
     // Helper to check feature access

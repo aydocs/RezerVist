@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -42,7 +41,7 @@ class ReservationReminderNotification extends Notification
         return (new MailMessage)
             ->subject("Rezervasyon Hatırlatması: {$businessName}")
             ->greeting("Merhaba {$notifiable->name},")
-            ->line("Yarınki rezervasyonunuzu hatırlatmak istedik.")
+            ->line('Yarınki rezervasyonunuzu hatırlatmak istedik.')
             ->line("İşletme: {$businessName}")
             ->line("Tarih ve Saat: {$date}")
             ->line("Kişi Sayısı: {$this->reservation->guest_count}")

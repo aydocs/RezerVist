@@ -16,12 +16,12 @@ class AdminReviewController extends Controller
     {
         $status = $request->get('status', Review::STATUS_APPROVED); // Default to approved (live) reviews
         $showReported = $request->get('reported', false);
-        
+
         $reviews = Review::with(['user', 'business'])
-            ->when($showReported, function($query) {
+            ->when($showReported, function ($query) {
                 return $query->where('is_reported', true);
             })
-            ->when(!$showReported && $status, function($query) use ($status) {
+            ->when(! $showReported && $status, function ($query) use ($status) {
                 return $query->where('status', $status);
             })
             ->latest()
@@ -36,7 +36,7 @@ class AdminReviewController extends Controller
     public function approve(Review $review)
     {
         $review->update(['status' => Review::STATUS_APPROVED]);
-        
+
         // trigger specific rating update just in case, though Model observer should handle it
         $review->business->updateRating();
 
@@ -49,7 +49,7 @@ class AdminReviewController extends Controller
     public function reject(Review $review)
     {
         $review->update(['status' => Review::STATUS_REJECTED]);
-        
+
         // If it was approved before, we need to update rating
         $review->business->updateRating();
 
@@ -62,6 +62,7 @@ class AdminReviewController extends Controller
     public function destroy(Review $review)
     {
         $review->delete();
+
         return back()->with('success', 'Yorum tamamen silindi.');
     }
 
@@ -73,9 +74,9 @@ class AdminReviewController extends Controller
         $review->update([
             'is_reported' => false,
             'reported_at' => null,
-            'status' => Review::STATUS_APPROVED
+            'status' => Review::STATUS_APPROVED,
         ]);
-        
+
         return back()->with('success', 'Yorum güvenli olarak işaretlendi.');
     }
 
@@ -84,10 +85,11 @@ class AdminReviewController extends Controller
      */
     public function toggleBlock(User $user)
     {
-        $user->is_review_blocked = !$user->is_review_blocked;
+        $user->is_review_blocked = ! $user->is_review_blocked;
         $user->save();
 
         $statusMessage = $user->is_review_blocked ? 'kısıtlandı' : 'kısıtlaması kaldırıldı';
+
         return back()->with('success', "Kullanıcının yorum yapma yetkisi {$statusMessage}.");
     }
 }

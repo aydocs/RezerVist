@@ -9,10 +9,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            if (!Schema::hasColumn('users', 'points')) {
+            if (! Schema::hasColumn('users', 'points')) {
                 $table->integer('points')->default(0)->after('email');
             }
-            if (!Schema::hasColumn('users', 'balance')) {
+            if (! Schema::hasColumn('users', 'balance')) {
                 $table->decimal('balance', 10, 2)->default(0)->after('points');
             }
         });

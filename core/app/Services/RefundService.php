@@ -4,10 +4,10 @@ namespace App\Services;
 
 use App\Models\Payment;
 use App\Models\Reservation;
+use Iyzipay\Model\Locale;
 use Iyzipay\Model\Refund;
 use Iyzipay\Options;
 use Iyzipay\Request\CreateRefundRequest;
-use Iyzipay\Model\Locale;
 
 class RefundService
 {
@@ -15,7 +15,7 @@ class RefundService
 
     public function __construct()
     {
-        $this->options = new Options();
+        $this->options = new Options;
         $this->options->setApiKey(config('services.iyzico.api_key'));
         $this->options->setSecretKey(config('services.iyzico.secret_key'));
         $this->options->setBaseUrl(config('services.iyzico.base_url', 'https://sandbox-api.iyzipay.com'));
@@ -29,9 +29,9 @@ class RefundService
     {
         // 1. Check if there was a successful payment (Card or Wallet)
         $payment = Payment::where('reservation_id', $reservation->id)
-                          ->where('status', 'success')
-                          ->orderBy('created_at', 'desc')
-                          ->first();
+            ->where('status', 'success')
+            ->orderBy('created_at', 'desc')
+            ->first();
 
         // 2. If Card Payment found -> Refund to Wallet (As per MVP Policy)
         if ($payment) {
@@ -49,6 +49,7 @@ class RefundService
         }
 
         \Log::warning("Refund requested for reservation #{$reservation->id} but no valid payment method found.");
+
         return false;
     }
 
@@ -68,7 +69,7 @@ class RefundService
                     'amount' => $amount,
                     'type' => 'refund',
                     'status' => 'success',
-                    'description' => $reservation->business->name . ' rezervasyonu iadesi (Karta iade yerine Cüzdana)',
+                    'description' => $reservation->business->name.' rezervasyonu iadesi (Karta iade yerine Cüzdana)',
                     'reference_id' => $reservation->id,
                 ]);
 
@@ -76,16 +77,18 @@ class RefundService
                 if ($reservation->status !== 'cancelled') {
                     $reservation->update(['status' => 'cancelled']);
                 }
-                
+
                 // Track this "virtual" refund in Payments table too if needed, but WalletTransaction is enough for balance.
-                // Optionally mark Payment as refunded internally? 
+                // Optionally mark Payment as refunded internally?
                 // Let's keep the Payment as is, or maybe add a note.
             });
 
             \Log::info("Force Wallet Refund successful for reservation #{$reservation->id}");
+
             return true;
         } catch (\Exception $e) {
-            \Log::error("Force Wallet Refund failed for #{$reservation->id}: " . $e->getMessage());
+            \Log::error("Force Wallet Refund failed for #{$reservation->id}: ".$e->getMessage());
+
             return false;
         }
     }
@@ -103,11 +106,11 @@ class RefundService
             'iyzico_payment_id' => $payment->payment_id,
         ]);
 
-        $request = new CreateRefundRequest();
+        $request = new CreateRefundRequest;
         $request->setLocale(Locale::TR);
         $request->setConversationId($reservation->id);
         $request->setPaymentTransactionId($payment->payment_id);
-        $request->setPrice($payment->paid_price); 
+        $request->setPrice($payment->paid_price);
         $request->setIp(request()->ip());
         $request->setCurrency($payment->currency ?: \Iyzipay\Model\Currency::TL);
 
@@ -123,26 +126,29 @@ class RefundService
                 Payment::create([
                     'user_id' => $reservation->user_id,
                     'reservation_id' => $reservation->id,
-                    'payment_id' => $refund->getPaymentId(), 
+                    'payment_id' => $refund->getPaymentId(),
                     'conversation_id' => $refund->getConversationId(),
                     'price' => $refund->getPrice(),
-                    'paid_price' => $refund->getPrice(), 
-                    'status' => 'refunded', 
+                    'paid_price' => $refund->getPrice(),
+                    'status' => 'refunded',
                     'currency' => $payment->currency ?: 'TRY',
                     'raw_result' => json_encode($refund->getRawResult()),
                 ]);
 
                 \Log::info("Iyzico Refund successful for reservation #{$reservation->id}");
+
                 return true;
             } else {
                 $refundRequest->update([
                     'status' => 'failed',
-                    'admin_note' => $refund->getErrorMessage()
+                    'admin_note' => $refund->getErrorMessage(),
                 ]);
+
                 return false;
             }
         } catch (\Exception $e) {
             $refundRequest->update(['status' => 'failed', 'admin_note' => $e->getMessage()]);
+
             return false;
         }
     }
@@ -163,7 +169,7 @@ class RefundService
                     'amount' => $walletTx->amount,
                     'type' => 'refund',
                     'status' => 'success',
-                    'description' => $reservation->business->name . ' rezervasyonu iadesi',
+                    'description' => $reservation->business->name.' rezervasyonu iadesi',
                     'reference_id' => $reservation->id,
                 ]);
 
@@ -172,9 +178,11 @@ class RefundService
             });
 
             \Log::info("Wallet Refund successful for reservation #{$reservation->id}");
+
             return true;
         } catch (\Exception $e) {
-            \Log::error("Wallet Refund failed for #{$reservation->id}: " . $e->getMessage());
+            \Log::error("Wallet Refund failed for #{$reservation->id}: ".$e->getMessage());
+
             return false;
         }
     }

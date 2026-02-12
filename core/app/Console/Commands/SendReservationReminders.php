@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\Reservation;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\ReservationReminder;
 use Carbon\Carbon;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 
 class SendReservationReminders extends Command
 {
@@ -47,17 +46,18 @@ class SendReservationReminders extends Command
             try {
                 // Use Notification instead of direct Mail for multi-channel support
                 $reservation->user->notify(new \App\Notifications\ReservationReminderNotification($reservation));
-                
+
                 $reservation->update(['reminded_at' => now()]);
-                
+
                 $this->info("Reminder sent for Reservation #{$reservation->id}");
             } catch (\Exception $e) {
-                $this->error("Failed to send reminder for Reservation #{$reservation->id}: " . $e->getMessage());
-                \Log::error("Reminder failed for #{$reservation->id}: " . $e->getMessage());
+                $this->error("Failed to send reminder for Reservation #{$reservation->id}: ".$e->getMessage());
+                \Log::error("Reminder failed for #{$reservation->id}: ".$e->getMessage());
             }
         }
 
         $this->info('Reservation reminders check completed.');
+
         return Command::SUCCESS;
     }
 }

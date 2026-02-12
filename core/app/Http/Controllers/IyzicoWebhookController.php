@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Payment;
-use App\Models\Reservation;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class IyzicoWebhookController extends Controller
@@ -16,14 +15,14 @@ class IyzicoWebhookController extends Controller
     public function handle(Request $request)
     {
         $payload = $request->all();
-        
+
         Log::info('Iyzico Webhook Received:', $payload);
 
         // Security: In a real production system, you MUST verify the signature.
         // Iyzico sends an 'x-iyzi-signature' header.
         // For This MVP/Development, we will process based on paymentId.
-        
-        if (!isset($payload['iyziEventType']) || !isset($payload['paymentId'])) {
+
+        if (! isset($payload['iyziEventType']) || ! isset($payload['paymentId'])) {
             return response()->json(['status' => 'invalid_payload'], 400);
         }
 
@@ -32,8 +31,9 @@ class IyzicoWebhookController extends Controller
 
         $payment = Payment::where('payment_id', $paymentId)->first();
 
-        if (!$payment) {
+        if (! $payment) {
             Log::warning("Iyzico Webhook: Payment not found for ID {$paymentId}");
+
             return response()->json(['status' => 'not_found'], 404);
         }
 
@@ -58,7 +58,7 @@ class IyzicoWebhookController extends Controller
         if ($payment->status !== 'success') {
             $payment->update(['status' => 'success']);
             $payment->reservation->update(['status' => 'approved']);
-            
+
             Log::info("Iyzico Webhook: Payment #{$payment->id} marked as success.");
         }
     }
@@ -68,7 +68,7 @@ class IyzicoWebhookController extends Controller
         if ($payment->status !== 'refunded') {
             $payment->update(['status' => 'refunded']);
             $payment->reservation->update(['status' => 'cancelled']);
-            
+
             Log::info("Iyzico Webhook: Payment #{$payment->id} marked as refunded.");
         }
     }

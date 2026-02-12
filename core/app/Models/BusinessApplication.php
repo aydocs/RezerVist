@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Category; // Added for the category relationship
+
+// Added for the category relationship
 
 class BusinessApplication extends Model
 {
     use \App\Traits\LogsActivity;
+
     protected $fillable = [
         'user_id',
         'business_name',
@@ -24,7 +26,7 @@ class BusinessApplication extends Model
         'id_document',
         'bank_document',
         'status', // pending, approved, rejected
-        'admin_note'
+        'admin_note',
     ];
 
     public function user()

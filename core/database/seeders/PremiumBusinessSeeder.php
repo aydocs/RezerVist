@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Business;
-use App\Models\BusinessDay;
 use App\Models\BusinessHour;
 use App\Models\BusinessImage;
 use App\Models\Category;
@@ -21,7 +20,7 @@ class PremiumBusinessSeeder extends Seeder
             'name' => 'Premium İşletme Sahibi',
             'email' => 'premium@rezervist.com',
             'role' => 'business',
-            'password' => bcrypt('password')
+            'password' => bcrypt('password'),
         ]);
 
         // Ensure Categories Exist
@@ -52,7 +51,7 @@ class PremiumBusinessSeeder extends Seeder
     private function createSaltBaeSteakhouse($owner)
     {
         $category = Category::where('slug', 'restoran')->first();
-        
+
         $business = Business::create([
             'owner_id' => $owner->id,
             'category_id' => $category->id,
@@ -117,7 +116,7 @@ class PremiumBusinessSeeder extends Seeder
             'price' => 850,
             'is_available' => true,
         ]);
-        
+
         // Menu (Main)
         Menu::create([
             'business_id' => $business->id,
@@ -160,8 +159,8 @@ class PremiumBusinessSeeder extends Seeder
             'price_per_person' => 1500,
         ]);
 
-         // Hours (Tue-Sun 10:00 - 20:00, Mon Closed)
-         for ($i = 0; $i <= 6; $i++) {
+        // Hours (Tue-Sun 10:00 - 20:00, Mon Closed)
+        for ($i = 0; $i <= 6; $i++) {
             BusinessHour::create([
                 'business_id' => $business->id,
                 'day_of_week' => $i,
@@ -175,7 +174,7 @@ class PremiumBusinessSeeder extends Seeder
             'https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=1200', // Spa
             'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1200', // Massage
         ];
-        
+
         foreach ($images as $url) {
             BusinessImage::create(['business_id' => $business->id, 'image_path' => $url]);
         }
@@ -236,10 +235,10 @@ class PremiumBusinessSeeder extends Seeder
         BusinessImage::create(['business_id' => $business->id, 'image_path' => 'https://images.unsplash.com/photo-1566417713204-38c9e7218e15?q=80&w=1200']); // Bar
 
         // Resources (Bistros)
-        for($i=1; $i<=15; $i++) {
+        for ($i = 1; $i <= 15; $i++) {
             Resource::create(['business_id' => $business->id, 'name' => "Bistro $i", 'type' => 'bistro', 'capacity' => 2]);
         }
-        for($i=1; $i<=5; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             Resource::create(['business_id' => $business->id, 'name' => "Loca $i", 'type' => 'lounge', 'capacity' => 6]);
         }
 
@@ -338,20 +337,20 @@ class PremiumBusinessSeeder extends Seeder
         Resource::create(['business_id' => $business->id, 'name' => 'İç Salon Masa 1', 'type' => 'table', 'capacity' => 6]);
 
         Menu::create([
-             'business_id' => $business->id,
-             'category' => 'Balıklar',
-             'name' => 'Tuzda Levrek (2 Kişilik)',
-             'description' => 'Deniz tuzu ile fırınlanmış, alevli sunum ile servis edilir.',
-             'price' => 2800,
-             'is_available' => true,
+            'business_id' => $business->id,
+            'category' => 'Balıklar',
+            'name' => 'Tuzda Levrek (2 Kişilik)',
+            'description' => 'Deniz tuzu ile fırınlanmış, alevli sunum ile servis edilir.',
+            'price' => 2800,
+            'is_available' => true,
         ]);
         Menu::create([
-             'business_id' => $business->id,
-             'category' => 'Tatlı',
-             'name' => 'Volkanik Sufle',
-             'description' => 'Çikolata şelalesi, yanında vanilyalı dondurma ile.',
-             'price' => 400,
-             'is_available' => true,
+            'business_id' => $business->id,
+            'category' => 'Tatlı',
+            'name' => 'Volkanik Sufle',
+            'description' => 'Çikolata şelalesi, yanında vanilyalı dondurma ile.',
+            'price' => 400,
+            'is_available' => true,
         ]);
     }
 }

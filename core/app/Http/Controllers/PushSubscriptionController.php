@@ -9,15 +9,14 @@ class PushSubscriptionController extends Controller
     /**
      * Store the user's push subscription.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function subscribe(Request $request)
     {
         $this->validate($request, [
-            'endpoint'    => 'required',
-            'keys.auth'   => 'required',
-            'keys.p256dh' => 'required'
+            'endpoint' => 'required',
+            'keys.auth' => 'required',
+            'keys.p256dh' => 'required',
         ]);
 
         $endpoint = $request->endpoint;
@@ -34,7 +33,6 @@ class PushSubscriptionController extends Controller
     /**
      * Delete the user's push subscription.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function unsubscribe(Request $request)

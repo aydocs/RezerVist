@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\QrSession;
-use App\Models\Resource;
+use App\Models\Business;
 use App\Models\Order;
 use App\Models\OrderItem;
-use App\Models\Business;
+use App\Models\QrSession;
+use App\Models\Resource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -80,6 +80,7 @@ class QrTableController extends Controller
 
         if ($session->isExpired()) {
             $session->update(['status' => 'expired']);
+
             return response()->json([
                 'success' => false,
                 'message' => 'Oturum süresi dolmuş.',
@@ -215,7 +216,7 @@ class QrTableController extends Controller
             ->with(['order.items', 'business', 'resource'])
             ->firstOrFail();
 
-        if (!$session->order) {
+        if (! $session->order) {
             return response()->json([
                 'success' => false,
                 'message' => 'Henüz sipariş verilmemiş.',
@@ -258,7 +259,7 @@ class QrTableController extends Controller
             ->with(['order', 'business'])
             ->firstOrFail();
 
-        if (!$session->order) {
+        if (! $session->order) {
             return response()->json(['success' => false, 'message' => 'Sipariş bulunamadı.'], 404);
         }
 
@@ -300,7 +301,7 @@ class QrTableController extends Controller
         if ($order->fresh()->paid_amount >= $order->total_amount) {
             $order->update([
                 'payment_status' => 'paid',
-                'payment_method' => 'mobile_' . $request->payment_method,
+                'payment_method' => 'mobile_'.$request->payment_method,
                 'status' => 'closed',
                 'closed_at' => now(),
             ]);
@@ -332,7 +333,7 @@ class QrTableController extends Controller
                     'business_name' => $session->business->name,
                     'table' => $session->resource->name ?? 'Masa',
                     'date' => now()->format('d.m.Y H:i'),
-                    'items' => $order->items->map(fn($i) => [
+                    'items' => $order->items->map(fn ($i) => [
                         'name' => $i->name,
                         'qty' => $i->quantity,
                         'price' => $i->total_price,

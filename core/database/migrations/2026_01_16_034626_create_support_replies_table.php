@@ -35,7 +35,7 @@ return new class extends Migration
             ]);
 
             // 2. Create a reply entry for the admin reply if exists
-            if (!empty($msg->reply)) {
+            if (! empty($msg->reply)) {
                 \DB::table('support_replies')->insert([
                     'contact_message_id' => $msg->id,
                     'message' => $msg->reply,

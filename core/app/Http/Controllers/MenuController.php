@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Menu;
 use App\Models\Business;
+use App\Models\Menu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,7 +18,7 @@ class MenuController extends Controller
         if ($request->has('business_id')) {
             return Menu::where('business_id', $request->business_id)->get();
         }
-        
+
         // If user is business owner, return their menus (logic TBD based on auth)
         return response()->json(['message' => 'Please provide business_id'], 400);
     }
@@ -33,7 +33,7 @@ class MenuController extends Controller
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
             'category' => 'nullable|string',
-            'image' => 'nullable|image|max:2048'
+            'image' => 'nullable|image|max:2048',
         ]);
 
         $data = $request->except('image');
@@ -62,11 +62,11 @@ class MenuController extends Controller
     public function update(Request $request, string $id)
     {
         $menu = Menu::findOrFail($id);
-        
+
         $request->validate([
             'name' => 'sometimes|string|max:255',
             'price' => 'sometimes|numeric',
-            'image' => 'nullable|image|max:2048'
+            'image' => 'nullable|image|max:2048',
         ]);
 
         $data = $request->except('image');

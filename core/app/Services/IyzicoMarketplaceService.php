@@ -3,20 +3,20 @@
 namespace App\Services;
 
 use App\Models\Business;
-use Iyzipay\Options;
-use Iyzipay\Model\SubMerchant;
-use Iyzipay\Request\CreateSubMerchantRequest;
-use Iyzipay\Model\Address;
 use Iyzipay\Model\Locale;
+use Iyzipay\Model\SubMerchant;
+use Iyzipay\Options;
+use Iyzipay\Request\CreateSubMerchantRequest;
 
 class IyzicoMarketplaceService
 {
     private function getOptions()
     {
-        $options = new Options();
+        $options = new Options;
         $options->setApiKey(config('services.iyzico.api_key'));
         $options->setSecretKey(config('services.iyzico.secret_key'));
         $options->setBaseUrl(config('services.iyzico.base_url', 'https://sandbox-api.iyzipay.com'));
+
         return $options;
     }
 
@@ -25,11 +25,11 @@ class IyzicoMarketplaceService
      */
     public function registerSubMerchant(Business $business, array $data)
     {
-        $request = new CreateSubMerchantRequest();
+        $request = new CreateSubMerchantRequest;
         $request->setLocale(Locale::TR);
-        $request->setConversationId((string)$business->id);
-        $request->setSubMerchantExternalId("B" . $business->id);
-        
+        $request->setConversationId((string) $business->id);
+        $request->setSubMerchantExternalId('B'.$business->id);
+
         $request->setSubMerchantType($data['submerchant_type']);
         $request->setAddress($business->address ?? 'Istanbul');
         $request->setContactName($business->owner->name);
@@ -38,15 +38,15 @@ class IyzicoMarketplaceService
         $request->setGsmNumber($business->phone ?? '+905555555555');
         $request->setName($data['legal_company_name'] ?? $business->name);
         $request->setIban(str_replace(' ', '', $data['iyzico_iban']));
-        
+
         if ($data['submerchant_type'] === 'PERSONAL') {
             $request->setIdentityNumber($data['identity_number'] ?? '11111111111');
         } else {
             $request->setTaxOffice($data['tax_office'] ?? 'Istanbul');
             $request->setTaxNumber($data['tax_number'] ?? '1234567890');
         }
-        
-        $request->setCurrency("TRY");
+
+        $request->setCurrency('TRY');
 
         $subMerchant = SubMerchant::create($request, $this->getOptions());
 
@@ -59,6 +59,7 @@ class IyzicoMarketplaceService
                 'legal_company_name' => $data['legal_company_name'] ?? $business->name,
                 'iyzico_iban' => $data['iyzico_iban'],
             ]);
+
             return ['status' => 'success', 'key' => $subMerchant->getSubMerchantKey()];
         }
 

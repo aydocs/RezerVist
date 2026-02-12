@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Package;
+use Illuminate\Database\Seeder;
 
 class PackageSeeder extends Seeder
 {
@@ -28,11 +28,11 @@ class PackageSeeder extends Seeder
                     'Temel Müşteri Yönetimi (CRM)',
                     'Sınırsız Rezervasyon Alımı',
                     '%10 İşlem Komisyonu (KALDIRILDI)',
-                    'Sıfır Komisyon Politikası'
+                    'Sıfır Komisyon Politikası',
                 ],
-                'description' => 'Sadece RezerVist.com üzerinden rezervasyon yönetimi.'
+                'description' => 'Sadece RezerVist.com üzerinden rezervasyon yönetimi.',
             ],
-            'is_active' => true
+            'is_active' => true,
         ]);
 
         // 2. Pro Package (Starter + POS)
@@ -53,11 +53,11 @@ class PackageSeeder extends Seeder
                     'Masa ve Kat Planı Yönetimi',
                     'Anlık Stok & Envanter Takibi',
                     'Komisyonsuz Rezervasyon Yönetimi',
-                    'Sınırsız Personel Yetkilendirme'
+                    'Sınırsız Personel Yetkilendirme',
                 ],
-                'description' => 'Starter pakete ek olarak tam kapsamlı POS/Adisyon çözümü.'
+                'description' => 'Starter pakete ek olarak tam kapsamlı POS/Adisyon çözümü.',
             ],
-            'is_active' => true
+            'is_active' => true,
         ]);
 
         // 3. Mobile Package (Pro + Mobile)
@@ -78,11 +78,11 @@ class PackageSeeder extends Seeder
                     'Dijital Müşteri Kartı & Sadakat Sistemi',
                     'Temassız QR Menü, Sipariş & Ödeme',
                     'Müşterilere Özel "Push" Bildirimleri',
-                    'Gelişmiş CRM & Kampanya Yönetimi'
+                    'Gelişmiş CRM & Kampanya Yönetimi',
                 ],
-                'description' => 'Pro özelliklere ek olarak markanıza özel mobil uygulama ve sadakat çözümleri.'
+                'description' => 'Pro özelliklere ek olarak markanıza özel mobil uygulama ve sadakat çözümleri.',
             ],
-            'is_active' => true
+            'is_active' => true,
         ]);
 
         // 4. Enterprise Package (All Features + Finance/Accounting)
@@ -105,13 +105,13 @@ class PackageSeeder extends Seeder
                     'Çoklu Şube (Multi-Branch) Yönetimi',
                     'Beyaz Etiket (White Label) Desteği',
                     'Kurumsal API & ERP Entegrasyonları',
-                    '7/24 VIP Destek & Atanmış Müşteri Temsilcisi'
+                    '7/24 VIP Destek & Atanmış Müşteri Temsilcisi',
                 ],
-                'description' => 'Tüm dijital ekosistemimize ve kurumsal finans/muhasebe modüllerine tam erişim.'
+                'description' => 'Tüm dijital ekosistemimize ve kurumsal finans/muhasebe modüllerine tam erişim.',
             ],
-            'is_active' => true
+            'is_active' => true,
         ]);
-        
+
         // Remove old 'starter' if it exists
         Package::where('slug', 'starter')->delete();
     }

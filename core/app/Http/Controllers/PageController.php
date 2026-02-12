@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class PageController extends Controller
 {
     public function rezervistaPos()
@@ -13,8 +11,9 @@ class PageController extends Controller
             // Note: 'pages.pos-plain' will look for pos-plain.blade.php OR pos-plain.php
             return view('pages.pos-plain');
         } catch (\Throwable $e) {
-            \Log::error('POS Rendering Error: ' . $e->getMessage());
-            return response("<h1>Kritik Hata</h1><p>" . $e->getMessage() . "</p>", 500);
+            \Log::error('POS Rendering Error: '.$e->getMessage());
+
+            return response('<h1>Kritik Hata</h1><p>'.$e->getMessage().'</p>', 500);
         }
     }
 
@@ -31,8 +30,9 @@ class PageController extends Controller
             ['q' => 'İşletme hesabımı nasıl oluşturabilirim?', 'a' => 'İşletme Ortağımız Olun sayfasındaki başvuru formunu doldurarak sürecinizi başlatabilirsiniz.'],
             ['q' => 'Rezervasyon onayımı nasıl görebilirim?', 'a' => 'Rezervasyonunuz onaylandığında size hem e-posta gönderilir hem de Profil -> Rezervasyonlarım sekmesinden durumunu takip edebilirsiniz.'],
             ['q' => 'Ödeme yapmak güvenli mi?', 'a' => 'Evet, tüm ödeme işlemleri 256-bit SSL sertifikalı güvenli altyapımız ve BDDK lisanslı ödeme kuruluşları üzerinden gerçekleştirilmektedir.'],
-            ['q' => 'Şifremi unuttum, ne yapmalıyım?', 'a' => 'Giriş sayfasındaki "Şifremi Unuttum" bağlantısına tıklayarak kayıtlı e-posta adresinize yeni şifre oluşturma bağlantısı isteyebilirsiniz.']
+            ['q' => 'Şifremi unuttum, ne yapmalıyım?', 'a' => 'Giriş sayfasındaki "Şifremi Unuttum" bağlantısına tıklayarak kayıtlı e-posta adresinize yeni şifre oluşturma bağlantısı isteyebilirsiniz.'],
         ];
+
         return view('pages.help', compact('faqs'));
     }
 
@@ -51,22 +51,22 @@ class PageController extends Controller
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'subject' => $validated['subject'],
-                'contact_message' => $validated['message']
+                'contact_message' => $validated['message'],
             ], function ($mail) use ($validated) {
                 $mail->to('admin@rezervist.com')
-                    ->subject('🔔 Yeni İletişim Formu Mesajı: ' . $validated['subject']);
+                    ->subject('🔔 Yeni İletişim Formu Mesajı: '.$validated['subject']);
             });
 
             // 2. Send Receipt to User
             \Illuminate\Support\Facades\Mail::send('emails.user-contact-receipt', [
                 'name' => $validated['name'],
-                'contact_message' => $validated['message']
+                'contact_message' => $validated['message'],
             ], function ($mail) use ($validated) {
                 $mail->to($validated['email'])
                     ->subject('Mesajınızı Aldık - Rezervist');
             });
         } catch (\Exception $e) {
-            \Log::error('Contact form mail error: ' . $e->getMessage());
+            \Log::error('Contact form mail error: '.$e->getMessage());
         }
 
         // 2. Log Activity (As requested: "platform activity sayfasına ekle")
@@ -75,7 +75,7 @@ class PageController extends Controller
             "İletişim Formu Mesajı: {$validated['subject']}",
             [
                 'name' => $validated['name'],
-                'email' => $validated['email']
+                'email' => $validated['email'],
             ],
             auth()->id() // Log user ID if logged in, otherwise null
         );
@@ -138,13 +138,13 @@ class PageController extends Controller
     {
         // Fetch active coupons from database
         $campaigns = \App\Models\Coupon::where('is_active', true)
-            ->where(function($q) {
+            ->where(function ($q) {
                 $q->whereNull('expires_at')
-                  ->orWhere('expires_at', '>=', now());
+                    ->orWhere('expires_at', '>=', now());
             })
             ->latest()
             ->get();
-            
+
         return view('pages.campaigns', compact('campaigns'));
     }
 

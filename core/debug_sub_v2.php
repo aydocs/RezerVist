@@ -1,35 +1,36 @@
 <?php
+
 require 'vendor/autoload.php';
 $app = require_once 'bootstrap/app.php';
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
 
-use App\Models\User;
 use App\Models\Business;
 use App\Models\Subscription;
+use App\Models\User;
 
 $email = 'owner1@test.com';
 $user = User::where('email', $email)->first();
 
-if (!$user) {
-    die("User not found: $email\n");
+if (! $user) {
+    exit("User not found: $email\n");
 }
 
 echo "--- DEBUG REPORT ---\n";
 echo "User: {$user->name} (ID: {$user->id})\n";
-echo "User->business_id (column): " . ($user->business_id ?? 'NULL') . "\n";
+echo 'User->business_id (column): '.($user->business_id ?? 'NULL')."\n";
 
 $ownedBusiness = $user->ownedBusiness;
-echo "User->ownedBusiness: " . ($ownedBusiness ? $ownedBusiness->name . " (ID: " . $ownedBusiness->id . ")" : 'NONE') . "\n";
+echo 'User->ownedBusiness: '.($ownedBusiness ? $ownedBusiness->name.' (ID: '.$ownedBusiness->id.')' : 'NONE')."\n";
 
 $currentBusinessId = $user->business_id ?? ($ownedBusiness ? $ownedBusiness->id : null);
 
-if (!$currentBusinessId) {
-    die("No business associated with this user.\n");
+if (! $currentBusinessId) {
+    exit("No business associated with this user.\n");
 }
 
 $business = Business::find($currentBusinessId);
-echo "Effective Business: " . $business->name . " (ID: " . $business->id . ")\n";
+echo 'Effective Business: '.$business->name.' (ID: '.$business->id.")\n";
 
 $activeSub = $business->activeSubscription;
 if ($activeSub) {

@@ -30,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
         // Register Custom Apple Socialite Provider (Fix for signature mismatch)
         \Laravel\Socialite\Facades\Socialite::extend('apple', function ($app) {
             $config = $app['config']['services.apple'];
+
             return \Laravel\Socialite\Facades\Socialite::buildProvider(
                 \App\Socialite\AppleProvider::class, $config
             );
@@ -76,7 +77,7 @@ class AppServiceProvider extends ServiceProvider
             }
         } catch (\Exception $e) {
             // Silently fail if DB is not ready (during migrations)
-            \Log::warning('Could not load settings: ' . $e->getMessage());
+            \Log::warning('Could not load settings: '.$e->getMessage());
             $globalSettings = $defaults;
         }
 
@@ -85,7 +86,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Also set in config for programmatic access
         foreach ($globalSettings ?? $defaults as $key => $value) {
-            config(['settings.' . $key => $value]);
+            config(['settings.'.$key => $value]);
         }
     }
 }

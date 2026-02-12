@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 
 class SitemapController extends Controller
 {
@@ -38,7 +36,7 @@ class SitemapController extends Controller
         // Business Pages (For business owners)
         $businessLinks = [];
         if (Auth::check() && (Auth::user()->role === 'business' || Auth::user()->role === 'admin')) {
-             $businessLinks = [
+            $businessLinks = [
                 ['title' => 'İşletme Paneli', 'url' => route('vendor.dashboard')],
                 ['title' => 'Rezervasyon Yönetimi', 'url' => route('vendor.reservations.index')],
                 ['title' => 'Menü ve Hizmetler', 'url' => route('vendor.menus.index')],
@@ -47,7 +45,7 @@ class SitemapController extends Controller
                 ['title' => 'Müşteri Veritabanı', 'url' => route('vendor.customers')],
                 ['title' => 'Finansal Raporlar', 'url' => route('vendor.finance.index')],
                 ['title' => 'Şube Ayarları', 'url' => route('vendor.business.edit')],
-             ];
+            ];
         }
 
         // Admin Pages (For admins)
@@ -73,7 +71,8 @@ class SitemapController extends Controller
 
     public function robots()
     {
-        $content = "User-agent: *\nDisallow: /admin/\nDisallow: /vendor/\nDisallow: /profile/\nAllow: /\n\nSitemap: " . route('sitemap');
+        $content = "User-agent: *\nDisallow: /admin/\nDisallow: /vendor/\nDisallow: /profile/\nAllow: /\n\nSitemap: ".route('sitemap');
+
         return response($content, 200)->header('Content-Type', 'text/plain');
     }
 }

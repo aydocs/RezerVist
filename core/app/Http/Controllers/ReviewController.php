@@ -12,7 +12,7 @@ class ReviewController extends Controller
     {
         $business = Business::findOrFail($businessId);
         $reviews = $business->reviews()->approved()->with('user')->latest()->paginate(10);
-        
+
         return response()->json($reviews);
     }
 
@@ -23,7 +23,7 @@ class ReviewController extends Controller
         $validated = $request->validated();
 
         $user = $request->user();
-        
+
         $review = $business->reviews()->create([
             'user_id' => $user->id,
             'rating' => $validated['rating'],
@@ -45,7 +45,7 @@ class ReviewController extends Controller
     public function report(Request $request, \App\Models\Review $review)
     {
         $user = $request->user();
-        
+
         // Ensure only business owner or staff can report
         if ($review->business_id !== $user->business_id && $user->role !== 'admin') {
             return response()->json(['message' => 'Bu işlemi yapmaya yetkiniz yok.'], 403);

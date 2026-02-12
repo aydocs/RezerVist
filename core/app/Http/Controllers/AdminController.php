@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BusinessApplication;
 use App\Models\Business;
-use App\Models\User; 
-use App\Models\Setting;
-use App\Models\WalletTransaction;
+use App\Models\BusinessApplication;
 use App\Models\Reservation;
+use App\Models\Setting;
+use App\Models\User;
+use App\Models\WalletTransaction;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -18,7 +18,7 @@ class AdminController extends Controller
         $totalRevenueQuery = \App\Models\Reservation::where('reservations.status', '!=', 'cancelled')
             ->join('businesses', 'reservations.business_id', '=', 'businesses.id')
             ->selectRaw('SUM(COALESCE(reservations.total_amount, reservations.price, 0) * COALESCE(businesses.commission_rate, 5) / 100) as revenue');
-        
+
         $totalRevenue = $totalRevenueQuery->first()->revenue ?? 0;
         $totalVolume = \App\Models\Reservation::where('status', '!=', 'cancelled')->sum('price');
 
@@ -39,20 +39,20 @@ class AdminController extends Controller
         for ($i = 6; $i >= 0; $i--) {
             $date = now()->subDays($i);
             $dates[] = $date->format('D');
-            
+
             $dailyRevenue = \App\Models\Reservation::where('reservations.status', '!=', 'cancelled')
                 ->join('businesses', 'reservations.business_id', '=', 'businesses.id')
                 ->whereDate('reservations.created_at', $date->format('Y-m-d'))
                 ->selectRaw('SUM(COALESCE(reservations.total_amount, reservations.price, 0) * COALESCE(businesses.commission_rate, 5) / 100) as revenue')
                 ->first()->revenue ?? 0;
 
-            $revenueData[] = (float)$dailyRevenue;
+            $revenueData[] = (float) $dailyRevenue;
             $reservationData[] = \App\Models\Reservation::whereDate('created_at', $date->format('Y-m-d'))
                 ->count();
         }
 
         // --- Sophisticated Growth Metrics (Last 7 Days vs Previous 7 Days) ---
-        
+
         // 1. Revenue Growth
         $currentWeekRevenue = \App\Models\Reservation::where('reservations.status', '!=', 'cancelled')
             ->join('businesses', 'reservations.business_id', '=', 'businesses.id')
@@ -65,9 +65,9 @@ class AdminController extends Controller
             ->whereBetween('reservations.created_at', [now()->subDays(14), now()->subDays(7)])
             ->selectRaw('SUM(COALESCE(reservations.total_amount, reservations.price, 0) * COALESCE(businesses.commission_rate, 5) / 100) as revenue')
             ->first()->revenue ?? 0;
-            
+
         $revenueGrowth = $previousWeekRevenue > 0 ? (($currentWeekRevenue - $previousWeekRevenue) / $previousWeekRevenue) * 100 : ($currentWeekRevenue > 0 ? 100 : 0);
-        
+
         // 2. Reservation Growth
         $currentWeekReservations = \App\Models\Reservation::where('created_at', '>=', now()->subDays(7))->count();
         $previousWeekReservations = \App\Models\Reservation::whereBetween('created_at', [now()->subDays(14), now()->subDays(7)])->count();
@@ -85,10 +85,10 @@ class AdminController extends Controller
             'revenue' => round($revenueGrowth, 1),
             'reservations' => round($reservationGrowth, 1),
             'users' => round($userGrowth, 1),
-            'new_apps' => $newApplicationsThisWeek
+            'new_apps' => $newApplicationsThisWeek,
         ];
 
-        // Recent Activity Feed  
+        // Recent Activity Feed
         $recentActivities = collect();
 
         // 1. System Logs (The Main Source of Truth now)
@@ -96,9 +96,9 @@ class AdminController extends Controller
             ->latest()
             ->take(15) // Fetch enough to cover
             ->get()
-            ->each(function($log) use ($recentActivities) {
-                
-                $icon = match($log->action_type) {
+            ->each(function ($log) use ($recentActivities) {
+
+                $icon = match ($log->action_type) {
                     'login', 'logout' => 'login',
                     'user_created', 'user_updated', 'user_deleted' => 'user',
                     'reservation_created', 'reservation_updated', 'reservation_cancelled' => 'calendar',
@@ -107,7 +107,7 @@ class AdminController extends Controller
                     default => 'clipboard-list'
                 };
 
-                $color = match($log->action_type) {
+                $color = match ($log->action_type) {
                     'login', 'logout' => 'gray',
                     'user_created', 'payment_success', 'wallet_topup' => 'green',
                     'user_deleted', 'payment_failed', 'reservation_cancelled' => 'red',
@@ -116,7 +116,7 @@ class AdminController extends Controller
                     default => 'indigo'
                 };
 
-                $typeLabel = match($log->action_type) {
+                $typeLabel = match ($log->action_type) {
                     'login' => 'Oturum Açma',
                     'logout' => 'Oturum Kapatma',
                     'user_created' => 'Yeni Kayıt',
@@ -148,17 +148,17 @@ class AdminController extends Controller
         // Given I just instrumented everything, Logs are better. But let's keep specific "New User" from DB just in case.
 
         if ($recentActivities->isEmpty()) {
-             // Recent Reservations Fallback
+            // Recent Reservations Fallback
             \App\Models\Reservation::with(['user', 'business'])
                 ->latest()
                 ->take(5)
                 ->get()
-                ->each(function($reservation) use ($recentActivities) {
+                ->each(function ($reservation) use ($recentActivities) {
                     $recentActivities->push([
                         'type' => 'Rezervasyon',
                         'icon' => 'calendar',
                         'color' => 'blue',
-                        'message' => $reservation->user->name . ' → ' . $reservation->business->name,
+                        'message' => $reservation->user->name.' → '.$reservation->business->name,
                         'time' => $reservation->created_at->diffForHumans(),
                         'created_at' => $reservation->created_at,
                     ]);
@@ -174,9 +174,9 @@ class AdminController extends Controller
             ->get();
 
         // Category Distribution & Revenue
-        $categoryStats = \App\Models\Category::withCount(['businesses', 'businesses as reservations_count' => function($query) {
+        $categoryStats = \App\Models\Category::withCount(['businesses', 'businesses as reservations_count' => function ($query) {
             $query->join('reservations', 'businesses.id', '=', 'reservations.business_id')
-                  ->where('reservations.status', '!=', 'cancelled');
+                ->where('reservations.status', '!=', 'cancelled');
         }])->get();
 
         return view('admin.dashboard', compact(
@@ -213,6 +213,7 @@ class AdminController extends Controller
     public function showApplication($id)
     {
         $application = BusinessApplication::with('category')->findOrFail($id);
+
         return view('admin.applications.show', compact('application'));
     }
 
@@ -220,33 +221,33 @@ class AdminController extends Controller
     {
         $request->validate([
             'status' => 'required|in:approved,rejected,under_review', // approved, rejected, under_review
-            'admin_note' => 'nullable|string'
+            'admin_note' => 'nullable|string',
         ]);
 
         $application = BusinessApplication::findOrFail($id);
-        
+
         $application->update([
             'status' => $request->status,
-            'admin_note' => $request->admin_note
+            'admin_note' => $request->admin_note,
         ]);
 
         // Find or create user to notify (using application email)
         $user = \App\Models\User::where('email', $application->email)->first();
         $tempPassword = null;
-        
+
         // Determine password source: Custom input or Random
         $passwordToSet = $request->custom_password ?? \Illuminate\Support\Str::random(10);
-        
-        if (!$user && $request->status === 'approved') {
+
+        if (! $user && $request->status === 'approved') {
             // Check if phone already exists
             if (\App\Models\User::where('phone', $application->phone)->exists()) {
-                return redirect()->back()->with('error', 'Bu telefon numarası (' . $application->phone . ') sistemde kayıtlı başka bir kullanıcıya ait. Lütfen kullanıcının bilgilerini kontrol edin veya manuel olarak düzenleyin.');
+                return redirect()->back()->with('error', 'Bu telefon numarası ('.$application->phone.') sistemde kayıtlı başka bir kullanıcıya ait. Lütfen kullanıcının bilgilerini kontrol edin veya manuel olarak düzenleyin.');
             }
 
             // Auto-create user for the approved business
             $tempPassword = $passwordToSet;
             $user = \App\Models\User::create([
-                'name' => $application->business_name . ' Yetkilisi',
+                'name' => $application->business_name.' Yetkilisi',
                 'email' => $application->email,
                 'password' => \Illuminate\Support\Facades\Hash::make($tempPassword),
                 'plain_password' => $tempPassword,
@@ -265,7 +266,7 @@ class AdminController extends Controller
         // Notify the user about the status change
         // We find the user by application user_id for reliability
         $applicant = \App\Models\User::find($application->user_id);
-        
+
         if ($request->status === 'approved' && $applicant) {
             // 1. Upgrade role to business
             $applicant->update(['role' => 'business']);
@@ -308,7 +309,7 @@ class AdminController extends Controller
     public function viewDocument($id, $field)
     {
         $application = BusinessApplication::findOrFail($id);
-        
+
         // Security check: Only admins can view documents
         if (auth()->user()->role !== 'admin') {
             abort(403, 'Bu belgeyi görüntülemek için yetkiniz bulunmamaktadır.');
@@ -320,16 +321,16 @@ class AdminController extends Controller
             'tax_document',
             'license_document',
             'id_document',
-            'bank_document'
+            'bank_document',
         ];
 
-        if (!in_array($field, $allowedFields)) {
+        if (! in_array($field, $allowedFields)) {
             abort(403, 'Geçersiz belge alanı.');
         }
 
         $path = $application->$field;
-        
-        if (!$path) {
+
+        if (! $path) {
             abort(404, 'Belge yolu bulunamadı.');
         }
 
@@ -365,7 +366,7 @@ class AdminController extends Controller
         if ($request->status === 'approved') {
             // Check if business already exists for this email/app to prevent duplicates
             // Or just create it.
-            
+
             $business = Business::create([
                 'name' => $application->business_name,
                 'category_id' => $application->category_id,
@@ -386,39 +387,38 @@ class AdminController extends Controller
                 $user->role = 'business';
                 $user->save();
             }
-            
+
             // Seed Menu for this new business immediately
             \App\Models\Menu::factory()->count(10)->create(['business_id' => $business->id]);
         }
 
         return redirect()->route('admin.applications.index')
-            ->with('success', 'Başvuru durumu güncellendi: ' . ucfirst($request->status));
+            ->with('success', 'Başvuru durumu güncellendi: '.ucfirst($request->status));
     }
 
-    
     public function searchUsers(Request $request)
     {
         $searchQuery = $request->get('q', '');
         $role = $request->get('role', '');
-        
+
         if (strlen($searchQuery) < 1) {
             return response()->json([]);
         }
-        
+
         $query = \App\Models\User::where('role', '!=', 'admin');
-        
-        if (!empty($role)) {
+
+        if (! empty($role)) {
             $query->where('role', $role);
         }
-        
-        $users = $query->where(function($q) use ($searchQuery) {
-            $q->where('name', 'like', '%' . $searchQuery . '%')
-              ->orWhere('email', 'like', '%' . $searchQuery . '%');
+
+        $users = $query->where(function ($q) use ($searchQuery) {
+            $q->where('name', 'like', '%'.$searchQuery.'%')
+                ->orWhere('email', 'like', '%'.$searchQuery.'%');
         })
-        ->orderBy('name', 'asc')
-        ->limit(10)
-        ->get(['id', 'name', 'email', 'role']);
-        
+            ->orderBy('name', 'asc')
+            ->limit(10)
+            ->get(['id', 'name', 'email', 'role']);
+
         return response()->json($users);
     }
 
@@ -433,9 +433,9 @@ class AdminController extends Controller
 
         // Search Filter
         if ($request->filled('search')) {
-            $query->where(function($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->search . '%')
-                  ->orWhere('email', 'like', '%' . $request->search . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%'.$request->search.'%')
+                    ->orWhere('email', 'like', '%'.$request->search.'%');
             });
         }
 
@@ -457,7 +457,7 @@ class AdminController extends Controller
         $totalUsers = \App\Models\User::where('role', '!=', 'admin')->count();
         $businessUsersCount = \App\Models\User::where('role', 'business')->count();
         $customerUsersCount = \App\Models\User::where('role', 'customer')->count();
-            
+
         return view('admin.users.index', compact('users', 'totalUsers', 'businessUsersCount', 'customerUsersCount'));
     }
 
@@ -465,16 +465,17 @@ class AdminController extends Controller
     public function editUser($id)
     {
         $user = \App\Models\User::findOrFail($id);
+
         return view('admin.users.edit', compact('user'));
     }
 
     public function updateUser(Request $request, $id)
     {
         $user = \App\Models\User::findOrFail($id);
-        
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $id,
+            'email' => 'required|email|unique:users,email,'.$id,
             'phone' => 'nullable|string|max:20',
             'role' => 'required|in:customer,business,admin',
             'password' => 'nullable|min:6',
@@ -523,7 +524,7 @@ class AdminController extends Controller
 
     // Business Management Link (Since existing BusinessController manages businesses, we might just redirect or add admin specific override here)
     // For now, let's assume Admin uses the same Vendor forms
-    
+
     private function getReportsData(Request $request)
     {
         // Get date range from request or use defaults
@@ -598,6 +599,7 @@ class AdminController extends Controller
     public function reports(Request $request)
     {
         $data = $this->getReportsData($request);
+
         return view('admin.reports.index', $data);
     }
 
@@ -618,14 +620,14 @@ class AdminController extends Controller
             $dateTime = new \DateTime('now', new \DateTimeZone($tz));
             $offset = $dateTime->getOffset();
             $offsetPrefix = $offset >= 0 ? '+' : '-';
-            $offsetFormatted = 'UTC ' . $offsetPrefix . sprintf('%02d:%02d', abs($offset) / 3600, (abs($offset) % 3600) / 60);
-            
+            $offsetFormatted = 'UTC '.$offsetPrefix.sprintf('%02d:%02d', abs($offset) / 3600, (abs($offset) % 3600) / 60);
+
             // Smarter name display: Europe/Istanbul -> Istanbul (Europe)
             $parts = explode('/', $tz);
             $cityName = end($parts);
             $cityName = str_replace('_', ' ', $cityName);
             $continentName = count($parts) > 1 ? $parts[0] : '';
-            $displayName = $continentName ? $cityName . ' (' . $continentName . ')' : $cityName;
+            $displayName = $continentName ? $cityName.' ('.$continentName.')' : $cityName;
 
             $timezones[] = [
                 'id' => $tz,
@@ -633,7 +635,7 @@ class AdminController extends Controller
                 'city' => $cityName,
                 'continent' => $continentName,
                 'offset' => $offsetFormatted,
-                'current_time' => $dateTime->format('H:i')
+                'current_time' => $dateTime->format('H:i'),
             ];
         }
 
@@ -651,22 +653,22 @@ class AdminController extends Controller
                 // Handling for checkboxes
                 if (str_ends_with($key, '_present')) {
                     $original_key = str_replace('_present', '', $key);
-                    if (!isset($data[$original_key])) {
-                        $value = "0";
+                    if (! isset($data[$original_key])) {
+                        $value = '0';
                         $key = $original_key;
                     } else {
                         continue;
                     }
                 }
 
-                $value = is_null($value) ? '' : (string)$value;
+                $value = is_null($value) ? '' : (string) $value;
                 $group = explode('_', $key)[0];
-                if (!in_array($group, ['general', 'seo', 'contact', 'social', 'system', 'mail'])) {
+                if (! in_array($group, ['general', 'seo', 'contact', 'social', 'system', 'mail'])) {
                     $group = 'general';
                 }
 
                 $oldValue = Setting::where('key', $key)->value('value') ?? '';
-                
+
                 Setting::updateOrCreate(
                     ['key' => $key],
                     ['value' => $value, 'group' => $group]
@@ -675,13 +677,13 @@ class AdminController extends Controller
                 if ($oldValue !== $value) {
                     \App\Models\ActivityLog::logSettingChange($key, $oldValue, $value);
                 }
-                
-                \Illuminate\Support\Facades\Cache::forget('settings.' . $key);
+
+                \Illuminate\Support\Facades\Cache::forget('settings.'.$key);
             }
 
             \Illuminate\Support\Facades\DB::commit();
             \Illuminate\Support\Facades\Cache::forget('global_settings');
-            
+
             \App\Models\ActivityLog::logActivity(
                 'settings_updated_batch',
                 'Sistem ayarları toplu olarak güncellendi.',
@@ -694,11 +696,13 @@ class AdminController extends Controller
 
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();
+
             return redirect()->back()
-                ->with('error', 'Ayarlar güncellenirken bir hata oluştu: ' . $e->getMessage())
+                ->with('error', 'Ayarlar güncellenirken bir hata oluştu: '.$e->getMessage())
                 ->withInput();
         }
     }
+
     public function platformActivity()
     {
         $activities = collect();
@@ -707,8 +711,8 @@ class AdminController extends Controller
             ->latest()
             ->take(50)
             ->get()
-            ->each(function($user) use ($activities) {
-                $roleText = match($user->role) {
+            ->each(function ($user) use ($activities) {
+                $roleText = match ($user->role) {
                     'business' => 'İşletme Sahibi', // ## Faz 6: İşletme Sahibi (Vendor) Özellikleri [/]
                     // - [ ] İşletme analitikleri (Dashboard & Grafikler) [/]
                     // - [ ] Personel yönetim sistemi (CRUD & Atama) [ ]
@@ -718,12 +722,12 @@ class AdminController extends Controller
                     'admin' => 'Yönetici',
                     default => 'Kullanıcı'
                 };
-                
+
                 $activities->push([
                     'type' => 'Yeni Kayıt',
                     'icon' => 'user',
                     'color' => 'green',
-                    'message' => $user->name . ' olarak katıldı (' . $roleText . ')',
+                    'message' => $user->name.' olarak katıldı ('.$roleText.')',
                     'time' => $user->created_at->diffForHumans(),
                     'created_at' => $user->created_at,
                     'details' => $user->email,
@@ -735,8 +739,8 @@ class AdminController extends Controller
             ->latest()
             ->take(50)
             ->get()
-            ->each(function($reservation) use ($activities) {
-                $statusText = match($reservation->status) {
+            ->each(function ($reservation) use ($activities) {
+                $statusText = match ($reservation->status) {
                     'pending' => 'onay bekliyor',
                     'confirmed' => 'onaylandı',
                     'completed' => 'tamamlandı',
@@ -748,10 +752,10 @@ class AdminController extends Controller
                     'type' => 'Rezervasyon',
                     'icon' => 'calendar',
                     'color' => 'blue',
-                    'message' => $reservation->user->name . ', ' . $reservation->business->name . ' için rezervasyon yaptı',
+                    'message' => $reservation->user->name.', '.$reservation->business->name.' için rezervasyon yaptı',
                     'time' => $reservation->created_at->diffForHumans(),
                     'created_at' => $reservation->created_at,
-                    'details' => ($reservation->date ? \Carbon\Carbon::parse($reservation->date)->format('d.m.Y') : 'Tarih Belirtilmedi') . ' - ' . $reservation->guest_count . ' Kişi',
+                    'details' => ($reservation->date ? \Carbon\Carbon::parse($reservation->date)->format('d.m.Y') : 'Tarih Belirtilmedi').' - '.$reservation->guest_count.' Kişi',
                 ]);
             });
 
@@ -760,12 +764,12 @@ class AdminController extends Controller
             ->latest()
             ->take(50)
             ->get()
-            ->each(function($app) use ($activities) {
+            ->each(function ($app) use ($activities) {
                 $activities->push([
                     'type' => 'Başvuru',
                     'icon' => 'document-text',
                     'color' => 'amber',
-                    'message' => $app->user->name . ' işletme başvurusu yaptı',
+                    'message' => $app->user->name.' işletme başvurusu yaptı',
                     'time' => $app->created_at->diffForHumans(),
                     'created_at' => $app->created_at,
                     'details' => $app->business_name,
@@ -779,9 +783,9 @@ class AdminController extends Controller
             ->latest()
             ->take(100)
             ->get()
-            ->each(function($log) use ($activities) {
-                
-                $icon = match($log->action_type) {
+            ->each(function ($log) use ($activities) {
+
+                $icon = match ($log->action_type) {
                     'login', 'logout' => 'login',
                     'user_updated', 'user_deleted' => 'user',
                     'setting_change', 'settings_updated_batch' => 'cog',
@@ -791,7 +795,7 @@ class AdminController extends Controller
                     default => 'clipboard-list'
                 };
 
-                $color = match($log->action_type) {
+                $color = match ($log->action_type) {
                     'login', 'logout', 'payment_success', 'payment_failed', 'wallet_topup', 'wallet_payment' => 'indigo', // System/Wallet = Purple/Indigo
                     'user_created', 'user_updated' => 'emerald', // New User = Green
                     'user_deleted', 'reservation_cancelled', 'payment_failed_error' => 'red', // Errors = Red
@@ -800,7 +804,7 @@ class AdminController extends Controller
                     default => 'indigo'
                 };
 
-                $typeLabel = match($log->action_type) {
+                $typeLabel = match ($log->action_type) {
                     'login' => 'Oturum Açma',
                     'logout' => 'Oturum Kapatma',
                     'user_created' => 'Yeni Kayıt',
@@ -823,15 +827,15 @@ class AdminController extends Controller
                     'message' => $log->description,
                     'time' => $log->created_at->diffForHumans(),
                     'created_at' => $log->created_at,
-                    'details' => $userName . ' tarafından',
+                    'details' => $userName.' tarafından',
                     'metadata' => $log->metadata, // Pass metadata
-                    'raw_data' => $log, 
+                    'raw_data' => $log,
                 ]);
             });
 
         // Sort by created_at desc
         $sortedActivities = $activities->sortByDesc('created_at')->values();
-        
+
         // Manual Pagination
         $perPage = 20;
         $page = request()->get('page', 1);
@@ -850,7 +854,7 @@ class AdminController extends Controller
     {
         return $this->getFilteredActivities('auth', [
             'login', 'logout', 'failed_login', 'registration',
-            'auth_created', 'auth_updated', 'auth_deleted'
+            'auth_created', 'auth_updated', 'auth_deleted',
         ], 'Giriş & Güvenlik Günlükleri', 'Shield');
     }
 
@@ -858,7 +862,7 @@ class AdminController extends Controller
     {
         return $this->getFilteredActivities('business', [
             'business_application', 'business_update', 'application_status_update',
-            'business_created', 'business_updated', 'business_deleted'
+            'business_created', 'business_updated', 'business_deleted',
         ], 'İşletme & Başvuru Günlükleri', 'Building');
     }
 
@@ -866,7 +870,7 @@ class AdminController extends Controller
     {
         return $this->getFilteredActivities('reservation', [
             'reservation_created', 'reservation_updated', 'reservation_cancelled', 'reservation_confirmed', 'reservation_completed',
-            'reservation_deleted'
+            'reservation_deleted',
         ], 'Rezervasyon Günlükleri', 'Calendar');
     }
 
@@ -874,7 +878,7 @@ class AdminController extends Controller
     {
         return $this->getFilteredActivities('system', [
             'setting_change', 'settings_updated_batch', 'system_alert',
-            'system_created', 'system_updated', 'system_deleted'
+            'system_created', 'system_updated', 'system_deleted',
         ], 'Sistem & Denetim Günlükleri', 'Cog');
     }
 
@@ -893,7 +897,7 @@ class AdminController extends Controller
         }
 
         $activities = $query->paginate(20)->withQueryString();
-        
+
         return view('admin.activities.index', compact('activities', 'title', 'icon', 'category'));
     }
 
@@ -905,6 +909,7 @@ class AdminController extends Controller
 
         return view('admin.popular-businesses.index', compact('businesses'));
     }
+
     public function contactMessages(Request $request)
     {
         $query = \App\Models\ContactMessage::with('user')->latest();
@@ -931,31 +936,31 @@ class AdminController extends Controller
         }
 
         if ($request->search) {
-            $query->where(function($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->search . '%')
-                  ->orWhere('email', 'like', '%' . $request->search . '%')
-                  ->orWhere('subject', 'like', '%' . $request->search . '%')
-                  ->orWhere('message', 'like', '%' . $request->search . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', '%'.$request->search.'%')
+                    ->orWhere('email', 'like', '%'.$request->search.'%')
+                    ->orWhere('subject', 'like', '%'.$request->search.'%')
+                    ->orWhere('message', 'like', '%'.$request->search.'%');
             });
         }
 
         $messages = $query->paginate(50);
-        
+
         $selectedMessage = null;
         $history = collect();
 
         if ($request->id) {
-            $selectedMessage = \App\Models\ContactMessage::with(['replies', 'user' => function($q) {
+            $selectedMessage = \App\Models\ContactMessage::with(['replies', 'user' => function ($q) {
                 $q->withCount(['reservations', 'businesses']);
             }])->find($request->id);
-            
+
             if ($selectedMessage) {
-                if (!$selectedMessage->is_read) {
+                if (! $selectedMessage->is_read) {
                     $selectedMessage->update(['is_read' => true]);
                 }
 
                 $history = \App\Models\ContactMessage::where('id', '!=', $selectedMessage->id)
-                    ->where(function($q) use ($selectedMessage) {
+                    ->where(function ($q) use ($selectedMessage) {
                         $q->where('email', $selectedMessage->email);
                         if ($selectedMessage->user_id) {
                             $q->orWhere('user_id', $selectedMessage->user_id);
@@ -970,7 +975,7 @@ class AdminController extends Controller
         if ($request->ajax()) {
             return response()->json([
                 'html' => view('admin.contact-messages.index', compact('messages', 'selectedMessage', 'stats', 'history'))->render(),
-                'stats' => $stats
+                'stats' => $stats,
             ]);
         }
 
@@ -982,44 +987,44 @@ class AdminController extends Controller
         $request->validate([
             'reply' => 'required|string|min:10',
             'admin_notes' => 'nullable|string',
-            'priority' => 'nullable|string|in:low,normal,high,urgent'
+            'priority' => 'nullable|string|in:low,normal,high,urgent',
         ]);
 
         return \DB::transaction(function () use ($request, $id) {
             $message = \App\Models\ContactMessage::with('user')->findOrFail($id);
 
             try {
-            // 1. Update Database FIRST (Ensure data persistence)
-            $messsageUpdated = $message->update([
-                'replied_at' => now(), // Keep track of last reply time
-                'is_read' => true,
-                'status' => 'replied',
-                'admin_notes' => $request->admin_notes ?? $message->admin_notes,
-                'priority' => $request->priority ?? $message->priority,
-                'reply' => $request->reply // Update legacy field for backward compatibility
-            ]);
+                // 1. Update Database FIRST (Ensure data persistence)
+                $messsageUpdated = $message->update([
+                    'replied_at' => now(), // Keep track of last reply time
+                    'is_read' => true,
+                    'status' => 'replied',
+                    'admin_notes' => $request->admin_notes ?? $message->admin_notes,
+                    'priority' => $request->priority ?? $message->priority,
+                    'reply' => $request->reply, // Update legacy field for backward compatibility
+                ]);
 
-            // Create Thread Entry
-            \App\Models\SupportReply::create([
-                'contact_message_id' => $message->id,
-                'message' => $request->reply,
-                'is_admin' => true,
-                'is_read' => false
-            ]);
+                // Create Thread Entry
+                \App\Models\SupportReply::create([
+                    'contact_message_id' => $message->id,
+                    'message' => $request->reply,
+                    'is_admin' => true,
+                    'is_read' => false,
+                ]);
 
-            // 2. Send Email (Optional but important)
-            try {
-                \Illuminate\Support\Facades\Mail::to($message->email)->send(new \App\Mail\ContactMessageReply($message, $request->reply));
-            } catch (\Exception $mailException) {
-                \Log::error('Support reply email failed: ' . $mailException->getMessage());
-                // We do NOT stop the process effectively, just log it.
-            }
+                // 2. Send Email (Optional but important)
+                try {
+                    \Illuminate\Support\Facades\Mail::to($message->email)->send(new \App\Mail\ContactMessageReply($message, $request->reply));
+                } catch (\Exception $mailException) {
+                    \Log::error('Support reply email failed: '.$mailException->getMessage());
+                    // We do NOT stop the process effectively, just log it.
+                }
 
-            // 3. Send System Notification
+                // 3. Send System Notification
                 if ($message->user_id) {
                     $message->user->notify(new \App\Notifications\SystemNotification(
                         'Destek Talebiniz Yanıtlandı',
-                        'Açmış olduğunuz "' . $message->subject . '" konulu destek talebiniz yönetici tarafından yanıtlandı.',
+                        'Açmış olduğunuz "'.$message->subject.'" konulu destek talebiniz yönetici tarafından yanıtlandı.',
                         'chat-alt-2',
                         'support',
                         route('profile.support', ['id' => $message->id])
@@ -1049,20 +1054,21 @@ class AdminController extends Controller
                                     <span class="text-[10px] font-black text-indigo-600 tracking-wider uppercase">DESTEK UZMANI</span>
                                 </div>
                                 <div class="bg-indigo-600 p-7 rounded-[32px] rounded-tr-none shadow-[20px_20px_40px_rgba(79,70,229,0.1)]">
-                                    <div class="text-[15px] text-white leading-[1.8] whitespace-pre-wrap font-medium">' . e($request->reply) . '</div>
+                                    <div class="text-[15px] text-white leading-[1.8] whitespace-pre-wrap font-medium">'.e($request->reply).'</div>
                                 </div>
                             </div>
-                        </div>'
+                        </div>',
                     ]);
                 }
 
                 return redirect()->back()->with('success', 'Yanıt başarıyla gönderildi.');
 
             } catch (\Exception $e) {
-                \Log::error('Support reply failed: ' . $e->getMessage());
+                \Log::error('Support reply failed: '.$e->getMessage());
                 if ($request->ajax()) {
                     return response()->json(['status' => 'error', 'message' => 'İşlem sırasında bir hata oluştu.'], 500);
                 }
+
                 return redirect()->back()->with('error', 'İşlem sırasında bir hata oluştu.');
             }
         });
@@ -1071,11 +1077,11 @@ class AdminController extends Controller
     public function closeContactMessage(Request $request, $id)
     {
         $message = \App\Models\ContactMessage::findOrFail($id);
-        
+
         \DB::transaction(function () use ($message) {
             $message->update([
                 'status' => 'closed',
-                'closed_at' => now()
+                'closed_at' => now(),
             ]);
 
             \App\Models\ActivityLog::logActivity(
@@ -1089,7 +1095,7 @@ class AdminController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Talep başarıyla kapatıldı.',
-                'closed_at' => $message->closed_at->diffForHumans()
+                'closed_at' => $message->closed_at->diffForHumans(),
             ]);
         }
 
@@ -1099,16 +1105,16 @@ class AdminController extends Controller
     public function updateContactMessageNotes(Request $request, $id)
     {
         $message = \App\Models\ContactMessage::findOrFail($id);
-        
+
         $message->update([
             'admin_notes' => $request->admin_notes,
-            'priority' => $request->priority
+            'priority' => $request->priority,
         ]);
 
         if ($request->ajax()) {
             return response()->json([
                 'status' => 'success',
-                'message' => 'Notlar ve öncelik güncellendi.'
+                'message' => 'Notlar ve öncelik güncellendi.',
             ]);
         }
 
@@ -1119,25 +1125,25 @@ class AdminController extends Controller
     {
         // Increase memory limit for large logs if needed
         ini_set('memory_limit', '512M');
-        
+
         $activities = \App\Models\ActivityLog::with('user')->orderBy('created_at', 'desc')->get();
-        
-        $filename = "platform_activities_" . date('Y-m-d_H-i') . ".csv";
-        
+
+        $filename = 'platform_activities_'.date('Y-m-d_H-i').'.csv';
+
         $headers = [
             'Content-Type' => 'text/csv; charset=utf-8',
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Content-Disposition' => 'attachment; filename="'.$filename.'"',
             'Pragma' => 'no-cache',
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
-            'Expires' => '0'
+            'Expires' => '0',
         ];
 
-        $callback = function() use ($activities) {
+        $callback = function () use ($activities) {
             $file = fopen('php://output', 'w');
-            
+
             // UTF-8 BOM for Excel
-            fputs($file, $bom = chr(0xEF) . chr(0xBB) . chr(0xBF));
-            
+            fwrite($file, $bom = chr(0xEF).chr(0xBB).chr(0xBF));
+
             fputcsv($file, ['ID', 'Tarih', 'İşlem Tipi', 'Açıklama', 'Kullanıcı', 'Detaylar']);
 
             foreach ($activities as $activity) {
@@ -1147,7 +1153,7 @@ class AdminController extends Controller
                     $activity->action_type,
                     $activity->description,
                     $activity->user ? $activity->user->name : 'Sistem',
-                    json_encode($activity->metadata, JSON_UNESCAPED_UNICODE)
+                    json_encode($activity->metadata, JSON_UNESCAPED_UNICODE),
                 ]);
             }
 
@@ -1164,19 +1170,20 @@ class AdminController extends Controller
 
         if ($format === 'pdf') {
             $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.reports.export_pdf', $data);
-            return $pdf->download('finansal-rapor-' . now()->format('Y-m-d') . '.pdf');
+
+            return $pdf->download('finansal-rapor-'.now()->format('Y-m-d').'.pdf');
         }
 
         // CSV Export fallback
-        $filename = 'finansal-rapor-' . now()->format('Y-m-d') . '.csv';
+        $filename = 'finansal-rapor-'.now()->format('Y-m-d').'.csv';
         $headers = [
             'Content-Type' => 'text/csv; charset=utf-8',
-            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            'Content-Disposition' => 'attachment; filename="'.$filename.'"',
         ];
 
-        $callback = function() use ($data) {
+        $callback = function () use ($data) {
             $file = fopen('php://output', 'w');
-            fputs($file, chr(0xEF) . chr(0xBB) . chr(0xBF)); // BOM
+            fwrite($file, chr(0xEF).chr(0xBB).chr(0xBF)); // BOM
             fputcsv($file, ['ID', 'Tarih', 'İşletme', 'Müşteri', 'Tutar', 'Durum']);
 
             foreach ($data['reservations'] as $res) {
@@ -1186,7 +1193,7 @@ class AdminController extends Controller
                     $res->business->name,
                     $res->user->name,
                     $res->total_amount,
-                    $res->status
+                    $res->status,
                 ]);
             }
             fclose($file);
@@ -1204,14 +1211,14 @@ class AdminController extends Controller
             \DB::connection()->getPdo();
             $dbStatus = 'Healthy';
             $dbName = \DB::connection()->getDatabaseName();
-            
+
             // Get DB Size (MySQL/MariaDB specific)
-            $dbSize = \DB::select("SELECT SUM(data_length + index_length) / 1024 / 1024 AS size FROM information_schema.TABLES WHERE table_schema = ?", [$dbName])[0]->size;
+            $dbSize = \DB::select('SELECT SUM(data_length + index_length) / 1024 / 1024 AS size FROM information_schema.TABLES WHERE table_schema = ?', [$dbName])[0]->size;
             $health['database'] = [
                 'status' => 'OK',
                 'name' => $dbName,
-                'size' => round($dbSize, 2) . ' MB',
-                'connection' => config('database.default')
+                'size' => round($dbSize, 2).' MB',
+                'connection' => config('database.default'),
             ];
         } catch (\Exception $e) {
             $health['database'] = ['status' => 'Error', 'message' => $e->getMessage()];
@@ -1224,34 +1231,34 @@ class AdminController extends Controller
             'os' => PHP_OS,
             'server_software' => $_SERVER['SERVER_SOFTWARE'] ?? 'Unknown',
             'memory_limit' => ini_get('memory_limit'),
-            'upload_max_filesize' => ini_get('upload_max_filesize')
+            'upload_max_filesize' => ini_get('upload_max_filesize'),
         ];
 
         // 3. Storage Health
         $path = storage_path();
         $health['storage'] = [
-            'disk_free' => round(disk_free_space($path) / 1024 / 1024 / 1024, 2) . ' GB',
-            'disk_total' => round(disk_total_space($path) / 1024 / 1024 / 1024, 2) . ' GB',
+            'disk_free' => round(disk_free_space($path) / 1024 / 1024 / 1024, 2).' GB',
+            'disk_total' => round(disk_total_space($path) / 1024 / 1024 / 1024, 2).' GB',
             'is_writable' => is_writable($path) ? 'OK' : 'ReadOnly',
-            'temp_writable' => is_writable(sys_get_temp_dir()) ? 'OK' : 'ReadOnly'
+            'temp_writable' => is_writable(sys_get_temp_dir()) ? 'OK' : 'ReadOnly',
         ];
 
         // 4. Cache & Queue
         $health['cache'] = [
             'driver' => config('cache.default'),
-            'status' => \Cache::store()->getStore() ? 'Active' : 'Error'
+            'status' => \Cache::store()->getStore() ? 'Active' : 'Error',
         ];
 
         $health['queue'] = [
             'driver' => config('queue.default'),
-            'failed_jobs' => \DB::table('failed_jobs')->count()
+            'failed_jobs' => \DB::table('failed_jobs')->count(),
         ];
 
         // 5. App Env
         $health['environment'] = [
             'env' => config('app.env'),
             'debug' => config('app.debug') ? 'Enabled' : 'Disabled',
-            'url' => config('app.url')
+            'url' => config('app.url'),
         ];
 
         return view('admin.health', compact('health'));

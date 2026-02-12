@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reservation extends Model
 {
-    use HasFactory, \Illuminate\Database\Eloquent\SoftDeletes, \App\Traits\LogsActivity;
+    use \App\Traits\LogsActivity, HasFactory, \Illuminate\Database\Eloquent\SoftDeletes;
 
     protected $fillable = [
         'user_id',

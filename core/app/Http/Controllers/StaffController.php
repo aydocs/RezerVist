@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Staff;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Services\FileUploadService;
 
 class StaffController extends Controller
 {
@@ -13,18 +13,19 @@ class StaffController extends Controller
     {
         $business = Auth::user()->ownedBusiness;
         $locations = $business->locations;
-        
+
         $staff = Staff::where('business_id', $business->id)
-            ->when($request->location_id, function($q) use ($request) {
+            ->when($request->location_id, function ($q) use ($request) {
                 if ($request->location_id === 'main') {
                     return $q->whereNull('location_id');
                 }
+
                 return $q->where('location_id', $request->location_id);
             })
             ->with('location')
             ->latest()
             ->paginate(10);
-            
+
         return view('vendor.staff.index', compact('staff', 'locations'));
     }
 
@@ -32,6 +33,7 @@ class StaffController extends Controller
     {
         $business = Auth::user()->ownedBusiness;
         $locations = $business->locations;
+
         return view('vendor.staff.create', compact('locations'));
     }
 
@@ -76,6 +78,7 @@ class StaffController extends Controller
         $this->authorizeBusiness($staff);
         $business = Auth::user()->ownedBusiness;
         $locations = $business->locations;
+
         return view('vendor.staff.edit', compact('staff', 'locations'));
     }
 
@@ -109,13 +112,15 @@ class StaffController extends Controller
     {
         $this->authorizeBusiness($staff);
         $staff->delete();
+
         return back()->with('success', 'Personel silindi.');
     }
 
     public function toggleStatus(Staff $staff)
     {
         $this->authorizeBusiness($staff);
-        $staff->update(['is_active' => !$staff->is_active]);
+        $staff->update(['is_active' => ! $staff->is_active]);
+
         return back()->with('success', 'Personel durumu güncellendi.');
     }
 

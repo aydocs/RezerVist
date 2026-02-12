@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -22,7 +22,7 @@ return new class extends Migration
         DB::table('businesses')->get()->each(function ($business) {
             $name = json_decode($business->name, true);
             $description = json_decode($business->description, true);
-            
+
             DB::table('businesses')->where('id', $business->id)->update([
                 'name_temp' => $name['tr'] ?? $name ?? '',
                 'description_temp' => $description['tr'] ?? $description ?? '',
@@ -47,7 +47,7 @@ return new class extends Migration
         DB::table('posts')->get()->each(function ($post) {
             $title = json_decode($post->title, true);
             $content = json_decode($post->content, true);
-            
+
             DB::table('posts')->where('id', $post->id)->update([
                 'title_temp' => $title['tr'] ?? $title ?? '',
                 'content_temp' => $content['tr'] ?? $content ?? '',
@@ -70,7 +70,7 @@ return new class extends Migration
 
         DB::table('categories')->get()->each(function ($category) {
             $name = json_decode($category->name, true);
-            
+
             DB::table('categories')->where('id', $category->id)->update([
                 'name_temp' => $name['tr'] ?? $name ?? '',
             ]);
@@ -93,7 +93,7 @@ return new class extends Migration
         DB::table('post_categories')->get()->each(function ($category) {
             $name = json_decode($category->name, true);
             $description = json_decode($category->description, true);
-            
+
             DB::table('post_categories')->where('id', $category->id)->update([
                 'name_temp' => $name['tr'] ?? $name ?? '',
                 'description_temp' => $description['tr'] ?? $description ?? '',

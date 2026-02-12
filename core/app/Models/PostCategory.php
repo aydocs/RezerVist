@@ -7,7 +7,6 @@ use Illuminate\Support\Str;
 
 class PostCategory extends Model
 {
-
     protected $fillable = ['name', 'slug', 'description'];
 
     protected static function boot()

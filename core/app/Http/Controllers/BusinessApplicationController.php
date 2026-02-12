@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\BusinessApplication;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class BusinessApplicationController extends Controller
 {
@@ -33,7 +32,7 @@ class BusinessApplicationController extends Controller
             'tax_document',
             'license_document',
             'id_document',
-            'bank_document'
+            'bank_document',
         ];
 
         foreach ($documentFields as $field) {
@@ -47,7 +46,7 @@ class BusinessApplicationController extends Controller
             'user_id' => auth()->id(),
             'status' => 'pending',
             ...$request->except(['_token', 'terms_accepted', ...$documentFields]),
-            ...$documents
+            ...$documents,
         ]);
 
         return redirect()->back()->with('success', 'Başvurunuz başarıyla alındı! Ekibimiz belgelerinizi inceleyip en kısa sürede size dönüş yapacaktır.');

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->string('action'); // login, logout, create, update, delete
-            $table->string('model_type')->nullable(); 
+            $table->string('model_type')->nullable();
             $table->unsignedBigInteger('model_id')->nullable();
             $table->ipAddress('ip_address')->nullable();
             $table->text('user_agent')->nullable();

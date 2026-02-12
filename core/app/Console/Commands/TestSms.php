@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Services\SmsService;
+use Illuminate\Console\Command;
 
 class TestSms extends Command
 {
@@ -29,12 +29,12 @@ class TestSms extends Command
         $number = $this->argument('number');
         $this->info("Numaraya test SMS gönderiliyor: $number");
 
-        $result = $sms->send($number, 'RezerVist Test Mesaji: ' . now()->format('H:i:s'));
+        $result = $sms->send($number, 'RezerVist Test Mesaji: '.now()->format('H:i:s'));
 
         if ($result) {
-            $this->info("SMS Başarıyla Gönderildi! Lütfen telefonunuzu kontrol edin.");
+            $this->info('SMS Başarıyla Gönderildi! Lütfen telefonunuzu kontrol edin.');
         } else {
-            $this->error("SMS Gönderimi Başarısız! Lütfen storage/logs/laravel.log dosyasını kontrol edin.");
+            $this->error('SMS Gönderimi Başarısız! Lütfen storage/logs/laravel.log dosyasını kontrol edin.');
         }
     }
 }

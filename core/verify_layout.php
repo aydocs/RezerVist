@@ -1,4 +1,5 @@
 <?php
+
 $file = 'resources/views/layouts/app.blade.php';
 $content = file_get_contents($file);
 
@@ -14,13 +15,13 @@ echo "Checking $file...\n";
 foreach ($startDirectives as $i => $start) {
     // Special handling for section (can be inline)
     $end = $endDirectives[$i];
-    
+
     preg_match_all("/@$start\b/i", $content, $starts);
     preg_match_all("/@$end\b/i", $content, $ends);
-    
+
     $countStart = count($starts[0]);
     $countEnd = count($ends[0]);
-    
+
     if ($countStart !== $countEnd) {
         echo "MISMATCH: @$start ($countStart) != @$end ($countEnd)\n";
     }
@@ -31,5 +32,4 @@ foreach ($startDirectives as $i => $start) {
 // Count total @section vs @endsection
 preg_match_all("/@section\b/i", $content, $sections);
 preg_match_all("/@endsection\b/i", $content, $endsections);
-echo "@section: " . count($sections[0]) . ", @endsection: " . count($endsections[0]) . "\n";
-
+echo '@section: '.count($sections[0]).', @endsection: '.count($endsections[0])."\n";

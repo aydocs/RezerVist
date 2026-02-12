@@ -14,31 +14,46 @@ class VendorResourceController extends Controller
         $locations = $business->locations;
 
         $resources = $business->resources()
-            ->when($request->search, function($q) use ($request) {
-                return $q->where('name', 'like', '%' . $request->search . '%');
+            ->when($request->search, function ($q) use ($request) {
+                return $q->where('name', 'like', '%'.$request->search.'%');
             })
-            ->when($request->location_id, function($q) use ($request) {
+            ->when($request->location_id, function ($q) use ($request) {
                 if ($request->location_id === 'main') {
                     return $q->whereNull('location_id');
                 }
+
                 return $q->where('location_id', $request->location_id);
             })
-            ->when($request->category, function($q) use ($request) {
+            ->when($request->category, function ($q) use ($request) {
                 return $q->where('category', $request->category);
             })
-            ->when($request->has('status'), function($q) use ($request) {
-                if ($request->status === 'active') return $q->where('is_available', true);
-                if ($request->status === 'passive') return $q->where('is_available', false);
+            ->when($request->has('status'), function ($q) use ($request) {
+                if ($request->status === 'active') {
+                    return $q->where('is_available', true);
+                }
+                if ($request->status === 'passive') {
+                    return $q->where('is_available', false);
+                }
+
                 return $q;
             })
             ->with('location')
-            ->when($request->sort, function($q) use ($request) {
-                if ($request->sort === 'name_asc') return $q->orderBy('name', 'asc');
-                if ($request->sort === 'name_desc') return $q->orderBy('name', 'desc');
-                if ($request->sort === 'capacity_asc') return $q->orderBy('capacity', 'asc');
-                if ($request->sort === 'capacity_desc') return $q->orderBy('capacity', 'desc');
+            ->when($request->sort, function ($q) use ($request) {
+                if ($request->sort === 'name_asc') {
+                    return $q->orderBy('name', 'asc');
+                }
+                if ($request->sort === 'name_desc') {
+                    return $q->orderBy('name', 'desc');
+                }
+                if ($request->sort === 'capacity_asc') {
+                    return $q->orderBy('capacity', 'asc');
+                }
+                if ($request->sort === 'capacity_desc') {
+                    return $q->orderBy('capacity', 'desc');
+                }
+
                 return $q;
-            }, function($q) {
+            }, function ($q) {
                 return $q->latest();
             })
             ->paginate(12);
@@ -47,7 +62,7 @@ class VendorResourceController extends Controller
             ->whereNotNull('category')
             ->distinct()
             ->pluck('category');
-            
+
         return view('vendor.resources.index', compact('resources', 'locations', 'categories'));
     }
 
@@ -55,6 +70,7 @@ class VendorResourceController extends Controller
     {
         $business = Auth::user()->ownedBusiness;
         $locations = $business->locations;
+
         return view('vendor.resources.create', compact('locations'));
     }
 
@@ -62,13 +78,14 @@ class VendorResourceController extends Controller
     {
         $business = Auth::user()->ownedBusiness;
         $locations = $business->locations;
+
         return view('vendor.resources.bulk-create', compact('locations'));
     }
 
     public function storeBulk(Request $request)
     {
         $business = Auth::user()->ownedBusiness;
-        
+
         $validated = $request->validate([
             'name_prefix' => 'nullable|string|max:100',
             'start_number' => 'required|integer|min:1',
@@ -84,11 +101,11 @@ class VendorResourceController extends Controller
         $type = $validated['type'];
         $capacity = $validated['capacity'];
         $category = $validated['category'];
-        
+
         $count = 0;
         for ($i = $validated['start_number']; $i <= $validated['end_number']; $i++) {
-            $name = $prefix . ' ' . $i;
-            
+            $name = $prefix.' '.$i;
+
             $business->resources()->create([
                 'name' => $name,
                 'capacity' => $capacity,
@@ -97,13 +114,13 @@ class VendorResourceController extends Controller
                 'category' => $category,
                 'is_available' => true,
                 'stock' => 1,
-                'requires_inventory' => false
+                'requires_inventory' => false,
             ]);
             $count++;
         }
 
         return redirect()->route('vendor.resources.index')
-            ->with('success', $count . ' adet masa başarıyla oluşturuldu.');
+            ->with('success', $count.' adet masa başarıyla oluşturuldu.');
     }
 
     public function store(Request $request)
@@ -128,6 +145,7 @@ class VendorResourceController extends Controller
         $this->authorizeBusiness($resource);
         $business = Auth::user()->ownedBusiness;
         $locations = $business->locations;
+
         return view('vendor.resources.edit', compact('resource', 'locations'));
     }
 
@@ -152,6 +170,7 @@ class VendorResourceController extends Controller
     {
         $this->authorizeBusiness($resource);
         $resource->delete();
+
         return back()->with('success', 'Kaynak başarıyla silindi.');
     }
 
@@ -161,7 +180,7 @@ class VendorResourceController extends Controller
         $validated = $request->validate([
             'ids' => 'required|array',
             'ids.*' => 'exists:resources,id',
-            'action' => 'required|in:delete,activate,deactivate'
+            'action' => 'required|in:delete,activate,deactivate',
         ]);
 
         $resources = Resource::whereIn('id', $validated['ids'])

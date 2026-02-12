@@ -196,8 +196,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   onToggleVisibility: () =>
                       setState(() => _obscurePassword = !_obscurePassword),
                   validator: (v) {
-                    if ((v?.length ?? 0) < 8)
+                    if ((v?.length ?? 0) < 8) {
                       return 'auth.password_min_length'.tr();
+                    }
                     if (!RegExp(
                             r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+]{8,}$')
                         .hasMatch(v!)) {
@@ -349,9 +350,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 // veya Divider
                 Row(
                   children: [
-                    Expanded(
+                    const Expanded(
                         child: Divider(
-                            color: const Color(0xFFE2E8F0), thickness: 1)),
+                            color: Color(0xFFE2E8F0), thickness: 1)),
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 4),
@@ -369,9 +370,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         ),
                       ),
                     ),
-                    Expanded(
+                    const Expanded(
                         child: Divider(
-                            color: const Color(0xFFE2E8F0), thickness: 1)),
+                            color: Color(0xFFE2E8F0), thickness: 1)),
                   ],
                 ),
                 const SizedBox(height: 24),

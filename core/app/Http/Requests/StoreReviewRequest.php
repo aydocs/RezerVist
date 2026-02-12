@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Reservation;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreReviewRequest extends FormRequest
 {
@@ -13,7 +13,9 @@ class StoreReviewRequest extends FormRequest
     public function authorize(): bool
     {
         $user = auth()->user();
-        if (!$user) return false;
+        if (! $user) {
+            return false;
+        }
 
         // 1. Check if user is blocked
         if ($user->is_review_blocked) {
@@ -69,7 +71,7 @@ class StoreReviewRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             // Check for duplicate review
-            if (!$validator->errors()->has('rating')) {
+            if (! $validator->errors()->has('rating')) {
                 $this->checkDuplicateReview($validator);
             }
         });

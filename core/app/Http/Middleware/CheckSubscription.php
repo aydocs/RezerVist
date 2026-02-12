@@ -11,7 +11,7 @@ class CheckSubscription
     /**
      * Handle an incoming request.
      */
-    public function handle(Request $request, Closure $next, string $feature = null): Response
+    public function handle(Request $request, Closure $next, ?string $feature = null): Response
     {
         $business = null;
 
@@ -26,7 +26,7 @@ class CheckSubscription
             $business = \App\Models\Business::find($request->header('X-Business-ID'));
         }
 
-        if (!$business) {
+        if (! $business) {
             return $next($request); // If no business, let other auth handle it
         }
 
@@ -41,13 +41,14 @@ class CheckSubscription
         // 2. Check Subscription Status
         $subscription = $business->activeSubscription;
 
-        if (!$subscription) {
+        if (! $subscription) {
             if ($request->expectsJson()) {
                 return response()->json([
                     'message' => 'Aktif bir aboneliğiniz bulunmamaktadır.',
-                    'code' => 'SUBSCRIPTION_REQUIRED'
+                    'code' => 'SUBSCRIPTION_REQUIRED',
                 ], 403);
             }
+
             return redirect()->route('vendor.billing.index')->with('error', 'Bu özelliği kullanmak için aktif bir aboneliğiniz olmalıdır.');
         }
 
@@ -56,25 +57,27 @@ class CheckSubscription
             $graceDays = 3;
             $graceEnd = $subscription->ends_at ? $subscription->ends_at->addDays($graceDays) : null;
 
-            if (!$graceEnd || $graceEnd->isPast()) {
+            if (! $graceEnd || $graceEnd->isPast()) {
                 if ($request->expectsJson()) {
                     return response()->json([
                         'message' => 'Abonelik süreniz dolmuştur.',
-                        'code' => 'SUBSCRIPTION_EXPIRED'
+                        'code' => 'SUBSCRIPTION_EXPIRED',
                     ], 403);
                 }
+
                 return redirect()->route('vendor.billing.index')->with('error', 'Abonelik süreniz dolmuştur. Devam etmek için paket yenilemelisiniz.');
             }
         }
 
         // 3. Check specific feature (e.g., pos_access)
-        if ($feature && !$business->hasFeature($feature)) {
+        if ($feature && ! $business->hasFeature($feature)) {
             if ($request->expectsJson()) {
                 return response()->json([
                     'message' => 'Paketiniz bu özelliği desteklememektedir.',
-                    'code' => 'FEATURE_NOT_PERMITTED'
+                    'code' => 'FEATURE_NOT_PERMITTED',
                 ], 403);
             }
+
             return redirect()->back()->with('error', 'Paketiniz bu özelliği desteklememektedir.');
         }
 

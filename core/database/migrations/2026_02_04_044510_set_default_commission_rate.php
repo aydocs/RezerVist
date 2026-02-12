@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('businesses', function (Blueprint $table) {
-            $table->decimal('commission_rate', 5, 2)->default(5.00)->change();
-        });
+        // Schema::table('businesses', function (Blueprint $table) {
+        //     $table->decimal('commission_rate', 10, 2)->default(5.00)->change();
+        // });
 
         // Update existing businesses
         \Illuminate\Support\Facades\DB::table('businesses')

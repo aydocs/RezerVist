@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -43,7 +42,7 @@ class WaitlistAvailableNotification extends Notification
             ->subject("Sevindirici Haber: {$businessName} için yer açıldı!")
             ->greeting("Merhaba {$notifiable->name},")
             ->line("{$businessName} işletmesinde {$date} tarihinde beklediğiniz liste için boş bir yer açıldı.")
-            ->line("Hemen rezervasyonunuzu tamamlayarak yerinizi ayırtabilirsiniz.")
+            ->line('Hemen rezervasyonunuzu tamamlayarak yerinizi ayırtabilirsiniz.')
             ->action('Hemen Rezerve Et', route('business.show', $this->waitlist->business->slug))
             ->line('Bizi tercih ettiğiniz için teşekkür ederiz!');
     }

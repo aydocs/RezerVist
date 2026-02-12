@@ -21,31 +21,31 @@ class MenuFactory extends Factory
                 'Başlangıç' => ['Mercimek Çorbası', 'Ezogelin Çorbası', 'Humus', 'Haydari', 'Sigara Böreği', 'Paçanga Böreği'],
                 'Ana Yemek' => ['Adana Kebap', 'Urfa Kebap', 'İskender', 'Ali Nazik', 'Köfte', 'Tavuk Şiş', 'Kuzu Pirzola', 'Lahmacun', 'Pide'],
                 'Tatlı' => ['Künefe', 'Baklava', 'Sütlaç', 'Kazandibi', 'Revani', 'Kadayıf'],
-                'İçecek' => ['Ayran', 'Şalgam', 'Kola', 'Fanta', 'Çay', 'Türk Kahvesi']
+                'İçecek' => ['Ayran', 'Şalgam', 'Kola', 'Fanta', 'Çay', 'Türk Kahvesi'],
             ],
             'Kafe' => [
                 'Kahve' => ['Espresso', 'Latte', 'Cappuccino', 'Americano', 'Türk Kahvesi', 'Filtre Kahve'],
                 'Tatlı' => ['Cheesecake', 'Tiramisu', 'Brownie', 'Trileçe', 'Waffle'],
-                'Soğuk İçecek' => ['Limonata', 'Milkshake', 'Frozen', 'Ice Latte']
+                'Soğuk İçecek' => ['Limonata', 'Milkshake', 'Frozen', 'Ice Latte'],
             ],
             'Güzellik Salonu' => [
                 'Saç' => ['Saç Kesimi', 'Fön', 'Boya', 'Röfle', 'Ombre', 'Keratin Bakım'],
                 'Bakım' => ['Manikür', 'Pedikür', 'Cilt Bakımı', 'Lazer Epilasyon', 'Kaş Tasarım'],
-                'Makyaj' => ['Gelin Makyajı', 'Günlük Makyaj', 'Porselen Makyaj']
+                'Makyaj' => ['Gelin Makyajı', 'Günlük Makyaj', 'Porselen Makyaj'],
             ],
             'Otel' => [
                 'Oda Servisi' => ['Kahvaltı Tabağı', 'Sandviç', 'Hamburger', 'Pizza', 'Salata'],
-                'Hizmet' => ['Kuru Temizleme', 'Ütü', 'Masaj', 'Spa Kullanımı']
-            ]
+                'Hizmet' => ['Kuru Temizleme', 'Ütü', 'Masaj', 'Spa Kullanımı'],
+            ],
         ];
 
         // Default to Restoran if no business attached or generic
-        $sector = 'Restoran'; 
-        
-        // This is a bit tricky in factory definition without state, 
+        $sector = 'Restoran';
+
+        // This is a bit tricky in factory definition without state,
         // effectively we pick random valid items.
         // In a real seeder we would match this to the business category.
-        
+
         $flattenedItems = [];
         foreach ($categories as $sec => $cats) {
             foreach ($cats as $cat => $items) {
@@ -54,12 +54,12 @@ class MenuFactory extends Factory
                 }
             }
         }
-        
+
         $selected = $this->faker->randomElement($flattenedItems);
 
         return [
             'business_id' => 1, // Overridden in seeder
-            'category' => $selected['category'], 
+            'category' => $selected['category'],
             'name' => $selected['name'],
             'description' => $this->faker->realText(50),
             'price' => $this->faker->numberBetween(50, 500),

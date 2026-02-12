@@ -13,7 +13,7 @@ class RefundRequest extends Model
         'status',
         'iyzico_payment_id',
         'iyzico_conversation_id',
-        'admin_note'
+        'admin_note',
     ];
 
     public function reservation()

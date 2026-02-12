@@ -12,14 +12,14 @@ class CommentController extends Controller
     {
         $request->validate([
             'content' => 'required|string|max:1000',
-            'parent_id' => 'nullable|exists:comments,id'
+            'parent_id' => 'nullable|exists:comments,id',
         ]);
 
         $comment = $post->comments()->create([
             'user_id' => auth()->id(),
             'parent_id' => $request->parent_id,
             'content' => $request->content,
-            'is_approved' => true // Auto-approve for now, can be changed later
+            'is_approved' => true, // Auto-approve for now, can be changed later
         ]);
 
         return back()->with('success', 'Yorumunuz başarıyla paylaşıldı.');
@@ -27,7 +27,7 @@ class CommentController extends Controller
 
     public function destroy(Comment $comment)
     {
-        if (auth()->id() !== $comment->user_id && !auth()->user()->isAdmin()) {
+        if (auth()->id() !== $comment->user_id && ! auth()->user()->isAdmin()) {
             abort(403);
         }
 

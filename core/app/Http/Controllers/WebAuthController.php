@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Events\Registered;
 
 class WebAuthController extends Controller
 {
@@ -26,7 +25,7 @@ class WebAuthController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
-            
+
             // Audit Log
             \App\Models\ActivityLog::logLogin(Auth::id());
 
@@ -66,11 +65,11 @@ class WebAuthController extends Controller
         $email = $validated['email'];
 
         // Store registration data in cache for 3 minutes (180 seconds)
-        $cacheKey = 'pending_registration_' . str_replace(['@', '.'], '_', $email);
+        $cacheKey = 'pending_registration_'.str_replace(['@', '.'], '_', $email);
         \Illuminate\Support\Facades\Cache::put($cacheKey, [
             'data' => $validated,
             'otp' => $otp,
-            'attempts' => 0
+            'attempts' => 0,
         ], now()->addSeconds(180));
 
         // Send OTP Email
@@ -78,12 +77,13 @@ class WebAuthController extends Controller
             \Illuminate\Support\Facades\Mail::send('emails.midnight-otp', [
                 'code' => $otp,
                 'user_name' => $validated['name'],
-                'user_avatar' => 'https://ui-avatars.com/api/?name=' . urlencode($validated['name']) . '&background=7c3aed&color=fff'
-            ], function($message) use ($email) {
+                'user_avatar' => 'https://ui-avatars.com/api/?name='.urlencode($validated['name']).'&background=7c3aed&color=fff',
+            ], function ($message) use ($email) {
                 $message->to($email)->subject('Rezervist - Doğrulama Kodunuz');
             });
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Registration OTP Mail Error: ' . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error('Registration OTP Mail Error: '.$e->getMessage());
+
             return back()->with('error', 'E-posta gönderilemedi. Lütfen bilgilerinizi kontrol edin.');
         }
 
@@ -95,10 +95,12 @@ class WebAuthController extends Controller
     public function showVerifyForm(Request $request)
     {
         $email = $request->query('email');
-        if (!$email) return redirect()->route('register');
+        if (! $email) {
+            return redirect()->route('register');
+        }
 
-        $cacheKey = 'pending_registration_' . str_replace(['@', '.'], '_', $email);
-        if (!\Illuminate\Support\Facades\Cache::has($cacheKey)) {
+        $cacheKey = 'pending_registration_'.str_replace(['@', '.'], '_', $email);
+        if (! \Illuminate\Support\Facades\Cache::has($cacheKey)) {
             return redirect()->route('register')->with('error', 'Doğrulama süresi doldu veya oturum bulunamadı. Lütfen tekrar kayıt olun.');
         }
 
@@ -109,34 +111,36 @@ class WebAuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'code' => 'required|string|size:6'
+            'code' => 'required|string|size:6',
         ]);
 
         $email = $request->email;
-        $cacheKey = 'pending_registration_' . str_replace(['@', '.'], '_', $email);
+        $cacheKey = 'pending_registration_'.str_replace(['@', '.'], '_', $email);
         $cachedData = \Illuminate\Support\Facades\Cache::get($cacheKey);
 
-        if (!$cachedData) {
+        if (! $cachedData) {
             return redirect()->route('register')->with('error', 'Doğrulama süresi doldu. Lütfen tekrar kayıt olun.');
         }
 
         // Check attempts (max 5)
         if ($cachedData['attempts'] >= 5) {
             \Illuminate\Support\Facades\Cache::forget($cacheKey);
+
             return redirect()->route('register')->with('error', 'Çok fazla hatalı deneme yaptınız. Lütfen tekrar kayıt olun.');
         }
 
         if ($request->code != $cachedData['otp']) {
             $cachedData['attempts']++;
             \Illuminate\Support\Facades\Cache::put($cacheKey, $cachedData, now()->addSeconds(180));
+
             return back()->withErrors(['code' => 'Girdiğiniz kod hatalı. Lütfen tekrar deneyin.']);
         }
 
         // OTP Valid - Create the user
         $data = $cachedData['data'];
-        
+
         $referredById = null;
-        if (!empty($data['referral_code'])) {
+        if (! empty($data['referral_code'])) {
             $referrer = User::where('referral_code', $data['referral_code'])->first();
             if ($referrer) {
                 $referredById = $referrer->id;
@@ -161,7 +165,7 @@ class WebAuthController extends Controller
 
         // Onboarding Notifications
         $user->notify(new \App\Notifications\OnboardingNotification('Rezervist\'e Hoş Geldiniz! Mekanları keşfetmeye hemen başlayın.', route('search.index')));
-        
+
         // Audit Log
         \App\Models\ActivityLog::logUserCreated($user);
 
@@ -172,10 +176,10 @@ class WebAuthController extends Controller
     {
         $request->validate(['email' => 'required|email']);
         $email = $request->email;
-        $cacheKey = 'pending_registration_' . str_replace(['@', '.'], '_', $email);
+        $cacheKey = 'pending_registration_'.str_replace(['@', '.'], '_', $email);
         $cachedData = \Illuminate\Support\Facades\Cache::get($cacheKey);
 
-        if (!$cachedData) {
+        if (! $cachedData) {
             return response()->json(['success' => false, 'message' => 'Oturum bulunamadı.'], 404);
         }
 
@@ -183,7 +187,7 @@ class WebAuthController extends Controller
         $newOtp = rand(100000, 999999);
         $cachedData['otp'] = $newOtp;
         $cachedData['attempts'] = 0;
-        
+
         \Illuminate\Support\Facades\Cache::put($cacheKey, $cachedData, now()->addSeconds(180));
 
         // Send Email
@@ -191,10 +195,11 @@ class WebAuthController extends Controller
             \Illuminate\Support\Facades\Mail::send('emails.midnight-otp', [
                 'code' => $newOtp,
                 'user_name' => $cachedData['data']['name'],
-                'user_avatar' => 'https://ui-avatars.com/api/?name=' . urlencode($cachedData['data']['name']) . '&background=7c3aed&color=fff'
-            ], function($message) use ($email) {
+                'user_avatar' => 'https://ui-avatars.com/api/?name='.urlencode($cachedData['data']['name']).'&background=7c3aed&color=fff',
+            ], function ($message) use ($email) {
                 $message->to($email)->subject('Rezervist - Yeni Doğrulama Kodunuz');
             });
+
             return response()->json(['success' => true, 'message' => 'Yeni kod başarıyla gönderildi.']);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'E-posta gönderilemedi.'], 500);
@@ -206,7 +211,7 @@ class WebAuthController extends Controller
         $request->validate(['email' => 'required|email']);
         $user = User::where('email', $request->email)->first();
 
-        if (!$user) {
+        if (! $user) {
             return back()->with('status', 'E-posta adresiniz kayıtlıysa bir kod gönderilecektir.');
         }
 
@@ -215,10 +220,10 @@ class WebAuthController extends Controller
         $email = $user->email;
 
         // Store reset data in cache for 3 minutes (180 seconds)
-        $cacheKey = 'password_reset_' . str_replace(['@', '.'], '_', $email);
+        $cacheKey = 'password_reset_'.str_replace(['@', '.'], '_', $email);
         \Illuminate\Support\Facades\Cache::put($cacheKey, [
             'otp' => $otp,
-            'attempts' => 0
+            'attempts' => 0,
         ], now()->addSeconds(180));
 
         // Send Reset Email
@@ -226,12 +231,13 @@ class WebAuthController extends Controller
             \Illuminate\Support\Facades\Mail::send('emails.aura-reset', [
                 'code' => $otp,
                 'user_name' => $user->name,
-                'user_avatar' => $user->profile_photo_url
-            ], function($message) use ($email) {
+                'user_avatar' => $user->profile_photo_url,
+            ], function ($message) use ($email) {
                 $message->to($email)->subject('Rezervist - Şifre Sıfırlama Kodunuz');
             });
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Password Reset OTP Error: ' . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error('Password Reset OTP Error: '.$e->getMessage());
+
             return back()->with('error', 'E-posta gönderilemedi.');
         }
 
@@ -242,10 +248,12 @@ class WebAuthController extends Controller
     public function showResetForm(Request $request)
     {
         $email = $request->query('email');
-        if (!$email) return redirect()->route('password.request');
+        if (! $email) {
+            return redirect()->route('password.request');
+        }
 
-        $cacheKey = 'password_reset_' . str_replace(['@', '.'], '_', $email);
-        if (!\Illuminate\Support\Facades\Cache::has($cacheKey)) {
+        $cacheKey = 'password_reset_'.str_replace(['@', '.'], '_', $email);
+        if (! \Illuminate\Support\Facades\Cache::has($cacheKey)) {
             return redirect()->route('password.request')->with('error', 'Kodun süresi doldu. Lütfen tekrar talep edin.');
         }
 
@@ -257,27 +265,28 @@ class WebAuthController extends Controller
         $request->validate([
             'email' => 'required|email',
             'code' => 'required|string|size:6',
-            'password' => 'required|string|min:8|confirmed'
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
         $email = $request->email;
-        $cacheKey = 'password_reset_' . str_replace(['@', '.'], '_', $email);
+        $cacheKey = 'password_reset_'.str_replace(['@', '.'], '_', $email);
         $cachedData = \Illuminate\Support\Facades\Cache::get($cacheKey);
 
-        if (!$cachedData) {
+        if (! $cachedData) {
             return redirect()->route('password.request')->with('error', 'Süre doldu. Lütfen tekrar deneyin.');
         }
 
         if ($request->code != $cachedData['otp']) {
             $cachedData['attempts']++;
             \Illuminate\Support\Facades\Cache::put($cacheKey, $cachedData, now()->addSeconds(180));
+
             return back()->withErrors(['code' => 'Girdiğiniz kod hatalı.']);
         }
 
         // Code valid - Update password
         $user = User::where('email', $email)->firstOrFail();
         $user->update([
-            'password' => Hash::make($request->password)
+            'password' => Hash::make($request->password),
         ]);
 
         \Illuminate\Support\Facades\Cache::forget($cacheKey);

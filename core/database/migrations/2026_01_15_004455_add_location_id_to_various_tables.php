@@ -12,19 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('reservations', function (Blueprint $table) {
-            if (!Schema::hasColumn('reservations', 'location_id')) {
+            if (! Schema::hasColumn('reservations', 'location_id')) {
                 $table->foreignId('location_id')->nullable()->after('business_id')->constrained()->onDelete('set null');
             }
         });
 
         Schema::table('resources', function (Blueprint $table) {
-            if (!Schema::hasColumn('resources', 'location_id')) {
+            if (! Schema::hasColumn('resources', 'location_id')) {
                 $table->foreignId('location_id')->nullable()->after('business_id')->constrained()->onDelete('set null');
             }
         });
 
         Schema::table('staff', function (Blueprint $table) {
-            if (!Schema::hasColumn('staff', 'location_id')) {
+            if (! Schema::hasColumn('staff', 'location_id')) {
                 $table->foreignId('location_id')->nullable()->after('business_id')->constrained()->onDelete('set null');
             }
         });

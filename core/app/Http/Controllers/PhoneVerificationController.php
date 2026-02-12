@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Services\SmsService;
 use App\Models\User;
+use App\Services\SmsService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 
 class PhoneVerificationController extends Controller
@@ -23,29 +23,30 @@ class PhoneVerificationController extends Controller
     {
         $validated = $request->validate([
             'phone' => 'required|string|min:10|max:15',
-            'type' => 'in:registration,login'
+            'type' => 'in:registration,login',
         ]);
 
         $phone = $validated['phone'];
         $type = $validated['type'] ?? 'registration';
 
         // Rate limiting - 3 attempts per hour per phone
-        $key = 'sms-verification:' . $phone;
+        $key = 'sms-verification:'.$phone;
         if (RateLimiter::tooManyAttempts($key, 3)) {
             $seconds = RateLimiter::availableIn($key);
+
             return response()->json([
                 'success' => false,
-                'message' => "Çok fazla deneme yaptınız. " . ceil($seconds / 60) . " dakika sonra tekrar deneyin."
+                'message' => 'Çok fazla deneme yaptınız. '.ceil($seconds / 60).' dakika sonra tekrar deneyin.',
             ], 429);
         }
 
         // For login, check if user exists
         if ($type === 'login') {
             $user = User::where('phone', $phone)->first();
-            if (!$user) {
+            if (! $user) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Bu telefon numarası ile kayıtlı kullanıcı bulunamadı.'
+                    'message' => 'Bu telefon numarası ile kayıtlı kullanıcı bulunamadı.',
                 ], 404);
             }
         }
@@ -55,7 +56,7 @@ class PhoneVerificationController extends Controller
 
         // Prepare message
         $message = "Rezervist doğrulama kodunuz: {$verification->code}\nBu kod 10 dakika geçerlidir.";
-        
+
         // Send SMS via VatanSMS
         $sent = $this->smsService->send($phone, $message);
 
@@ -65,7 +66,7 @@ class PhoneVerificationController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Doğrulama kodu gönderildi.',
-                'expires_in' => 600 // 10 minutes
+                'expires_in' => 600, // 10 minutes
             ]);
         }
 
@@ -76,7 +77,7 @@ class PhoneVerificationController extends Controller
 
         return response()->json([
             'success' => false,
-            'message' => 'SMS gönderilemedi. Lütfen tekrar deneyin.'
+            'message' => 'SMS gönderilemedi. Lütfen tekrar deneyin.',
         ], 500);
     }
 
@@ -87,7 +88,7 @@ class PhoneVerificationController extends Controller
     {
         $validated = $request->validate([
             'phone' => 'required|string',
-            'code' => 'required|string|size:6'
+            'code' => 'required|string|size:6',
         ]);
 
         $verification = \App\Models\PhoneVerification::where('phone', $validated['phone'])
@@ -95,17 +96,17 @@ class PhoneVerificationController extends Controller
             ->where('verified', false)
             ->first();
 
-        if (!$verification) {
+        if (! $verification) {
             return response()->json([
                 'success' => false,
-                'message' => 'Geçersiz doğrulama kodu'
+                'message' => 'Geçersiz doğrulama kodu',
             ], 400);
         }
 
         if ($verification->isExpired()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Doğrulama kodu süresi dolmuş'
+                'message' => 'Doğrulama kodu süresi dolmuş',
             ], 400);
         }
 
@@ -119,7 +120,7 @@ class PhoneVerificationController extends Controller
             $user = User::where('phone', $validated['phone'])->first();
             if ($user) {
                 // Mark phone as verified
-                if (!$user->phone_verified_at) {
+                if (! $user->phone_verified_at) {
                     $user->update(['phone_verified_at' => now()]);
                 }
 
@@ -129,7 +130,7 @@ class PhoneVerificationController extends Controller
                 return response()->json([
                     'success' => true,
                     'message' => 'Giriş başarılı',
-                    'redirect' => url('/')
+                    'redirect' => url('/'),
                 ]);
             }
 

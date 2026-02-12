@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('referral_code')->nullable()->unique()->after('email');
             $table->unsignedBigInteger('referred_by_id')->nullable()->after('referral_code');
-            
+
             $table->foreign('referred_by_id')->references('id')->on('users')->onDelete('set null');
         });
     }

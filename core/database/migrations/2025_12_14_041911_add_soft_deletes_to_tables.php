@@ -11,10 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) { $table->softDeletes(); });
-        Schema::table('businesses', function (Blueprint $table) { $table->softDeletes(); });
-        Schema::table('reservations', function (Blueprint $table) { $table->softDeletes(); });
-        Schema::table('menus', function (Blueprint $table) { $table->softDeletes(); });
+        Schema::table('users', function (Blueprint $table) {
+            $table->softDeletes();
+        });
+        Schema::table('businesses', function (Blueprint $table) {
+            $table->softDeletes();
+        });
+        Schema::table('reservations', function (Blueprint $table) {
+            $table->softDeletes();
+        });
+        Schema::table('menus', function (Blueprint $table) {
+            $table->softDeletes();
+        });
     }
 
     /**
@@ -22,9 +30,17 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) { $table->dropSoftDeletes(); });
-        Schema::table('businesses', function (Blueprint $table) { $table->dropSoftDeletes(); });
-        Schema::table('reservations', function (Blueprint $table) { $table->dropSoftDeletes(); });
-        Schema::table('menus', function (Blueprint $table) { $table->dropSoftDeletes(); });
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        Schema::table('businesses', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        Schema::table('reservations', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+        Schema::table('menus', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
     }
 };

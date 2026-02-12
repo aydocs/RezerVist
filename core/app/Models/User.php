@@ -12,7 +12,7 @@ use NotificationChannels\WebPush\HasPushSubscriptions;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable, HasPushSubscriptions, \Illuminate\Database\Eloquent\SoftDeletes, \App\Traits\LogsActivity;
+    use \App\Traits\LogsActivity, HasApiTokens, HasFactory, HasPushSubscriptions, \Illuminate\Database\Eloquent\SoftDeletes, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -133,14 +133,14 @@ class User extends Authenticatable
     {
         // Prioritize uploaded photo, then social avatar, then default
         if ($this->profile_photo_path) {
-            return asset('storage/' . $this->profile_photo_path);
+            return asset('storage/'.$this->profile_photo_path);
         }
-        
+
         if ($this->avatar) {
             return $this->avatar;
         }
-        
-        return 'https://ui-avatars.com/api/?name=' . urlencode($this->name) . '&color=7F9CF5&background=EBF4FF';
+
+        return 'https://ui-avatars.com/api/?name='.urlencode($this->name).'&color=7F9CF5&background=EBF4FF';
     }
 
     public function getInitialsAttribute()
@@ -149,8 +149,11 @@ class User extends Authenticatable
         $initials = '';
         foreach ($names as $name) {
             $initials .= mb_substr($name, 0, 1);
-            if (mb_strlen($initials) >= 2) break;
+            if (mb_strlen($initials) >= 2) {
+                break;
+            }
         }
+
         return mb_strtoupper($initials);
     }
 
@@ -171,7 +174,7 @@ class User extends Authenticatable
 
     public function isProfileComplete(): bool
     {
-        return !empty($this->phone); // Only require phone now
+        return ! empty($this->phone); // Only require phone now
     }
 
     public function reviews()

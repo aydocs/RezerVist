@@ -180,7 +180,7 @@ class OrderDetailScreen extends ConsumerWidget {
                 if (options != null && (options as List).isNotEmpty) ...[
                   const SizedBox(height: 4),
                   Text(
-                    (options as List).join(', '),
+                    (options).join(', '),
                     style: GoogleFonts.outfit(
                       fontSize: 12,
                       color: const Color(0xFF64748B),

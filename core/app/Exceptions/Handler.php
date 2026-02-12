@@ -2,11 +2,11 @@
 
 namespace App\Exceptions;
 
+use App\Mail\CriticalErrorNotification;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Throwable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\CriticalErrorNotification;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -28,7 +28,7 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             $this->logErrorToDatabase($e);
-            
+
             // Send email for critical errors in production
             if (app()->environment('production') && $this->isCritical($e)) {
                 $this->notifyCriticalError($e);
@@ -59,7 +59,7 @@ class Handler extends ExceptionHandler
             // If database logging fails, just log to file
             Log::error('Failed to log error to database', [
                 'original_error' => $e->getMessage(),
-                'db_error' => $dbError->getMessage()
+                'db_error' => $dbError->getMessage(),
             ]);
         }
     }
@@ -72,19 +72,19 @@ class Handler extends ExceptionHandler
         if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
             return 'info';
         }
-        
+
         if ($e instanceof \Illuminate\Validation\ValidationException) {
             return 'warning';
         }
-        
+
         if ($e instanceof \Illuminate\Database\QueryException) {
             return 'error';
         }
-        
+
         if ($e instanceof \PDOException || $e instanceof \ErrorException) {
             return 'critical';
         }
-        
+
         return 'error';
     }
 
@@ -103,7 +103,7 @@ class Handler extends ExceptionHandler
     {
         try {
             $adminEmail = config('mail.admin_email', 'admin@rezerveet.com');
-            
+
             Mail::to($adminEmail)->send(new CriticalErrorNotification([
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
@@ -113,7 +113,7 @@ class Handler extends ExceptionHandler
             ]));
         } catch (\Exception $mailError) {
             Log::error('Failed to send critical error email', [
-                'error' => $mailError->getMessage()
+                'error' => $mailError->getMessage(),
             ]);
         }
     }
@@ -151,10 +151,10 @@ class Handler extends ExceptionHandler
     protected function renderJsonError($request, Throwable $e)
     {
         $status = method_exists($e, 'getStatusCode') ? $e->getStatusCode() : 500;
-        
+
         $response = [
-            'message' => app()->environment('production') 
-                ? 'Bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.' 
+            'message' => app()->environment('production')
+                ? 'Bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.'
                 : $e->getMessage(),
             'status' => $status,
         ];

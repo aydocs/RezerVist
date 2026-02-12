@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Business;
 use App\Models\BusinessHour;
 use Carbon\Carbon;
+use Illuminate\Foundation\Http\FormRequest;
 
 class StoreReservationRequest extends FormRequest
 {
@@ -72,10 +72,10 @@ class StoreReservationRequest extends FormRequest
     {
         $validator->after(function ($validator) {
             // Check if business is open on selected date/time
-            if (!$validator->errors()->has('business_id') && 
-                !$validator->errors()->has('reservation_date') && 
-                !$validator->errors()->has('reservation_time')) {
-                
+            if (! $validator->errors()->has('business_id') &&
+                ! $validator->errors()->has('reservation_date') &&
+                ! $validator->errors()->has('reservation_time')) {
+
                 $this->validateBusinessHours($validator);
             }
         });
@@ -89,54 +89,55 @@ class StoreReservationRequest extends FormRequest
         $businessId = $this->input('business_id');
         $date = Carbon::parse($this->input('reservation_date'));
         $time = $this->input('reservation_time');
-        
+
         $dayOfWeek = $date->dayOfWeek; // 0 (Sunday) to 6 (Saturday)
-        
+
         // 1. Check for special date override first
         $businessHour = BusinessHour::where('business_id', $businessId)
             ->where('special_date', $date->format('Y-m-d'))
             ->first();
-            
+
         // 2. Fallback to weekly schedule if no special date is set
-        if (!$businessHour) {
+        if (! $businessHour) {
             $businessHour = BusinessHour::where('business_id', $businessId)
                 ->where('day_of_week', $dayOfWeek)
                 ->whereNull('special_date')
                 ->first();
         }
-        
+
         // 3. Check if business exists for this day and is not closed
-        if (!$businessHour || $businessHour->is_closed) {
+        if (! $businessHour || $businessHour->is_closed) {
             $validator->errors()->add(
-                'reservation_date', 
+                'reservation_date',
                 'İşletme seçtiğiniz günde kapalıdır.'
             );
+
             return;
         }
-        
+
         // 4. Check if requested time is within the open/close range
         $requestedTime = Carbon::createFromFormat('H:i', $time);
-        
+
         // Robust time parsing (handling potential string or Carbon casts)
         $openTimeStr = $businessHour->open_time instanceof Carbon ? $businessHour->open_time->format('H:i') : Carbon::parse($businessHour->open_time)->format('H:i');
         $closeTimeStr = $businessHour->close_time instanceof Carbon ? $businessHour->close_time->format('H:i') : Carbon::parse($businessHour->close_time)->format('H:i');
 
         $openTime = Carbon::createFromFormat('H:i', $openTimeStr);
         $closeTime = Carbon::createFromFormat('H:i', $closeTimeStr);
-        
+
         // Handle cross-midnight closing (e.g., 09:00 - 02:00)
         if ($closeTime->lessThan($openTime)) {
-            // If requested time is before opening AND after midnight, it might be in the "late night" window of the PREVIOUS day's booking logic, 
+            // If requested time is before opening AND after midnight, it might be in the "late night" window of the PREVIOUS day's booking logic,
             // but here we check against the selected day's window.
             // Simplified: if current request is >= open OR < close (if cross-midnight)
             $isValid = ($requestedTime->greaterThanOrEqualTo($openTime) || $requestedTime->lessThan($closeTime));
         } else {
             $isValid = ($requestedTime->greaterThanOrEqualTo($openTime) && $requestedTime->lessThan($closeTime));
         }
-        
-        if (!$isValid) {
+
+        if (! $isValid) {
             $validator->errors()->add(
-                'reservation_time', 
+                'reservation_time',
                 "İşletme bu saatte kapalıdır. Çalışma saatleri: {$openTimeStr} - {$closeTimeStr}"
             );
         }

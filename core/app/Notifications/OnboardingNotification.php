@@ -10,6 +10,7 @@ class OnboardingNotification extends Notification
     use Queueable;
 
     protected $message;
+
     protected $url;
 
     public function __construct($message, $url = null)

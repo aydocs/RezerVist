@@ -1,21 +1,20 @@
 <?php
 
 use App\Models\Business;
-use Illuminate\Support\Facades\Log;
 
-require __DIR__ . '/vendor/autoload.php';
-$app = require_once __DIR__ . '/bootstrap/app.php';
+require __DIR__.'/vendor/autoload.php';
+$app = require_once __DIR__.'/bootstrap/app.php';
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
 
 $business = Business::where('name', 'like', '%Deniz Mahsulleri%')->with(['menus'])->first();
 
-if (!$business) {
+if (! $business) {
     exit("Business not found.\n");
 }
 
-echo "Business ID: " . $business->id . "\n";
-echo "Menus Count: " . $business->menus->count() . "\n";
+echo 'Business ID: '.$business->id."\n";
+echo 'Menus Count: '.$business->menus->count()."\n";
 
 // Check the structure of menus
 if ($business->menus->count() > 0) {
@@ -30,4 +29,4 @@ if ($business->menus->count() > 0) {
 
 echo "\nJSON Output Snippet:\n";
 $json = json_encode($business->load('menus'));
-echo substr($json, 0, 500) . "...\n";
+echo substr($json, 0, 500)."...\n";

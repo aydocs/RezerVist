@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
-    use HasFactory, \Illuminate\Database\Eloquent\SoftDeletes, \App\Traits\LogsActivity;
+    use \App\Traits\LogsActivity, HasFactory, \Illuminate\Database\Eloquent\SoftDeletes;
 
     protected $fillable = [
         'business_id',
@@ -24,7 +23,7 @@ class Menu extends Model
         'is_vegetarian',
         'is_vegan',
         'is_gluten_free',
-        'calories'
+        'calories',
     ];
 
     protected $casts = [
@@ -32,7 +31,7 @@ class Menu extends Model
         'is_available' => 'boolean',
         'is_vegetarian' => 'boolean',
         'is_vegan' => 'boolean',
-        'is_gluten_free' => 'boolean'
+        'is_gluten_free' => 'boolean',
     ];
 
     public function business()
@@ -44,14 +43,15 @@ class Menu extends Model
 
     public function getImageUrlAttribute()
     {
-        if (!$this->image) {
+        if (! $this->image) {
             return null;
         }
         // If it's already a full URL, return it
         if (filter_var($this->image, FILTER_VALIDATE_URL)) {
             return $this->image;
         }
+
         // Return storage URL
-        return asset('storage/' . $this->image);
+        return asset('storage/'.$this->image);
     }
 }

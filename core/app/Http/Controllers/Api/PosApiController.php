@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Business;
-use App\Models\Resource;
 use App\Models\Category;
-use App\Models\Reservation;
-use App\Http\Resources\ResourceResource; // Assuming we have or will create resources
+use App\Models\Resource;
+use Illuminate\Http\Request;
+
+// Assuming we have or will create resources
 
 class PosApiController extends Controller
 {
@@ -19,7 +19,7 @@ class PosApiController extends Controller
     {
         // 1. Check if middleware already identified the business
         $business = $request->attributes->get('business');
-        
+
         if ($business) {
             return $business;
         }
@@ -44,8 +44,8 @@ class PosApiController extends Controller
                 'latest_version' => config('pos.latest_version', '1.0.0'),
                 'force_update' => config('pos.force_update', false),
                 'download_url' => config('pos.download_url'),
-                'message' => config('pos.update_message')
-            ]
+                'message' => config('pos.update_message'),
+            ],
         ]);
     }
 
@@ -57,10 +57,10 @@ class PosApiController extends Controller
         $user = $request->user();
         $business = $user->business ?? $user->ownedBusiness;
 
-        if (!$business) {
+        if (! $business) {
             return response()->json([
                 'success' => false,
-                'message' => 'İşletme hesabı bulunamadı.'
+                'message' => 'İşletme hesabı bulunamadı.',
             ], 404);
         }
 
@@ -80,15 +80,15 @@ class PosApiController extends Controller
                 'category' => $business->category,
                 'description' => $business->description,
                 'subscription_status' => $business->subscription_status,
-                'has_master_pin' => !empty($business->master_pin),
+                'has_master_pin' => ! empty($business->master_pin),
                 'has_pos_access' => $business->hasFeature('pos_access'),
                 'user' => [
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
-                    'role' => $user->role
-                ]
-            ]
+                    'role' => $user->role,
+                ],
+            ],
         ]);
     }
 
@@ -100,21 +100,21 @@ class PosApiController extends Controller
         $user = $request->user();
         $business = $user->business ?? $user->ownedBusiness;
 
-        if (!$business) {
+        if (! $business) {
             return response()->json([
                 'success' => false,
-                'message' => 'İşletme hesabı bulunamadı.'
+                'message' => 'İşletme hesabı bulunamadı.',
             ], 404);
         }
 
         $business->update([
             'device_fingerprint' => null,
-            'device_registered_at' => null
+            'device_registered_at' => null,
         ]);
 
         return response()->json([
             'success' => true,
-            'message' => 'Cihaz bağlantısı başarıyla kesildi.'
+            'message' => 'Cihaz bağlantısı başarıyla kesildi.',
         ]);
     }
 
@@ -125,63 +125,63 @@ class PosApiController extends Controller
     {
         $business = $this->getBusiness($request);
 
-        if (!$business) {
+        if (! $business) {
             return response()->json([
                 'success' => false,
-                'message' => 'İşletme hesabı bulunamadı.'
+                'message' => 'İşletme hesabı bulunamadı.',
             ], 404);
         }
 
         // Fetch resources
         $resources = $business->resources()->get()->map(function ($resource) {
-                // Determine status - check reservations first
-                $status = 'empty';
-                $activeRes = $resource->reservations()
-                    ->whereIn('status', ['checked_in', 'confirmed'])
-                    ->where('start_time', '<=', now())
-                    ->where('end_time', '>=', now())
-                    ->first();
+            // Determine status - check reservations first
+            $status = 'empty';
+            $activeRes = $resource->reservations()
+                ->whereIn('status', ['checked_in', 'confirmed'])
+                ->where('start_time', '<=', now())
+                ->where('end_time', '>=', now())
+                ->first();
 
-                if ($activeRes) {
-                    $status = $activeRes->status === 'checked_in' ? 'occupied' : 'reserved';
-                }
+            if ($activeRes) {
+                $status = $activeRes->status === 'checked_in' ? 'occupied' : 'reserved';
+            }
 
-                // Also check for active orders - explicitly pick the LATEST active one
-                $activeOrder = $resource->orders()
-                    ->where('status', 'active')
-                    ->latest()
-                    ->first();
-                
-                if ($activeOrder) {
-                    $status = 'occupied';
-                    // Force refresh totals from items
-                    $this->refreshOrderTotals($activeOrder);
-                }
+            // Also check for active orders - explicitly pick the LATEST active one
+            $activeOrder = $resource->orders()
+                ->where('status', 'active')
+                ->latest()
+                ->first();
 
-                return [
-                    'id' => $resource->id,
-                    'name' => $resource->name,
-                    'category' => $resource->category, // Salon, Bahçe
-                    'capacity' => $resource->capacity,
-                    'status' => $status,
-                    'reservation' => $activeRes ? [
-                        'id' => $activeRes->id,
-                        'customer_name' => $activeRes->user ? $activeRes->user->name : 'Misafir',
-                        'start_time' => $activeRes->start_time,
-                    ] : null,
-                    'order' => $activeOrder ? [
-                        'id' => $activeOrder->id,
-                        'opened_at' => $activeOrder->opened_at,
-                        'total_amount' => (float)$activeOrder->total_amount,
-                        'paid_amount' => (float)($activeOrder->paid_amount ?? 0),
-                        'remaining_amount' => (float)$activeOrder->total_amount - (float)($activeOrder->paid_amount ?? 0),
-                    ] : null
-                ];
-            });
+            if ($activeOrder) {
+                $status = 'occupied';
+                // Force refresh totals from items
+                $this->refreshOrderTotals($activeOrder);
+            }
+
+            return [
+                'id' => $resource->id,
+                'name' => $resource->name,
+                'category' => $resource->category, // Salon, Bahçe
+                'capacity' => $resource->capacity,
+                'status' => $status,
+                'reservation' => $activeRes ? [
+                    'id' => $activeRes->id,
+                    'customer_name' => $activeRes->user ? $activeRes->user->name : 'Misafir',
+                    'start_time' => $activeRes->start_time,
+                ] : null,
+                'order' => $activeOrder ? [
+                    'id' => $activeOrder->id,
+                    'opened_at' => $activeOrder->opened_at,
+                    'total_amount' => (float) $activeOrder->total_amount,
+                    'paid_amount' => (float) ($activeOrder->paid_amount ?? 0),
+                    'remaining_amount' => (float) $activeOrder->total_amount - (float) ($activeOrder->paid_amount ?? 0),
+                ] : null,
+            ];
+        });
 
         return response()->json([
             'success' => true,
-            'data' => $resources
+            'data' => $resources,
         ]);
     }
 
@@ -191,7 +191,7 @@ class PosApiController extends Controller
     public function getMenu(Request $request)
     {
         $business = $this->getBusiness($request);
-        if (!$business) {
+        if (! $business) {
             return response()->json(['success' => false, 'message' => 'İşletme bulunamadı.'], 404);
         }
         $items = $business->menus()->get();
@@ -200,21 +200,21 @@ class PosApiController extends Controller
         foreach ($items as $item) {
             $cat = trim($item->category ?? '');
             $catName = empty($cat) ? 'DİĞER' : mb_strtoupper($cat, 'UTF-8');
-            
-            if (!isset($grouped[$catName])) {
+
+            if (! isset($grouped[$catName])) {
                 $grouped[$catName] = [];
             }
-            
+
             $grouped[$catName][] = [
                 'id' => $item->id,
                 'name' => $item->name,
                 'price' => floatval($item->price),
                 'description' => $item->description,
-                'image' => $item->image ? asset('storage/' . $item->image) : null,
-                'is_available' => (bool)$item->is_available,
+                'image' => $item->image ? asset('storage/'.$item->image) : null,
+                'is_available' => (bool) $item->is_available,
                 'options' => $item->options,
                 'unit_type' => $item->unit_type ?: 'piece',
-                'background_color' => $item->background_color
+                'background_color' => $item->background_color,
             ];
         }
 
@@ -222,13 +222,13 @@ class PosApiController extends Controller
         foreach ($grouped as $name => $items) {
             $menu[] = [
                 'name' => $name,
-                'items' => $items
+                'items' => $items,
             ];
         }
 
         return response()->json([
             'success' => true,
-            'data' => $menu
+            'data' => $menu,
         ]);
     }
 
@@ -238,19 +238,20 @@ class PosApiController extends Controller
     public function getOrder(Request $request, $resourceId)
     {
         \Log::info("POS_GET_ORDER: Called with resourceId: {$resourceId}");
-        
+
         $business = $this->getBusiness($request);
-        
-        if (!$business) {
-            \Log::error("POS_GET_ORDER: Business not found for user " . ($request->user() ? $request->user()->id : 'null'));
+
+        if (! $business) {
+            \Log::error('POS_GET_ORDER: Business not found for user '.($request->user() ? $request->user()->id : 'null'));
+
             return response()->json([
                 'success' => false,
-                'message' => 'İşletme hesabı bulunamadı.'
+                'message' => 'İşletme hesabı bulunamadı.',
             ], 404);
         }
 
         \Log::info("POS_GET_ORDER: Business {$business->id}, looking for active order on resource {$resourceId}");
-        
+
         $order = \App\Models\Order::where('business_id', $business->id)
             ->where(function ($query) use ($resourceId) {
                 if ($resourceId === 'takeaway') {
@@ -260,16 +261,16 @@ class PosApiController extends Controller
                 }
             })
             ->where('status', 'active')
-            ->with(['items' => function($query) {
+            ->with(['items' => function ($query) {
                 $query->whereNotIn('status', ['completed', 'cancelled']);
             }])
             ->first();
 
-        \Log::info("POS_GET_ORDER: Order found: " . ($order ? $order->id : 'null'));
+        \Log::info('POS_GET_ORDER: Order found: '.($order ? $order->id : 'null'));
 
         return response()->json([
             'success' => true,
-            'data' => $order
+            'data' => $order,
         ]);
     }
 
@@ -289,20 +290,20 @@ class PosApiController extends Controller
             ->latest()
             ->first();
 
-        if (!$order) {
+        if (! $order) {
             $order = \App\Models\Order::create([
                 'business_id' => $business->id,
                 'resource_id' => $resourceId === 'takeaway' ? null : $resourceId,
                 'status' => 'active',
                 'opened_at' => now(),
-                'payment_status' => 'unpaid'
+                'payment_status' => 'unpaid',
             ]);
         }
 
         foreach ($items as $itemData) {
             $unitPrice = floatval($itemData['unit_price']);
             $quantity = floatval($itemData['quantity']);
-            
+
             // If weight-based, quantity is in kilograms (e.g., 0.250 for 250g)
             $totalPrice = $unitPrice * $quantity;
 
@@ -316,19 +317,19 @@ class PosApiController extends Controller
                 'unit_price' => $unitPrice,
                 'total_price' => $totalPrice,
                 'notes' => $itemData['notes'] ?? null,
-                'status' => 'pending'
+                'status' => 'pending',
             ]);
 
             // Stock Management: Decrement stock if enabled
             if (isset($itemData['menu_id'])) {
                 $menuItem = \App\Models\Menu::find($itemData['menu_id']);
                 if ($menuItem && $menuItem->stock_enabled) {
-                    $quantityToDecrement = ($menuItem->unit_type === 'weight') 
+                    $quantityToDecrement = ($menuItem->unit_type === 'weight')
                         ? ceil($quantity) // For weight items, round up quantity
                         : $quantity;
-                    
+
                     $menuItem->decrement('stock_quantity', $quantityToDecrement);
-                    
+
                     // Check if stock is low and item should be marked unavailable
                     if ($menuItem->stock_quantity <= 0) {
                         $menuItem->update(['is_available' => false]);
@@ -342,9 +343,9 @@ class PosApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $order->fresh()->load(['items' => function($q) {
+            'data' => $order->fresh()->load(['items' => function ($q) {
                 $q->whereNotIn('status', ['completed', 'cancelled']);
-            }])
+            }]),
         ]);
     }
 
@@ -354,14 +355,14 @@ class PosApiController extends Controller
     public function getOrders(Request $request)
     {
         $business = $this->getBusiness($request);
-        
+
         $query = \App\Models\Order::where('business_id', $business->id)
             ->with(['items', 'resource']);
 
         if ($request->filled('start_date')) {
             $query->where('created_at', '>=', \Carbon\Carbon::parse($request->input('start_date'))->startOfDay());
         }
-        
+
         if ($request->filled('end_date')) {
             $query->where('created_at', '<=', \Carbon\Carbon::parse($request->input('end_date'))->endOfDay());
         }
@@ -372,10 +373,9 @@ class PosApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $orders
+            'data' => $orders,
         ]);
     }
-
 
     /**
      * Validate staff PIN.
@@ -396,8 +396,8 @@ class PosApiController extends Controller
                     'id' => 0,
                     'name' => 'İşletme Sahibi',
                     'position' => 'Admin',
-                    'permissions' => ['all']
-                ]
+                    'permissions' => ['all'],
+                ],
             ]);
         }
 
@@ -407,10 +407,10 @@ class PosApiController extends Controller
             ->where('is_active', true)
             ->first();
 
-        if (!$staff) {
+        if (! $staff) {
             return response()->json([
                 'success' => false,
-                'message' => 'Geçersiz PIN kodu.'
+                'message' => 'Geçersiz PIN kodu.',
             ], 403);
         }
 
@@ -421,8 +421,8 @@ class PosApiController extends Controller
                 'id' => $staff->id,
                 'name' => $staff->name,
                 'position' => $staff->position,
-                'permissions' => $staff->permissions ?: ['take_orders', 'view_tables']
-            ]
+                'permissions' => $staff->permissions ?: ['take_orders', 'view_tables'],
+            ],
         ]);
     }
 
@@ -433,14 +433,14 @@ class PosApiController extends Controller
     {
         $business = $this->getBusiness($request);
         $validated = $request->validate([
-            'pin' => 'required|string|size:8'
+            'pin' => 'required|string|size:8',
         ]);
 
         $business->update(['master_pin' => $validated['pin']]);
 
         return response()->json([
             'success' => true,
-            'message' => 'Master PIN başarıyla güncellendi.'
+            'message' => 'Master PIN başarıyla güncellendi.',
         ]);
     }
 
@@ -451,20 +451,20 @@ class PosApiController extends Controller
     {
         $business = $this->getBusiness($request);
         $validated = $request->validate([
-            'pin' => 'required|string|size:8'
+            'pin' => 'required|string|size:8',
         ]);
 
         // Check if master PIN matches
         if ($business->master_pin !== $validated['pin']) {
             return response()->json([
                 'success' => false,
-                'message' => 'Geçersiz Master PIN.'
+                'message' => 'Geçersiz Master PIN.',
             ], 401);
         }
 
         return response()->json([
             'success' => true,
-            'message' => 'Master PIN doğrulandı.'
+            'message' => 'Master PIN doğrulandı.',
         ]);
     }
 
@@ -475,62 +475,64 @@ class PosApiController extends Controller
     {
         $business = $this->getBusiness($request);
 
-        if (!$business) {
-            \Log::error("GetDailySummary: Business not found for user " . $request->user()->id);
+        if (! $business) {
+            \Log::error('GetDailySummary: Business not found for user '.$request->user()->id);
+
             return response()->json([
                 'success' => false,
-                'message' => 'İşletme hesabı bulunamadı.'
+                'message' => 'İşletme hesabı bulunamadı.',
             ], 404);
         }
-        
+
         try {
             $startDate = $request->input('start_date') ? \Carbon\Carbon::parse($request->input('start_date'))->startOfDay() : now()->startOfDay();
             $endDate = $request->input('end_date') ? \Carbon\Carbon::parse($request->input('end_date'))->endOfDay() : now()->endOfDay();
-            
+
             \Log::info("GetDailySummary: Business {$business->id}, Start: {$startDate}, End: {$endDate}");
         } catch (\Exception $e) {
-             \Log::error("GetDailySummary: Date parse error: " . $e->getMessage());
-             return response()->json(['success' => false, 'message' => 'Geçersiz tarih formatı.'], 400);
+            \Log::error('GetDailySummary: Date parse error: '.$e->getMessage());
+
+            return response()->json(['success' => false, 'message' => 'Geçersiz tarih formatı.'], 400);
         }
 
         // Base query for completed items within date range
-        $itemsQuery = \App\Models\OrderItem::whereHas('order', function($q) use ($business, $startDate, $endDate) {
-                $q->where('business_id', $business->id)
-                  ->whereBetween('updated_at', [$startDate, $endDate]);
-            })
+        $itemsQuery = \App\Models\OrderItem::whereHas('order', function ($q) use ($business, $startDate, $endDate) {
+            $q->where('business_id', $business->id)
+                ->whereBetween('updated_at', [$startDate, $endDate]);
+        })
             ->where('status', 'completed');
 
-        $totalSales = (float)$itemsQuery->sum('total_price');
+        $totalSales = (float) $itemsQuery->sum('total_price');
 
         // Payment method breakdown
-        $cashTotal = (float)\App\Models\OrderItem::whereHas('order', function($q) use ($business, $startDate, $endDate) {
-                $q->where('business_id', $business->id)
-                  ->where(function($qq) {
-                      $qq->where('payment_method', 'cash')
+        $cashTotal = (float) \App\Models\OrderItem::whereHas('order', function ($q) use ($business, $startDate, $endDate) {
+            $q->where('business_id', $business->id)
+                ->where(function ($qq) {
+                    $qq->where('payment_method', 'cash')
                         ->orWhere('payment_method', 'nakit');
-                  })
-                  ->whereBetween('updated_at', [$startDate, $endDate]);
-            })
+                })
+                ->whereBetween('updated_at', [$startDate, $endDate]);
+        })
             ->where('status', 'completed')
             ->sum('total_price');
 
-        $cardTotal = (float)\App\Models\OrderItem::whereHas('order', function($q) use ($business, $startDate, $endDate) {
-                $q->where('business_id', $business->id)
-                  ->where(function($qq) {
-                      $qq->where('payment_method', 'credit_card')
+        $cardTotal = (float) \App\Models\OrderItem::whereHas('order', function ($q) use ($business, $startDate, $endDate) {
+            $q->where('business_id', $business->id)
+                ->where(function ($qq) {
+                    $qq->where('payment_method', 'credit_card')
                         ->orWhere('payment_method', 'card')
                         ->orWhere('payment_method', 'kredi_karti');
-                  })
-                  ->whereBetween('updated_at', [$startDate, $endDate]);
-            })
+                })
+                ->whereBetween('updated_at', [$startDate, $endDate]);
+        })
             ->where('status', 'completed')
             ->sum('total_price');
 
         // Category breakdown for charts
-        $categorySales = \App\Models\OrderItem::whereHas('order', function($q) use ($business, $startDate, $endDate) {
-                $q->where('business_id', $business->id)
-                  ->whereBetween('updated_at', [$startDate, $endDate]);
-            })
+        $categorySales = \App\Models\OrderItem::whereHas('order', function ($q) use ($business, $startDate, $endDate) {
+            $q->where('business_id', $business->id)
+                ->whereBetween('updated_at', [$startDate, $endDate]);
+        })
             ->where('status', 'completed')
             ->select('name', \DB::raw('SUM(quantity) as qty'), \DB::raw('SUM(total_price) as total'))
             ->groupBy('name')
@@ -549,13 +551,13 @@ class PosApiController extends Controller
             'category_sales' => $categorySales,
             'period' => [
                 'start' => $startDate->toDateTimeString(),
-                'end' => $endDate->toDateTimeString()
-            ]
+                'end' => $endDate->toDateTimeString(),
+            ],
         ];
 
         return response()->json([
             'success' => true,
-            'data' => $summary
+            'data' => $summary,
         ]);
     }
 
@@ -574,7 +576,7 @@ class PosApiController extends Controller
             'method' => 'required|in:cash,credit_card',
             'is_partial' => 'nullable|boolean',
             'item_ids' => 'nullable|array',
-            'discount' => 'nullable|numeric'
+            'discount' => 'nullable|numeric',
         ]);
 
         \Illuminate\Support\Facades\DB::beginTransaction();
@@ -585,13 +587,13 @@ class PosApiController extends Controller
             $itemIds = $validated['item_ids'] ?? [];
 
             // 1. Update paid amount and handle discount
-            // Note: We will force a full recalculation from items later anyway, 
+            // Note: We will force a full recalculation from items later anyway,
             // but we keep the transactional update for consistent state.
             if ($discount > 0) {
                 $order->decrement('total_amount', $discount);
             }
-            
-            if (!$isPartial) {
+
+            if (! $isPartial) {
                 $order->update([
                     'paid_amount' => $order->total_amount,
                     'payment_status' => 'paid',
@@ -603,18 +605,18 @@ class PosApiController extends Controller
                 // Mark all items as completed
                 $order->items()->whereNotIn('status', ['cancelled', 'deleted'])->update([
                     'status' => 'completed',
-                    'updated_at' => now()
+                    'updated_at' => now(),
                 ]);
             } else {
                 // Partial or Itemized
-                if (!empty($itemIds)) {
+                if (! empty($itemIds)) {
                     $counts = array_count_values($itemIds);
-                    \Log::info("POS_PAYMENT: Processing itemized payment for Order {$order->id}. Item counts: " . json_encode($counts));
+                    \Log::info("POS_PAYMENT: Processing itemized payment for Order {$order->id}. Item counts: ".json_encode($counts));
 
                     foreach ($counts as $itemId => $paidCount) {
                         // Use fresh query to avoid stale collection state
                         $item = \App\Models\OrderItem::where('order_id', $order->id)->where('id', $itemId)->first();
-                        
+
                         if ($item && $item->status !== 'completed') {
                             $currentQty = floatval($item->quantity);
                             \Log::info("POS_PAYMENT: Splitting Item {$itemId}. Current Qty: {$currentQty}, Paid Count: {$paidCount}");
@@ -624,7 +626,7 @@ class PosApiController extends Controller
                                 $newQty = $currentQty - $paidCount;
                                 $item->update([
                                     'quantity' => $newQty,
-                                    'total_price' => $item->unit_price * $newQty
+                                    'total_price' => $item->unit_price * $newQty,
                                 ]);
 
                                 // Create new row for the paid portion
@@ -638,7 +640,7 @@ class PosApiController extends Controller
                                 // Full row paid
                                 $item->update([
                                     'status' => 'completed',
-                                    'updated_at' => now()
+                                    'updated_at' => now(),
                                 ]);
                                 \Log::info("POS_PAYMENT: Full item {$itemId} marked as completed.");
                             }
@@ -654,7 +656,7 @@ class PosApiController extends Controller
                             'payment_status' => 'paid',
                             'payment_method' => $validated['method'],
                             'status' => 'completed',
-                            'closed_at' => now()
+                            'closed_at' => now(),
                         ]);
                     }
                 }
@@ -664,15 +666,17 @@ class PosApiController extends Controller
             $this->refreshOrderTotals($order);
 
             \Illuminate\Support\Facades\DB::commit();
+
             return response()->json([
                 'success' => true,
-                'message' => 'Ödeme başarıyla kaydedildi.'
+                'message' => 'Ödeme başarıyla kaydedildi.',
             ]);
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\DB::rollBack();
+
             return response()->json([
                 'success' => false,
-                'message' => 'Ödeme hatası: ' . $e->getMessage()
+                'message' => 'Ödeme hatası: '.$e->getMessage(),
             ], 500);
         }
     }
@@ -682,15 +686,17 @@ class PosApiController extends Controller
      */
     private function refreshOrderTotals(&$order)
     {
-        if (!$order) return;
+        if (! $order) {
+            return;
+        }
 
         // Recalculate total_amount (All items except cancelled/deleted)
-        $total = (float)\App\Models\OrderItem::where('order_id', $order->id)
+        $total = (float) \App\Models\OrderItem::where('order_id', $order->id)
             ->whereNotIn('status', ['cancelled', 'deleted'])
             ->sum(\DB::raw('unit_price * quantity'));
 
         // Recalculate paid_amount (Only completed items)
-        $paid = (float)\App\Models\OrderItem::where('order_id', $order->id)
+        $paid = (float) \App\Models\OrderItem::where('order_id', $order->id)
             ->where('status', 'completed')
             ->sum(\DB::raw('unit_price * quantity'));
 
@@ -706,7 +712,7 @@ class PosApiController extends Controller
         $order->update([
             'total_amount' => $total,
             'paid_amount' => $paid,
-            'payment_status' => $paymentStatus
+            'payment_status' => $paymentStatus,
         ]);
 
         // Update in-memory for immediate use in response
@@ -727,7 +733,7 @@ class PosApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $staff
+            'data' => $staff,
         ]);
     }
 
@@ -742,16 +748,16 @@ class PosApiController extends Controller
             ->firstOrFail();
 
         $validated = $request->validate([
-            'permissions' => 'required|array'
+            'permissions' => 'required|array',
         ]);
 
         $staff->update([
-            'permissions' => $validated['permissions']
+            'permissions' => $validated['permissions'],
         ]);
 
         return response()->json([
             'success' => true,
-            'message' => 'Yetkiler başarıyla güncellendi.'
+            'message' => 'Yetkiler başarıyla güncellendi.',
         ]);
     }
 
@@ -766,16 +772,16 @@ class PosApiController extends Controller
             ->firstOrFail();
 
         $validated = $request->validate([
-            'pin' => 'required|string|size:4'
+            'pin' => 'required|string|size:4',
         ]);
 
         $staff->update([
-            'pin_code' => $validated['pin']
+            'pin_code' => $validated['pin'],
         ]);
 
         return response()->json([
             'success' => true,
-            'message' => 'PIN kodu başarıyla güncellendi.'
+            'message' => 'PIN kodu başarıyla güncellendi.',
         ]);
     }
 
@@ -816,13 +822,13 @@ class PosApiController extends Controller
             'stock_enabled' => $request->boolean('stock_enabled', false),
             'stock_quantity' => $request->input('stock_quantity'),
             'low_stock_alert' => $request->input('low_stock_alert'),
-            'is_available' => true
+            'is_available' => true,
         ]);
 
         return response()->json([
             'success' => true,
             'message' => 'Ürün başarıyla eklendi.',
-            'data' => $item
+            'data' => $item,
         ]);
     }
 
@@ -870,7 +876,7 @@ class PosApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Ürün güncellendi.'
+            'message' => 'Ürün güncellendi.',
         ]);
     }
 
@@ -882,7 +888,7 @@ class PosApiController extends Controller
         $business = $this->getBusiness($request);
         $validated = $request->validate([
             'quantity' => 'required|numeric|min:0.01',
-            'reason' => 'nullable|string' // For audit log if needed
+            'reason' => 'nullable|string', // For audit log if needed
         ]);
 
         $order = \App\Models\Order::where('business_id', $business->id)
@@ -896,7 +902,7 @@ class PosApiController extends Controller
         if ($item->status === 'completed') {
             return response()->json([
                 'success' => false,
-                'message' => 'Ödenmiş ürün güncellenemez. İptal işlemi yapmalısınız.'
+                'message' => 'Ödenmiş ürün güncellenemez. İptal işlemi yapmalısınız.',
             ], 422);
         }
 
@@ -915,7 +921,7 @@ class PosApiController extends Controller
                 if ($diff > 0) {
                     // Increasing quantity - Consume stock
                     if ($menuItem->stock_quantity < $diff) {
-                         return response()->json(['success' => false, 'message' => 'Yetersiz stok.'], 422);
+                        return response()->json(['success' => false, 'message' => 'Yetersiz stok.'], 422);
                     }
                     $menuItem->decrement('stock_quantity', $diff);
                 } else {
@@ -929,7 +935,7 @@ class PosApiController extends Controller
         $item->update([
             'quantity' => $newQty,
             'total_price' => $item->unit_price * $newQty,
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
 
         // Recalculate totals
@@ -938,9 +944,9 @@ class PosApiController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Ürün güncellendi.',
-            'data' => $order->fresh()->load(['items' => function($q) {
+            'data' => $order->fresh()->load(['items' => function ($q) {
                 $q->whereNotIn('status', ['completed', 'cancelled', 'deleted']);
-            }])
+            }]),
         ]);
     }
 
@@ -950,7 +956,7 @@ class PosApiController extends Controller
     public function deleteOrderItem(Request $request, $orderId, $itemId)
     {
         $business = $this->getBusiness($request);
-        
+
         $order = \App\Models\Order::where('business_id', $business->id)
             ->where('id', $orderId)
             ->firstOrFail();
@@ -961,15 +967,15 @@ class PosApiController extends Controller
 
         if ($item->status === 'completed') {
             return response()->json([
-                'success' => false, 
-                'message' => 'Ödenmiş ürün silinemez. İptal işlemi yapmalısınız.'
+                'success' => false,
+                'message' => 'Ödenmiş ürün silinemez. İptal işlemi yapmalısınız.',
             ], 422);
         }
 
         // Soft delete by changing status
         $item->update([
             'status' => 'deleted',
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
 
         // Recalculate totals
@@ -983,11 +989,12 @@ class PosApiController extends Controller
         if ($validItemsCount === 0) {
             // No valid items left (all deleted or cancelled)
             $order->delete();
+
             return response()->json([
                 'success' => true,
                 'message' => 'Siparişte ürün kalmadığı için sipariş/masa kapatıldı.',
                 'order_deleted' => true,
-                'data' => null
+                'data' => null,
             ]);
         }
 
@@ -995,9 +1002,9 @@ class PosApiController extends Controller
             'success' => true,
             'message' => 'Ürün siparişten silindi.',
             'order_deleted' => false,
-            'data' => $order->fresh()->load(['items' => function($q) {
+            'data' => $order->fresh()->load(['items' => function ($q) {
                 $q->whereNotIn('status', ['completed', 'cancelled', 'deleted']);
-            }])
+            }]),
         ]);
     }
 
@@ -1012,10 +1019,9 @@ class PosApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Ürün silindi.'
+            'message' => 'Ürün silindi.',
         ]);
     }
-
 
     /**
      * Store a new staff member.
@@ -1027,14 +1033,14 @@ class PosApiController extends Controller
             'name' => 'required|string',
             'position' => 'required|string',
             'pin_code' => 'required|string|size:4',
-            'permissions' => 'nullable|array'
+            'permissions' => 'nullable|array',
         ]);
 
         // Unique check within business
         $exists = \App\Models\Staff::where('business_id', $business->id)
             ->where('pin_code', $validated['pin_code'])
             ->exists();
-        
+
         if ($exists) {
             return response()->json(['success' => false, 'message' => 'Bu PIN kodu zaten başka bir personel tarafından kullanılıyor.'], 422);
         }
@@ -1045,13 +1051,13 @@ class PosApiController extends Controller
             'position' => $validated['position'],
             'pin_code' => $validated['pin_code'],
             'permissions' => $validated['permissions'] ?? ['take_orders', 'view_tables'],
-            'is_active' => true
+            'is_active' => true,
         ]);
 
         return response()->json([
             'success' => true,
             'message' => 'Personel başarıyla eklendi.',
-            'data' => $staff
+            'data' => $staff,
         ]);
     }
 
@@ -1065,8 +1071,8 @@ class PosApiController extends Controller
         $staff->delete();
 
         return response()->json([
-            'success' => true, 
-            'message' => 'Personel silindi.'
+            'success' => true,
+            'message' => 'Personel silindi.',
         ]);
     }
 
@@ -1088,13 +1094,13 @@ class PosApiController extends Controller
             'capacity' => $validated['capacity'],
             'category' => mb_strtoupper($validated['category'], 'UTF-8'),
             'is_available' => true,
-            'type' => 'table'
+            'type' => 'table',
         ]);
 
         return response()->json([
             'success' => true,
             'message' => 'Masa başarıyla eklendi.',
-            'data' => $resource
+            'data' => $resource,
         ]);
     }
 
@@ -1120,7 +1126,7 @@ class PosApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Masa güncellendi.'
+            'message' => 'Masa güncellendi.',
         ]);
     }
 
@@ -1131,7 +1137,7 @@ class PosApiController extends Controller
     {
         $business = $this->getBusiness($request);
         $resource = \App\Models\Resource::where('business_id', $business->id)->findOrFail($id);
-        
+
         if ($resource->orders()->where('status', 'active')->exists()) {
             return response()->json(['success' => false, 'message' => 'Açık siparişi olan masa silinemez.'], 422);
         }
@@ -1140,7 +1146,7 @@ class PosApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Masa silindi.'
+            'message' => 'Masa silindi.',
         ]);
     }
 
@@ -1165,7 +1171,7 @@ class PosApiController extends Controller
             ->latest()
             ->first();
 
-        if (!$sourceOrder) {
+        if (! $sourceOrder) {
             return response()->json(['success' => false, 'message' => 'Taşınacak masada açık sipariş bulunamadı.']);
         }
 
@@ -1177,11 +1183,11 @@ class PosApiController extends Controller
 
         \DB::beginTransaction();
         try {
-            if (!$targetOrder) {
+            if (! $targetOrder) {
                 // MOVE OPERATION: Target is empty, just update the resource_id
                 $sourceOrder->resource_id = $toTableId;
                 $sourceOrder->save();
-                
+
                 $message = 'Masa başarıyla taşındı.';
             } else {
                 // MERGE OPERATION: Target is occupied, move items
@@ -1194,17 +1200,19 @@ class PosApiController extends Controller
                 $this->refreshOrderTotals($targetOrder);
 
                 // Delete source order
-                $sourceOrder->delete(); 
-                
+                $sourceOrder->delete();
+
                 $message = 'Masalar başarıyla birleştirildi.';
             }
 
             \DB::commit();
+
             return response()->json(['success' => true, 'message' => $message]);
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['success' => false, 'message' => 'İşlem sırasında hata oluştu: ' . $e->getMessage()]);
+
+            return response()->json(['success' => false, 'message' => 'İşlem sırasında hata oluştu: '.$e->getMessage()]);
         }
     }
 
@@ -1214,20 +1222,20 @@ class PosApiController extends Controller
     public function getKitchenOrders(Request $request)
     {
         $business = $this->getBusiness($request);
-        
+
         $orders = \App\Models\Order::where('business_id', $business->id)
             ->whereIn('status', ['active', 'confirmed'])
             ->where('payment_status', 'unpaid')
-            ->with(['resource', 'items' => function($query) {
+            ->with(['resource', 'items' => function ($query) {
                 $query->whereNotIn('status', ['completed', 'cancelled'])
-                      ->with('menu'); // Load menu details for category
+                    ->with('menu'); // Load menu details for category
             }])
             ->orderBy('created_at', 'asc')
             ->get();
 
         return response()->json([
             'success' => true,
-            'data' => $orders
+            'data' => $orders,
         ]);
     }
 
@@ -1237,7 +1245,7 @@ class PosApiController extends Controller
     public function updateItemStatus(Request $request, $id)
     {
         $validated = $request->validate([
-            'status' => 'required|in:pending,preparing,ready,completed'
+            'status' => 'required|in:pending,preparing,ready,completed',
         ]);
 
         $item = \App\Models\OrderItem::findOrFail($id);
@@ -1246,7 +1254,7 @@ class PosApiController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Durum güncellendi.',
-            'data' => $item
+            'data' => $item,
         ]);
     }
 
@@ -1260,7 +1268,7 @@ class PosApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $happyHours
+            'data' => $happyHours,
         ]);
     }
 
@@ -1274,13 +1282,13 @@ class PosApiController extends Controller
             ->where('is_active', true)
             ->get();
 
-        $activeNow = $allHappyHours->filter(function($hh) {
+        $activeNow = $allHappyHours->filter(function ($hh) {
             return $hh->isActiveNow();
         });
 
         return response()->json([
             'success' => true,
-            'data' => $activeNow->values()
+            'data' => $activeNow->values(),
         ]);
     }
 
@@ -1303,12 +1311,12 @@ class PosApiController extends Controller
 
         $happyHour = \App\Models\HappyHour::create([
             'business_id' => $business->id,
-            ...$validated
+            ...$validated,
         ]);
 
         return response()->json([
             'success' => true,
-            'data' => $happyHour
+            'data' => $happyHour,
         ]);
     }
 
@@ -1329,14 +1337,14 @@ class PosApiController extends Controller
             'days_of_week' => 'required|array',
             'applicable_categories' => 'nullable|array',
             'applicable_items' => 'nullable|array',
-            'is_active' => 'boolean'
+            'is_active' => 'boolean',
         ]);
 
         $happyHour->update($validated);
 
         return response()->json([
             'success' => true,
-            'data' => $happyHour
+            'data' => $happyHour,
         ]);
     }
 
@@ -1350,7 +1358,7 @@ class PosApiController extends Controller
         $happyHour->delete();
 
         return response()->json([
-            'success' => true
+            'success' => true,
         ]);
     }
 
@@ -1362,11 +1370,11 @@ class PosApiController extends Controller
         $business = $request->business;
         $days = $request->input('days', 7); // Default to last 7 days
 
-        $topProducts = \App\Models\OrderItem::whereHas('order', function($q) use ($business, $days) {
-                $q->where('business_id', $business->id)
-                  ->where('created_at', '>=', now()->subDays($days))
-                  ->where('payment_status', 'paid');
-            })
+        $topProducts = \App\Models\OrderItem::whereHas('order', function ($q) use ($business, $days) {
+            $q->where('business_id', $business->id)
+                ->where('created_at', '>=', now()->subDays($days))
+                ->where('payment_status', 'paid');
+        })
             ->selectRaw('name, SUM(quantity) as total_quantity, SUM(total_price) as total_revenue, COUNT(DISTINCT order_id) as order_count')
             ->groupBy('name')
             ->orderBy('total_revenue', 'DESC')
@@ -1375,7 +1383,7 @@ class PosApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $topProducts
+            'data' => $topProducts,
         ]);
     }
 
@@ -1385,7 +1393,7 @@ class PosApiController extends Controller
     public function getHourlySales(Request $request)
     {
         $business = $request->business;
-        
+
         $hourlySales = \App\Models\Order::where('business_id', $business->id)
             ->where('payment_status', 'paid')
             ->whereDate('created_at', today())
@@ -1396,7 +1404,7 @@ class PosApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $hourlySales
+            'data' => $hourlySales,
         ]);
     }
 
@@ -1417,7 +1425,7 @@ class PosApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $weeklyData
+            'data' => $weeklyData,
         ]);
     }
 
@@ -1438,8 +1446,7 @@ class PosApiController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $breakdown
+            'data' => $breakdown,
         ]);
     }
 }
-

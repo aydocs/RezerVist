@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Withdrawal;
 use App\Models\WalletTransaction;
+use App\Models\Withdrawal;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -13,7 +13,7 @@ class WithdrawalController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        
+
         $request->validate([
             'amount' => 'required|numeric|min:100', // Minimum 100 TL
             'iban' => 'required|string|size:26|starts_with:TR',

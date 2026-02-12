@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Business;
 use App\Models\Menu;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 
 class RichMenuSeeder extends Seeder
 {
@@ -16,18 +16,20 @@ class RichMenuSeeder extends Seeder
     {
         // 1. Find the business (owner1@test.com)
         $user = User::where('email', 'owner1@test.com')->first();
-        if (!$user) {
-            $this->command->error("User owner1@test.com not found!");
+        if (! $user) {
+            $this->command->error('User owner1@test.com not found!');
+
             return;
         }
 
         $business = Business::where('owner_id', $user->id)->first();
-        if (!$business) {
-            $this->command->error("Business for owner1@test.com not found!");
+        if (! $business) {
+            $this->command->error('Business for owner1@test.com not found!');
+
             return;
         }
 
-        $this->command->info("Creating rich menu for: " . $business->name);
+        $this->command->info('Creating rich menu for: '.$business->name);
 
         // 2. Clear existing menu (optional, but good for clean slate)
         Menu::where('business_id', $business->id)->delete();
@@ -110,14 +112,14 @@ class RichMenuSeeder extends Seeder
                 ['name' => 'Ice Latte', 'price' => 100, 'desc' => 'Soğuk süt ve espresso, buzlu.'],
                 ['name' => 'Milkshake', 'price' => 120, 'desc' => 'Çilek, Çikolata veya Vanilya.'],
                 ['name' => 'Taze Portakal Suyu', 'price' => 90, 'desc' => 'Sıkma portakal suyu.'],
-            ]
+            ],
         ];
 
         foreach ($menuData as $category => $items) {
             foreach ($items as $item) {
                 // Assign image based on category
                 $imagePath = null;
-                
+
                 // Default mapping
                 switch ($category) {
                     case 'KAHVALTI VE TOSTLAR':
@@ -146,7 +148,7 @@ class RichMenuSeeder extends Seeder
                     default:
                         $imagePath = null;
                 }
-                
+
                 // Add specific options for certain items
                 $options = null;
                 if ($item['name'] === 'Çay (Bardak)' || $item['name'] === 'Çay (Fincan)') {
@@ -158,20 +160,20 @@ class RichMenuSeeder extends Seeder
                             'items' => [
                                 ['name' => 'Açık', 'price_diff' => 0],
                                 ['name' => 'Normal', 'price_diff' => 0],
-                                ['name' => 'Demli', 'price_diff' => 0]
-                            ]
-                        ]
+                                ['name' => 'Demli', 'price_diff' => 0],
+                            ],
+                        ],
                     ];
                 } elseif ($item['name'] === 'Izgara Köfte') {
-                     $options = [
+                    $options = [
                         [
                             'group_name' => 'Porsiyon',
                             'type' => 'radio',
                             'required' => true,
                             'items' => [
                                 ['name' => '1 Porsiyon (200gr)', 'price_diff' => 0],
-                                ['name' => '1.5 Porsiyon (300gr)', 'price_diff' => 170]
-                            ]
+                                ['name' => '1.5 Porsiyon (300gr)', 'price_diff' => 170],
+                            ],
                         ],
                         [
                             'group_name' => 'Pişirme Derecesi',
@@ -180,9 +182,9 @@ class RichMenuSeeder extends Seeder
                             'items' => [
                                 ['name' => 'Az Pişmiş', 'price_diff' => 0],
                                 ['name' => 'Orta Pişmiş', 'price_diff' => 0],
-                                ['name' => 'İyi Pişmiş', 'price_diff' => 0]
-                            ]
-                        ]
+                                ['name' => 'İyi Pişmiş', 'price_diff' => 0],
+                            ],
+                        ],
                     ];
                 }
 
@@ -196,11 +198,11 @@ class RichMenuSeeder extends Seeder
                     'stock_quantity' => rand(10, 100),
                     'is_available' => true,
                     'image' => $imagePath,
-                    'options' => $options
+                    'options' => $options,
                 ]);
             }
         }
-        
-        $this->command->info("Rich menu created with " . count($menuData) . " categories!");
+
+        $this->command->info('Rich menu created with '.count($menuData).' categories!');
     }
 }

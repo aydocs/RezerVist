@@ -2,41 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\WalletTransaction;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
-use Iyzipay\Options;
-use Iyzipay\Request\CreateCheckoutFormInitializeRequest;
-use Iyzipay\Model\CheckoutFormInitialize;
-use Iyzipay\Model\Buyer;
 use Iyzipay\Model\Address;
 use Iyzipay\Model\BasketItem;
 use Iyzipay\Model\BasketItemType;
+use Iyzipay\Model\Buyer;
+use Iyzipay\Model\CheckoutFormInitialize;
 use Iyzipay\Model\Currency;
 use Iyzipay\Model\Locale;
 use Iyzipay\Model\PaymentGroup;
+use Iyzipay\Options;
+use Iyzipay\Request\CreateCheckoutFormInitializeRequest;
 
 class WalletController extends Controller
 {
     private function getOptions()
     {
-        $options = new Options();
+        $options = new Options;
         $options->setApiKey(config('services.iyzico.api_key'));
         $options->setSecretKey(config('services.iyzico.secret_key'));
         $options->setBaseUrl(config('services.iyzico.base_url', 'https://sandbox-api.iyzipay.com'));
+
         return $options;
     }
 
     public function index()
     {
         $user = Auth::user();
-        if (!$user) return redirect()->route('login');
-        
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
         $transactions = $user->walletTransactions()->latest()->paginate(10);
-        
+
         // Comprehensive Statistics
         $totalLoaded = $user->walletTransactions()->where('type', 'topup')->where('status', 'success')->sum('amount');
         $totalSpent = abs($user->walletTransactions()->where('type', 'payment')->where('status', 'success')->sum('amount'));
@@ -48,7 +51,7 @@ class WalletController extends Controller
             ->where('status', 'success')
             ->whereMonth('created_at', now()->month)
             ->sum('amount');
-            
+
         $monthlySpent = abs($user->walletTransactions()
             ->where('type', 'payment')
             ->where('status', 'success')
@@ -57,14 +60,14 @@ class WalletController extends Controller
 
         // Count of transactions for activity heat
         $activityCount = $user->walletTransactions()->whereMonth('created_at', now()->month)->count();
-        
+
         return view('profile.wallet.index', compact(
-            'user', 
-            'transactions', 
-            'totalLoaded', 
-            'totalSpent', 
-            'netBalance', 
-            'monthlyLoaded', 
+            'user',
+            'transactions',
+            'totalLoaded',
+            'totalSpent',
+            'netBalance',
+            'monthlyLoaded',
             'monthlySpent',
             'activityCount'
         ));
@@ -77,18 +80,18 @@ class WalletController extends Controller
         $user = Auth::user();
         $amount = $request->amount;
 
-        $iyziRequest = new CreateCheckoutFormInitializeRequest();
+        $iyziRequest = new CreateCheckoutFormInitializeRequest;
         $iyziRequest->setLocale(Locale::TR);
         $iyziRequest->setConversationId(uniqid('wallet_'));
         $iyziRequest->setPrice($amount);
         $iyziRequest->setPaidPrice($amount);
         $iyziRequest->setCurrency(Currency::TL);
-        $iyziRequest->setBasketId("W" . $user->id . "_" . time());
+        $iyziRequest->setBasketId('W'.$user->id.'_'.time());
         $iyziRequest->setPaymentGroup(PaymentGroup::PRODUCT);
         $iyziRequest->setCallbackUrl(route('wallet.callback'));
 
         // Identity Bypass Logic: Use User data if exists, otherwise solid placeholders
-        $buyer = new Buyer();
+        $buyer = new Buyer;
         $buyer->setId($user->id);
         $buyer->setName($user->name ?: 'Degerli');
         $buyer->setSurname($user->name ?: 'Musteri');
@@ -101,7 +104,7 @@ class WalletController extends Controller
         $buyer->setCountry($user->country ?: 'Turkey');
         $iyziRequest->setBuyer($buyer);
 
-        $address = new Address();
+        $address = new Address;
         $address->setContactName($user->name ?: 'Degerli Musteri');
         $address->setCity($user->city ?: 'Istanbul');
         $address->setCountry($user->country ?: 'Turkey');
@@ -109,10 +112,10 @@ class WalletController extends Controller
         $iyziRequest->setShippingAddress($address);
         $iyziRequest->setBillingAddress($address);
 
-        $item = new BasketItem();
-        $item->setId("WALLET_TOPUP");
-        $item->setName("Cüzdan Bakiye Yükleme");
-        $item->setCategory1("Finans");
+        $item = new BasketItem;
+        $item->setId('WALLET_TOPUP');
+        $item->setName('Cüzdan Bakiye Yükleme');
+        $item->setCategory1('Finans');
         $item->setItemType(BasketItemType::VIRTUAL);
         $item->setPrice($amount);
         $iyziRequest->setBasketItems([$item]);
@@ -121,6 +124,7 @@ class WalletController extends Controller
 
         if ($checkoutForm->getStatus() == 'success') {
             \App\Models\ActivityLog::logActivity('wallet_topup_initiated', "Cüzdan yükleme başlatıldı: {$amount} TL", ['amount' => $amount], $user->id);
+
             return response()->json(['status' => 'success', 'url' => $checkoutForm->getPaymentPageUrl()]);
         }
 
@@ -135,7 +139,7 @@ class WalletController extends Controller
         $userId = null;
 
         if ($token) {
-            $iyziRequest = new \Iyzipay\Request\RetrieveCheckoutFormRequest();
+            $iyziRequest = new \Iyzipay\Request\RetrieveCheckoutFormRequest;
             $iyziRequest->setLocale(Locale::TR);
             $iyziRequest->setToken($token);
 
@@ -149,12 +153,12 @@ class WalletController extends Controller
                 }
 
                 $user = $userId ? \App\Models\User::find($userId) : null;
-                
+
                 if ($user) {
                     $amount = $checkoutForm->getPrice();
                     $referenceId = $checkoutForm->getPaymentId();
-                    
-                    if (!WalletTransaction::where('reference_id', $referenceId)->exists()) {
+
+                    if (! WalletTransaction::where('reference_id', $referenceId)->exists()) {
                         DB::transaction(function () use ($user, $amount, $checkoutForm, $referenceId) {
                             $user->increment('balance', $amount);
                             $txn = WalletTransaction::create([
@@ -166,7 +170,7 @@ class WalletController extends Controller
                                 'reference_id' => $referenceId,
                                 'meta_data' => $checkoutForm->getRawResult(),
                             ]);
-                            
+
                             // Log Activity
                             \App\Models\ActivityLog::logWalletTransaction($txn, 'success');
                         });
@@ -181,7 +185,7 @@ class WalletController extends Controller
                 $message = $checkoutForm->getErrorMessage();
                 // Log Failure
                 if ($userId) {
-                    \App\Models\ActivityLog::logActivity('wallet_topup_failed', "Başarısız Cüzdan Yükleme Denemesi", ['error' => $message], $userId);
+                    \App\Models\ActivityLog::logActivity('wallet_topup_failed', 'Başarısız Cüzdan Yükleme Denemesi', ['error' => $message], $userId);
                 }
             }
         }
@@ -193,7 +197,7 @@ class WalletController extends Controller
             [
                 'user_id' => $userId,
                 'status' => $status,
-                'message' => $message
+                'message' => $message,
             ]
         );
 
@@ -202,7 +206,7 @@ class WalletController extends Controller
 
     public function magicLogin(Request $request)
     {
-        if (!$request->hasValidSignature()) {
+        if (! $request->hasValidSignature()) {
             abort(403, 'Güvenlik doğrulaması başarısız.');
         }
 

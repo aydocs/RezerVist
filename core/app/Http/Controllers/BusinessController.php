@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Business;
 use App\Models\BusinessApplication;
-use App\Models\BusinessHour;
-use App\Models\Coupon;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
 class BusinessController extends Controller
@@ -35,13 +32,13 @@ class BusinessController extends Controller
         // Load relationships
         // Load relationships (Limit reviews to prevent payload issues)
         $business->load([
-            'reviews' => function($q) {
+            'reviews' => function ($q) {
                 $q->latest()->limit(10)->with('user');
             },
-            'resources', 
-            'menus'
+            'resources',
+            'menus',
         ]);
-        
+
         if (request()->wantsJson() || request()->is('api/*')) {
             return response()->json($business)
                 ->setEncodingOptions(JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_INVALID_UTF8_SUBSTITUTE | JSON_PARTIAL_OUTPUT_ON_ERROR);
@@ -67,7 +64,7 @@ class BusinessController extends Controller
             $pendingAppsCount = BusinessApplication::where('user_id', $user->id)
                 ->whereIn('status', ['pending', 'under_review'])
                 ->count();
-            
+
             $totalActiveOrPending = $businessesCount + $pendingAppsCount;
 
             // Default limit for users with NO business yet (Free or just started)
@@ -89,27 +86,32 @@ class BusinessController extends Controller
                 $existingApp = BusinessApplication::where('user_id', Auth::id())->latest()->first();
                 if ($existingApp && $existingApp->status === 'approved') {
                     return redirect()->route('dashboard')->with('info', 'Paketinizdeki işletme limitine ulaştınız.');
-                } else if ($existingApp) {
+                } elseif ($existingApp) {
                     return redirect()->route('business.application.status');
                 }
             }
         }
 
         $categories = \App\Models\Category::all();
-        $tags = \App\Models\Tag::all()->groupBy(function($item) {
+        $tags = \App\Models\Tag::all()->groupBy(function ($item) {
             $slug = $item->slug;
-            if (in_array($slug, ['wifi', 'otopark', 'vale', 'teras', 'bahce', 'cocuk-dostu', 'evcil-hayvan-dostu', 'engelli-uygun', 'kredi-karti', 'gel-al', 'paket-servis'])) return 'Özellikler';
-            if (in_array($slug, ['italyan', 'uzak-dogu', 'ocakbasi', 'deniz-mahsulleri', 'vegan', 'vejetaryen', 'steakhouse', 'cafe', 'bar', 'meyhane'])) return 'Mutfak / Konsept';
+            if (in_array($slug, ['wifi', 'otopark', 'vale', 'teras', 'bahce', 'cocuk-dostu', 'evcil-hayvan-dostu', 'engelli-uygun', 'kredi-karti', 'gel-al', 'paket-servis'])) {
+                return 'Özellikler';
+            }
+            if (in_array($slug, ['italyan', 'uzak-dogu', 'ocakbasi', 'deniz-mahsulleri', 'vegan', 'vejetaryen', 'steakhouse', 'cafe', 'bar', 'meyhane'])) {
+                return 'Mutfak / Konsept';
+            }
+
             // Fallback for tags that might not be in the hardcoded lists
             return 'Diğer Özellikler';
         });
-        
+
         return view('business.apply', compact('categories', 'tags'));
     }
 
     public function apply(Request $request)
     {
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             return redirect()->route('login')->with('error', 'Başvuru yapmak için giriş yapmalısınız.');
         }
 
@@ -134,7 +136,7 @@ class BusinessController extends Controller
             // Upload Files
             $userId = auth()->id();
             $storagePath = "applications/{$userId}";
-            
+
             $tradeDocPath = $request->file('trade_registry_document')->store($storagePath, 'local');
             $taxDocPath = $request->file('tax_document')->store($storagePath, 'local');
             $licenseDocPath = $request->file('license_document')->store($storagePath, 'local');
@@ -158,7 +160,7 @@ class BusinessController extends Controller
                 'id_document' => $idDocPath,
                 'bank_document' => $bankDocPath,
                 'status' => 'pending',
-                // tags handling if stored in json or related table? 
+                // tags handling if stored in json or related table?
                 // Currently BusinessApplication doesn't have tags relation, but we can disregard for Initial Application
                 // Or we should store them in description or separate field if critical.
                 // Assuming Admin will set tags upon approval.
@@ -173,8 +175,9 @@ class BusinessController extends Controller
             return redirect()->route('business.application.status')->with('success', 'İşletme başvurunuz başarıyla alındı. Onay sürecinden sonra size bilgi verilecektir.');
 
         } catch (\Exception $e) {
-            \Log::error('Application Error: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Başvuru sırasında bir hata oluştu: ' . $e->getMessage())->withInput();
+            \Log::error('Application Error: '.$e->getMessage());
+
+            return redirect()->back()->with('error', 'Başvuru sırasında bir hata oluştu: '.$e->getMessage())->withInput();
         }
     }
 
@@ -185,7 +188,7 @@ class BusinessController extends Controller
             ->latest()
             ->first();
 
-        if (!$application) {
+        if (! $application) {
             return redirect()->route('business.apply');
         }
 
@@ -199,11 +202,12 @@ class BusinessController extends Controller
             ->latest()
             ->first();
 
-        if (!$application) {
+        if (! $application) {
             return redirect()->route('business.application.status')->with('error', 'Düzenlenecek aktif bir başvuru bulunamadı.');
         }
 
         $categories = \App\Models\Category::all();
+
         return view('business.edit_application', compact('application', 'categories'));
     }
 
@@ -269,15 +273,17 @@ class BusinessController extends Controller
             return redirect()->route('business.application.status')->with('success', 'Başvurunuz başarıyla güncellendi.');
 
         } catch (\Exception $e) {
-            \Log::error('Application Update Error: ' . $e->getMessage());
-            return redirect()->back()->with('error', 'Güncelleme sırasında bir hata oluştu: ' . $e->getMessage())->withInput();
+            \Log::error('Application Update Error: '.$e->getMessage());
+
+            return redirect()->back()->with('error', 'Güncelleme sırasında bir hata oluştu: '.$e->getMessage())->withInput();
         }
     }
+
     public function getAvailableSlots(Request $request, Business $business)
     {
         $date = $request->input('date');
 
-        if (!$date) {
+        if (! $date) {
             return response()->json(['error' => 'Tarih gerekli'], 422);
         }
 
@@ -285,10 +291,9 @@ class BusinessController extends Controller
             $carbonDate = \Carbon\Carbon::parse($date);
             // Translate dayOfWeek: Carbon 0=Sunday, 1=Monday. Match with DB.
             // As per BusinessHours creation, we likely use 0-6 or 1-7. Let's assume Carbon standard (0-6) for now.
-            $dayOfWeek = $carbonDate->dayOfWeek; 
+            $dayOfWeek = $carbonDate->dayOfWeek;
 
             // First check for a specific date override (e.g. holidays or special openings)
-
 
             $specialHours = \App\Models\BusinessHour::where('business_id', $business->id)
                 ->where('special_date', $carbonDate->format('Y-m-d'))
@@ -306,7 +311,7 @@ class BusinessController extends Controller
 
             }
 
-            if (!$hours || $hours->is_closed) {
+            if (! $hours || $hours->is_closed) {
 
                 return response()->json(['slots' => [], 'message' => 'İşletme bu tarihte kapalı.', 'is_closed' => true]);
             }
@@ -320,9 +325,9 @@ class BusinessController extends Controller
             $openTimeStr = $hours->open_time instanceof \Carbon\Carbon ? $hours->open_time->format('H:i') : \Carbon\Carbon::parse($hours->open_time)->format('H:i');
             $closeTimeStr = $hours->close_time instanceof \Carbon\Carbon ? $hours->close_time->format('H:i') : \Carbon\Carbon::parse($hours->close_time)->format('H:i');
 
-            $start = \Carbon\Carbon::parse($date . ' ' . $openTimeStr);
-            $end = \Carbon\Carbon::parse($date . ' ' . $closeTimeStr);
-            
+            $start = \Carbon\Carbon::parse($date.' '.$openTimeStr);
+            $end = \Carbon\Carbon::parse($date.' '.$closeTimeStr);
+
             // Handle cross-midnight hours if necessary, but assuming same-day for now.
             if ($end->lessThan($start)) {
                 $end->addDay();
@@ -336,7 +341,7 @@ class BusinessController extends Controller
             while ($current->lt($end)) {
                 $slotStart = $current->copy();
                 $slotEnd = $slotStart->copy()->addHours(2); // Assuming 2 hour duration for resource check
-                
+
                 // If date is today, filter past times
                 $isFuture = true;
                 if ($carbonDate->isToday()) {
@@ -350,10 +355,10 @@ class BusinessController extends Controller
                     $anyAvailable = \App\Models\Resource::where('business_id', $business->id)
                         ->where('is_available', true)
                         ->where('capacity', '>=', $guestCount)
-                        ->whereDoesntHave('reservations', function($q) use ($slotStart, $slotEnd) {
-                             $q->where('start_time', '<', $slotEnd)
-                               ->where('end_time', '>', $slotStart)
-                               ->whereIn('status', ['confirmed', 'pending', 'approved']);
+                        ->whereDoesntHave('reservations', function ($q) use ($slotStart, $slotEnd) {
+                            $q->where('start_time', '<', $slotEnd)
+                                ->where('end_time', '>', $slotStart)
+                                ->whereIn('status', ['confirmed', 'pending', 'approved']);
                         })
                         ->exists();
 
@@ -365,9 +370,9 @@ class BusinessController extends Controller
             }
 
             return response()->json([
-                'slots' => $slots, 
+                'slots' => $slots,
                 'total_base_price' => $totalBasePrice,
-                'is_closed' => false
+                'is_closed' => false,
             ]);
 
         } catch (\Exception $e) {
@@ -378,19 +383,19 @@ class BusinessController extends Controller
     public function checkCoupon(Request $request)
     {
         $code = $request->input('code');
-        $amount = (float)$request->input('amount', 0);
+        $amount = (float) $request->input('amount', 0);
 
-        if (!$code) {
-           return response()->json(['valid' => false, 'message' => 'Kupon kodu boş olamaz.'], 422); 
+        if (! $code) {
+            return response()->json(['valid' => false, 'message' => 'Kupon kodu boş olamaz.'], 422);
         }
 
         $coupon = \App\Models\Coupon::where('code', $code)->first();
 
-        if (!$coupon) {
+        if (! $coupon) {
             return response()->json(['valid' => false, 'message' => 'Geçersiz kupon kodu.'], 404);
         }
 
-        if (!$coupon->is_active) {
+        if (! $coupon->is_active) {
             return response()->json(['valid' => false, 'message' => 'Bu kupon aktif değil.'], 400);
         }
 
@@ -409,8 +414,8 @@ class BusinessController extends Controller
         // Business specific check
         if ($coupon->business_id) {
             $requestBusinessId = $request->input('business_id');
-            if (!$requestBusinessId || $coupon->business_id != $requestBusinessId) {
-                 return response()->json(['valid' => false, 'message' => 'Bu kupon bu işletmede geçerli değildir.'], 400);
+            if (! $requestBusinessId || $coupon->business_id != $requestBusinessId) {
+                return response()->json(['valid' => false, 'message' => 'Bu kupon bu işletmede geçerli değildir.'], 400);
             }
         }
 
@@ -430,14 +435,14 @@ class BusinessController extends Controller
             'discount_amount' => $discountAmount,
             'final_amount' => $amount - $discountAmount,
             'message' => 'Kupon uygulandı!',
-            'coupon_code' => $coupon->code
+            'coupon_code' => $coupon->code,
         ]);
     }
 
     public function ogImage(Business $business)
     {
         $image = \App\Services\OGImageService::generateForBusiness($business);
-        
+
         return response($image)->header('Content-Type', 'image/jpeg');
     }
 }

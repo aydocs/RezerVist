@@ -2,13 +2,14 @@
 
 namespace App\Services;
 
-use Twilio\Rest\Client;
-use Illuminate\Support\Facades\Log;
 use App\Models\PhoneVerification;
+use Illuminate\Support\Facades\Log;
+use Twilio\Rest\Client;
 
 class TwilioService
 {
     protected $client;
+
     protected $fromNumber;
 
     public function __construct()
@@ -27,8 +28,9 @@ class TwilioService
      */
     public function sendSMS($to, $message)
     {
-        if (!$this->client) {
+        if (! $this->client) {
             Log::error('Twilio client not configured');
+
             return false;
         }
 
@@ -40,14 +42,16 @@ class TwilioService
                 $formattedNumber,
                 [
                     'from' => $this->fromNumber,
-                    'body' => $message
+                    'body' => $message,
                 ]
             );
 
             Log::info('SMS sent successfully', ['to' => $formattedNumber, 'sid' => $message->sid]);
+
             return true;
         } catch (\Exception $e) {
-            Log::error('Failed to send SMS: ' . $e->getMessage());
+            Log::error('Failed to send SMS: '.$e->getMessage());
+
             return false;
         }
     }
@@ -64,7 +68,7 @@ class TwilioService
         $messages = [
             'registration' => "Rezervist doğrulama kodunuz: {$verification->code}\n\nBu kod 10 dakika geçerlidir.",
             'login' => "Rezervist giriş kodunuz: {$verification->code}\n\nBu kod 10 dakika geçerlidir.",
-            'reservation' => "Rezervist doğrulama kodunuz: {$verification->code}"
+            'reservation' => "Rezervist doğrulama kodunuz: {$verification->code}",
         ];
 
         $message = $messages[$type] ?? $messages['registration'];
@@ -78,6 +82,7 @@ class TwilioService
 
         // Delete verification if SMS failed
         $verification->delete();
+
         return null;
     }
 
@@ -91,17 +96,17 @@ class TwilioService
             ->where('verified', false)
             ->first();
 
-        if (!$verification) {
+        if (! $verification) {
             return [
                 'success' => false,
-                'message' => 'Geçersiz doğrulama kodu'
+                'message' => 'Geçersiz doğrulama kodu',
             ];
         }
 
         if ($verification->isExpired()) {
             return [
                 'success' => false,
-                'message' => 'Doğrulama kodu süresi dolmuş'
+                'message' => 'Doğrulama kodu süresi dolmuş',
             ];
         }
 
@@ -110,7 +115,7 @@ class TwilioService
 
         return [
             'success' => true,
-            'message' => 'Telefon numarası doğrulandı'
+            'message' => 'Telefon numarası doğrulandı',
         ];
     }
 
@@ -124,11 +129,11 @@ class TwilioService
 
         // If starts with 0, replace with +90 (Turkey)
         if (substr($phone, 0, 1) === '0') {
-            $phone = '+90' . substr($phone, 1);
+            $phone = '+90'.substr($phone, 1);
         }
         // If doesn't start with +, add +90
         elseif (substr($phone, 0, 1) !== '+') {
-            $phone = '+90' . $phone;
+            $phone = '+90'.$phone;
         }
 
         return $phone;
@@ -140,6 +145,7 @@ class TwilioService
     public function sendReservationNotification($phone, $businessName, $dateTime)
     {
         $message = "Rezervist: {$businessName} için rezervasyonunuz onaylandı.\n\nTarih: {$dateTime}\n\nİyi eğlenceler!";
+
         return $this->sendSMS($phone, $message);
     }
 
@@ -149,6 +155,7 @@ class TwilioService
     public function sendCancellationNotification($phone, $businessName)
     {
         $message = "Rezervist: {$businessName} için rezervasyonunuz iptal edildi.";
+
         return $this->sendSMS($phone, $message);
     }
 
@@ -158,6 +165,7 @@ class TwilioService
     public function sendReminderSMS($phone, $businessName, $time)
     {
         $message = "Rezervist: Yarın {$time}'de {$businessName} için rezervasyonunuz var. Unutmayın!";
+
         return $this->sendSMS($phone, $message);
     }
 }

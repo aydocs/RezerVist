@@ -72,17 +72,17 @@ class UpdateProfileRequest extends FormRequest
         // Normalize phone number
         if ($this->phone) {
             $phone = preg_replace('/[^0-9]/', '', $this->phone);
-            
+
             // Remove leading 0 if exists
             if (substr($phone, 0, 1) === '0') {
                 $phone = substr($phone, 1);
             }
-            
+
             // Remove +90 country code if exists
             if (substr($phone, 0, 2) === '90') {
                 $phone = substr($phone, 2);
             }
-            
+
             $this->merge([
                 'phone' => $phone,
             ]);

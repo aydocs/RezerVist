@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
 
 class TeamController extends Controller
 {
@@ -13,11 +12,11 @@ class TeamController extends Controller
     {
         // Ensure user is derived from a business owner or part of a business
         $user = auth()->user();
-        
+
         // Use owned business ID or the business_id they belong to
         $businessId = $user->ownedBusiness ? $user->ownedBusiness->id : $user->business_id;
 
-        if (!$businessId) {
+        if (! $businessId) {
             return response()->json(['message' => 'Business ID not found for user'], 404);
         }
 
@@ -35,7 +34,7 @@ class TeamController extends Controller
         $user = auth()->user();
         $businessId = $user->ownedBusiness ? $user->ownedBusiness->id : $user->business_id;
 
-        if (!$businessId) {
+        if (! $businessId) {
             return response()->json(['message' => 'No business associated'], 400);
         }
 
@@ -58,7 +57,7 @@ class TeamController extends Controller
 
         $userToDelete = User::where('id', $id)->where('business_id', $businessId)->first();
 
-        if (!$userToDelete) {
+        if (! $userToDelete) {
             return response()->json(['message' => 'User not found or authorized'], 404);
         }
 

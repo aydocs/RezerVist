@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Reservation;
 use App\Models\BusinessHour;
+use App\Models\Reservation;
 use Carbon\Carbon;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateReservationRequest extends FormRequest
 {
@@ -15,6 +15,7 @@ class UpdateReservationRequest extends FormRequest
     public function authorize(): bool
     {
         $reservation = Reservation::find($this->route('id'));
+
         return $reservation && $reservation->user_id === auth()->id();
     }
 
@@ -54,7 +55,7 @@ class UpdateReservationRequest extends FormRequest
     public function withValidator($validator)
     {
         $validator->after(function ($validator) {
-            if (!$validator->errors()->hasAny(['reservation_date', 'reservation_time'])) {
+            if (! $validator->errors()->hasAny(['reservation_date', 'reservation_time'])) {
                 $this->validateBusinessHours($validator);
             }
         });
@@ -67,28 +68,29 @@ class UpdateReservationRequest extends FormRequest
     {
         $reservation = Reservation::find($this->route('id'));
         $businessId = $reservation->business_id;
-        
+
         $date = Carbon::parse($this->input('reservation_date'));
         $time = $this->input('reservation_time');
-        
+
         $dayOfWeek = strtolower($date->format('l'));
-        
+
         $businessHour = BusinessHour::where('business_id', $businessId)
             ->where('day_of_week', $dayOfWeek)
             ->first();
-        
-        if (!$businessHour || !$businessHour->is_open) {
+
+        if (! $businessHour || ! $businessHour->is_open) {
             $validator->errors()->add('reservation_date', 'İşletme seçtiğiniz günde kapalıdır.');
+
             return;
         }
-        
+
         $requestedTime = Carbon::parse($time);
         $openTime = Carbon::parse($businessHour->open_time);
         $closeTime = Carbon::parse($businessHour->close_time);
-        
+
         if ($requestedTime->lt($openTime) || $requestedTime->gte($closeTime)) {
             $validator->errors()->add(
-                'reservation_time', 
+                'reservation_time',
                 "İşletme bu saatte kapalıdır. Çalışma saatleri: {$businessHour->open_time} - {$businessHour->close_time}"
             );
         }

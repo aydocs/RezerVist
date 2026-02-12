@@ -1,4 +1,5 @@
 <?php
+
 require 'vendor/autoload.php';
 $app = require_once 'bootstrap/app.php';
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
@@ -16,8 +17,8 @@ $masaName = 'Masa 1';
 
 $resource = Resource::where('name', $masaName)->first();
 
-if (!$resource) {
-    die("Resource $masaName not found\n");
+if (! $resource) {
+    exit("Resource $masaName not found\n");
 }
 
 $order = Order::where('resource_id', $resource->id)
@@ -25,8 +26,8 @@ $order = Order::where('resource_id', $resource->id)
     ->latest()
     ->first();
 
-if (!$order) {
-    die("No active order found for $masaName\n");
+if (! $order) {
+    exit("No active order found for $masaName\n");
 }
 
 echo "Order ID: {$order->id}\n";
@@ -39,10 +40,14 @@ foreach ($items as $item) {
     echo "- ID: {$item->id}, Name: {$item->name}, Qty: {$item->quantity}, Unit: {$item->unit_price}, Total: {$item->total_price}, Status: '{$item->status}'\n";
 }
 
-$sumTotal = $items->whereNotIn('status', ['cancelled', 'deleted'])->sum(function($i) { return $i->unit_price * $i->quantity; });
-$sumPaid = $items->where('status', 'completed')->sum(function($i) { return $i->unit_price * $i->quantity; });
+$sumTotal = $items->whereNotIn('status', ['cancelled', 'deleted'])->sum(function ($i) {
+    return $i->unit_price * $i->quantity;
+});
+$sumPaid = $items->where('status', 'completed')->sum(function ($i) {
+    return $i->unit_price * $i->quantity;
+});
 
 echo "\nManual Recalculation:\n";
 echo "Sum Total (not cancelled/deleted): $sumTotal\n";
 echo "Sum Paid (status == completed): $sumPaid\n";
-echo "Balance: " . ($sumTotal - $sumPaid) . "\n";
+echo 'Balance: '.($sumTotal - $sumPaid)."\n";

@@ -4,7 +4,6 @@ namespace App\Traits;
 
 use App\Models\ActivityLog;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 
 trait LogsActivity
 {
@@ -16,10 +15,10 @@ trait LogsActivity
 
         static::updated(function (Model $model) {
             $changes = $model->getChanges();
-            
+
             // Filter out sensitive and timestamp fields
             $filteredChanges = array_diff_key($changes, array_flip([
-                'password', 'remember_token', 'updated_at', 'created_at', 'email_verified_at'
+                'password', 'remember_token', 'updated_at', 'created_at', 'email_verified_at',
             ]));
 
             if (empty($filteredChanges)) {
@@ -31,7 +30,7 @@ trait LogsActivity
                 $oldValue = $model->getOriginal($key);
                 $details[$key] = [
                     'old' => $oldValue,
-                    'new' => $newValue
+                    'new' => $newValue,
                 ];
             }
 
@@ -46,7 +45,7 @@ trait LogsActivity
     protected static function logEvent(Model $model, string $event, string $description, array $details = [])
     {
         $actionType = self::mapEventToActionType($model, $event);
-        
+
         ActivityLog::logActivity(
             $actionType,
             $description,
@@ -60,7 +59,7 @@ trait LogsActivity
     protected static function mapEventToActionType(Model $model, string $event): string
     {
         $baseName = strtolower(class_basename($model));
-        
+
         // Define mapping for specific models if needed
         $mappings = [
             'reservation' => 'reservation',
@@ -71,7 +70,7 @@ trait LogsActivity
         ];
 
         $category = $mappings[$baseName] ?? 'system';
-        
+
         return "{$category}_{$event}";
     }
 }

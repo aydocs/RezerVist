@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 class AutocompleteController extends Controller
 {
-
     public function search(\Illuminate\Http\Request $request)
     {
         $query = $request->get('q', '');
-        
+
         if (strlen($query) < 2) {
             return response()->json([]);
         }
@@ -22,12 +19,12 @@ class AutocompleteController extends Controller
             ->limit(8)
             ->get(['id', 'name', 'address']);
 
-        $results = $businesses->map(function($business) {
+        $results = $businesses->map(function ($business) {
             return [
                 'id' => $business->id,
                 'name' => $business->name,
                 'type' => 'business',
-                'subtitle' => $business->address
+                'subtitle' => $business->address,
             ];
         });
 

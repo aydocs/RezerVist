@@ -2,18 +2,18 @@
 
 namespace App\Services;
 
-use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class ImageOptimizationService
 {
     /**
      * Optimize and store an image.
      * Converts to WebP and creates multiple sizes.
-     * 
-     * @param \Illuminate\Http\UploadedFile $file
-     * @param string $directory
+     *
+     * @param  \Illuminate\Http\UploadedFile  $file
+     * @param  string  $directory
      * @return array Paths of generated images
      */
     public static function process($file, $directory = 'photos')
@@ -35,21 +35,22 @@ class ImageOptimizationService
         }
 
         // Fallback: If no driver, just store the raw file
-        if (!$manager) {
+        if (! $manager) {
             Storage::disk('public')->put($fullPath, file_get_contents($file->getRealPath()));
+
             return [
                 'original' => $fullPath,
-                'thumbnail' => $fullPath // No thumbnail in fallback
+                'thumbnail' => $fullPath, // No thumbnail in fallback
             ];
         }
 
         // Main Image (Resized if too large)
         $img = $manager->read($file);
-        
+
         if ($img->width() > 1920) {
             $img->scale(width: 1920);
         }
-        
+
         $encoded = $img->toWebp(80);
         Storage::disk('public')->put($fullPath, (string) $encoded);
 
@@ -60,7 +61,7 @@ class ImageOptimizationService
 
         return [
             'original' => $fullPath,
-            'thumbnail' => $thumbPath
+            'thumbnail' => $thumbPath,
         ];
     }
 }

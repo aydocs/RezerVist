@@ -2,14 +2,12 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
+use App\Models\Message;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Message;
 
 class MessageSent implements ShouldBroadcast
 {
@@ -33,7 +31,7 @@ class MessageSent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('chat.' . $this->message->receiver_id),
+            new PrivateChannel('chat.'.$this->message->receiver_id),
         ];
     }
 
@@ -50,7 +48,7 @@ class MessageSent implements ShouldBroadcast
             'sender_id' => $this->message->sender_id,
             'sender_name' => $this->message->sender->name,
             'sender_initials' => $this->message->sender->initials,
-            'sender_photo' => $this->message->sender->profile_photo_path ? asset('storage/' . $this->message->sender->profile_photo_path) : null,
+            'sender_photo' => $this->message->sender->profile_photo_path ? asset('storage/'.$this->message->sender->profile_photo_path) : null,
             'created_at' => $this->message->created_at->toDateTimeString(),
             'diff_for_humans' => 'Şimdi',
         ];

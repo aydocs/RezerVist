@@ -33,13 +33,10 @@ class PosRepository {
 
   Future<Map<String, dynamic>> getOrder(int resourceId) async {
     try {
-      print(
-          'DEBUG POS: Fetching order for resource $resourceId at /pos/order/$resourceId');
       final response = await ApiClient.instance.get('/pos/order/$resourceId');
-      print('DEBUG POS: Order response: ${response.data}');
+
       return response.data['data'];
     } catch (e) {
-      print('DEBUG POS: Order fetch error: $e');
       throw Exception('Sipariş detayları alınamadı: $e');
     }
   }
@@ -48,7 +45,7 @@ class PosRepository {
     try {
       final response =
           await ApiClient.instance.get('/pos/analytics/weekly-trend');
-      final List data = response.data['data'] ?? [];
+      final List data = response.data['data'];
       return List<Map<String, dynamic>>.from(data);
     } catch (e) {
       throw Exception('Haftalık trend alınamadı: $e');

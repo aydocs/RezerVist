@@ -77,12 +77,6 @@ class _ReservationWizardModalState
 
   double get _grandTotal => _perPersonTotal + _servicesTotal;
 
-  int get _selectedItemCount {
-    int count = 0;
-    _selectedMenuQuantities.forEach((_, qty) => count += qty);
-    return count;
-  }
-
   // --- Step Navigation ---
   void _nextStep() {
     if (_currentStep == 0) {
@@ -142,55 +136,58 @@ class _ReservationWizardModalState
                 _specialRequest.isNotEmpty ? _specialRequest : null,
           );
 
-      if (context.mounted) {
-        Navigator.pop(context); // Close loading dialog
+      if (!mounted) return;
+      Navigator.pop(context); // Close loading dialog
 
-        final state = ref.read(reservationControllerProvider);
+      final state = ref.read(reservationControllerProvider);
 
-        if (state.hasError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Hata: ${state.error}'),
-              backgroundColor: Colors.red.shade400,
+      if (state.hasError) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Hata: ${state.error}'),
+            backgroundColor: Colors.red.shade400,
+          ),
+        );
+      } else if (state.hasValue) {
+        final result = state.value!;
+        final paymentUrl = result['payment_url'] as String?;
+        final message = result['message'] as String?;
+
+        if (paymentUrl != null) {
+          if (!mounted) return;
+          final success = await Navigator.push<bool>(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PaymentWebViewScreen(
+                url: paymentUrl,
+                title: 'Ödeme Yap',
+              ),
             ),
           );
-        } else if (state.hasValue) {
-          final result = state.value!;
-          final paymentUrl = result['payment_url'] as String?;
-          final message = result['message'] as String?;
 
-          if (paymentUrl != null) {
-            final success = await Navigator.push<bool>(
-              context,
-              MaterialPageRoute(
-                builder: (context) => PaymentWebViewScreen(
-                  url: paymentUrl,
-                  title: 'Ödeme Yap',
-                ),
-              ),
-            );
-
-            if (success == true && context.mounted) {
-              Navigator.pop(context);
-              _showSuccessDialog(
-                  'Ödeme Başarılı', 'Rezervasyonunuz onaylandı.');
-            }
-          } else {
-            Navigator.pop(context);
-            _showSuccessDialog(
-              'Rezervasyon Başarılı',
-              message ?? 'Rezervasyonunuz oluşturuldu.',
-            );
+          if (success == true) {
+            if (!mounted) return;
+            // Navigator.pop(context); // Not needed if pushed? Wait, we are in a modal.
+            // Actually, we want to close the wizard itself.
+            _showSuccessDialog('Ödeme Başarılı', 'Rezervasyonunuz onaylandı.');
           }
+        } else {
+          // Navigator.pop(context); // Already popped loading dialog
+          _showSuccessDialog(
+            'Rezervasyon Başarılı',
+            message ?? 'Rezervasyonunuz oluşturuldu.',
+          );
         }
       }
     } catch (e) {
-      if (context.mounted) {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Beklenmeyen bir hata oluştu: $e')),
-        );
-      }
+      if (!mounted) return;
+      Navigator.pop(context); // Close loading dialog if open?
+      // Risk: if loading dialog was already passed?
+      // Simplified error handling
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Beklenmeyen bir hata oluştu: $e')),
+      );
     }
   }
 

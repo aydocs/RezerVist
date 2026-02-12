@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -53,8 +53,8 @@ class AuthController extends Controller
 
         $user = User::where('email', $validated['email'])->first();
 
-        if (!$user || !Hash::check($validated['password'], $user->password)) {
-             \App\Models\AuditLog::create([
+        if (! $user || ! Hash::check($validated['password'], $user->password)) {
+            \App\Models\AuditLog::create([
                 'action' => 'login_failed',
                 'ip_address' => $request->ip(),
                 'user_agent' => $request->userAgent(),
@@ -62,7 +62,7 @@ class AuthController extends Controller
             ]);
 
             return response()->json([
-                'message' => 'Invalid login credentials'
+                'message' => 'Invalid login credentials',
             ], 401);
         }
 
@@ -93,7 +93,7 @@ class AuthController extends Controller
             ]);
             $request->user()->currentAccessToken()->delete();
         }
-        
+
         return response()->json(['message' => 'Logged out successfully']);
     }
 

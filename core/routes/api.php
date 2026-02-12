@@ -1,17 +1,16 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BusinessController;
-use App\Http\Controllers\ReservationController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\VendorController;
-use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PushSubscriptionController;
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\VendorController;
+use Illuminate\Support\Facades\Route;
 
 // --- Public Routes ---
 Route::prefix('auth')->middleware('throttle:10,1')->group(function () {
@@ -40,7 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Customer Actions
     Route::post('/reservations', [ReservationController::class, 'store']);
     Route::get('/reservations', [ReservationController::class, 'index']);
-    
+
     // Favorites
     Route::post('/favorites/toggle/{businessId}', [FavoriteController::class, 'toggle']);
     Route::post('/businesses/{id}/reviews', [ReviewController::class, 'store']);
@@ -71,7 +70,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/menus/{id}', [\App\Http\Controllers\MenuController::class, 'update']); // Using POST for file upload support with method spoofing if needed, or stick to PUT
         Route::delete('/menus/{id}', [\App\Http\Controllers\MenuController::class, 'destroy']);
     });
-    
+
     // Payments
     Route::get('/wallet/transactions', [\App\Http\Controllers\Api\WalletApiController::class, 'index']);
     Route::get('/wallet/search', [\App\Http\Controllers\Api\WalletApiController::class, 'searchRecipients']);
@@ -117,7 +116,7 @@ Route::prefix('pos')->group(function () {
 Route::prefix('pos')->middleware('auth:sanctum')->group(function () {
     Route::get('/init', [\App\Http\Controllers\Api\PosApiController::class, 'init']);
     Route::post('/deactivate', [\App\Http\Controllers\Api\PosApiController::class, 'deactivate']);
-    Route::middleware('subscribed:pos_access')->group(function() {
+    Route::middleware('subscribed:pos_access')->group(function () {
         Route::post('/update-occupancy', [\App\Http\Controllers\PosIntegrationController::class, 'updateOccupancy']);
         Route::get('/occupancy', [\App\Http\Controllers\PosIntegrationController::class, 'getOccupancy']);
 
@@ -141,10 +140,10 @@ Route::prefix('pos')->middleware('auth:sanctum')->group(function () {
         Route::post('/staff/{id}/update-pin', [\App\Http\Controllers\Api\PosApiController::class, 'updateStaffPin']);
         Route::post('/update-master-pin', [\App\Http\Controllers\Api\PosApiController::class, 'updateMasterPin']);
         Route::post('/verify-master-pin', [\App\Http\Controllers\Api\PosApiController::class, 'verifyMasterPin']);
-        
+
         // Table Operations
         Route::post('/tables/transfer', [\App\Http\Controllers\Api\PosApiController::class, 'transferTable']);
-        
+
         // Resource Management
         Route::get('/tables', [\App\Http\Controllers\Api\PosApiController::class, 'getTables']);
         Route::post('/tables', [\App\Http\Controllers\Api\PosApiController::class, 'storeResource']);

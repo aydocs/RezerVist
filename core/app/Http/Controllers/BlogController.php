@@ -14,15 +14,15 @@ class BlogController extends Controller
 
         if ($request->has('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
-                  ->orWhere('content', 'like', "%{$search}%")
-                  ->orWhereJsonContains('tags', $search);
+                    ->orWhere('content', 'like', "%{$search}%")
+                    ->orWhereJsonContains('tags', $search);
             });
         }
 
         if ($request->has('category')) {
-            $query->whereHas('category', function($q) use ($request) {
+            $query->whereHas('category', function ($q) use ($request) {
                 $q->where('slug', $request->category);
             });
         }
@@ -41,7 +41,7 @@ class BlogController extends Controller
         }
 
         $posts = $query->paginate(12);
-                       
+
         $categories = PostCategory::withCount('posts')->get();
 
         return view('blog.index', compact('posts', 'categories'));
@@ -50,9 +50,9 @@ class BlogController extends Controller
     public function show($slug)
     {
         $post = Post::published()->where('slug', $slug)->with(['category', 'author', 'comments.user'])->firstOrFail();
-        
+
         $post->increment('views');
-        
+
         // Simple related posts based on category
         $relatedPosts = Post::published()
             ->where('category_id', $post->category_id)

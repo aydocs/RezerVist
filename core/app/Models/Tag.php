@@ -3,7 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Business; // Added for the relationship
+
+// Added for the relationship
 
 class Tag extends Model
 {

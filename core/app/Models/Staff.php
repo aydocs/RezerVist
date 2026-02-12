@@ -41,7 +41,7 @@ class Staff extends Model
         if ($avg) {
             $this->update([
                 'rating' => round($avg, 1),
-                'rating_count' => $this->reviews()->count()
+                'rating_count' => $this->reviews()->count(),
             ]);
         }
     }

@@ -16,7 +16,7 @@ class HappyHour extends Model
         'days_of_week',
         'applicable_categories',
         'applicable_items',
-        'is_active'
+        'is_active',
     ];
 
     protected $casts = [
@@ -24,7 +24,7 @@ class HappyHour extends Model
         'applicable_categories' => 'array',
         'applicable_items' => 'array',
         'is_active' => 'boolean',
-        'discount_value' => 'decimal:2'
+        'discount_value' => 'decimal:2',
     ];
 
     public function business()
@@ -37,14 +37,16 @@ class HappyHour extends Model
      */
     public function isActiveNow(): bool
     {
-        if (!$this->is_active) return false;
+        if (! $this->is_active) {
+            return false;
+        }
 
         $now = now();
         $currentDay = strtolower($now->format('l')); // 'monday', 'tuesday', etc.
         $currentTime = $now->format('H:i:s');
 
         // Check if today is in the applicable days
-        if (!in_array($currentDay, $this->days_of_week)) {
+        if (! in_array($currentDay, $this->days_of_week)) {
             return false;
         }
 

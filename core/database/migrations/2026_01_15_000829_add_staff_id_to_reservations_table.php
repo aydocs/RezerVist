@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('reservations', function (Blueprint $table) {
-            if (!Schema::hasColumn('reservations', 'staff_id')) {
+            if (! Schema::hasColumn('reservations', 'staff_id')) {
                 $table->foreignId('staff_id')->nullable()->constrained('staff')->onDelete('set null');
             }
         });

@@ -17,7 +17,8 @@ class BusinessImage extends Model
         if (str_starts_with($this->image_path, 'http')) {
             return $this->image_path;
         }
-        return asset('storage/' . $this->image_path);
+
+        return asset('storage/'.$this->image_path);
     }
 
     // Accessor to get thumbnail URL
@@ -27,6 +28,7 @@ class BusinessImage extends Model
         if (str_starts_with($path, 'http')) {
             return $path;
         }
-        return asset('storage/' . $path);
+
+        return asset('storage/'.$path);
     }
 }

@@ -5,21 +5,23 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\PostCategory;
+use App\Services\FileUploadService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\Services\FileUploadService;
 
 class BlogController extends Controller
 {
     public function index()
     {
         $posts = Post::with(['category', 'author'])->latest()->paginate(20);
+
         return view('admin.blog.index', compact('posts'));
     }
 
     public function create()
     {
         $categories = PostCategory::all();
+
         return view('admin.blog.create', compact('categories'));
     }
 
@@ -42,8 +44,8 @@ class BlogController extends Controller
         $validated['is_published'] = $request->has('is_published');
         $validated['is_featured'] = $request->has('is_featured');
         $validated['published_at'] = $validated['is_published'] ? now() : null;
-        
-        if ($request->has('tags') && !empty($request->tags)) {
+
+        if ($request->has('tags') && ! empty($request->tags)) {
             $validated['tags'] = array_map('trim', explode(',', $request->tags));
         } else {
             $validated['tags'] = null;
@@ -62,6 +64,7 @@ class BlogController extends Controller
     public function edit(Post $post)
     {
         $categories = PostCategory::all();
+
         return view('admin.blog.edit', compact('post', 'categories'));
     }
 
@@ -82,14 +85,14 @@ class BlogController extends Controller
         $validated['slug'] = Str::slug($validated['title']);
         $validated['is_published'] = $request->has('is_published');
         $validated['is_featured'] = $request->has('is_featured');
-        
-        if ($request->has('tags') && !empty($request->tags)) {
+
+        if ($request->has('tags') && ! empty($request->tags)) {
             $validated['tags'] = array_map('trim', explode(',', $request->tags));
         } else {
             $validated['tags'] = null;
         }
 
-        if ($validated['is_published'] && !$post->published_at) {
+        if ($validated['is_published'] && ! $post->published_at) {
             $validated['published_at'] = now();
         }
 
@@ -113,6 +116,7 @@ class BlogController extends Controller
             FileUploadService::delete($post->featured_image);
         }
         $post->delete();
+
         return back()->with('success', 'Blog yazısı silindi.');
     }
 
@@ -120,6 +124,7 @@ class BlogController extends Controller
     public function categories()
     {
         $categories = PostCategory::withCount('posts')->get();
+
         return view('admin.blog.categories', compact('categories'));
     }
 

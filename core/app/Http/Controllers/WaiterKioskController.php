@@ -15,15 +15,15 @@ class WaiterKioskController extends Controller
         $user = Auth::user();
         $business = $user->ownedBusiness;
 
-        if (!$business || !$business->waiter_kiosk_enabled) {
+        if (! $business || ! $business->waiter_kiosk_enabled) {
             return redirect()->route('vendor.dashboard')->with('error', 'Kiosk modu bu işletme için aktif değil.');
         }
 
         // Get all resources with today's reservations
-        $resources = $business->resources()->with(['reservations' => function($q) {
+        $resources = $business->resources()->with(['reservations' => function ($q) {
             $q->whereDate('start_time', now()->toDateString())
-              ->whereNotIn('status', ['cancelled', 'rejected'])
-              ->with('user');
+                ->whereNotIn('status', ['cancelled', 'rejected'])
+                ->with('user');
         }])->orderBy('name')->get();
 
         // Get today's active reservations
@@ -46,11 +46,11 @@ class WaiterKioskController extends Controller
         // Calculate statistics
         $stats = [
             'total_tables' => $resources->count(),
-            'occupied_tables' => $resources->filter(function($r) {
-                return $r->reservations->some(fn($res) => $res->status === 'checked_in');
+            'occupied_tables' => $resources->filter(function ($r) {
+                return $r->reservations->some(fn ($res) => $res->status === 'checked_in');
             })->count(),
-            'reserved_tables' => $resources->filter(function($r) {
-                return $r->reservations->some(fn($res) => $res->status === 'confirmed');
+            'reserved_tables' => $resources->filter(function ($r) {
+                return $r->reservations->some(fn ($res) => $res->status === 'confirmed');
             })->count(),
             'total_guests_today' => $business->reservations()
                 ->whereDate('start_time', now()->toDateString())
@@ -71,25 +71,25 @@ class WaiterKioskController extends Controller
     public function checkIn(Reservation $reservation)
     {
         $this->authorize('update', $reservation);
-        
+
         $reservation->update(['status' => 'checked_in']);
-        
+
         // Log Activity
         \App\Models\ActivityLog::logActivity(
             'reservation_checked_in',
             "Rezervasyon kiosk'tan check-in yapıldı: #{$reservation->id}",
             ['reservation_id' => $reservation->id, 'resource' => $reservation->resource->name ?? 'N/A']
         );
-        
+
         return back()->with('success', 'Giriş yapıldı.');
     }
 
     public function checkOut(Reservation $reservation)
     {
         $this->authorize('update', $reservation);
-        
+
         $reservation->update(['status' => 'completed']);
-        
+
         // Reward loyalty points upon completion if not already done
         if ($reservation->user) {
             $amount = $reservation->total_amount > 0 ? $reservation->total_amount : $reservation->price;
@@ -144,7 +144,7 @@ class WaiterKioskController extends Controller
             'price' => 0,
             'total_amount' => 0,
             'payment_status' => 'pending',
-            'note' => 'Walk-in: ' . ($validated['customer_name'] ?? 'Hızlı Müşteri')
+            'note' => 'Walk-in: '.($validated['customer_name'] ?? 'Hızlı Müşteri'),
         ]);
 
         // Log Activity

@@ -12,6 +12,7 @@ class StaffAssignedNotification extends Notification implements ShouldQueue
     use Queueable;
 
     public $reservation;
+
     public $staff;
 
     /**
@@ -39,15 +40,15 @@ class StaffAssignedNotification extends Notification implements ShouldQueue
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject('Rezervasyonunuza Personel Atandı - ' . $this->reservation->business->name)
-            ->greeting('Merhaba ' . $notifiable->name . ',')
-            ->line('**' . $this->reservation->business->name . '** işletmesindeki rezervasyonunuza personel atandı!')
-            ->line('**Personel:** ' . $this->staff->name)
-            ->line('**Pozisyon:** ' . ($this->staff->position ?? 'Personel'))
-            ->line('**Rezervasyon Tarihi:** ' . $this->reservation->start_time->format('d.m.Y'))
-            ->line('**Rezervasyon Saati:** ' . $this->reservation->start_time->format('H:i'))
-            ->line('**Kişi Sayısı:** ' . $this->reservation->guest_count . ' kişi')
-            ->line($this->staff->name . ' sizinle ilgilenecek ve en iyi hizmeti sunmak için hazır olacak.')
+            ->subject('Rezervasyonunuza Personel Atandı - '.$this->reservation->business->name)
+            ->greeting('Merhaba '.$notifiable->name.',')
+            ->line('**'.$this->reservation->business->name.'** işletmesindeki rezervasyonunuza personel atandı!')
+            ->line('**Personel:** '.$this->staff->name)
+            ->line('**Pozisyon:** '.($this->staff->position ?? 'Personel'))
+            ->line('**Rezervasyon Tarihi:** '.$this->reservation->start_time->format('d.m.Y'))
+            ->line('**Rezervasyon Saati:** '.$this->reservation->start_time->format('H:i'))
+            ->line('**Kişi Sayısı:** '.$this->reservation->guest_count.' kişi')
+            ->line($this->staff->name.' sizinle ilgilenecek ve en iyi hizmeti sunmak için hazır olacak.')
             ->action('Rezervasyon Detaylarını Görüntüle', route('profile.reservations'))
             ->line('Keyifli bir deneyim geçirmenizi dileriz!');
     }
@@ -61,7 +62,7 @@ class StaffAssignedNotification extends Notification implements ShouldQueue
     {
         $position = $this->staff->position ?? 'Garson';
         $businessName = $this->reservation->business->name;
-        
+
         return [
             'reservation_id' => $this->reservation->id,
             'business_id' => $this->reservation->business_id,
@@ -70,7 +71,7 @@ class StaffAssignedNotification extends Notification implements ShouldQueue
             'staff_name' => $this->staff->name,
             'staff_position' => $position,
             'title' => 'Personel Atandı',
-            'message' => "{$businessName} - {$this->staff->name} isimli " . strtolower($position) . " masanıza atandı.",
+            'message' => "{$businessName} - {$this->staff->name} isimli ".strtolower($position).' masanıza atandı.',
             'link' => route('profile.reservations'),
             'icon' => 'user-check',
             'color' => 'blue',

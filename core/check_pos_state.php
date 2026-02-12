@@ -1,10 +1,9 @@
 <?php
 
 use App\Models\Business;
-use Illuminate\Support\Facades\DB;
 
-require __DIR__ . '/vendor/autoload.php';
-$app = require_once __DIR__ . '/bootstrap/app.php';
+require __DIR__.'/vendor/autoload.php';
+$app = require_once __DIR__.'/bootstrap/app.php';
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
 
@@ -16,14 +15,14 @@ $business = Business::where('pos_api_token', $key)
     ->orWhere('license_key', $key)
     ->first();
 
-if (!$business) {
+if (! $business) {
     echo "Business NOT FOUND!\n";
-    
+
     // Check all businesses
     $all = Business::all(['id', 'name', 'pos_api_token', 'license_key']);
-    echo "Total businesses: " . $all->count() . "\n";
+    echo 'Total businesses: '.$all->count()."\n";
     foreach ($all as $b) {
-        echo "ID: {$b->id}, Name: {$b->name}, Token: " . substr($b->pos_api_token, 0, 10) . "..., Key: " . substr($b->license_key, 0, 10) . "...\n";
+        echo "ID: {$b->id}, Name: {$b->name}, Token: ".substr($b->pos_api_token, 0, 10).'..., Key: '.substr($b->license_key, 0, 10)."...\n";
     }
     exit;
 }
@@ -33,9 +32,9 @@ echo "--- Attributes ---\n";
 print_r($business->getAttributes());
 
 echo "\n--- Subscription Info ---\n";
-echo "subscription_status: " . ($business->subscription_status ?? 'null') . "\n";
-echo "subscription_ends_at: " . ($business->subscription_ends_at ?? 'null') . "\n";
-echo "subscription_end_date: " . ($business->subscription_end_date ?? 'null') . "\n";
+echo 'subscription_status: '.($business->subscription_status ?? 'null')."\n";
+echo 'subscription_ends_at: '.($business->subscription_ends_at ?? 'null')."\n";
+echo 'subscription_end_date: '.($business->subscription_end_date ?? 'null')."\n";
 
 echo "\n--- Active Subscription Relationship ---\n";
 $sub = $business->activeSubscription;
@@ -46,4 +45,4 @@ if ($sub) {
 }
 
 echo "\n--- Features ---\n";
-echo "pos_access: " . ($business->hasFeature('pos_access') ? 'Yes' : 'No') . "\n";
+echo 'pos_access: '.($business->hasFeature('pos_access') ? 'Yes' : 'No')."\n";

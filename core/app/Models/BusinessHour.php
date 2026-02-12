@@ -39,6 +39,7 @@ class BusinessHour extends Model
     public function getDayNameAttribute()
     {
         $days = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+
         return $days[$this->day_of_week] ?? '';
     }
 
@@ -62,6 +63,7 @@ class BusinessHour extends Model
             }
             $open = \Carbon\Carbon::parse($specialHours->open_time)->format('H:i');
             $close = \Carbon\Carbon::parse($specialHours->close_time)->format('H:i');
+
             return $time >= $open && $time <= $close;
         }
 
@@ -72,13 +74,13 @@ class BusinessHour extends Model
             ->first();
 
         // If no regular hours defined, we assume closed by default but we could check if ANY hours exist
-        if (!$regularHours || $regularHours->is_closed) {
+        if (! $regularHours || $regularHours->is_closed) {
             return false;
         }
 
         $open = \Carbon\Carbon::parse($regularHours->open_time)->format('H:i');
         $close = \Carbon\Carbon::parse($regularHours->close_time)->format('H:i');
-        
+
         return $time >= $open && $time <= $close;
     }
 }

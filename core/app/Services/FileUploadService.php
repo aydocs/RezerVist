@@ -13,9 +13,6 @@ class FileUploadService
      * Upload and optimize an image.
      * Converts to WebP and optionally creates thumbnails.
      *
-     * @param UploadedFile $file
-     * @param string $directory
-     * @param bool $createThumbnail
      * @return array ['original' => string, 'thumbnail' => string|null]
      */
     public static function uploadImage(UploadedFile $file, string $directory, bool $createThumbnail = false): array
@@ -34,16 +31,16 @@ class FileUploadService
         $hasImagick = extension_loaded('imagick');
         $hasGd = extension_loaded('gd');
 
-        if (!$hasImagick && !$hasGd) {
+        if (! $hasImagick && ! $hasGd) {
             // Fallback: Just store the file as is without optimization
             $extension = $file->getClientOriginalExtension() ?: 'jpg';
             $fullPath = "$directory/$filename.$extension";
-            
+
             Storage::disk('public')->putFileAs($directory, $file, "$filename.$extension");
-            
+
             return [
                 'original' => $fullPath,
-                'thumbnail' => null
+                'thumbnail' => null,
             ];
         }
 
@@ -52,11 +49,11 @@ class FileUploadService
 
         // Main Image (Resized if too large)
         $img = $manager->read($file);
-        
+
         if ($img->width() > 1920) {
             $img->scale(width: 1920);
         }
-        
+
         $encoded = $img->toWebp(80);
         Storage::disk('public')->put($fullPath, (string) $encoded);
 
@@ -69,16 +66,12 @@ class FileUploadService
 
         return [
             'original' => $fullPath,
-            'thumbnail' => $thumbPath
+            'thumbnail' => $thumbPath,
         ];
     }
 
     /**
      * Securely upload a document.
-     *
-     * @param UploadedFile $file
-     * @param string $directory
-     * @return string
      */
     public static function uploadDocument(UploadedFile $file, string $directory): string
     {
@@ -86,7 +79,7 @@ class FileUploadService
         $allowedExtensions = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
         $extension = strtolower($file->getClientOriginalExtension());
 
-        if (!in_array($extension, $allowedExtensions)) {
+        if (! in_array($extension, $allowedExtensions)) {
             throw new \Exception('Geçersiz dosya formatı.');
         }
 
@@ -96,15 +89,15 @@ class FileUploadService
             'application/msword',
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
             'image/jpeg',
-            'image/png'
+            'image/png',
         ];
 
-        if (!in_array($file->getMimeType(), $allowedMimes)) {
+        if (! in_array($file->getMimeType(), $allowedMimes)) {
             throw new \Exception('Dosya içeriği güvenli görünmüyor.');
         }
 
-        $filename = Str::uuid() . '.' . $extension;
-        $path = $directory . '/' . $filename;
+        $filename = Str::uuid().'.'.$extension;
+        $path = $directory.'/'.$filename;
 
         Storage::disk('public')->putFileAs($directory, $file, $filename);
 
@@ -113,15 +106,12 @@ class FileUploadService
 
     /**
      * Delete a file from storage.
-     *
-     * @param string|null $path
-     * @return void
      */
     public static function delete(?string $path): void
     {
         if ($path && Storage::disk('public')->exists($path)) {
             Storage::disk('public')->delete($path);
-            
+
             // Also try to delete thumbnail if it's an image path
             $thumbPath = str_replace(['/', '.webp'], ['/thumbnails/', '.webp'], $path);
             if ($thumbPath !== $path && Storage::disk('public')->exists($thumbPath)) {

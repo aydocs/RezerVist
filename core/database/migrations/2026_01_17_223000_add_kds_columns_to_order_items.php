@@ -9,10 +9,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('order_items', function (Blueprint $table) {
-            if (!Schema::hasColumn('order_items', 'status')) {
+            if (! Schema::hasColumn('order_items', 'status')) {
                 $table->enum('status', ['pending', 'preparing', 'ready', 'completed'])->default('pending')->after('notes');
             }
-            if (!Schema::hasColumn('order_items', 'station')) {
+            if (! Schema::hasColumn('order_items', 'station')) {
                 $table->string('station')->nullable()->after('status')->comment('kitchen, bar, cold, etc.');
             }
         });

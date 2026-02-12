@@ -11,7 +11,7 @@ class VendorSearchController extends Controller
         $query = $request->get('q');
         $business = auth()->user()->ownedBusiness;
 
-        if (!$business || strlen($query) < 2) {
+        if (! $business || strlen($query) < 2) {
             return response()->json([]);
         }
 
@@ -19,12 +19,12 @@ class VendorSearchController extends Controller
 
         // 1. Search Reservations (by Customer Name or ID)
         $reservations = \App\Models\Reservation::where('business_id', $business->id)
-            ->where(function($q) use ($query) {
+            ->where(function ($q) use ($query) {
                 $q->where('id', 'like', "%{$query}%")
-                  ->orWhereHas('user', function($uq) use ($query) {
-                      $uq->where('name', 'like', "%{$query}%")
-                        ->orWhere('phone', 'like', "%{$query}%");
-                  });
+                    ->orWhereHas('user', function ($uq) use ($query) {
+                        $uq->where('name', 'like', "%{$query}%")
+                            ->orWhere('phone', 'like', "%{$query}%");
+                    });
             })
             ->with('user')
             ->latest()
@@ -34,10 +34,10 @@ class VendorSearchController extends Controller
         foreach ($reservations as $res) {
             $results[] = [
                 'type' => 'Rezervasyon',
-                'title' => '#' . $res->id . ' - ' . $res->user->name,
-                'subtitle' => \Carbon\Carbon::parse($res->start_time)->format('d.m.Y H:i') . ' | ' . $res->status,
-                'url' => route('vendor.reservations.index') . '?reservation_id=' . $res->id,
-                'icon' => 'calendar-check'
+                'title' => '#'.$res->id.' - '.$res->user->name,
+                'subtitle' => \Carbon\Carbon::parse($res->start_time)->format('d.m.Y H:i').' | '.$res->status,
+                'url' => route('vendor.reservations.index').'?reservation_id='.$res->id,
+                'icon' => 'calendar-check',
             ];
         }
 
@@ -53,7 +53,7 @@ class VendorSearchController extends Controller
                 'title' => $s->name,
                 'subtitle' => $s->position ?? 'Çalışan',
                 'url' => route('vendor.staff.index'), // Assuming there's a staff index
-                'icon' => 'user-tie'
+                'icon' => 'user-tie',
             ];
         }
 
@@ -67,9 +67,9 @@ class VendorSearchController extends Controller
             $results[] = [
                 'type' => 'Varlık / Masa',
                 'title' => $r->name,
-                'subtitle' => $r->type . ' | ' . $r->capacity . ' Kişilik',
+                'subtitle' => $r->type.' | '.$r->capacity.' Kişilik',
                 'url' => route('vendor.resources.index'), // Assuming there's a resources index
-                'icon' => 'chair'
+                'icon' => 'chair',
             ];
         }
 

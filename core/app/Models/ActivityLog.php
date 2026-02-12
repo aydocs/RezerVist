@@ -79,7 +79,7 @@ class ActivityLog extends Model
 
     public static function logReservation($reservation, $action = 'created')
     {
-        $message = match($action) {
+        $message = match ($action) {
             'created' => "Yeni rezervasyon oluşturuldu: #{$reservation->id}",
             'updated' => "Rezervasyon güncellendi: #{$reservation->id}",
             'cancelled' => "Rezervasyon iptal edildi: #{$reservation->id}",
@@ -93,14 +93,18 @@ class ActivityLog extends Model
             try {
                 // Determine status string for the notification class
                 $notifStatus = $reservation->status;
-                if ($action === 'created') $notifStatus = 'created'; // Custom status for 'created' context
-                if ($action === 'updated') $notifStatus = 'updated';
+                if ($action === 'created') {
+                    $notifStatus = 'created';
+                } // Custom status for 'created' context
+                if ($action === 'updated') {
+                    $notifStatus = 'updated';
+                }
 
                 // We might need to ensure ReservationStatusNotification handles 'created'/'updated' or we pass a custom message.
                 // Using SystemNotification for generic updates to be safe and specific
-                $title = "Rezervasyon " . ($action === 'created' ? 'Oluşturuldu' : 'Güncellendi');
-                $userMsg = "Rezervasyonunuz başarıyla " . ($action === 'created' ? 'oluşturuldu' : 'güncellendi') . ".";
-                
+                $title = 'Rezervasyon '.($action === 'created' ? 'Oluşturuldu' : 'Güncellendi');
+                $userMsg = 'Rezervasyonunuz başarıyla '.($action === 'created' ? 'oluşturuldu' : 'güncellendi').'.';
+
                 $reservation->user->notify(new \App\Notifications\SystemNotification(
                     $title,
                     $userMsg,
@@ -122,7 +126,7 @@ class ActivityLog extends Model
             'guest_count' => $reservation->guest_count,
             'start_time' => $reservation->start_time,
             'end_time' => $reservation->end_time,
-            'full_data' => $reservation->toArray()
+            'full_data' => $reservation->toArray(),
         ]);
     }
 
@@ -130,7 +134,7 @@ class ActivityLog extends Model
     {
         return self::logActivity('business_update', $description, [
             'business_id' => $business->id,
-            'business_name' => $business->name
+            'business_name' => $business->name,
         ]);
     }
 
@@ -139,7 +143,7 @@ class ActivityLog extends Model
         return self::logActivity('setting_change', "Sistem ayarı değiştirildi: {$key}", [
             'key' => $key,
             'old_value' => $oldValue,
-            'new_value' => $newValue
+            'new_value' => $newValue,
         ]);
     }
 
@@ -150,7 +154,7 @@ class ActivityLog extends Model
 
     public static function logPayment($payment, $status = 'success')
     {
-        $message = match($status) {
+        $message = match ($status) {
             'success' => "Ödeme başarılı: {$payment->amount} TL",
             'failed' => "Ödeme başarısız: {$payment->amount} TL",
             'refunded' => "Ödeme iade edildi: {$payment->amount} TL",
@@ -171,13 +175,14 @@ class ActivityLog extends Model
                     route('profile.wallet.index')
                 ));
             }
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         return self::logActivity("payment_{$status}", $message, [
             'payment_id' => $payment->id,
             'amount' => $payment->amount,
             'user_id' => $payment->user_id,
-            'reservation_id' => $payment->reservation_id ?? null
+            'reservation_id' => $payment->reservation_id ?? null,
         ], $payment->user_id);
     }
 
@@ -192,7 +197,7 @@ class ActivityLog extends Model
                 $typeLabel = $transaction->type === 'topup' ? 'Bakiye Yükleme' : 'Ödeme';
                 $title = "Cüzdan İşlemi: {$typeLabel}";
                 $notifMsg = "Hesabınızda {$transaction->amount} TL tutarında işlem gerçekleşti.";
-                
+
                 $user->notify(new \App\Notifications\SystemNotification(
                     $title,
                     $notifMsg,
@@ -201,14 +206,15 @@ class ActivityLog extends Model
                     route('profile.wallet.index')
                 ));
             }
-        } catch (\Exception $e) {}
-        
+        } catch (\Exception $e) {
+        }
+
         return self::logActivity("wallet_{$transaction->type}", $message, [
             'transaction_id' => $transaction->id,
             'amount' => $transaction->amount,
             'user_id' => $transaction->user_id,
             'status' => $status,
-            'reference_id' => $transaction->reference_id
+            'reference_id' => $transaction->reference_id,
         ], $transaction->user_id);
     }
 }

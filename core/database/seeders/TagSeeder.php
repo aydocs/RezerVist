@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class TagSeeder extends Seeder
@@ -25,7 +24,7 @@ class TagSeeder extends Seeder
             ['name' => 'Kredi Kartı', 'slug' => 'kredi-karti'],
             ['name' => 'Gel-Al', 'slug' => 'gel-al'],
             ['name' => 'Paket Servis', 'slug' => 'paket-servis'],
-            
+
             // Mutfak / Tarz
             ['name' => 'İtalyan', 'slug' => 'italyan'],
             ['name' => 'Uzak Doğu', 'slug' => 'uzak-dogu'],

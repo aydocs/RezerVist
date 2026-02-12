@@ -2,27 +2,27 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
     public function up(): void
     {
         Schema::table('menus', function (Blueprint $table) {
-            if (!Schema::hasColumn('menus', 'options')) {
+            if (! Schema::hasColumn('menus', 'options')) {
                 $table->json('options')->nullable()->after('price');
             }
-            if (!Schema::hasColumn('menus', 'unit_type')) {
+            if (! Schema::hasColumn('menus', 'unit_type')) {
                 $table->enum('unit_type', ['piece', 'weight'])->default('piece')->after('options');
             }
         });
 
         Schema::table('order_items', function (Blueprint $table) {
-            if (!Schema::hasColumn('order_items', 'selected_options')) {
+            if (! Schema::hasColumn('order_items', 'selected_options')) {
                 $table->json('selected_options')->nullable()->after('quantity');
             }
-            if (!Schema::hasColumn('order_items', 'weight_grams')) {
+            if (! Schema::hasColumn('order_items', 'weight_grams')) {
                 $table->integer('weight_grams')->nullable()->after('selected_options');
             }
         });

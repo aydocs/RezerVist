@@ -13,7 +13,7 @@ class Subscription extends Model
         'ends_at',
         'trial_ends_at',
         'status',
-        'payment_method'
+        'payment_method',
     ];
 
     protected $casts = [
@@ -36,9 +36,9 @@ class Subscription extends Model
     public function scopeActive($query)
     {
         return $query->where('status', 'active')
-                     ->where(function ($q) {
-                         $q->whereNull('ends_at')
-                           ->orWhere('ends_at', '>', now());
-                     });
+            ->where(function ($q) {
+                $q->whereNull('ends_at')
+                    ->orWhere('ends_at', '>', now());
+            });
     }
 }

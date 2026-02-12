@@ -1,20 +1,20 @@
-"use strict";
-const require$$1$3 = require("electron");
-const require$$1 = require("fs");
-const require$$0 = require("constants");
-const require$$0$1 = require("stream");
-const require$$4 = require("util");
-const require$$5 = require("assert");
-const require$$1$1 = require("path");
-const require$$1$4 = require("child_process");
-const require$$0$2 = require("events");
-const require$$0$3 = require("crypto");
-const require$$1$2 = require("tty");
-const require$$2 = require("os");
-const require$$2$1 = require("url");
-const require$$14 = require("zlib");
-const require$$4$1 = require("http");
-const path = require("node:path");
+import require$$1$3, { app, ipcMain, BrowserWindow, shell } from "electron";
+import require$$1 from "fs";
+import require$$0 from "constants";
+import require$$0$1 from "stream";
+import require$$4 from "util";
+import require$$5 from "assert";
+import require$$1$1 from "path";
+import require$$1$4 from "child_process";
+import require$$0$2 from "events";
+import require$$0$3 from "crypto";
+import require$$1$2 from "tty";
+import require$$2 from "os";
+import require$$2$1 from "url";
+import require$$14 from "zlib";
+import require$$4$1 from "http";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
 var main$1 = {};
 var fs = {};
@@ -11569,8 +11569,8 @@ function requireElectronAppAdapter() {
   const path2 = require$$1$1;
   const AppAdapter_1 = requireAppAdapter();
   let ElectronAppAdapter$1 = class ElectronAppAdapter {
-    constructor(app = require$$1$3.app) {
-      this.app = app;
+    constructor(app2 = require$$1$3.app) {
+      this.app = app2;
     }
     whenReady() {
       return this.app.whenReady();
@@ -13559,7 +13559,7 @@ function requireAppUpdater() {
         this._isUserWithinRollout = value;
       }
     }
-    constructor(options, app) {
+    constructor(options, app2) {
       super();
       this.autoDownload = true;
       this.autoInstallOnAppQuit = true;
@@ -13589,11 +13589,11 @@ function requireAppUpdater() {
       this.on("error", (error2) => {
         this._logger.error(`Error: ${error2.stack || error2.message}`);
       });
-      if (app == null) {
+      if (app2 == null) {
         this.app = new ElectronAppAdapter_1.ElectronAppAdapter();
         this.httpExecutor = new electronHttpExecutor_1.ElectronHttpExecutor((authInfo, callback) => this.emit("login", authInfo, callback));
       } else {
-        this.app = app;
+        this.app = app2;
         this.httpExecutor = null;
       }
       const currentVersionString = this.app.version;
@@ -14091,8 +14091,8 @@ function requireBaseUpdater() {
   const child_process_1 = require$$1$4;
   const AppUpdater_1 = requireAppUpdater();
   let BaseUpdater$1 = class BaseUpdater extends AppUpdater_1.AppUpdater {
-    constructor(options, app) {
-      super(options, app);
+    constructor(options, app2) {
+      super(options, app2);
       this.quitAndInstallCalled = false;
       this.quitHandlerAdded = false;
     }
@@ -14273,8 +14273,8 @@ function requireAppImageUpdater() {
   const Provider_1 = requireProvider();
   const types_1 = requireTypes();
   let AppImageUpdater$1 = class AppImageUpdater extends BaseUpdater_1.BaseUpdater {
-    constructor(options, app) {
-      super(options, app);
+    constructor(options, app2) {
+      super(options, app2);
     }
     isUpdaterActive() {
       if (process.env["APPIMAGE"] == null && !this.forceDevUpdateConfig) {
@@ -14376,8 +14376,8 @@ function requireLinuxUpdater() {
   LinuxUpdater.LinuxUpdater = void 0;
   const BaseUpdater_1 = requireBaseUpdater();
   let LinuxUpdater$1 = class LinuxUpdater extends BaseUpdater_1.BaseUpdater {
-    constructor(options, app) {
-      super(options, app);
+    constructor(options, app2) {
+      super(options, app2);
     }
     /**
      * Returns true if the current process is running as root.
@@ -14474,8 +14474,8 @@ function requireDebUpdater() {
   const types_1 = requireTypes();
   const LinuxUpdater_1 = requireLinuxUpdater();
   let DebUpdater$1 = class DebUpdater2 extends LinuxUpdater_1.LinuxUpdater {
-    constructor(options, app) {
-      super(options, app);
+    constructor(options, app2) {
+      super(options, app2);
     }
     /*** @private */
     doDownloadUpdate(downloadUpdateOptions) {
@@ -14558,8 +14558,8 @@ function requirePacmanUpdater() {
   const Provider_1 = requireProvider();
   const LinuxUpdater_1 = requireLinuxUpdater();
   let PacmanUpdater$1 = class PacmanUpdater2 extends LinuxUpdater_1.LinuxUpdater {
-    constructor(options, app) {
-      super(options, app);
+    constructor(options, app2) {
+      super(options, app2);
     }
     /*** @private */
     doDownloadUpdate(downloadUpdateOptions) {
@@ -14625,8 +14625,8 @@ function requireRpmUpdater() {
   const Provider_1 = requireProvider();
   const LinuxUpdater_1 = requireLinuxUpdater();
   let RpmUpdater$1 = class RpmUpdater2 extends LinuxUpdater_1.LinuxUpdater {
-    constructor(options, app) {
-      super(options, app);
+    constructor(options, app2) {
+      super(options, app2);
     }
     /*** @private */
     doDownloadUpdate(downloadUpdateOptions) {
@@ -14700,8 +14700,8 @@ function requireMacUpdater() {
   const child_process_1 = require$$1$4;
   const crypto_1 = require$$0$3;
   let MacUpdater$1 = class MacUpdater extends AppUpdater_1.AppUpdater {
-    constructor(options, app) {
-      super(options, app);
+    constructor(options, app2) {
+      super(options, app2);
       this.nativeUpdater = require$$1$3.autoUpdater;
       this.squirrelDownloadedUpdate = false;
       this.nativeUpdater.on("error", (it) => {
@@ -15056,8 +15056,8 @@ function requireNsisUpdater() {
   const windowsExecutableCodeSignatureVerifier_1 = requireWindowsExecutableCodeSignatureVerifier();
   const url_1 = require$$2$1;
   let NsisUpdater$1 = class NsisUpdater extends BaseUpdater_1.BaseUpdater {
-    constructor(options, app) {
-      super(options, app);
+    constructor(options, app2) {
+      super(options, app2);
       this._verifyUpdateCodeSignature = (publisherNames, unescapedTempUpdateFile) => (0, windowsExecutableCodeSignatureVerifier_1.verifySignature)(publisherNames, unescapedTempUpdateFile, this._logger);
     }
     /**
@@ -15314,17 +15314,19 @@ function requireMain() {
   return main$1;
 }
 var mainExports = requireMain();
-process.env.DIST = path.join(__dirname, "../dist");
-process.env.VITE_PUBLIC = require$$1$3.app.isPackaged ? process.env.DIST : path.join(__dirname, "../public");
+const __filename$1 = fileURLToPath(import.meta.url);
+const __dirname$1 = path.dirname(__filename$1);
+process.env.DIST = path.join(__dirname$1, "../dist");
+process.env.VITE_PUBLIC = app.isPackaged ? process.env.DIST : path.join(__dirname$1, "../public");
 let win;
 const VITE_DEV_SERVER_URL = process.env["VITE_DEV_SERVER_URL"];
 function createWindow() {
-  win = new require$$1$3.BrowserWindow({
+  win = new BrowserWindow({
     width: 1200,
     height: 800,
     icon: path.join(process.env.VITE_PUBLIC, "electron-vite.svg"),
     webPreferences: {
-      preload: path.join(__dirname, "preload.js")
+      preload: path.join(__dirname$1, "preload.js")
     },
     autoHideMenuBar: true,
     // Adisyo style (clean)
@@ -15340,7 +15342,7 @@ function createWindow() {
   win.webContents.setWindowOpenHandler((details) => {
     const { url } = details;
     if (url.startsWith("https:") || url.startsWith("http:")) {
-      require$$1$3.shell.openExternal(url);
+      shell.openExternal(url);
     }
     return { action: "deny" };
   });
@@ -15375,17 +15377,17 @@ function createWindow() {
     mainExports.autoUpdater.checkForUpdates();
   }, 5e3);
 }
-require$$1$3.ipcMain.on("update:install", () => {
+ipcMain.on("update:install", () => {
   mainExports.autoUpdater.quitAndInstall();
 });
-require$$1$3.app.on("window-all-closed", () => {
+app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
-    require$$1$3.app.quit();
+    app.quit();
   }
 });
-require$$1$3.app.on("activate", () => {
-  if (require$$1$3.BrowserWindow.getAllWindows().length === 0) {
+app.on("activate", () => {
+  if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
 });
-require$$1$3.app.whenReady().then(createWindow);
+app.whenReady().then(createWindow);

@@ -67,10 +67,10 @@ class FavoritesScreen extends ConsumerWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.favorite_outline,
                       size: 64,
-                      color: const Color(0xFFCBD5E1),
+                      color: Color(0xFFCBD5E1),
                     ),
                     const SizedBox(height: 16),
                     Text(

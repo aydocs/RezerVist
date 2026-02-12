@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class CampaignSeeder extends Seeder
 {
@@ -58,7 +58,7 @@ class CampaignSeeder extends Seeder
                 'is_active' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
         ];
 
         DB::table('campaigns')->insert($campaigns);

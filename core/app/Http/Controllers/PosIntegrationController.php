@@ -14,17 +14,17 @@ class PosIntegrationController extends Controller
     {
         $validated = $request->validate([
             'occupancy_rate' => 'required|integer|min:0|max:100',
-            'business_id' => 'sometimes|exists:businesses,id' // Optional, can be derived from token
+            'business_id' => 'sometimes|exists:businesses,id', // Optional, can be derived from token
         ]);
 
-        // Get business from request attributes (set by CheckSubscription middleware) 
+        // Get business from request attributes (set by CheckSubscription middleware)
         // or fallback to authenticated user's business
         $business = $request->attributes->get('business') ?? ($request->user() ? ($request->user()->business ?? $request->user()->ownedBusiness) : null);
 
-        if (!$business) {
+        if (! $business) {
             return response()->json([
                 'success' => false,
-                'message' => 'İşletme bulunamadı.'
+                'message' => 'İşletme bulunamadı.',
             ], 404);
         }
 
@@ -43,14 +43,14 @@ class PosIntegrationController extends Controller
                 'message' => 'Doluluk oranı güncellendi.',
                 'data' => [
                     'occupancy_rate' => $business->fresh()->occupancy_rate,
-                    'last_update' => $business->fresh()->last_occupancy_update
-                ]
+                    'last_update' => $business->fresh()->last_occupancy_update,
+                ],
             ]);
         }
 
         return response()->json([
             'success' => false,
-            'message' => 'Doluluk oranı güncellenemedi.'
+            'message' => 'Doluluk oranı güncellenemedi.',
         ], 400);
     }
 
@@ -66,8 +66,8 @@ class PosIntegrationController extends Controller
             'data' => [
                 'occupancy_rate' => $business->occupancy_rate,
                 'last_update' => $business->last_occupancy_update,
-                'business_name' => $business->name
-            ]
+                'business_name' => $business->name,
+            ],
         ]);
     }
 }

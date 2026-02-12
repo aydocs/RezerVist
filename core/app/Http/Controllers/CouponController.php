@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Coupon;
-use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class CouponController extends Controller
 {
@@ -22,7 +21,7 @@ class CouponController extends Controller
             ->where('is_active', true)
             ->first();
 
-        if (!$coupon) {
+        if (! $coupon) {
             return response()->json(['message' => 'Geçersiz kupon kodu.'], 404);
         }
 
@@ -36,7 +35,7 @@ class CouponController extends Controller
 
         if ($request->amount < $coupon->min_amount) {
             return response()->json([
-                'message' => "Bu kuponu kullanmak için minimum harfama tutarı: {$coupon->min_amount} TL"
+                'message' => "Bu kuponu kullanmak için minimum harfama tutarı: {$coupon->min_amount} TL",
             ], 400);
         }
 
@@ -48,7 +47,7 @@ class CouponController extends Controller
             'discount_amount' => $discount,
             'new_total' => max(0, $request->amount - $discount),
             'type' => $coupon->type,
-            'value' => $coupon->value
+            'value' => $coupon->value,
         ]);
     }
 }

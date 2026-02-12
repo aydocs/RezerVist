@@ -3,9 +3,9 @@
 namespace App\Services;
 
 use App\Models\Business;
+use App\Models\Invoice;
 use App\Models\Package;
 use App\Models\Subscription;
-use App\Models\Invoice;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 
@@ -35,7 +35,7 @@ class SubscriptionService
             'starts_at' => $startsAt,
             'ends_at' => $endsAt,
             'status' => 'active',
-            'payment_method' => $method
+            'payment_method' => $method,
         ]);
 
         // Create Invoice Record
@@ -44,7 +44,7 @@ class SubscriptionService
         // Sync local business cache fields
         $business->update([
             'subscription_status' => 'active',
-            'subscription_ends_at' => $endsAt
+            'subscription_ends_at' => $endsAt,
         ]);
 
         return $subscription;
@@ -58,7 +58,7 @@ class SubscriptionService
         return Invoice::create([
             'business_id' => $business->id,
             'subscription_id' => $subscription?->id,
-            'invoice_number' => 'INV-' . strtoupper(Str::random(10)),
+            'invoice_number' => 'INV-'.strtoupper(Str::random(10)),
             'amount' => $amount,
             'status' => $amount > 0 ? 'paid' : 'paid', // For now auto-mark paid for manual/free
             'paid_at' => now(),
@@ -78,7 +78,7 @@ class SubscriptionService
 
         foreach ($expired as $sub) {
             $sub->update(['status' => 'expired']);
-            
+
             // Also update business record
             $sub->business->update(['subscription_status' => 'expired']);
         }

@@ -1,6 +1,10 @@
 import { app, BrowserWindow, ipcMain, shell } from 'electron'
 import { autoUpdater } from 'electron-updater'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // The built directory structure
 //

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('user_agent')->nullable();
             $table->json('metadata')->nullable(); // Extra data like old/new values
             $table->timestamps();
-            
+
             $table->index(['user_id', 'created_at']);
             $table->index('action_type');
             $table->index('ip_address');

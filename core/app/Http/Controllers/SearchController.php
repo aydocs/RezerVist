@@ -13,15 +13,15 @@ class SearchController extends Controller
         // 1. Location / Name Search
         if ($request->filled('q')) {
             $term = $request->q;
-            $query->where(function($q) use ($term) {
+            $query->where(function ($q) use ($term) {
                 $q->where('name', 'like', "%{$term}%")
-                  ->orWhere('address', 'like', "%{$term}%")
-                  ->orWhereHas('businessCategory', function($cq) use ($term) {
-                      $cq->where('name', 'like', "%{$term}%");
-                  });
+                    ->orWhere('address', 'like', "%{$term}%")
+                    ->orWhereHas('businessCategory', function ($cq) use ($term) {
+                        $cq->where('name', 'like', "%{$term}%");
+                    });
             });
         }
-// ...
+        // ...
         $businesses = $query->with(['businessCategory', 'approvedReviews'])->where('is_active', true)->paginate(10)->withQueryString();
 
         // 2. Category Filter (handle both string and array)
@@ -39,12 +39,12 @@ class SearchController extends Controller
                 }
             }
 
-            if (!empty($slugs)) {
+            if (! empty($slugs)) {
                 $slugIds = \App\Models\Category::whereIn('slug', $slugs)->pluck('id')->toArray();
                 $ids = array_merge($ids, $slugIds);
             }
 
-            if (!empty($ids)) {
+            if (! empty($ids)) {
                 $query->whereIn('category_id', $ids);
             }
         }
@@ -66,7 +66,7 @@ class SearchController extends Controller
         if ($request->filled('features')) {
             $tagSlugs = is_array($request->features) ? $request->features : [$request->features];
             foreach ($tagSlugs as $slug) {
-                $query->whereHas('tags', function($q) use ($slug) {
+                $query->whereHas('tags', function ($q) use ($slug) {
                     $q->where('slug', $slug);
                 });
             }
@@ -76,18 +76,18 @@ class SearchController extends Controller
         if ($request->filled('open_now')) {
             $now = now();
             $dayOfWeek = $now->dayOfWeek; // 0 (Sunday) to 6 (Saturday) in Carbon usually, check DB
-            // Database day_of_week: 0=Pzt, 1=Sal... 6=Paz. Carbon 0=Sun. 
-            // Normalized: Carbon(0-6 Sun-Sat) -> App(0-6 Mon-Sun?) 
+            // Database day_of_week: 0=Pzt, 1=Sal... 6=Paz. Carbon 0=Sun.
+            // Normalized: Carbon(0-6 Sun-Sat) -> App(0-6 Mon-Sun?)
             // In VendorController: $dayNum is passed.
             $appDayNum = ($dayOfWeek + 6) % 7; // Mon=0, Tue=1... Sun=6
-            
+
             $currentTime = $now->format('H:i:s');
 
             $query->whereHas('hours', function ($h) use ($appDayNum, $currentTime) {
                 $h->where('day_of_week', $appDayNum)
-                  ->where('is_closed', false)
-                  ->where('open_time', '<=', $currentTime)
-                  ->where('close_time', '>=', $currentTime);
+                    ->where('is_closed', false)
+                    ->where('open_time', '<=', $currentTime)
+                    ->where('close_time', '>=', $currentTime);
             });
         }
 
@@ -108,12 +108,12 @@ class SearchController extends Controller
             }
 
             // If no explicit sort is chosen and we have location, default to nearest
-            if (!$sort) {
+            if (! $sort) {
                 $sort = 'nearest';
             }
         } else {
             // Default to recommended if no location and no sort
-            if (!$sort) {
+            if (! $sort) {
                 $sort = 'recommended';
             }
         }

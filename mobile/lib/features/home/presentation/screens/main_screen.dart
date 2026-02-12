@@ -42,8 +42,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
-          labelTextStyle: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.selected)) {
+          labelTextStyle: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
               return GoogleFonts.outfit(
                 fontSize: 12,
                 fontWeight: FontWeight.w700,

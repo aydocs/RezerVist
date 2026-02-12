@@ -2,9 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\Reservation;
 use Carbon\Carbon;
+use Illuminate\Console\Command;
 
 class ProcessRecurringReservations extends Command
 {
@@ -32,9 +32,9 @@ class ProcessRecurringReservations extends Command
         // Find reservations that are recurring and have reached their "generate next" window
         // For simplicity, we check for recurring reservations whose last instance is coming up soon
         $recurringReservations = Reservation::where('is_recurring', true)
-            ->where(function($query) {
+            ->where(function ($query) {
                 $query->whereNull('recurrence_end_date')
-                      ->orWhere('recurrence_end_date', '>', now());
+                    ->orWhere('recurrence_end_date', '>', now());
             })
             ->whereNotExists(function ($query) {
                 // Only process the latest instance of each recurring chain
@@ -77,7 +77,9 @@ class ProcessRecurringReservations extends Command
                 break;
         }
 
-        if (!$nextStart) return;
+        if (! $nextStart) {
+            return;
+        }
 
         // Don't create if it's past the end date
         if ($reservation->recurrence_end_date && $nextStart->gt($reservation->recurrence_end_date)) {
@@ -92,6 +94,7 @@ class ProcessRecurringReservations extends Command
 
         if ($exists) {
             $this->warn("Reservation instance already exists for {$reservation->id} at {$nextStart}");
+
             return;
         }
 

@@ -41,7 +41,7 @@ class ProfileScreen extends ConsumerWidget {
                 WalletCard(
                   balance: user.balance ?? 0.0,
                   points: user.points ?? 0,
-                  userName: user.name ?? 'Kullanıcı',
+                  userName: user.name,
                 ),
                 const SizedBox(height: 24),
                 ProfileMenuSection(
@@ -94,9 +94,11 @@ class ProfileScreen extends ConsumerWidget {
                       title: 'Çıkış Yap',
                       subtitle: 'Hesabından güvenle çık',
                       color: const Color(0xFFEF4444),
-                      onTap: () {
-                        ref.read(authProvider.notifier).logout();
-                        context.go('/login');
+                      onTap: () async {
+                        await ref.read(authProvider.notifier).logout();
+                        if (context.mounted) {
+                          context.go('/login');
+                        }
                       },
                       isDestructive: true,
                     ),

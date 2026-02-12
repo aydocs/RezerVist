@@ -25,7 +25,7 @@ return new class extends Migration
             $table->text('user_agent')->nullable();
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
-            
+
             // Indexes for performance
             $table->index('created_at');
             $table->index(['level', 'created_at']);

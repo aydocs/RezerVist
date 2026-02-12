@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservation;
-use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 class InvoiceController extends Controller
@@ -20,14 +19,14 @@ class InvoiceController extends Controller
         $isAdmin = $user->role === 'admin';
         $isVendor = $user->role === 'business' && $reservation->business_id === $user->ownedBusiness?->id;
 
-        if (!$isOwner && !$isAdmin && !$isVendor) {
+        if (! $isOwner && ! $isAdmin && ! $isVendor) {
             abort(403);
         }
 
         // Create PDF
         $reservation->load(['business', 'user', 'menus']);
         $pdf = Pdf::loadView('pdf.invoice', compact('reservation'));
-        
+
         return $pdf->download("RezerveEt-Dekont-{$reservation->id}.pdf");
     }
 
@@ -43,14 +42,14 @@ class InvoiceController extends Controller
         $isAdmin = $user->role === 'admin';
         $isVendor = $user->role === 'business' && $reservation->business_id === $user->ownedBusiness?->id;
 
-        if (!$isOwner && !$isAdmin && !$isVendor) {
+        if (! $isOwner && ! $isAdmin && ! $isVendor) {
             abort(403);
         }
 
         $reservation->load(['business', 'user', 'menus']);
 
         $pdf = Pdf::loadView('pdf.invoice', compact('reservation'));
-        
+
         return $pdf->stream();
     }
 }

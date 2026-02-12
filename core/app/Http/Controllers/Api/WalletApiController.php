@@ -3,9 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\WalletTransaction;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -13,13 +12,13 @@ class WalletApiController extends Controller
 {
     /**
      * Get authenicated user's wallet transactions.
-     * 
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $user = Auth::user();
-        if (!$user) {
+        if (! $user) {
             return response()->json(['message' => 'Unauthenticated.'], 401);
         }
 
@@ -41,9 +40,9 @@ class WalletApiController extends Controller
         }
 
         $users = User::where('id', '!=', Auth::id())
-            ->where(function($q) use ($query) {
+            ->where(function ($q) use ($query) {
                 $q->where('name', 'like', "%{$query}%")
-                  ->orWhere('phone', 'like', "%{$query}%");
+                    ->orWhere('phone', 'like', "%{$query}%");
             })
             ->limit(10)
             ->get(['id', 'name', 'phone', 'avatar']);
@@ -80,9 +79,9 @@ class WalletApiController extends Controller
             $sender->walletTransactions()->create([
                 'amount' => $amount,
                 'type' => 'transfer_sent',
-                'description' => $recipient->name . ' kullanıcısına transfer',
+                'description' => $recipient->name.' kullanıcısına transfer',
                 'status' => 'success',
-                'meta' => ['recipient_id' => $recipient->id]
+                'meta' => ['recipient_id' => $recipient->id],
             ]);
 
             // Add to recipient
@@ -90,9 +89,9 @@ class WalletApiController extends Controller
             $recipient->walletTransactions()->create([
                 'amount' => $amount,
                 'type' => 'transfer_received',
-                'description' => $sender->name . ' kullanıcısından gelen transfer',
+                'description' => $sender->name.' kullanıcısından gelen transfer',
                 'status' => 'success',
-                'meta' => ['sender_id' => $sender->id]
+                'meta' => ['sender_id' => $sender->id],
             ]);
 
             DB::commit();
@@ -100,15 +99,17 @@ class WalletApiController extends Controller
             // Notify recipient (optional, but good for UX)
             try {
                 // $recipient->notify(new \App\Notifications\PaymentReceived($amount, $sender->name));
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
 
             return response()->json([
                 'success' => true,
                 'message' => 'Transfer başarıyla tamamlandı.',
-                'new_balance' => $sender->balance
+                'new_balance' => $sender->balance,
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
+
             return response()->json(['message' => 'Transfer sırasında bir hata oluştu.'], 500);
         }
     }

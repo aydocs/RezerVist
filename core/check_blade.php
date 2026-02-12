@@ -1,4 +1,5 @@
 <?php
+
 $file = 'resources/views/business/show.blade.php';
 $content = file_get_contents($file);
 
@@ -27,13 +28,13 @@ $pattern = '/@(if|endif|foreach|endforeach|forelse|endforelse|auth|endauth|guest
 
 preg_match_all($pattern, $content, $matches, PREG_OFFSET_CAPTURE);
 
-echo "Token Count: " . count($matches[0]) . "\n";
+echo 'Token Count: '.count($matches[0])."\n";
 
 foreach ($matches[0] as $match) {
     $token = strtolower($match[0]);
     $offset = $match[1];
     $line = substr_count(substr($content, 0, $offset), "\n") + 1;
-    
+
     if (strpos($token, '@end') === 0) {
         $expectedType = substr($token, 4);
         if (empty($stack)) {
@@ -62,23 +63,23 @@ foreach ($matches[0] as $match) {
                 $isSelfClosingSection = true;
             }
         }
-        
+
         $isMarkerEmpty = false;
         if ($token === '@empty') {
             // Check if it's @empty($var) or @empty marker for @forelse
             $after = substr($content, $offset);
-            if (!preg_match('/^@empty\s*\(/', $after)) {
+            if (! preg_match('/^@empty\s*\(/', $after)) {
                 $isMarkerEmpty = true;
             }
         }
-        
-        if (!$isSelfClosingSection && !$isMarkerEmpty) {
+
+        if (! $isSelfClosingSection && ! $isMarkerEmpty) {
             $stack[] = ['type' => substr($token, 1), 'line' => $line];
         }
     }
 }
 
-if (!empty($stack)) {
+if (! empty($stack)) {
     echo "Unclosed directives:\n";
     foreach ($stack as $s) {
         echo "@{$s['type']} at line {$s['line']}\n";

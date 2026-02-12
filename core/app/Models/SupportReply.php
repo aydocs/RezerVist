@@ -11,7 +11,7 @@ class SupportReply extends Model
         'message',
         'is_admin',
         'is_read',
-        'attachment'
+        'attachment',
     ];
 
     public function contactMessage()

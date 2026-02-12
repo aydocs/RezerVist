@@ -2,11 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Setting;
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Setting;
+use Symfony\Component\HttpFoundation\Response;
 
 class CheckSystemMaintenance
 {
@@ -22,7 +22,7 @@ class CheckSystemMaintenance
         // We can wrap in try-catch in case DB is not setup
         try {
             $maintenance = Setting::where('key', 'system_maintenance')->value('value');
-            
+
             if ($maintenance == '1') {
                 // 2. Allow specific excluded paths (like login, admin login)
                 // If the user needs to login to access admin panel, we must allow login routes
@@ -35,7 +35,7 @@ class CheckSystemMaintenance
 
                 // 3. Check if user is authenticated and is admin
                 // Note: This middleware must run AFTER 'StartSession' and 'VerifyCsrfToken' usually to have Auth session.
-                
+
                 if (Auth::check() && Auth::user()->hasRole('admin')) {
                     return $next($request);
                 }
@@ -43,7 +43,7 @@ class CheckSystemMaintenance
                 // If not admin, and strictly accessing a non-auth route or just general user
                 // We typically exclude 'login' so admins can actually log in.
                 if ($request->is('login') || $request->is('admin/login')) {
-                     return $next($request);
+                    return $next($request);
                 }
 
                 // Otherwise, show maintenance page

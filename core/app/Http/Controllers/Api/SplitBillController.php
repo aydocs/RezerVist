@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\QrSession;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class SplitBillController extends Controller
 {
@@ -20,7 +19,7 @@ class SplitBillController extends Controller
             ->with('order')
             ->firstOrFail();
 
-        if (!$session->order) {
+        if (! $session->order) {
             return response()->json(['success' => false, 'message' => 'Sipariş bulunamadı.'], 404);
         }
 
@@ -56,7 +55,7 @@ class SplitBillController extends Controller
             ->with('order.items')
             ->firstOrFail();
 
-        if (!$session->order) {
+        if (! $session->order) {
             return response()->json(['success' => false, 'message' => 'Sipariş bulunamadı.'], 404);
         }
 
@@ -73,7 +72,7 @@ class SplitBillController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
-                'selected_items' => $selectedItems->map(fn($i) => [
+                'selected_items' => $selectedItems->map(fn ($i) => [
                     'id' => $i->id,
                     'name' => $i->name,
                     'quantity' => $i->quantity,
@@ -97,7 +96,7 @@ class SplitBillController extends Controller
             ->with('order')
             ->firstOrFail();
 
-        if (!$session->order) {
+        if (! $session->order) {
             return response()->json(['success' => false, 'message' => 'Sipariş bulunamadı.'], 404);
         }
 
@@ -135,7 +134,7 @@ class SplitBillController extends Controller
             ->with('order')
             ->firstOrFail();
 
-        if (!$session->order) {
+        if (! $session->order) {
             return response()->json(['success' => false, 'message' => 'Sipariş bulunamadı.'], 404);
         }
 

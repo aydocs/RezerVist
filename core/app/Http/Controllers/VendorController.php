@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Business;
-use App\Models\Resource;
 use App\Models\Reservation;
+use App\Models\Resource;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class VendorController extends Controller
@@ -18,7 +18,7 @@ class VendorController extends Controller
         $user = \Illuminate\Support\Facades\Auth::user();
         $business = $user->ownedBusiness;
 
-        if (!$business) {
+        if (! $business) {
             return response()->json(['message' => 'No business found'], 404);
         }
 
@@ -34,10 +34,10 @@ class VendorController extends Controller
         if ($user->role !== 'business' && $user->role !== 'admin') {
             return redirect('/');
         }
-        
+
         $business = $user->ownedBusiness;
-        if (!$business) {
-             return redirect()->route('vendor.business.edit');
+        if (! $business) {
+            return redirect()->route('vendor.business.edit');
         }
 
         $locationId = $request->get('location_id');
@@ -45,12 +45,15 @@ class VendorController extends Controller
 
         // 1. Core KPIs
         $query = Reservation::where('business_id', $business->id)->where('status', '!=', 'pending_payment');
-        
+
         if ($locationId) {
-            if ($locationId === 'main') $query->whereNull('location_id');
-            else $query->where('location_id', $locationId);
+            if ($locationId === 'main') {
+                $query->whereNull('location_id');
+            } else {
+                $query->where('location_id', $locationId);
+            }
         }
-        
+
         $reservations = $query->get();
         $thisMonth = now()->startOfMonth();
         $lastMonth = now()->subMonth()->startOfMonth();
@@ -58,8 +61,11 @@ class VendorController extends Controller
 
         $revenueQuery = Reservation::where('business_id', $business->id)->whereIn('status', ['completed', 'approved']);
         if ($locationId) {
-            if ($locationId === 'main') $revenueQuery->whereNull('location_id');
-            else $revenueQuery->where('location_id', $locationId);
+            if ($locationId === 'main') {
+                $revenueQuery->whereNull('location_id');
+            } else {
+                $revenueQuery->where('location_id', $locationId);
+            }
         }
 
         // Use transaction date (created_at) for revenue KPIs
@@ -72,14 +78,14 @@ class VendorController extends Controller
         $totalCustomers = Reservation::where('business_id', $business->id)
             ->distinct('user_id')
             ->count('user_id');
-        
+
         $returningCustomers = Reservation::where('business_id', $business->id)
             ->select('user_id')
             ->groupBy('user_id')
             ->havingRaw('COUNT(id) > 1')
             ->get()
             ->count();
-        
+
         $repeatRate = $totalCustomers > 0 ? ($returningCustomers / $totalCustomers) * 100 : 0;
 
         // Staff Performance Leaderboard
@@ -93,7 +99,7 @@ class VendorController extends Controller
             'revenue' => $reservations->whereIn('status', ['completed', 'approved'])->sum('total_amount'),
             'revenue_this_month' => $revenueThisMonth,
             'revenue_trend' => round($revenueTrend, 1),
-            'visitors' => $reservations->whereIn('status', ['completed', 'approved'])->sum('guest_count'), 
+            'visitors' => $reservations->whereIn('status', ['completed', 'approved'])->sum('guest_count'),
             'pending_reservations' => $reservations->where('status', 'pending')->count(),
             'approved_reservations' => $reservations->where('status', 'approved')->count(),
             'total_reservations' => $reservations->count(),
@@ -116,8 +122,8 @@ class VendorController extends Controller
                 $date = now()->subDays($i);
                 $labels[] = $date->locale('tr')->dayName;
                 $val = (clone $revenueQuery)->whereDate('created_at', $date->format('Y-m-d'))->sum('total_amount');
-                $seriesGross[] = (float)$val;
-                $seriesNet[] = (float)($val - ($val * $commissionRate / 100));
+                $seriesGross[] = (float) $val;
+                $seriesNet[] = (float) ($val - ($val * $commissionRate / 100));
             }
         } elseif ($period === 'monthly') {
             $daysInMonth = now()->daysInMonth;
@@ -127,8 +133,8 @@ class VendorController extends Controller
                     ->whereYear('created_at', now()->year)
                     ->whereDay('created_at', $i)
                     ->sum('total_amount');
-                $seriesGross[] = (float)$val;
-                $seriesNet[] = (float)($val - ($val * $commissionRate / 100));
+                $seriesGross[] = (float) $val;
+                $seriesNet[] = (float) ($val - ($val * $commissionRate / 100));
             }
         } else {
             $labels = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
@@ -136,8 +142,8 @@ class VendorController extends Controller
                 $val = (clone $revenueQuery)->whereYear('created_at', now()->year)
                     ->whereMonth('created_at', $i)
                     ->sum('total_amount');
-                $seriesGross[] = (float)$val;
-                $seriesNet[] = (float)($val - ($val * $commissionRate / 100));
+                $seriesGross[] = (float) $val;
+                $seriesNet[] = (float) ($val - ($val * $commissionRate / 100));
             }
         }
 
@@ -152,8 +158,11 @@ class VendorController extends Controller
             ->join('menus', 'menu_reservation.menu_id', '=', 'menus.id')
             ->where('reservations.business_id', $business->id)
             ->whereIn('reservations.status', ['completed', 'approved'])
-            ->when($locationId, function($q) use ($locationId) {
-                if ($locationId === 'main') return $q->whereNull('reservations.location_id');
+            ->when($locationId, function ($q) use ($locationId) {
+                if ($locationId === 'main') {
+                    return $q->whereNull('reservations.location_id');
+                }
+
                 return $q->where('reservations.location_id', $locationId);
             })
             ->select('menus.name', \DB::raw('count(*) as count'), \DB::raw('sum(menus.price) as total_revenue'))
@@ -183,7 +192,7 @@ class VendorController extends Controller
 
         // 5. Dynamic Onboarding Progress Calculation
         $onboardingSteps = [
-            'profile' => !empty($business->description) && !empty($business->address),
+            'profile' => ! empty($business->description) && ! empty($business->address),
             'menu' => $business->menus()->count() > 0,
             'hours' => $business->hours()->count() > 0,
             'staff' => $business->staff()->count() > 0,
@@ -196,7 +205,7 @@ class VendorController extends Controller
 
         $onboarding = [
             'percent' => $onboardingPercent,
-            'steps' => $onboardingSteps
+            'steps' => $onboardingSteps,
         ];
 
         // 6. Recent Reviews
@@ -207,12 +216,12 @@ class VendorController extends Controller
             ->get();
 
         return view('dashboard', compact(
-            'stats', 
-            'recentReservations', 
-            'business', 
-            'chartSeries', 
-            'labels', 
-            'period', 
+            'stats',
+            'recentReservations',
+            'business',
+            'chartSeries',
+            'labels',
+            'period',
             'topMenus',
             'occupancyLabels',
             'occupancyData',
@@ -230,7 +239,7 @@ class VendorController extends Controller
         $user = Auth::user();
         $business = $user->ownedBusiness; // Assuming hasOne relationship
 
-        if (!$business) {
+        if (! $business) {
             return redirect()->route('home')->with('error', 'İşletme kaydınız bulunamadı.');
         }
 
@@ -245,7 +254,7 @@ class VendorController extends Controller
         $user = Auth::user();
         $business = $user->ownedBusiness;
 
-        if (!$business) {
+        if (! $business) {
             return abort(404);
         }
 
@@ -274,7 +283,7 @@ class VendorController extends Controller
             $timeSlots = [[
                 'start' => $validated['reservation_start_time'] ?? '10:00',
                 'end' => $validated['reservation_end_time'] ?? '23:00',
-                'slot_duration' => (int) ($validated['reservation_slot_duration'] ?? 60)
+                'slot_duration' => (int) ($validated['reservation_slot_duration'] ?? 60),
             ]];
         }
 
@@ -305,24 +314,23 @@ class VendorController extends Controller
         $user = Auth::user();
         $business = $user->ownedBusiness;
 
-        if (!$business) {
+        if (! $business) {
             return response()->json([
                 'success' => false,
-                'message' => 'İşletme hesabı bulunamadı.'
+                'message' => 'İşletme hesabı bulunamadı.',
             ], 404);
         }
 
         $business->update([
             'device_fingerprint' => null,
-            'device_registered_at' => null
+            'device_registered_at' => null,
         ]);
 
         return response()->json([
             'success' => true,
-            'message' => 'POS cihaz eşleşmesi başarıyla sıfırlandı. Yeni bir cihazdan giriş yapabilirsiniz.'
+            'message' => 'POS cihaz eşleşmesi başarıyla sıfırlandı. Yeni bir cihazdan giriş yapabilirsiniz.',
         ]);
     }
-
 
     /**
      * Show vendor reservations.
@@ -331,31 +339,32 @@ class VendorController extends Controller
     {
         $user = Auth::user();
         $business = $user->ownedBusiness;
-        
-        if (!$business) {
-             return redirect()->route('home');
+
+        if (! $business) {
+            return redirect()->route('home');
         }
 
         $locations = $business->locations;
 
         $reservations = Reservation::where('business_id', $business->id)
             ->where('status', '!=', 'pending_payment')
-            ->when($request->location_id, function($q) use ($request) {
+            ->when($request->location_id, function ($q) use ($request) {
                 if ($request->location_id === 'main') {
                     return $q->whereNull('location_id');
                 }
+
                 return $q->where('location_id', $request->location_id);
             })
-            ->when($request->reservation_id, function($q) use ($request) {
+            ->when($request->reservation_id, function ($q) use ($request) {
                 return $q->where('id', $request->reservation_id);
             })
-            ->when($request->status, function($q) use ($request) {
+            ->when($request->status, function ($q) use ($request) {
                 return $q->where('status', $request->status);
             })
             ->with(['user', 'staff', 'location'])
-            ->when($request->sort_by === 'oldest', function($q) {
+            ->when($request->sort_by === 'oldest', function ($q) {
                 return $q->orderBy('updated_at', 'asc');
-            }, function($q) {
+            }, function ($q) {
                 return $q->orderBy('updated_at', 'desc');
             })
             ->paginate(10)
@@ -371,12 +380,12 @@ class VendorController extends Controller
         $user = Auth::user();
         $business = $user->ownedBusiness;
 
-        if (!$business) {
+        if (! $business) {
             return abort(403);
         }
 
         $reservation = Reservation::where('business_id', $business->id)->findOrFail($id);
-        
+
         $validated = $request->validate([
             'status' => 'required|in:approved,rejected,cancelled',
             'staff_id' => 'nullable|exists:staff,id',
@@ -385,7 +394,7 @@ class VendorController extends Controller
         if ($validated['status'] === 'cancelled') {
             // Can only cancel Approved reservations
             if ($reservation->status !== 'approved') {
-                 return back()->with('error', 'Sadece onaylanmış rezervasyonlar iptal edilebilir.');
+                return back()->with('error', 'Sadece onaylanmış rezervasyonlar iptal edilebilir.');
             }
 
             // 24 Hour Rule
@@ -416,7 +425,7 @@ class VendorController extends Controller
         }
 
         // Send Status Notification (only if staff was NOT assigned, to avoid duplicate notifications)
-        if (!$staffWasAssigned) {
+        if (! $staffWasAssigned) {
             $reservation->user->notify(new \App\Notifications\ReservationStatusNotification($reservation, $validated['status'], 'business'));
         }
 
@@ -436,7 +445,7 @@ class VendorController extends Controller
         $user = Auth::user();
         $business = $user->ownedBusiness;
 
-        if (!$business) {
+        if (! $business) {
             return redirect()->route('home')->with('error', 'İşletme kaydınız bulunamadı.');
         }
 
@@ -453,7 +462,7 @@ class VendorController extends Controller
         $user = Auth::user();
         $business = $user->ownedBusiness;
 
-        if (!$business) {
+        if (! $business) {
             return redirect()->route('home')->with('error', 'İşletme kaydınız bulunamadı.');
         }
 
@@ -485,6 +494,7 @@ class VendorController extends Controller
         return redirect()->route('vendor.business.hours.edit')
             ->with('success', 'Çalışma saatleri başarıyla güncellendi.');
     }
+
     /**
      * Store a new business image.
      */
@@ -493,7 +503,7 @@ class VendorController extends Controller
         $user = Auth::user();
         $business = $user->ownedBusiness;
 
-        if (!$business) {
+        if (! $business) {
             return abort(404);
         }
 
@@ -504,7 +514,7 @@ class VendorController extends Controller
         if ($request->hasFile('image')) {
             // Use FileUploadService for secure and optimized upload
             $paths = \App\Services\FileUploadService::uploadImage($request->file('image'), 'business_images', true);
-            
+
             $business->images()->create([
                 'image_path' => $paths['original'],
                 'thumbnail_path' => $paths['thumbnail'],
@@ -524,7 +534,7 @@ class VendorController extends Controller
         $user = Auth::user();
         $business = $user->ownedBusiness;
 
-        if (!$business) {
+        if (! $business) {
             return abort(404);
         }
 
@@ -537,11 +547,13 @@ class VendorController extends Controller
 
         return back()->with('success', 'Fotoğraf silindi.');
     }
-    
+
     public function customers()
     {
         $business = Auth::user()->ownedBusiness;
-        if (!$business) return abort(403);
+        if (! $business) {
+            return abort(403);
+        }
 
         $customers = Reservation::where('business_id', $business->id)
             ->with('user')
@@ -556,7 +568,9 @@ class VendorController extends Controller
     public function reviews()
     {
         $business = Auth::user()->ownedBusiness;
-        if (!$business) return abort(403);
+        if (! $business) {
+            return abort(403);
+        }
 
         $reviews = $business->reviews()
             ->with(['user'])
@@ -570,12 +584,14 @@ class VendorController extends Controller
     {
         $user = Auth::user();
         $business = $user->ownedBusiness;
-        if (!$business) return redirect()->route('vendor.business.edit');
+        if (! $business) {
+            return redirect()->route('vendor.business.edit');
+        }
 
         // Dynamic Onboarding Progress Calculation
         $reservations = Reservation::where('business_id', $business->id)->get();
         $onboardingSteps = [
-            'profile' => !empty($business->description) && !empty($business->address),
+            'profile' => ! empty($business->description) && ! empty($business->address),
             'menu' => $business->menus()->count() > 0,
             'hours' => $business->hours()->count() > 0,
             'staff' => $business->staff()->count() > 0,
@@ -588,7 +604,7 @@ class VendorController extends Controller
 
         $onboarding = [
             'percent' => $onboardingPercent,
-            'steps' => $onboardingSteps
+            'steps' => $onboardingSteps,
         ];
 
         return view('vendor.setup.index', compact('business', 'onboarding'));
@@ -598,7 +614,9 @@ class VendorController extends Controller
     {
         $user = Auth::user();
         $business = $user->ownedBusiness;
-        if (!$business) return abort(403);
+        if (! $business) {
+            return abort(403);
+        }
 
         $period = $request->get('period', 'monthly'); // Default to monthly
         $locationId = $request->get('location_id');
@@ -606,10 +624,13 @@ class VendorController extends Controller
 
         // Use transaction date (created_at) for finance as requested
         $query = Reservation::where('business_id', $business->id)->whereIn('status', ['completed', 'approved']);
-        
+
         if ($locationId) {
-            if ($locationId === 'main') $query->whereNull('location_id');
-            else $query->where('location_id', $locationId);
+            if ($locationId === 'main') {
+                $query->whereNull('location_id');
+            } else {
+                $query->where('location_id', $locationId);
+            }
         }
 
         $labels = [];
@@ -623,9 +644,9 @@ class VendorController extends Controller
                 $date = now()->subDays($i);
                 $labels[] = $date->locale('tr')->dayName;
                 $val = (clone $query)->whereDate('created_at', $date->format('Y-m-d'))->sum('total_amount');
-                $seriesGross[] = (float)$val;
-                $seriesComm[] = (float)($val * $commissionRate / 100);
-                $seriesNet[] = (float)($val - ($val * $commissionRate / 100));
+                $seriesGross[] = (float) $val;
+                $seriesComm[] = (float) ($val * $commissionRate / 100);
+                $seriesNet[] = (float) ($val - ($val * $commissionRate / 100));
             }
         } elseif ($period === 'monthly') {
             $daysInMonth = now()->daysInMonth;
@@ -635,9 +656,9 @@ class VendorController extends Controller
                     ->whereYear('created_at', now()->year)
                     ->whereDay('created_at', $i)
                     ->sum('total_amount');
-                $seriesGross[] = (float)$val;
-                $seriesComm[] = (float)($val * $commissionRate / 100);
-                $seriesNet[] = (float)($val - ($val * $commissionRate / 100));
+                $seriesGross[] = (float) $val;
+                $seriesComm[] = (float) ($val * $commissionRate / 100);
+                $seriesNet[] = (float) ($val - ($val * $commissionRate / 100));
             }
         } else {
             // Yearly/All
@@ -646,16 +667,16 @@ class VendorController extends Controller
                 $val = (clone $query)->whereYear('created_at', now()->year)
                     ->whereMonth('created_at', $i)
                     ->sum('total_amount');
-                $seriesGross[] = (float)$val;
-                $seriesComm[] = (float)($val * $commissionRate / 100);
-                $seriesNet[] = (float)($val - ($val * $commissionRate / 100));
+                $seriesGross[] = (float) $val;
+                $seriesComm[] = (float) ($val * $commissionRate / 100);
+                $seriesNet[] = (float) ($val - ($val * $commissionRate / 100));
             }
         }
 
         $totalRevenue = array_sum($seriesGross);
         $totalNet = array_sum($seriesNet);
         $totalCommission = array_sum($seriesComm);
-        
+
         $reservations = (clone $query)->get();
         $reservationCount = $reservations->count();
         $iyzicoEstimate = ($totalRevenue * 0.011) + ($reservationCount * 0.25);
@@ -663,13 +684,13 @@ class VendorController extends Controller
         // Daily Distribution
         $dailyDistribution = [
             'labels' => ['Pzt', 'Sal', 'Çar', 'Per', 'Cum', 'Cmt', 'Paz'],
-            'data' => array_fill(0, 7, 0)
+            'data' => array_fill(0, 7, 0),
         ];
-        
+
         $reservationsPerDay = (clone $query)->selectRaw('WEEKDAY(start_time) as day, count(*) as count')
             ->groupBy('day')
             ->get();
-            
+
         foreach ($reservationsPerDay as $res) {
             $dailyDistribution['data'][$res->day] = $res->count;
         }
@@ -678,7 +699,7 @@ class VendorController extends Controller
         $walletTransactions = \App\Models\WalletTransaction::where('user_id', Auth::id())->latest()->take(20)->get();
 
         return view('vendor.finance.index', compact(
-            'business', 'locations', 'period', 'labels', 'seriesGross', 'seriesComm', 'seriesNet', 
+            'business', 'locations', 'period', 'labels', 'seriesGross', 'seriesComm', 'seriesNet',
             'totalRevenue', 'totalNet', 'totalCommission', 'iyzicoEstimate',
             'dailyDistribution', 'reservations', 'withdrawals', 'walletTransactions'
         ));
@@ -688,23 +709,28 @@ class VendorController extends Controller
     {
         $user = Auth::user();
         $business = $user->ownedBusiness;
-        if (!$business) return abort(403);
+        if (! $business) {
+            return abort(403);
+        }
 
         $period = $request->get('period', 'monthly');
         $locationId = $request->get('location_id');
 
         // Query basically similar to finance index for consistency
         $query = Reservation::where('business_id', $business->id)->whereIn('status', ['completed', 'approved']);
-        
+
         if ($locationId) {
-            if ($locationId === 'main') $query->whereNull('location_id');
-            else $query->where('location_id', $locationId);
+            if ($locationId === 'main') {
+                $query->whereNull('location_id');
+            } else {
+                $query->where('location_id', $locationId);
+            }
         }
 
         // Apply filters (defaults to 'all' if not specified for export, or we can use the same period logic)
         // Let's assume export is "All Time" or respects current period.
         // For simplicity and "Download All Transactions" text sake, let's grab everything unless filtered.
-        
+
         // Actually, the button says "Tüm İşlemleri İndir", implies ALl.
         // But respecting filters is better UX.
         if ($period === 'weekly') {
@@ -714,23 +740,25 @@ class VendorController extends Controller
         } elseif ($period === '1y') {
             $query->whereYear('created_at', now()->year);
         }
-        
+
         $reservations = (clone $query)->orderBy('created_at', 'desc')->get();
-        
+
         $totalRevenue = $reservations->sum('total_amount');
         $commissionRate = $business->commission_rate ?? 1;
         $totalCommission = $totalRevenue * ($commissionRate / 100);
         $totalNet = $totalRevenue - $totalCommission;
 
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('vendor.finance.pdf', compact('business', 'reservations', 'totalRevenue', 'totalCommission', 'totalNet'));
-        
-        return $pdf->download('finansal-rapor-' . now()->format('d-m-Y') . '.pdf');
+
+        return $pdf->download('finansal-rapor-'.now()->format('d-m-Y').'.pdf');
     }
 
     public function registerIyzicoSubMerchant(Request $request)
     {
         $business = Auth::user()->ownedBusiness;
-        if (!$business) return back()->with('error', 'İşletme bulunamadı.');
+        if (! $business) {
+            return back()->with('error', 'İşletme bulunamadı.');
+        }
 
         $validated = $request->validate([
             'submerchant_type' => 'required|in:PERSONAL,PRIVATE_COMPANY,LIMITED_OR_JOINT_STOCK_COMPANY',
@@ -749,31 +777,36 @@ class VendorController extends Controller
             $validated['tax_number'] = $validated['identity_number'];
         }
 
-        $service = new \App\Services\IyzicoMarketplaceService();
+        $service = new \App\Services\IyzicoMarketplaceService;
         $result = $service->registerSubMerchant($business, $validated);
 
         if ($result['status'] === 'success') {
             return back()->with('success', 'Iyzico Pazaryeri kaydınız başarıyla tamamlandı. Artık hakedişleriniz otomatik olarak banka hesabınıza yatacaktır.');
         }
 
-        return back()->with('error', 'Iyzico hatası: ' . $result['message']);
+        return back()->with('error', 'Iyzico hatası: '.$result['message']);
     }
 
     public function occupancy(Request $request)
     {
         $user = Auth::user();
         $business = $user->ownedBusiness;
-        if (!$business) return abort(403);
+        if (! $business) {
+            return abort(403);
+        }
 
         $locationId = $request->get('location_id');
         $locations = $business->locations;
 
         $query = Reservation::where('business_id', $business->id)
             ->whereIn('status', ['completed', 'approved']);
-        
+
         if ($locationId) {
-            if ($locationId === 'main') $query->whereNull('location_id');
-            else $query->where('location_id', $locationId);
+            if ($locationId === 'main') {
+                $query->whereNull('location_id');
+            } else {
+                $query->where('location_id', $locationId);
+            }
         }
 
         // 1. Hourly Distribution (00:00 - 23:00)
@@ -799,10 +832,10 @@ class VendorController extends Controller
             ->with('resource:id,name')
             ->groupBy('resource_id')
             ->get()
-            ->map(function($item) {
+            ->map(function ($item) {
                 return [
                     'name' => $item->resource ? $item->resource->name : 'Genel',
-                    'count' => $item->count
+                    'count' => $item->count,
                 ];
             });
 
@@ -815,7 +848,9 @@ class VendorController extends Controller
     {
         $user = Auth::user();
         $business = $user->ownedBusiness;
-        if (!$business) return response()->json(['error' => 'Unauthorized'], 403);
+        if (! $business) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
 
         $type = $request->get('type', 'finance');
         $period = $request->get('period', '7d');
@@ -826,8 +861,11 @@ class VendorController extends Controller
             ->whereIn('status', ['completed', 'approved']);
 
         if ($locationId) {
-            if ($locationId === 'main') $query->whereNull('location_id');
-            else $query->where('location_id', $locationId);
+            if ($locationId === 'main') {
+                $query->whereNull('location_id');
+            } else {
+                $query->where('location_id', $locationId);
+            }
         }
 
         $dateColumn = ($type === 'finance') ? 'created_at' : 'start_time';
@@ -848,16 +886,16 @@ class VendorController extends Controller
             $seriesGross = [];
             $seriesNet = [];
             $seriesComm = [];
-            
+
             $commissionRate = $business->commission_rate ?? 0;
 
             if ($period === '1d') {
                 for ($i = 0; $i < 24; $i++) {
-                    $labels[] = str_pad($i, 2, '0', STR_PAD_LEFT) . ':00';
+                    $labels[] = str_pad($i, 2, '0', STR_PAD_LEFT).':00';
                     $val = (clone $query)->whereRaw("HOUR($dateColumn) = ?", [$i])->sum('total_amount');
-                    $seriesGross[] = (float)$val;
-                    $seriesComm[] = (float)($val * $commissionRate / 100);
-                    $seriesNet[] = (float)($val - ($val * $commissionRate / 100));
+                    $seriesGross[] = (float) $val;
+                    $seriesComm[] = (float) ($val * $commissionRate / 100);
+                    $seriesNet[] = (float) ($val - ($val * $commissionRate / 100));
                 }
             } elseif ($period === '7d' || $period === '1m') {
                 $days = $period === '7d' ? 7 : 30;
@@ -865,9 +903,9 @@ class VendorController extends Controller
                     $date = now()->subDays($i);
                     $labels[] = $date->format('d M');
                     $val = (clone $query)->whereDate($dateColumn, $date->format('Y-m-d'))->sum('total_amount');
-                    $seriesGross[] = (float)$val;
-                    $seriesComm[] = (float)($val * $commissionRate / 100);
-                    $seriesNet[] = (float)($val - ($val * $commissionRate / 100));
+                    $seriesGross[] = (float) $val;
+                    $seriesComm[] = (float) ($val * $commissionRate / 100);
+                    $seriesNet[] = (float) ($val - ($val * $commissionRate / 100));
                 }
             } else {
                 for ($i = 11; $i >= 0; $i--) {
@@ -876,9 +914,9 @@ class VendorController extends Controller
                     $val = (clone $query)->whereMonth($dateColumn, $date->month)
                         ->whereYear($dateColumn, $date->year)
                         ->sum('total_amount');
-                    $seriesGross[] = (float)$val;
-                    $seriesComm[] = (float)($val * $commissionRate / 100);
-                    $seriesNet[] = (float)($val - ($val * $commissionRate / 100));
+                    $seriesGross[] = (float) $val;
+                    $seriesComm[] = (float) ($val * $commissionRate / 100);
+                    $seriesNet[] = (float) ($val - ($val * $commissionRate / 100));
                 }
             }
 
@@ -896,13 +934,13 @@ class VendorController extends Controller
                     ['name' => 'Net Kazanç', 'data' => $seriesNet],
                 ],
                 'stats' => [
-                    'total_revenue' => number_format($totalGross, 2, ',', '.') . ' ₺',
-                    'commission' => number_format($totalComm, 2, ',', '.') . ' ₺',
-                    'net_earnings' => number_format($totalNet, 2, ',', '.') . ' ₺',
-                    'aov' => number_format($aov, 2, ',', '.') . ' ₺',
+                    'total_revenue' => number_format($totalGross, 2, ',', '.').' ₺',
+                    'commission' => number_format($totalComm, 2, ',', '.').' ₺',
+                    'net_earnings' => number_format($totalNet, 2, ',', '.').' ₺',
+                    'aov' => number_format($aov, 2, ',', '.').' ₺',
                     'transaction_count' => $count,
-                    'growth' => '+12.5%' // Mock value for visual polish
-                ]
+                    'growth' => '+12.5%', // Mock value for visual polish
+                ],
             ]);
         } else {
             // Occupancy
@@ -910,19 +948,23 @@ class VendorController extends Controller
             $resPerHour = (clone $query)->selectRaw('HOUR(start_time) as hour, count(*) as count')
                 ->groupBy('hour')
                 ->get();
-            foreach ($resPerHour as $res) $hourlyData[$res->hour] = $res->count;
+            foreach ($resPerHour as $res) {
+                $hourlyData[$res->hour] = $res->count;
+            }
 
             $dailyData = array_fill(0, 7, 0);
             $resPerDay = (clone $query)->selectRaw('WEEKDAY(start_time) as day, count(*) as count')
                 ->groupBy('day')
                 ->get();
-            foreach ($resPerDay as $res) $dailyData[$res->day] = $res->count;
+            foreach ($resPerDay as $res) {
+                $dailyData[$res->day] = $res->count;
+            }
 
             return response()->json([
                 'hourly' => $hourlyData,
                 'daily' => $dailyData,
-                'max_hour' => array_search(max($hourlyData), $hourlyData) . ':00',
-                'max_day' => ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar'][array_search(max($dailyData), $dailyData)]
+                'max_hour' => array_search(max($hourlyData), $hourlyData).':00',
+                'max_day' => ['Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi', 'Pazar'][array_search(max($dailyData), $dailyData)],
             ]);
         }
     }
@@ -933,7 +975,9 @@ class VendorController extends Controller
     public function seedDemoData()
     {
         $business = Auth::user()->ownedBusiness;
-        if (!$business) return response()->json(['success' => false, 'message' => 'İşletme bulunamadı.']);
+        if (! $business) {
+            return response()->json(['success' => false, 'message' => 'İşletme bulunamadı.']);
+        }
 
         // 1. Create Staff
         if ($business->staff()->count() === 0) {
@@ -942,7 +986,7 @@ class VendorController extends Controller
                 'position' => 'Garson',
                 'pin_code' => '1234',
                 'is_active' => true,
-                'permissions' => ['take_orders', 'view_tables']
+                'permissions' => ['take_orders', 'view_tables'],
             ]);
         }
 
@@ -980,8 +1024,8 @@ class VendorController extends Controller
         }
 
         return response()->json([
-            'success' => true, 
-            'message' => 'Demo verileri başarıyla yüklendi! Artık POS uygulamasını test edebilirsiniz.'
+            'success' => true,
+            'message' => 'Demo verileri başarıyla yüklendi! Artık POS uygulamasını test edebilirsiniz.',
         ]);
     }
 
@@ -991,7 +1035,9 @@ class VendorController extends Controller
     public function clearDemoData()
     {
         $business = Auth::user()->ownedBusiness;
-        if (!$business) return response()->json(['success' => false, 'message' => 'İşletme bulunamadı.']);
+        if (! $business) {
+            return response()->json(['success' => false, 'message' => 'İşletme bulunamadı.']);
+        }
 
         // Delete all related data
         $business->menus()->delete();
@@ -999,8 +1045,8 @@ class VendorController extends Controller
         $business->staff()->delete();
 
         return response()->json([
-            'success' => true, 
-            'message' => 'Tüm veriler (Menü, Masa, Personel) başarıyla silindi. Artık sıfırdan başlayabilirsiniz.'
+            'success' => true,
+            'message' => 'Tüm veriler (Menü, Masa, Personel) başarıyla silindi. Artık sıfırdan başlayabilirsiniz.',
         ]);
     }
 }

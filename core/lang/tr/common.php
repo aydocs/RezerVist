@@ -173,7 +173,7 @@ return [
         'spa_wellness' => 'SPA & Wellness',
         'trend_hair' => 'Trend Saç Modelleri',
         'standup' => 'Stand-up',
-        'caz' => 'Caz',
+        'jazz' => 'Caz',
         'rock' => 'Rock',
         'cinema' => 'Sinema',
         'live_music' => 'Canlı Müzik',

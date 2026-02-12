@@ -20,13 +20,13 @@ class BusinessFactory extends Factory
             'Restoran' => ['Kral', 'Lezzet', 'Nefis', 'Osmanlı', 'Anadolu', 'Saray', 'Cadde', 'Meydan', 'Liman', 'Sahil'],
             'Kafe' => ['Kitap', 'Sanat', 'Mola', 'Keyif', 'Bahçe', 'Teras', 'Retro', 'Vintage', 'Modern', 'Lounge'],
             'Güzellik Salonu' => ['Peri', 'Venüs', 'Altın', 'Elmas', 'İnci', 'Pırıltı', 'Işıltı', 'Zarafet', 'Estetik', 'Güzellik'],
-            'Otel' => ['Grand', 'Royal', 'Elite', 'Palace', 'Konfor', 'Huzur', 'Kent', 'Şehir', 'Merkez', 'Plaza']
+            'Otel' => ['Grand', 'Royal', 'Elite', 'Palace', 'Konfor', 'Huzur', 'Kent', 'Şehir', 'Merkez', 'Plaza'],
         ];
 
         $selectedCategory = $this->faker->randomElement(array_keys($categories));
         $prefix = $this->faker->randomElement($categories[$selectedCategory]);
         $suffix = $selectedCategory;
-        $name = "$prefix $suffix " . $this->faker->numberBetween(1, 100);
+        $name = "$prefix $suffix ".$this->faker->numberBetween(1, 100);
 
         // Fetch valid category ID or default to 1
         $categoryId = \App\Models\Category::where('name', $selectedCategory)->first()?->id ?? 1;
@@ -37,7 +37,7 @@ class BusinessFactory extends Factory
             'name' => $name,
             'description' => $this->faker->realText(200),
             'address' => $this->faker->address,
-            'phone' => '05' . $this->faker->numerify('#########'),
+            'phone' => '05'.$this->faker->numerify('#########'),
             'rating' => $this->faker->randomFloat(1, 3, 5),
             'is_active' => true,
             'latitude' => $this->faker->latitude,

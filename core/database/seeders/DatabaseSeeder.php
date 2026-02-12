@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Category;
 use App\Models\Business;
-use App\Models\Review;
+use App\Models\Category;
 use App\Models\Favorite;
 use App\Models\Resource;
+use App\Models\Review;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -81,7 +81,7 @@ class DatabaseSeeder extends Seeder
             ['slug' => 'kafe'],
             [
                 'name' => 'Kafe',
-                'type' => 'place', 
+                'type' => 'place',
                 'icon' => 'cafe',
             ]
         );
@@ -288,7 +288,7 @@ class DatabaseSeeder extends Seeder
     private function seedMenusAndTags($businesses)
     {
         $tags = \App\Models\Tag::all();
-        
+
         foreach ($businesses as $business) {
             // Attach random tags
             $business->tags()->sync($tags->random(rand(3, 6))->pluck('id'));
@@ -311,8 +311,8 @@ class DatabaseSeeder extends Seeder
                     'price' => 65.00,
                     'is_available' => true,
                 ]);
-            } else if ($business->category_id == 3) { // Beauty
-                 \App\Models\Menu::create([
+            } elseif ($business->category_id == 3) { // Beauty
+                \App\Models\Menu::create([
                     'business_id' => $business->id,
                     'category' => 'Cilt Bakımı',
                     'name' => 'Klasik Cilt Bakımı',
@@ -416,16 +416,16 @@ class DatabaseSeeder extends Seeder
         foreach ($cities as $city) {
             Business::factory()->count(50)->create([
                 'owner_id' => $owner->id,
-                'address' => function() use ($city) {
-                    return fake()->streetAddress . ', ' . $city['name'];
+                'address' => function () use ($city) {
+                    return fake()->streetAddress.', '.$city['name'];
                 },
-                'latitude' => function() use ($city) {
+                'latitude' => function () use ($city) {
                     // Random coordinate within ~10km of city center
                     return $city['lat'] + (mt_rand(-100, 100) / 1000);
                 },
-                'longitude' => function() use ($city) {
+                'longitude' => function () use ($city) {
                     return $city['lng'] + (mt_rand(-100, 100) / 1000);
-                }
+                },
             ]);
         }
     }

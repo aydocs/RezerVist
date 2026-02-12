@@ -7,9 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Business extends Model
 {
-    use HasFactory, \Illuminate\Database\Eloquent\SoftDeletes, \App\Traits\Cacheable, \App\Traits\LogsActivity;
-
-
+    use \App\Traits\Cacheable, \App\Traits\LogsActivity, HasFactory, \Illuminate\Database\Eloquent\SoftDeletes;
 
     /**
      * Clear home page cache when business is saved.
@@ -24,14 +22,14 @@ class Business extends Model
         static::saving(function ($business) {
             if (empty($business->slug) || $business->isDirty('name')) {
                 $business->slug = \Illuminate\Support\Str::slug($business->name);
-                
+
                 // Ensure uniqueness
-                $count = static::where('slug', 'like', $business->slug . '%')
+                $count = static::where('slug', 'like', $business->slug.'%')
                     ->where('id', '!=', $business->id)
                     ->count();
-                
+
                 if ($count > 0) {
-                    $business->slug .= '-' . ($count + 1);
+                    $business->slug .= '-'.($count + 1);
                 }
             }
         });
@@ -57,18 +55,18 @@ class Business extends Model
     {
         // Try slug first
         $business = $this->where($field ?? 'slug', $value)->first();
-        
+
         // If not found and value is numeric, try ID
-        if (!$business && is_numeric($value)) {
+        if (! $business && is_numeric($value)) {
             $business = $this->where('id', $value)->first();
-            
+
             // Optional: Redirect to slug if ID was used (can be done in controller but here is cleaner for binding)
             if ($business) {
                 // We'll let the controller handle redirect if we want, or just return it.
                 // Returning it here allows the route to still work.
             }
         }
-        
+
         return $business;
     }
 
@@ -185,7 +183,7 @@ class Business extends Model
 
     public function getIsFavoriteAttribute()
     {
-        if (!auth('sanctum')->check()) {
+        if (! auth('sanctum')->check()) {
             return false;
         }
 
@@ -199,9 +197,10 @@ class Business extends Model
 
     public function getStatusTextAttribute()
     {
-        if (!$this->hasHours()) {
+        if (! $this->hasHours()) {
             return 'Çalışma Saatleri Belirtilmemiş';
         }
+
         return $this->is_open ? 'Açık' : 'Kapalı';
     }
 
@@ -211,11 +210,12 @@ class Business extends Model
     }
 
     protected $appends = ['is_favorite', 'is_open', 'status_text', 'city'];
-// ... (unchanged code) ...
+
+    // ... (unchanged code) ...
     public function calculatePrice($date, $guests, $time = null)
     {
         $basePrice = $this->price_per_person > 0 ? $this->price_per_person : 0;
-        
+
         // Pricing Logic: Fixed vs Per Person
         if ($this->pricing_type === 'per_person') {
             $total = $basePrice * $guests;
@@ -234,7 +234,7 @@ class Business extends Model
         // 2. Happy Hour Discount
         if ($time) {
             $hour = $this->hours()
-                ->where('day_of_week', $dayOfWeek) 
+                ->where('day_of_week', $dayOfWeek)
                 ->where('is_closed', false)
                 ->where('open_time', '<=', $time)
                 ->where('close_time', '>=', $time)
@@ -253,7 +253,6 @@ class Business extends Model
                 ->whereTime('start_time', $time)
                 ->whereNotIn('status', ['cancelled', 'rejected'])
                 ->sum('guest_count');
-
 
             $totalCapacity = $this->resources()->sum('capacity');
 
@@ -285,10 +284,10 @@ class Business extends Model
     public function updateRating()
     {
         $average = $this->reviews()->approved()->avg('rating');
-        
+
         // Round to nearest 0.5 (e.g., 4.2 -> 4.0, 4.3 -> 4.5, 4.7 -> 4.5, 4.8 -> 5.0)
         $rounded = $average ? round($average * 2) / 2 : 0;
-        
+
         $this->update(['rating' => $rounded]);
     }
 
@@ -303,7 +302,7 @@ class Business extends Model
 
         return $this->update([
             'occupancy_rate' => $rate,
-            'last_occupancy_update' => now()
+            'last_occupancy_update' => now(),
         ]);
     }
 
@@ -312,16 +311,15 @@ class Business extends Model
      */
     public function getAvailableTimeSlots(): array
     {
-        if (!$this->reservation_time_slots) {
+        if (! $this->reservation_time_slots) {
             // Return default slots if not set
             return [
-                ['start' => '10:00', 'end' => '23:00', 'slot_duration' => 60]
+                ['start' => '10:00', 'end' => '23:00', 'slot_duration' => 60],
             ];
         }
 
         return $this->reservation_time_slots;
     }
-
 
     /*
     |--------------------------------------------------------------------------
@@ -340,7 +338,7 @@ class Business extends Model
             ->where('status', 'active')
             ->where(function ($q) {
                 $q->whereNull('ends_at')
-                  ->orWhere('ends_at', '>', now());
+                    ->orWhere('ends_at', '>', now());
             })
             ->latest('starts_at');
     }
@@ -370,7 +368,9 @@ class Business extends Model
     public function hasFeature($key)
     {
         $package = $this->active_package;
-        if (!$package) return false;
+        if (! $package) {
+            return false;
+        }
 
         return $package->hasFeature($key);
     }
@@ -381,7 +381,9 @@ class Business extends Model
     public function getFeatureValue($key, $default = null)
     {
         $package = $this->active_package;
-        if (!$package) return $default;
+        if (! $package) {
+            return $default;
+        }
 
         return $package->features[$key] ?? $default;
     }

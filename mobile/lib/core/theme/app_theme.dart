@@ -19,11 +19,9 @@ class AppTheme {
       primary: primaryPurple,
       secondary: accentPurple,
       surface: surface,
-      background: background,
       onPrimary: Colors.white,
       onSecondary: Colors.white,
       onSurface: textPrimary,
-      onBackground: textPrimary,
     ),
     textTheme:
         GoogleFonts.outfitTextTheme(ThemeData.light().textTheme).copyWith(

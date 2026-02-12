@@ -155,7 +155,7 @@ export default function OrderTerminal() {
         const hasCategories = categories.length > 0;
 
         // Use cached menu if available to skip network call
-        let shouldFetchMenu = !hasCategories && !cachedMenu;
+        const shouldFetchMenu = !hasCategories && !cachedMenu;
 
         if (!hasCategories && cachedMenu) {
             setCategories(cachedMenu);
@@ -671,7 +671,7 @@ export default function OrderTerminal() {
 
                 <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-gray-100 pb-20">
                     {(() => {
-                        let displayItems: any[] = [];
+                        const displayItems: any[] = [];
 
                         if (summaryView === 'grouped') {
                             cart.forEach((item, originalIdx) => {

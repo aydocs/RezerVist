@@ -17,7 +17,7 @@ class Campaign extends Model
         'end_date',
         'is_active',
         'button_text',
-        'button_link'
+        'button_link',
     ];
 
     protected $casts = [

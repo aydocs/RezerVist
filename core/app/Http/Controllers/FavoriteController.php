@@ -11,6 +11,7 @@ class FavoriteController extends Controller
     public function index(Request $request)
     {
         $favorites = $request->user()->favorites()->with('business')->get();
+
         return response()->json($favorites);
     }
 
@@ -24,15 +25,17 @@ class FavoriteController extends Controller
 
         if ($exists) {
             $exists->delete();
+
             return response()->json([
                 'message' => 'Favorilerden çıkarıldı',
-                'favorited' => false
+                'favorited' => false,
             ]);
         } else {
             $user->favorites()->create(['business_id' => $businessId]);
+
             return response()->json([
                 'message' => 'Favorilere eklendi',
-                'favorited' => true
+                'favorited' => true,
             ]);
         }
     }
@@ -42,7 +45,7 @@ class FavoriteController extends Controller
     {
         $validated = $request->validate([
             'business_ids' => 'required|array',
-            'business_ids.*' => 'exists:businesses,id'
+            'business_ids.*' => 'exists:businesses,id',
         ]);
 
         $user = $request->user();
@@ -50,7 +53,7 @@ class FavoriteController extends Controller
 
         foreach ($validated['business_ids'] as $businessId) {
             $exists = $user->favorites()->where('business_id', $businessId)->exists();
-            if (!$exists) {
+            if (! $exists) {
                 $user->favorites()->create(['business_id' => $businessId]);
                 $syncedCount++;
             }
@@ -58,7 +61,7 @@ class FavoriteController extends Controller
 
         return response()->json([
             'message' => 'Favoriler senkronize edildi',
-            'synced_count' => $syncedCount
+            'synced_count' => $syncedCount,
         ]);
     }
 }

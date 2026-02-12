@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Reservation;
 use App\Models\ActivityLog;
-use Illuminate\Http\Request;
+use App\Models\Reservation;
 use App\Services\SmsService;
+use Illuminate\Http\Request;
 
 class ReservationController extends Controller
 {
@@ -24,18 +24,18 @@ class ReservationController extends Controller
     public function store(\App\Http\Requests\StoreReservationRequest $request)
     {
         $user = $request->user();
-        
+
         // Get validated data from FormRequest
         $validated = $request->validated();
-        
+
         // Merge date and time if provided separately (handled by FormRequest already)
         if (isset($validated['reservation_date']) && isset($validated['reservation_time'])) {
-            $start = \Carbon\Carbon::parse($validated['reservation_date'] . ' ' . $validated['reservation_time']);
+            $start = \Carbon\Carbon::parse($validated['reservation_date'].' '.$validated['reservation_time']);
             $validated['start_time'] = $start->toDateTimeString();
             $validated['end_time'] = $start->copy()->addHours(2)->toDateTimeString();
         }
         // Add default end_time if start_time is present but end_time is not
-        elseif (isset($validated['start_time']) && !isset($validated['end_time'])) {
+        elseif (isset($validated['start_time']) && ! isset($validated['end_time'])) {
             $start = \Carbon\Carbon::parse($validated['start_time']);
             $validated['end_time'] = $start->copy()->addHours(2)->toDateTimeString();
         }
@@ -49,39 +49,39 @@ class ReservationController extends Controller
         $resourceQuery = \App\Models\Resource::where('business_id', $validated['business_id'])
             ->where('is_available', true)
             ->where('capacity', '>=', $validated['guest_count'])
-            ->when($locationId, function($q) use ($locationId) {
+            ->when($locationId, function ($q) use ($locationId) {
                 return $q->where('location_id', $locationId);
             })
-            ->when($resourceId, function($q) use ($resourceId) {
+            ->when($resourceId, function ($q) use ($resourceId) {
                 return $q->where('id', $resourceId);
             })
-            ->whereDoesntHave('reservations', function($q) use ($startTime, $endTime) {
+            ->whereDoesntHave('reservations', function ($q) use ($startTime, $endTime) {
                 $q->where('start_time', '<', $endTime)
-                  ->where('end_time', '>', $startTime)
-                  ->whereIn('status', ['confirmed', 'pending', 'approved']);
+                    ->where('end_time', '>', $startTime)
+                    ->whereIn('status', ['confirmed', 'pending', 'approved']);
             })
             ->orderBy('capacity', 'asc');
 
         $availableResource = $resourceQuery->first();
 
-        if (!$availableResource) {
+        if (! $availableResource) {
             return response()->json(['message' => 'Seçilen zaman aralığı doludur veya uygun masa bulunamadı.'], 409);
         }
-        
+
         $resourceId = $availableResource->id;
 
         // Calculate Total Price (Base Price)
         $business = \App\Models\Business::find($validated['business_id']);
         $totalPrice = $business->calculatePrice($validated['reservation_date'], $validated['guest_count'], $validated['reservation_time']);
         $selectedServices = [];
-        
+
         $servicesInput = $validated['services'] ?? [];
-        if (!empty($servicesInput)) {
+        if (! empty($servicesInput)) {
             $serviceIds = collect($servicesInput)->pluck('id')->toArray();
             $serviceData = collect($servicesInput)->keyBy('id');
-            
+
             $services = \App\Models\Menu::whereIn('id', $serviceIds)->get();
-            
+
             foreach ($services as $service) {
                 $quantity = $serviceData->get($service->id)['quantity'] ?? 1;
                 // Business defined price is used (Zero Commission)
@@ -90,7 +90,7 @@ class ReservationController extends Controller
                 $selectedServices[] = [
                     'model' => $service,
                     'quantity' => $quantity,
-                    'price' => $service->price
+                    'price' => $service->price,
                 ];
             }
         }
@@ -107,7 +107,7 @@ class ReservationController extends Controller
                 $discountAmount = $coupon->calculateDiscount($totalPrice);
                 $totalPrice = max(0, $totalPrice - $discountAmount);
                 $couponId = $coupon->id;
-                
+
                 // Mark coupon as used
                 $coupon->increment('used_count');
             }
@@ -116,7 +116,7 @@ class ReservationController extends Controller
         // Determine initial status based on payment method and guest count
         // Default success status is 'approved' in this system
         $status = $validated['payment_method'] === 'wallet' ? 'approved' : 'pending_payment';
-        
+
         // --- PHASE 2: Group Booking Logic ---
         // If guest count > 8, it always needs business approval (override 'confirmed'/'approved')
         if ($validated['guest_count'] > 8) {
@@ -131,7 +131,7 @@ class ReservationController extends Controller
             ...$reservationData,
             'location_id' => $locationId,
             'resource_id' => $resourceId,
-            'price' => $totalPrice, 
+            'price' => $totalPrice,
             'total_amount' => $totalPrice,
             'discount_amount' => $discountAmount,
             'coupon_id' => $couponId,
@@ -157,7 +157,7 @@ class ReservationController extends Controller
                     'amount' => $totalPrice,
                     'type' => 'payment',
                     'status' => 'success',
-                    'description' => $reservation->business->name . ' rezervasyonu için ödeme',
+                    'description' => $reservation->business->name.' rezervasyonu için ödeme',
                     'reference_id' => $reservation->id,
                 ]);
 
@@ -170,7 +170,7 @@ class ReservationController extends Controller
                 $owner = $business->owner;
                 if ($owner) {
                     $owner->increment('balance', $netEarning);
-                    
+
                     \App\Models\WalletTransaction::create([
                         'user_id' => $owner->id,
                         'amount' => $netEarning,
@@ -187,7 +187,7 @@ class ReservationController extends Controller
         foreach ($selectedServices as $service) {
             $reservation->menus()->attach($service['model']->id, [
                 'price' => $service['price'],
-                'quantity' => $service['quantity']
+                'quantity' => $service['quantity'],
             ]);
         }
 
@@ -197,14 +197,14 @@ class ReservationController extends Controller
             try {
                 \Illuminate\Support\Facades\Mail::to($request->user()->email)
                     ->send(new \App\Mail\ReservationConfirmed($reservation));
-                
+
                 // Send SMS via Twilio
-                $smsService = new SmsService();
+                $smsService = new SmsService;
                 $smsMessage = "Sayın {$user->name}, {$reservation->business->name} için rezervasyonunuz başarıyla oluşturuldu. Tarih: {$reservation->start_time->format('d.m.Y H:i')}.";
                 $smsService->send($user->phone, $smsMessage);
 
             } catch (\Exception $e) {
-                \Log::error('Failed to send confirmation email/sms: ' . $e->getMessage());
+                \Log::error('Failed to send confirmation email/sms: '.$e->getMessage());
             }
 
             // Log activity as specifically 'created/confirmed'
@@ -218,18 +218,18 @@ class ReservationController extends Controller
         try {
             \App\Events\ReservationCreated::dispatch($reservation);
         } catch (\Exception $e) {
-            \Log::error('Broadcast error: ' . $e->getMessage());
+            \Log::error('Broadcast error: '.$e->getMessage());
         }
 
         $response = [
             'reservation' => $reservation,
-            'payment_url' => $validated['payment_method'] === 'card' 
-                ? \Illuminate\Support\Facades\URL::signedRoute('payment.checkout', ['reservation' => $reservation->id]) 
+            'payment_url' => $validated['payment_method'] === 'card'
+                ? \Illuminate\Support\Facades\URL::signedRoute('payment.checkout', ['reservation' => $reservation->id])
                 : null,
-            'message' => $validated['payment_method'] === 'card' ? 'Rezervasyon oluşturuldu, ödeme sayfasına yönlendiriliyorsunuz...' : 'Rezervasyonunuz başarıyla oluşturuldu!'
+            'message' => $validated['payment_method'] === 'card' ? 'Rezervasyon oluşturuldu, ödeme sayfasına yönlendiriliyorsunuz...' : 'Rezervasyonunuz başarıyla oluşturuldu!',
         ];
 
-        \Log::info('RESERVATION CREATED: Payment URL: ' . ($response['payment_url'] ?? 'N/A'));
+        \Log::info('RESERVATION CREATED: Payment URL: '.($response['payment_url'] ?? 'N/A'));
 
         return response()->json($response, 201);
     }
@@ -247,26 +247,28 @@ class ReservationController extends Controller
         }
 
         // Status check - can only cancel pending or approved reservations
-        if (!in_array($reservation->status, ['pending', 'approved', 'pending_payment'])) {
+        if (! in_array($reservation->status, ['pending', 'approved', 'pending_payment'])) {
             if ($request->wantsJson()) {
                 return response()->json([
-                    'message' => 'Bu rezervasyon iptal edilemez. Durum: ' . $reservation->status
+                    'message' => 'Bu rezervasyon iptal edilemez. Durum: '.$reservation->status,
                 ], 400);
             }
-            return back()->with('error', 'Bu rezervasyon iptal edilemez. Mevcut durum: ' . ucfirst($reservation->status));
+
+            return back()->with('error', 'Bu rezervasyon iptal edilemez. Mevcut durum: '.ucfirst($reservation->status));
         }
 
         // Cancellation policy - must be at least 24 hours before reservation
         $hoursUntilReservation = now()->diffInHours($reservation->start_time, false);
-        
+
         if ($hoursUntilReservation < 24) {
-             if ($request->wantsJson()) {
-                 return response()->json([
-                     'message' => 'Rezervasyonlar en az 24 saat öncesinden iptal edilmelidir.',
-                     'hours_remaining' => $hoursUntilReservation
-                 ], 400);
-             }
-             return back()->with('error', 'Rezervasyonlar en az 24 saat öncesinden iptal edilmelidir.');
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => 'Rezervasyonlar en az 24 saat öncesinden iptal edilmelidir.',
+                    'hours_remaining' => $hoursUntilReservation,
+                ], 400);
+            }
+
+            return back()->with('error', 'Rezervasyonlar en az 24 saat öncesinden iptal edilmelidir.');
         }
 
         // Store info for waitlist notification before updating
@@ -297,34 +299,34 @@ class ReservationController extends Controller
             \Illuminate\Support\Facades\Mail::to($reservation->user->email)
                 ->send(new \App\Mail\ReservationCancelled($reservation));
         } catch (\Exception $e) {
-            \Log::error('Failed to send cancellation email: ' . $e->getMessage());
+            \Log::error('Failed to send cancellation email: '.$e->getMessage());
         }
 
         // Send In-App Notification
         try {
             $reservation->user->notify(new \App\Notifications\ReservationStatusNotification($reservation, 'cancelled'));
         } catch (\Exception $e) {
-            \Log::error('Failed to send cancellation notification: ' . $e->getMessage());
+            \Log::error('Failed to send cancellation notification: '.$e->getMessage());
         }
 
         // Send SMS Notification
         try {
-            $smsService = new SmsService();
+            $smsService = new SmsService;
             $smsMessage = "Rezervist: {$reservation->business->name} için rezervasyonunuz iptal edildi.";
             $smsService->send($reservation->user->phone, $smsMessage);
         } catch (\Exception $e) {
-            \Log::error('Failed to send cancellation sms: ' . $e->getMessage());
+            \Log::error('Failed to send cancellation sms: '.$e->getMessage());
         }
 
         // Process refund if payment was made
         if ($reservation->price > 0 && in_array($reservation->status, ['confirmed', 'cancelled'])) {
-             $refundResult = $refundService->processRefund($reservation);
+            $refundResult = $refundService->processRefund($reservation);
         }
 
         if ($request->wantsJson()) {
             return response()->json([
                 'message' => 'Rezervasyon başarıyla iptal edildi.',
-                'reservation' => $reservation
+                'reservation' => $reservation,
             ]);
         }
 
@@ -340,7 +342,7 @@ class ReservationController extends Controller
         $validated = $request->validated();
 
         // Merge date and time
-        $start = \Carbon\Carbon::parse($validated['reservation_date'] . ' ' . $validated['reservation_time']);
+        $start = \Carbon\Carbon::parse($validated['reservation_date'].' '.$validated['reservation_time']);
         $validated['start_time'] = $start->toDateTimeString();
         $validated['end_time'] = $start->copy()->addHours(2)->toDateTimeString();
 
@@ -351,11 +353,11 @@ class ReservationController extends Controller
                 ->whereIn('status', ['confirmed', 'pending', 'approved'])
                 ->where(function ($query) use ($validated) {
                     $query->whereBetween('start_time', [$validated['start_time'], $validated['end_time']])
-                          ->orWhereBetween('end_time', [$validated['start_time'], $validated['end_time']])
-                          ->orWhere(function ($q) use ($validated) {
-                              $q->where('start_time', '<=', $validated['start_time'])
+                        ->orWhereBetween('end_time', [$validated['start_time'], $validated['end_time']])
+                        ->orWhere(function ($q) use ($validated) {
+                            $q->where('start_time', '<=', $validated['start_time'])
                                 ->where('end_time', '>=', $validated['end_time']);
-                          });
+                        });
                 })
                 ->exists();
 
@@ -370,13 +372,13 @@ class ReservationController extends Controller
         try {
             \Illuminate\Support\Facades\Mail::to($request->user()->email)
                 ->send(new \App\Mail\ReservationConfirmed($reservation));
-            
+
             // Send SMS Notification
-            $smsService = new SmsService();
+            $smsService = new SmsService;
             $smsMessage = "Rezervist: {$reservation->business->name} rezervasyonunuz güncellendi. Yeni Tarih: {$reservation->start_time->format('d.m.Y H:i')}.";
             $smsService->send($reservation->user->phone, $smsMessage);
         } catch (\Exception $e) {
-            \Log::error('Failed to send update email/sms: ' . $e->getMessage());
+            \Log::error('Failed to send update email/sms: '.$e->getMessage());
         }
 
         // Log Activity
@@ -384,7 +386,7 @@ class ReservationController extends Controller
 
         return response()->json([
             'message' => 'Rezervasyon başarıyla güncellendi.',
-            'reservation' => $reservation
+            'reservation' => $reservation,
         ]);
     }
 
@@ -411,7 +413,7 @@ class ReservationController extends Controller
 
         return response()->json([
             'message' => 'Bekleme listesine başarıyla eklendiniz. Yer açıldığında size haber vereceğiz.',
-            'waitlist' => $waitlist
+            'waitlist' => $waitlist,
         ], 201);
     }
 }

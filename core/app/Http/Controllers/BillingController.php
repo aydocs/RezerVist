@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Package;
 use App\Models\Business;
+use App\Models\Package;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\URL;
 
@@ -24,7 +24,7 @@ class BillingController extends Controller
         // Try both relationships: direct link OR owner link
         $business = $user->business ?? $user->ownedBusiness;
 
-        if (!$business) {
+        if (! $business) {
             return redirect()->route('dashboard')->with('error', 'Bu sayfaya erişmek için önce bir işletme hesabı oluşturmalısınız veya işletme sahibi olmalısınız.');
         }
 
@@ -45,67 +45,74 @@ class BillingController extends Controller
         // Instant free plan assignment
         if ($package->price_monthly == 0) {
             $this->subscriptionService->assignPlan($business, $package, 120, 'system');
+
             return redirect()->route('vendor.billing.index')->with('success', 'Ücretsiz paketiniz başarıyla tanımlandı.');
         }
 
         // Calculate Price and apply discounts
         $totalPrice = $package->price_monthly * $months;
         $discount = 0;
-        if ($months == 3) $discount = 0.05;
-        if ($months == 6) $discount = 0.10;
-        if ($months == 12) $discount = 0.20;
-        
+        if ($months == 3) {
+            $discount = 0.05;
+        }
+        if ($months == 6) {
+            $discount = 0.10;
+        }
+        if ($months == 12) {
+            $discount = 0.20;
+        }
+
         $finalPrice = $totalPrice * (1 - $discount);
 
         // Iyzico Configuration
-        $options = new \Iyzipay\Options();
+        $options = new \Iyzipay\Options;
         $options->setApiKey(env('IYZICO_API_KEY', 'sandbox-shWyZW2KbsTTGXf0idvOEMIyNTgRcIfG'));
         $options->setSecretKey(env('IYZICO_SECRET_KEY', 'sandbox-ZukSyTsa6g300pf4JmZD6CZJHPLqlITJ'));
         $options->setBaseUrl(env('IYZICO_BASE_URL', 'https://sandbox-api.iyzipay.com'));
 
         // Request Object
-        $iyzicoRequest = new \Iyzipay\Request\CreateCheckoutFormInitializeRequest();
+        $iyzicoRequest = new \Iyzipay\Request\CreateCheckoutFormInitializeRequest;
         $iyzicoRequest->setLocale(\Iyzipay\Model\Locale::TR);
         $iyzicoRequest->setConversationId(uniqid());
         $iyzicoRequest->setPrice($finalPrice);
         $iyzicoRequest->setPaidPrice($finalPrice);
         $iyzicoRequest->setCurrency(\Iyzipay\Model\Currency::TL);
-        $iyzicoRequest->setBasketId("B" . $business->id);
+        $iyzicoRequest->setBasketId('B'.$business->id);
         $iyzicoRequest->setPaymentGroup(\Iyzipay\Model\PaymentGroup::SUBSCRIPTION);
         $iyzicoRequest->setCallbackUrl(route('billing.callback', ['package_id' => $package->id, 'months' => $months]));
 
-        $buyer = new \Iyzipay\Model\Buyer();
+        $buyer = new \Iyzipay\Model\Buyer;
         $buyer->setId($user->id);
         $buyer->setName($user->name);
         $buyer->setSurname($user->name); // Simplified
         $buyer->setGsmNumber($user->phone ?? '05551112233');
         $buyer->setEmail($user->email);
-        $buyer->setIdentityNumber("11111111111");
+        $buyer->setIdentityNumber('11111111111');
         $buyer->setRegistrationAddress($business->address ?? 'Adres Belirtilmemiş');
         $buyer->setIp($request->ip());
-        $buyer->setCity("Istanbul");
-        $buyer->setCountry("Turkey");
+        $buyer->setCity('Istanbul');
+        $buyer->setCountry('Turkey');
         $iyzicoRequest->setBuyer($buyer);
 
-        $shippingAddress = new \Iyzipay\Model\Address();
+        $shippingAddress = new \Iyzipay\Model\Address;
         $shippingAddress->setContactName($user->name);
-        $shippingAddress->setCity("Istanbul");
-        $shippingAddress->setCountry("Turkey");
+        $shippingAddress->setCity('Istanbul');
+        $shippingAddress->setCountry('Turkey');
         $shippingAddress->setAddress($business->address ?? 'Adres Belirtilmemiş');
         $iyzicoRequest->setShippingAddress($shippingAddress);
 
-        $billingAddress = new \Iyzipay\Model\Address();
+        $billingAddress = new \Iyzipay\Model\Address;
         $billingAddress->setContactName($user->name);
-        $billingAddress->setCity("Istanbul");
-        $billingAddress->setCountry("Turkey");
+        $billingAddress->setCity('Istanbul');
+        $billingAddress->setCountry('Turkey');
         $billingAddress->setAddress($business->address ?? 'Adres Belirtilmemiş');
         $iyzicoRequest->setBillingAddress($billingAddress);
 
-        $basketItems = array();
-        $firstBasketItem = new \Iyzipay\Model\BasketItem();
-        $firstBasketItem->setId("P" . $package->id);
-        $firstBasketItem->setName($package->name . " ($months Ay)");
-        $firstBasketItem->setCategory1("SaaS");
+        $basketItems = [];
+        $firstBasketItem = new \Iyzipay\Model\BasketItem;
+        $firstBasketItem->setId('P'.$package->id);
+        $firstBasketItem->setName($package->name." ($months Ay)");
+        $firstBasketItem->setCategory1('SaaS');
         $firstBasketItem->setItemType(\Iyzipay\Model\BasketItemType::VIRTUAL);
         $firstBasketItem->setPrice($finalPrice);
         $basketItems[0] = $firstBasketItem;
@@ -115,14 +122,14 @@ class BillingController extends Controller
         try {
             $checkoutFormInitialize = \Iyzipay\Model\CheckoutFormInitialize::create($iyzicoRequest, $options);
             if ($checkoutFormInitialize->getStatus() !== 'success') {
-                return back()->with('error', 'Ödeme sistemi hatası: ' . $checkoutFormInitialize->getErrorMessage());
+                return back()->with('error', 'Ödeme sistemi hatası: '.$checkoutFormInitialize->getErrorMessage());
             }
         } catch (\Exception $e) {
-            return back()->with('error', 'Ödeme sistemi başlatılamadı kanka: ' . $e->getMessage());
+            return back()->with('error', 'Ödeme sistemi başlatılamadı kanka: '.$e->getMessage());
         }
 
         return view('vendor.billing.iyzico', [
-            'paymentContent' => $checkoutFormInitialize->getCheckoutFormContent()
+            'paymentContent' => $checkoutFormInitialize->getCheckoutFormContent(),
         ]);
     }
 
@@ -132,18 +139,18 @@ class BillingController extends Controller
         $packageId = $request->get('package_id');
         $months = (int) $request->get('months', 1);
         $package = Package::findOrFail($packageId);
-        
+
         $status = 'error';
         $message = 'Ödeme işlemi başarısız oldu veya iptal edildi.';
         $ownerId = null;
 
         // Verify with Iyzico
-        $options = new \Iyzipay\Options();
+        $options = new \Iyzipay\Options;
         $options->setApiKey(env('IYZICO_API_KEY', 'sandbox-shWyZW2KbsTTGXf0idvOEMIyNTgRcIfG'));
         $options->setSecretKey(env('IYZICO_SECRET_KEY', 'sandbox-ZukSyTsa6g300pf4JmZD6CZJHPLqlITJ'));
         $options->setBaseUrl(env('IYZICO_BASE_URL', 'https://sandbox-api.iyzipay.com'));
 
-        $iyzicoRequest = new \Iyzipay\Request\RetrieveCheckoutFormRequest();
+        $iyzicoRequest = new \Iyzipay\Request\RetrieveCheckoutFormRequest;
         $iyzicoRequest->setLocale(\Iyzipay\Model\Locale::TR);
         $iyzicoRequest->setToken($token);
 
@@ -153,7 +160,7 @@ class BillingController extends Controller
                 $basketId = $checkoutForm->getBasketId(); // Format: B123
                 $businessId = substr($basketId, 1);
                 $business = Business::find($businessId);
-                
+
                 if ($business) {
                     $this->subscriptionService->assignPlan($business, $package, $months, 'iyzico');
                     $status = 'success';
@@ -164,7 +171,7 @@ class BillingController extends Controller
                 $message = $checkoutForm->getErrorMessage() ?: 'Ödeme başarısız.';
             }
         } catch (\Exception $e) {
-            $message = 'Ödeme onayı sırasında hata oluştu: ' . $e->getMessage();
+            $message = 'Ödeme onayı sırasında hata oluştu: '.$e->getMessage();
         }
 
         // CREATE INVISIBLE BRIDGE (Standard procedure for cross-site POST session loss)
@@ -174,7 +181,7 @@ class BillingController extends Controller
             [
                 'user_id' => $ownerId,
                 'status' => $status,
-                'message' => $message
+                'message' => $message,
             ]
         );
 
@@ -183,7 +190,7 @@ class BillingController extends Controller
 
     public function magicLogin(Request $request)
     {
-        if (!$request->hasValidSignature()) {
+        if (! $request->hasValidSignature()) {
             abort(403, 'Güvenlik doğrulaması başarısız veya bağlantı süresi dolmuş.');
         }
 

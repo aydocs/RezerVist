@@ -25,9 +25,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Http\Middleware\CheckRole::class,
             'subscribed' => \App\Http\Middleware\CheckSubscription::class,
         ]);
-        
+
         $middleware->web(append: [
-             \App\Http\Middleware\CheckSystemMaintenance::class,
+            \App\Http\Middleware\CheckSystemMaintenance::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
@@ -56,7 +56,7 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('api/*') || $request->expectsJson()) {
                 return response()->json([
                     'message' => 'Lütfen önce giriş yapın.',
-                    'status' => 'unauthenticated'
+                    'status' => 'unauthenticated',
                 ], 401);
             }
         });

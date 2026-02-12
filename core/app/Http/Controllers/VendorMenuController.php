@@ -14,7 +14,7 @@ class VendorMenuController extends Controller
         $user = Auth::user();
         $business = $user->ownedBusiness;
 
-        if (!$business) {
+        if (! $business) {
             return redirect()->route('vendor.business.edit');
         }
 
@@ -43,18 +43,18 @@ class VendorMenuController extends Controller
 
         $data = $request->only(['name', 'description', 'price', 'category']);
         $data['business_id'] = $business->id;
-        // In this logic, 'price' in DB is the final price shown to customer? 
-        // OR 'price' is vendor price? 
+        // In this logic, 'price' in DB is the final price shown to customer?
+        // OR 'price' is vendor price?
         // User said: "product 100 lira company enters 100 lira and rezerve et commission is added on top so users buy it company knows this"
-        // So DB should probably store the BASE price (100) and we calculate display price on fly? 
+        // So DB should probably store the BASE price (100) and we calculate display price on fly?
         // OR store final price and base price?
-        // Let's store the VENDOR PRICE (100) in 'price' column for now as the core value. 
-        // But wait, if we change commission later, old prices shouldn't change? 
-        // Actually, usually you store the price the customer pays. But for simplicity let's stick to storing what the vendor entered, and calculate commission. 
+        // Let's store the VENDOR PRICE (100) in 'price' column for now as the core value.
+        // But wait, if we change commission later, old prices shouldn't change?
+        // Actually, usually you store the price the customer pays. But for simplicity let's stick to storing what the vendor entered, and calculate commission.
         // Better: Store `price` (Vendor Price) and maybe we can add a helper or just calc on blade.
-        
+
         // I'll stick to storing the 'price' entered by vendor.
-        
+
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('menu_images', 'public');
         }
@@ -70,6 +70,7 @@ class VendorMenuController extends Controller
         if ($menu->business_id !== Auth::user()->ownedBusiness->id) {
             abort(403);
         }
+
         return view('vendor.menus.edit', compact('menu'));
     }
 

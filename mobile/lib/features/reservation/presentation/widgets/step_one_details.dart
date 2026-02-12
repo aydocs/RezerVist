@@ -48,7 +48,7 @@ class StepOneDetails extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          StepOneSectionLabel('TARİH SEÇİN'),
+          const StepOneSectionLabel('TARİH SEÇİN'),
           const SizedBox(height: 8),
           StepOneDropdown(
             value: DateFormat('d MMMM yyyy', 'tr').format(selectedDate),
@@ -65,7 +65,7 @@ class StepOneDetails extends ConsumerWidget {
             },
           ),
           const SizedBox(height: 24),
-          StepOneSectionLabel('KİŞİ SAYISI'),
+          const StepOneSectionLabel('KİŞİ SAYISI'),
           const SizedBox(height: 8),
           StepOneDropdown(
             value: _formatGuestText(),
@@ -94,7 +94,7 @@ class StepOneDetails extends ConsumerWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  StepOneSectionLabel('SAAT SEÇİN'),
+                  const StepOneSectionLabel('SAAT SEÇİN'),
                   if (slotsAsync is AsyncData<List<String>> &&
                       slotsAsync.value.isNotEmpty)
                     Container(

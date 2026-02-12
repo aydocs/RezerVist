@@ -2,26 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
-use App\Models\Reservation;
-use App\Services\ImageOptimizationService;
 
 class ProfileController extends Controller
 {
     public function edit()
     {
         $user = Auth::user();
+
         return view('profile.index', compact('user'));
     }
-
 
     public function update(\App\Http\Requests\UpdateProfileRequest $request)
     {
         $user = Auth::user();
-        
+
         $validated = $request->validated();
 
         // Handle password update separately
@@ -34,9 +32,9 @@ class ProfileController extends Controller
         }
 
         \Log::info('Profile Update Data:', $validated);
-        
+
         $result = $user->update($validated);
-        
+
         \Log::info('Profile Update Result:', ['success' => $result]);
 
         return back()->with('success', 'Profil bilgileriniz güncellendi.');
@@ -49,7 +47,7 @@ class ProfileController extends Controller
         ]);
 
         $user = Auth::user();
-        
+
         // Use FileUploadService for secure and optimized upload
         $paths = \App\Services\FileUploadService::uploadImage($request->file('photo'), 'profile_photos', true);
 
@@ -59,7 +57,7 @@ class ProfileController extends Controller
         }
 
         $user->update([
-            'profile_photo_path' => $paths['original']
+            'profile_photo_path' => $paths['original'],
         ]);
 
         return back()->with('success', 'Profil fotoğrafı güncellendi.');
@@ -79,15 +77,16 @@ class ProfileController extends Controller
     public function favorites()
     {
         $favorites = Auth::user()->favorites()->with(['business.businessCategory'])->get();
+
         return view('profile.favorites', compact('favorites'));
     }
 
     public function support(Request $request)
     {
         $selectedId = $request->query('id');
-        
+
         $messages = \App\Models\ContactMessage::where('user_id', Auth::id())
-            ->with(['replies' => function($q) {
+            ->with(['replies' => function ($q) {
                 $q->orderBy('created_at', 'asc');
             }])
             ->latest()
@@ -96,11 +95,11 @@ class ProfileController extends Controller
         $selectedMessage = null;
         if ($selectedId) {
             $selectedMessage = $messages->firstWhere('id', $selectedId);
-            if (!$selectedMessage) {
+            if (! $selectedMessage) {
                 // If not in current page, fetch it directly to ensure we have it
-                 $selectedMessage = \App\Models\ContactMessage::where('user_id', Auth::id())
+                $selectedMessage = \App\Models\ContactMessage::where('user_id', Auth::id())
                     ->where('id', $selectedId)
-                    ->with(['replies' => function($q) {
+                    ->with(['replies' => function ($q) {
                         $q->orderBy('created_at', 'asc');
                     }])
                     ->first();
@@ -113,7 +112,7 @@ class ProfileController extends Controller
     public function replyToSupport(Request $request, $id)
     {
         $request->validate([
-            'message' => 'required|string|max:1000'
+            'message' => 'required|string|max:1000',
         ]);
 
         $contactMessage = \App\Models\ContactMessage::where('user_id', Auth::id())
@@ -128,7 +127,7 @@ class ProfileController extends Controller
             'contact_message_id' => $contactMessage->id,
             'message' => $request->message,
             'is_admin' => false,
-            'is_read' => false
+            'is_read' => false,
         ]);
 
         // Re-open ticket if it was pending (optional logic, but keeps it active)
@@ -146,7 +145,7 @@ class ProfileController extends Controller
             $user->referral_code = strtoupper(\Illuminate\Support\Str::random(10));
             $user->save();
         }
-        
+
         // Count of people referred by this user
         $referralCount = \App\Models\User::where('referred_by_id', $user->id)->count();
 
@@ -154,7 +153,7 @@ class ProfileController extends Controller
         $totalEarnings = \App\Models\ActivityLog::where('user_id', $user->id)
             ->where('action_type', 'referral_reward')
             ->get()
-            ->sum(function($log) {
+            ->sum(function ($log) {
                 return $log->metadata['reward'] ?? 0;
             });
 

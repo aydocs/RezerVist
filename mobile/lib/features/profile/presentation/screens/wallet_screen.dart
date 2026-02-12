@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import '../../../auth/presentation/providers/auth_provider.dart';
 import '../widgets/wallet_card.dart';
 import '../providers/wallet_provider.dart';
@@ -52,7 +51,7 @@ class WalletScreen extends ConsumerWidget {
                           WalletCard(
                             balance: user.balance ?? 0.0,
                             points: user.points ?? 0,
-                            userName: user.name ?? 'Kullanıcı',
+                            userName: user.name,
                           ),
                           const SizedBox(height: 32),
                           Row(

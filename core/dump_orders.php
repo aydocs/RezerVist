@@ -1,11 +1,11 @@
 <?php
+
 include 'vendor/autoload.php';
 putenv('DB_HOST=127.0.0.1');
 $app = include_once 'bootstrap/app.php';
 $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
 use App\Models\Order;
-use App\Models\OrderItem;
 
 $orders = Order::with('items')->latest()->take(5)->get();
 

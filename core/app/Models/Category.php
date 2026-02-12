@@ -7,9 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    use HasFactory, \App\Traits\Cacheable, \App\Traits\LogsActivity;
-
-
+    use \App\Traits\Cacheable, \App\Traits\LogsActivity, HasFactory;
 
     protected $fillable = [
         'name',

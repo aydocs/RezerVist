@@ -2,9 +2,7 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -33,7 +31,7 @@ class ReservationCreated implements ShouldBroadcast
     {
         return [
             new PrivateChannel('admin.dashboard'),
-            new PrivateChannel('business.' . $this->reservation->business_id),
+            new PrivateChannel('business.'.$this->reservation->business_id),
         ];
     }
 

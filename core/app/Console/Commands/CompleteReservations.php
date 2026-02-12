@@ -29,7 +29,7 @@ class CompleteReservations extends Command
             ->where('end_time', '<', now())
             ->get();
 
-        $this->info('Found ' . $pastReservations->count() . ' reservations to complete.');
+        $this->info('Found '.$pastReservations->count().' reservations to complete.');
 
         foreach ($pastReservations as $reservation) {
             $user = $reservation->user;
@@ -38,7 +38,7 @@ class CompleteReservations extends Command
                 ->exists();
 
             $reservation->update(['status' => 'completed']);
-            
+
             // Award points: 1 point per 10 TL
             $points = floor($reservation->total_amount / 10);
             if ($points > 0) {
@@ -46,16 +46,16 @@ class CompleteReservations extends Command
             }
 
             // Referral Reward Logic
-            if (!$hadCompletedReservations && $user->referred_by_id) {
+            if (! $hadCompletedReservations && $user->referred_by_id) {
                 $referrer = $user->referrer;
                 if ($referrer) {
                     $rewardAmount = 50.00; // 50 TL Reward
                     $referrer->increment('balance', $rewardAmount);
-                    
+
                     // Create activity log or notification for referrer
                     \App\Models\ActivityLog::logActivity(
                         'referral_reward',
-                        $user->name . ' isimli arkadaşınız ilk rezervasyonunu tamamladığı için 50 TL kazandınız!',
+                        $user->name.' isimli arkadaşınız ilk rezervasyonunu tamamladığı için 50 TL kazandınız!',
                         ['referred_user_id' => $user->id, 'reward' => $rewardAmount],
                         $referrer->id
                     );
@@ -66,18 +66,18 @@ class CompleteReservations extends Command
                         'amount' => $rewardAmount,
                         'type' => 'topup', // Considered a topup/reward
                         'status' => 'success',
-                        'description' => 'Arkadaş Davet Ödülü (' . $user->name . ')',
+                        'description' => 'Arkadaş Davet Ödülü ('.$user->name.')',
                         'reference_id' => $user->id,
                     ]);
 
                     $referrer->notify(new \App\Notifications\OnboardingNotification(
-                        'Tebrikler! Davet ettiğiniz ' . $user->name . ' ilk rezervasyonunu tamamladı ve hesabınıza 50 TL tanımlandı.',
+                        'Tebrikler! Davet ettiğiniz '.$user->name.' ilk rezervasyonunu tamamladı ve hesabınıza 50 TL tanımlandı.',
                         route('search.index')
                     ));
                 }
             }
 
-            $this->comment('Completed reservation #' . $reservation->id . ' | Points awarded: ' . $points);
+            $this->comment('Completed reservation #'.$reservation->id.' | Points awarded: '.$points);
         }
 
         $this->info('Reservation completion process finished.');

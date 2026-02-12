@@ -7,12 +7,11 @@ use Illuminate\Support\Str;
 
 class Post extends Model
 {
-
     protected $fillable = [
-        'title', 'slug', 'content', 'featured_image', 
-        'category_id', 'author_id', 'meta_title', 
+        'title', 'slug', 'content', 'featured_image',
+        'category_id', 'author_id', 'meta_title',
         'meta_description', 'is_published', 'published_at',
-        'views', 'is_featured', 'tags'
+        'views', 'is_featured', 'tags',
     ];
 
     protected $casts = [

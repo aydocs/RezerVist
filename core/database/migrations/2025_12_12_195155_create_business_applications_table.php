@@ -19,21 +19,21 @@ return new class extends Migration
             $table->string('address');
             $table->string('phone');
             $table->string('email');
-            
+
             // Legal
             $table->string('trade_registry_no');
             $table->string('tax_id');
-            
+
             // Documents (Paths)
             $table->string('trade_registry_document');
             $table->string('tax_document');
             $table->string('license_document');
             $table->string('id_document');
             $table->string('bank_document');
-            
+
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->text('admin_note')->nullable();
-            
+
             $table->timestamps();
         });
     }

@@ -14,8 +14,8 @@ class ActivityLogController extends Controller
         // Filter by category (maps to action_type prefixes)
         if ($request->filled('category')) {
             $category = $request->category;
-            
-            switch($category) {
+
+            switch ($category) {
                 case 'auth':
                     $query->whereIn('action_type', ['login', 'logout', 'failed_login', 'user_created', 'user_updated']);
                     break;
@@ -29,11 +29,11 @@ class ActivityLogController extends Controller
                     $query->where('action_type', 'like', 'business_%');
                     break;
                 case 'system':
-                    $query->where(function($q) {
+                    $query->where(function ($q) {
                         $q->where('action_type', 'like', 'system_%')
-                          ->orWhere('action_type', 'like', 'setting_%')
-                          ->orWhere('action_type', 'like', 'contact_%')
-                          ->orWhere('action_type', 'like', 'support_%');
+                            ->orWhere('action_type', 'like', 'setting_%')
+                            ->orWhere('action_type', 'like', 'contact_%')
+                            ->orWhere('action_type', 'like', 'support_%');
                     });
                     break;
             }
@@ -52,13 +52,13 @@ class ActivityLogController extends Controller
         // Search by IP, user name, or email
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('ip_address', 'like', '%' . $search . '%')
-                  ->orWhere('description', 'like', '%' . $search . '%')
-                  ->orWhereHas('user', function($userQuery) use ($search) {
-                      $userQuery->where('name', 'like', '%' . $search . '%')
-                                ->orWhere('email', 'like', '%' . $search . '%');
-                  });
+            $query->where(function ($q) use ($search) {
+                $q->where('ip_address', 'like', '%'.$search.'%')
+                    ->orWhere('description', 'like', '%'.$search.'%')
+                    ->orWhereHas('user', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'like', '%'.$search.'%')
+                            ->orWhere('email', 'like', '%'.$search.'%');
+                    });
             });
         }
 

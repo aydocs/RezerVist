@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -12,7 +11,9 @@ class ReservationStatusNotification extends Notification
     use Queueable;
 
     public $reservation;
+
     public $status;
+
     public $cancelledBy;
 
     public function __construct($reservation, $status, $cancelledBy = null)
@@ -44,16 +45,16 @@ class ReservationStatusNotification extends Notification
             return (new \App\Mail\ReservationCancelled($this->reservation))
                 ->to($notifiable->email);
         } elseif ($this->status === 'rejected') {
-             return (new MailMessage)
+            return (new MailMessage)
                 ->subject('Rezervasyon Reddedildi')
-                ->greeting('Merhaba ' . $notifiable->name . ',')
+                ->greeting('Merhaba '.$notifiable->name.',')
                 ->line("{$this->reservation->business->name} işletmesi rezervasyon talebinizi maalesef onaylayamadı.")
                 ->line('Lütfen başka bir tarih veya saat için tekrar deneyiniz.')
                 ->action('İşletmeleri Keşfet', url('/search'));
         }
 
         return (new MailMessage)
-            ->line('Rezervasyon durumunuz güncellendi: ' . $this->status);
+            ->line('Rezervasyon durumunuz güncellendi: '.$this->status);
     }
 
     /**
@@ -64,8 +65,8 @@ class ReservationStatusNotification extends Notification
     public function toArray(object $notifiable): array
     {
         $businessName = $this->reservation->business->name;
-        
-        $statusTr = match($this->status) {
+
+        $statusTr = match ($this->status) {
             'approved' => 'onaylandı',
             'details_approved' => 'onaylandı', // Legacy support
             'cancelled' => 'iptal edildi',
@@ -82,7 +83,7 @@ class ReservationStatusNotification extends Notification
         }
 
         // Create detailed message with business name
-        $message = match($this->status) {
+        $message = match ($this->status) {
             'approved' => "{$businessName} rezervasyonunuz onaylandı.",
             'cancelled' => $cancellationMsg,
             'rejected' => "{$businessName} rezervasyon talebiniz reddedildi.",

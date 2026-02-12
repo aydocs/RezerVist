@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Events\MessageSent;
 use App\Models\Message;
 use App\Models\User;
-use App\Events\MessageSent;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class MessageController extends Controller
 {
@@ -29,14 +28,16 @@ class MessageController extends Controller
             ->map(function ($msgs) use ($userId) {
                 $lastMsg = $msgs->first();
                 $otherUser = $lastMsg->sender_id === $userId ? $lastMsg->receiver : $lastMsg->sender;
-                
-                if (!$otherUser) return null;
+
+                if (! $otherUser) {
+                    return null;
+                }
 
                 return [
                     'id' => $otherUser->id,
                     'name' => $otherUser->name,
                     'initials' => $otherUser->initials,
-                    'profile_photo' => $otherUser->profile_photo_path ? asset('storage/' . $otherUser->profile_photo_path) : null,
+                    'profile_photo' => $otherUser->profile_photo_path ? asset('storage/'.$otherUser->profile_photo_path) : null,
                     'unread_count' => $otherUser->unread_messages_count,
                     'last_message_content' => $lastMsg->content,
                     'last_message_time' => $lastMsg->created_at->diffForHumans(),
@@ -62,9 +63,9 @@ class MessageController extends Controller
         })->orWhere(function ($q) use ($userId, $id) {
             $q->where('sender_id', $id)->where('receiver_id', $userId);
         })
-        ->with('sender')
-        ->orderBy('created_at', 'asc')
-        ->get();
+            ->with('sender')
+            ->orderBy('created_at', 'asc')
+            ->get();
 
         // Mark as read
         Message::where('sender_id', $id)
@@ -98,7 +99,7 @@ class MessageController extends Controller
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
-                'message' => $message
+                'message' => $message,
             ]);
         }
 

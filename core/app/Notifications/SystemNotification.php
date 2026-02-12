@@ -3,8 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class SystemNotification extends Notification
@@ -12,9 +10,13 @@ class SystemNotification extends Notification
     use Queueable;
 
     public $title;
+
     public $message;
+
     public $icon;
+
     public $type;
+
     public $url;
 
     /**

@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Location;
-use App\Models\Business;
 use Illuminate\Support\Facades\Auth;
 
 class VendorLocationController extends Controller
@@ -12,9 +10,10 @@ class VendorLocationController extends Controller
     private function authorizeBusiness()
     {
         $business = Auth::user()->ownedBusiness;
-        if (!$business) {
+        if (! $business) {
             abort(403, 'İşletme sahibi değilsiniz.');
         }
+
         return $business;
     }
 
@@ -22,6 +21,7 @@ class VendorLocationController extends Controller
     {
         $business = $this->authorizeBusiness();
         $locations = $business->locations()->paginate(10);
+
         return view('vendor.locations.index', compact('locations'));
     }
 
@@ -54,6 +54,7 @@ class VendorLocationController extends Controller
     {
         $business = $this->authorizeBusiness();
         $location = $business->locations()->findOrFail($id);
+
         return view('vendor.locations.edit', compact('location'));
     }
 

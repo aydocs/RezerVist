@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        if (!Schema::hasColumn('staff', 'rating')) {
+        if (! Schema::hasColumn('staff', 'rating')) {
             Schema::table('staff', function (Blueprint $table) {
                 $table->decimal('rating', 3, 2)->default(0)->after('is_active');
                 $table->integer('rating_count')->default(0)->after('rating');
             });
         }
 
-        if (!Schema::hasColumn('resources', 'rating')) {
+        if (! Schema::hasColumn('resources', 'rating')) {
             Schema::table('resources', function (Blueprint $table) {
                 $table->decimal('rating', 3, 2)->default(0)->after('is_available');
                 $table->integer('rating_count')->default(0)->after('rating');

@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('notifications_enabled')->default(true)->after('role');
-        });
+        if (! Schema::hasColumn('users', 'notifications_enabled')) {
+            Schema::table('users', function (Blueprint $table) {
+                $table->boolean('notifications_enabled')->default(true)->after('role');
+            });
+        }
     }
 
     /**

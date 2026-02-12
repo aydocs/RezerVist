@@ -1,20 +1,20 @@
 <?php
 
 use App\Models\Business;
-use Illuminate\Support\Facades\Log;
 
-require __DIR__ . '/vendor/autoload.php';
-$app = require_once __DIR__ . '/bootstrap/app.php';
+require __DIR__.'/vendor/autoload.php';
+$app = require_once __DIR__.'/bootstrap/app.php';
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
 
 $business = Business::where('name', 'like', '%Deniz Mahsulleri%')->first();
 
-if (!$business) {
+if (! $business) {
     exit("Business not found.\n");
 }
 
-function checkInvalidEscapes($str, $context = '') {
+function checkInvalidEscapes($str, $context = '')
+{
     // Regex finds backslash not followed by valid JSON escape chars
     // Regex: ~\\(?![/\"\\bfnrtu])~
     // PHP String for Regex: '~\\\\(?![/"\\\\bfnrtu])~'
@@ -22,8 +22,8 @@ function checkInvalidEscapes($str, $context = '') {
         echo "[MATCH] Potential issue in $context:\n";
         foreach ($matches[0] as $match) {
             $offset = $match[1]; // Offset in string
-            echo "  Offset $offset. Char after: '" . substr($str, $offset + 1, 1) . "'\n";
-            echo "  Context: " . substr($str, max(0, $offset - 10), 20) . "\n";
+            echo "  Offset $offset. Char after: '".substr($str, $offset + 1, 1)."'\n";
+            echo '  Context: '.substr($str, max(0, $offset - 10), 20)."\n";
         }
     }
 }

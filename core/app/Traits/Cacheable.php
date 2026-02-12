@@ -27,7 +27,7 @@ trait Cacheable
     public function clearModelCache()
     {
         $tags = $this->getCacheTags();
-        if (!empty($tags)) {
+        if (! empty($tags)) {
             try {
                 Cache::tags($tags)->flush();
             } catch (\BadMethodCallException $e) {
