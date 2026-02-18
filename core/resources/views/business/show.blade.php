@@ -1052,8 +1052,8 @@
 
                             {{-- Image --}}
                             <div class="w-28 h-28 flex-shrink-0 relative rounded-xl overflow-hidden bg-gray-50">
-                                @if($item->image)
-                                    <img src="{{ Storage::url($item->image) }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" loading="lazy">
+                                @if($item['image'] ?? null)
+                                    <img src="{{ Storage::url($item['image']) }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" loading="lazy">
                                 @else
                                     <div class="w-full h-full flex items-center justify-center text-purple-200">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1067,11 +1067,11 @@
                             {{-- Content --}}
                             <div class="flex-1 flex flex-col justify-between py-1 relative">
                                 <div>
-                                    <h3 class="font-bold text-gray-900 leading-tight mb-1 group-hover:text-primary transition-colors">{{ $item->name }}</h3>
-                                    <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">{{ $item->description }}</p>
+                                    <h3 class="font-bold text-gray-900 leading-tight mb-1 group-hover:text-primary transition-colors">{{ $item['name'] ?? '' }}</h3>
+                                    <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">{{ $item['description'] ?? '' }}</p>
                                 </div>
                                 <div class="flex items-center justify-between mt-3">
-                                    <span class="font-black text-lg text-primary tracking-tight">{{ number_format($item->price, 2) }}₺</span>
+                                    <span class="font-black text-lg text-primary tracking-tight">{{ number_format($item['price'] ?? 0, 2) }}₺</span>
                                     <div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300 shadow-sm">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
