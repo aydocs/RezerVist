@@ -1144,14 +1144,6 @@
             </div>
         @endif
     </div>
-                            Tamam
-                        </button>
-                    </div>
-                </div>
-            </div>
-        @endif
-
-    </div>
 
     <!-- Reviews Tab -->
     <div x-show="tab === 'reviews'" class="space-y-6">
