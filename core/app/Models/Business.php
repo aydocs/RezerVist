@@ -109,7 +109,26 @@ class Business extends Model
         'tax_number',
         'iyzico_iban',
         'pricing_type',
+        'menu_theme',
+        'menu_color',
     ];
+
+    protected $casts = [
+        'is_verified' => 'boolean',
+        'is_active' => 'boolean',
+        'waiter_kiosk_enabled' => 'boolean',
+        'kiosk_config' => 'array',
+        'reservation_time_slots' => 'array',
+        'verified_at' => 'datetime',
+        'last_occupancy_update' => 'datetime',
+        'subscription_ends_at' => 'datetime',
+        'device_registered_at' => 'datetime',
+    ];
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
 
     public function category()
     {

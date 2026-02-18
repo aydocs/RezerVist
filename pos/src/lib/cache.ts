@@ -4,7 +4,7 @@
  */
 
 const CACHE_PREFIX = 'pos_cache_';
-const DEFAULT_TTL = 30 * 60 * 1000; // 30 minutes in milliseconds
+const DEFAULT_TTL = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
 interface CacheEntry {
     data: any;
@@ -25,6 +25,22 @@ export const CacheManager = {
         localStorage.setItem(CACHE_PREFIX + key, JSON.stringify(entry));
         // Also update sessionStorage for immediate session-wide availability
         sessionStorage.setItem(CACHE_PREFIX + key, JSON.stringify(entry));
+    },
+
+    /**
+     * Get raw entry including metadata
+     */
+    getEntry(key: string): CacheEntry | null {
+        let raw = sessionStorage.getItem(CACHE_PREFIX + key);
+        if (!raw) {
+            raw = localStorage.getItem(CACHE_PREFIX + key);
+        }
+        if (!raw) return null;
+        try {
+            return JSON.parse(raw);
+        } catch (e) {
+            return null;
+        }
     },
 
     /**

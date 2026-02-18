@@ -274,7 +274,7 @@ export default function Login() {
                     )}
 
                     <p className="mt-12 text-center text-[10px] font-black text-gray-300 uppercase tracking-[0.2em]">
-                        &copy; 2026 REZERVEET TEKNOLOJİ A.Ş.
+                        &copy; 2026 RezerVist TEKNOLOJİ A.Ş.
                     </p>
                 </div>
             </div>

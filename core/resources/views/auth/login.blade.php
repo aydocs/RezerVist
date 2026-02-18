@@ -58,6 +58,28 @@
             <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-2">{{ __('auth.login.title') }}</h2>
             <p class="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-base">{{ __('auth.login.subtitle') }}</p>
 
+            {{-- Flash Messages --}}
+            @if(session('info'))
+                <div class="mb-6 bg-blue-50 border border-blue-100 rounded-xl p-4 flex items-center gap-3 shadow-sm border-l-4 border-l-blue-500 animate-fade-in-up">
+                    <i class="fa-solid fa-circle-info text-blue-500"></i>
+                    <p class="text-sm font-bold text-blue-700">{{ session('info') }}</p>
+                </div>
+            @endif
+
+            @if(session('success'))
+                <div class="mb-6 bg-emerald-50 border border-emerald-100 rounded-xl p-4 flex items-center gap-3 shadow-sm border-l-4 border-l-emerald-500 animate-fade-in-up">
+                    <i class="fa-solid fa-circle-check text-emerald-500"></i>
+                    <p class="text-sm font-bold text-emerald-700">{{ session('success') }}</p>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="mb-6 bg-rose-50 border border-rose-100 rounded-xl p-4 flex items-center gap-3 shadow-sm border-l-4 border-l-rose-500 animate-fade-in-up">
+                    <i class="fa-solid fa-circle-exclamation text-rose-500"></i>
+                    <p class="text-sm font-bold text-rose-700">{{ session('error') }}</p>
+                </div>
+            @endif
+
             <form action="/login" method="POST" class="space-y-5" @submit="handleLoginSubmit()">
                 @csrf
                 

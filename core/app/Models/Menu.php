@@ -24,6 +24,9 @@ class Menu extends Model
         'is_vegan',
         'is_gluten_free',
         'calories',
+        'stock_enabled',
+        'stock_quantity',
+        'low_stock_alert',
     ];
 
     protected $casts = [
@@ -32,6 +35,9 @@ class Menu extends Model
         'is_vegetarian' => 'boolean',
         'is_vegan' => 'boolean',
         'is_gluten_free' => 'boolean',
+        'stock_enabled' => 'boolean',
+        'stock_quantity' => 'decimal:3',
+        'low_stock_alert' => 'decimal:3',
     ];
 
     public function business()

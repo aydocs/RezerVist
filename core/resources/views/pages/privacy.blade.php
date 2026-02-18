@@ -23,7 +23,7 @@
         <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 p-8 lg:p-16 prose prose-lg prose-slate max-w-none text-justify">
             
             <p class="lead font-medium text-gray-700">
-                RezerVist Teknoloji A.Ş. ("Şirket") olarak, çevrimiçi rezervasyon platformumuz (<a href="https://rezervist.com">www.rezervist.com</a>) ve mobil uygulamalarımız üzerinden hizmet verirken kişisel verilerinizin güvenliğine ve mahremiyetine en üst düzeyde önem veriyoruz. İşbu aydınlatma metni, verilerinizin hangi amaçlarla toplandığı, nasıl işlendiği, kimlerle paylaşıldığı ve haklarınız konusunda sizi en şeffaf şekilde bilgilendirmek amacıyla hazırlanmıştır.
+                RezerVist Teknoloji A.Ş. ("Şirket") olarak, çevrimiçi rezervasyon platformumuz (<a href="{{ config('app.url') }}">{{ str_replace(['http://', 'https://'], '', config('app.url')) }}</a>) ve mobil uygulamalarımız üzerinden hizmet verirken kişisel verilerinizin güvenliğine ve mahremiyetine en üst düzeyde önem veriyoruz. İşbu aydınlatma metni, verilerinizin hangi amaçlarla toplandığı, nasıl işlendiği, kimlerle paylaşıldığı ve haklarınız konusunda sizi en şeffaf şekilde bilgilendirmek amacıyla hazırlanmıştır.
             </p>
 
             <h3 class="text-primary mt-12 mb-6 border-b border-gray-100 pb-2">1. Veri Sorumlusu Kimliği</h3>

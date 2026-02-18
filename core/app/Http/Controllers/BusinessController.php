@@ -93,18 +93,7 @@ class BusinessController extends Controller
         }
 
         $categories = \App\Models\Category::all();
-        $tags = \App\Models\Tag::all()->groupBy(function ($item) {
-            $slug = $item->slug;
-            if (in_array($slug, ['wifi', 'otopark', 'vale', 'teras', 'bahce', 'cocuk-dostu', 'evcil-hayvan-dostu', 'engelli-uygun', 'kredi-karti', 'gel-al', 'paket-servis'])) {
-                return 'Özellikler';
-            }
-            if (in_array($slug, ['italyan', 'uzak-dogu', 'ocakbasi', 'deniz-mahsulleri', 'vegan', 'vejetaryen', 'steakhouse', 'cafe', 'bar', 'meyhane'])) {
-                return 'Mutfak / Konsept';
-            }
-
-            // Fallback for tags that might not be in the hardcoded lists
-            return 'Diğer Özellikler';
-        });
+        $tags = \App\Models\Tag::all()->groupBy('category');
 
         return view('business.apply', compact('categories', 'tags'));
     }
@@ -122,6 +111,8 @@ class BusinessController extends Controller
             'email' => 'required|email|max:255',
             'address' => 'required|string',
             'description' => 'required|string',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
             'trade_registry_no' => 'required|string',
             'tax_id' => 'required|string',
             'trade_registry_document' => 'required|file|mimes:pdf,jpg,png|max:5120',
@@ -160,10 +151,7 @@ class BusinessController extends Controller
                 'id_document' => $idDocPath,
                 'bank_document' => $bankDocPath,
                 'status' => 'pending',
-                // tags handling if stored in json or related table?
-                // Currently BusinessApplication doesn't have tags relation, but we can disregard for Initial Application
-                // Or we should store them in description or separate field if critical.
-                // Assuming Admin will set tags upon approval.
+                'tags' => $validated['tags'] ?? [],
             ]);
 
             // Notify the user about the submission

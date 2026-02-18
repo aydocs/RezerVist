@@ -75,6 +75,8 @@ export default function OrderTerminal() {
     const [orderId, setOrderId] = useState < number | null > (null);
     const [tableName, setTableName] = useState < string > ('');
     const [summaryView, setSummaryView] = useState < 'grouped' | 'list' > ('list');
+    const [orderPaymentStatus, setOrderPaymentStatus] = useState < string > ('unpaid');
+    const [orderPaymentMethod, setOrderPaymentMethod] = useState < string | null > (null);
 
 
     // Modals for Weight and Options
@@ -151,60 +153,76 @@ export default function OrderTerminal() {
     };
 
     const fetchData = async () => {
+        // 1. Instant UI from Cache
         const cachedMenu = CacheManager.get('menu');
-        const hasCategories = categories.length > 0;
+        const cachedTables = CacheManager.get('tables');
 
-        // Use cached menu if available to skip network call
-        const shouldFetchMenu = !hasCategories && !cachedMenu;
-
-        if (!hasCategories && cachedMenu) {
+        if (cachedMenu && categories.length === 0) {
             setCategories(cachedMenu);
         }
 
-        if (shouldFetchMenu) setLoading(true);
+        // 1b. Instant Order Detail from Cache
+        const cachedOrder = CacheManager.get(`order_detail_${tableId}`);
+        if (cachedOrder && cart.length === 0) {
+            setOrderId(cachedOrder.id);
+            setCart(cachedOrder.items);
+        }
+
+        // Only show full-screen loader if we have NO data at all
+        const shouldShowLoader = !cachedMenu && categories.length === 0 && !cachedOrder;
+        if (shouldShowLoader) setLoading(true);
 
         try {
-            const promises: Promise<any>[] = [
-                api.get(`/order/${tableId}`),
-                api.get('/tables')
-            ];
+            console.log('FetchData: Starting for table:', tableId);
 
-            if (shouldFetchMenu) {
-                promises.push(api.get('/menu'));
+            // 1. Load Static Data from Cache (Instant)
+            const cachedMenuData = CacheManager.get('menu');
+            const cachedTablesData = CacheManager.get('tables');
+
+            if (cachedMenuData && categories.length === 0) {
+                setCategories(cachedMenuData);
+                if (!selectedCategory) setSelectedCategory(cachedMenuData[0].name);
             }
 
-            const results = await Promise.all(promises);
-            const orderRes = results[0];
-            const tablesRes = results[1];
-            const menuRes = shouldFetchMenu ? results[2] : null;
-
-            if (tablesRes.data.success) {
-                const flatTables = tablesRes.data.data.flat();
-                const currentTable = flatTables.find((t: any) => String(t.id) === tableId);
-                if (currentTable) {
-                    setTableName(currentTable.name);
-                }
+            if (cachedTablesData) {
+                const currentTable = cachedTablesData.flat().find((t: any) => String(t.id) === tableId);
+                if (currentTable) setTableName(currentTable.name);
             }
 
-            if (menuRes && menuRes.data.success) {
-                const menuData = menuRes.data.data.filter((c: any) =>
-                    c.name &&
-                    c.name.trim() !== '' &&
-                    c.items &&
-                    c.items.length > 0
-                );
-                setCategories(menuData);
-                CacheManager.set('menu', menuData);
-                if (menuData.length > 0 && !selectedCategory) {
-                    setSelectedCategory(menuData[0].name);
-                }
-            } else if (cachedMenu && !selectedCategory && cachedMenu.length > 0) {
-                // Ensure selected category is set if we used cache
-                setSelectedCategory(cachedMenu[0].name);
+            // 2. Always fetch Order (Fresh)
+            // FORCE NO CACHE for raw request to ensure we get latest
+            const orderRes = await api.get(`/order/${tableId}?t=${Date.now()}`);
+
+            // 3. Lazy Load Static Data (Only if missing from cache)
+            if (!cachedMenuData) {
+                api.get('/menu').then(res => {
+                    if (res.data.success) {
+                        const menuData = res.data.data.filter((c: any) =>
+                            c.name && c.name.trim() !== '' && c.items && c.items.length > 0
+                        );
+                        setCategories(menuData);
+                        CacheManager.set('menu', menuData);
+                        if (!selectedCategory && menuData.length > 0) setSelectedCategory(menuData[0].name);
+                    }
+                });
             }
 
+            if (!cachedTablesData) {
+                api.get('/tables').then(res => {
+                    if (res.data.success) {
+                        CacheManager.set('tables', res.data.data);
+                        const flatTables = res.data.data.flat();
+                        const currentTable = flatTables.find((t: any) => String(t.id) === tableId);
+                        if (currentTable) setTableName(currentTable.name);
+                    }
+                });
+            }
+
+            // Update Order (Always fresh)
             if (orderRes.data.success && orderRes.data.data) {
                 setOrderId(orderRes.data.data.id);
+                setOrderPaymentStatus(orderRes.data.data.payment_status || 'unpaid');
+                setOrderPaymentMethod(orderRes.data.data.payment_method || null);
                 const backendItems = orderRes.data.data.items
                     .filter((item: any) => !['completed', 'cancelled', 'deleted'].includes(item.status))
                     .map((item: any) => ({
@@ -220,17 +238,18 @@ export default function OrderTerminal() {
                     }));
 
                 setCart(prev => {
-                    // PRESERVE LOCAL ITEMS: Keep items that don't have an ID (newly added)
                     const localItems = prev.filter(item => !item.id);
-                    // Merge: Backend items first, then local items waiting to be saved
                     return [...backendItems, ...localItems];
+                });
+
+                // CACHE UPDATE: Save fresh order details for next time
+                CacheManager.set(`order_detail_${tableId}`, {
+                    id: orderRes.data.data.id,
+                    items: backendItems
                 });
             } else {
                 setOrderId(null);
-                setCart(prev => {
-                    // PRESERVE LOCAL ITEMS even if no backend order exists
-                    return prev.filter(item => !item.id);
-                });
+                setCart(prev => prev.filter(item => !item.id));
             }
         } catch (err) {
             console.error('Veri yükleme hatası:', err);
@@ -285,6 +304,13 @@ export default function OrderTerminal() {
     const updateQuantity = (index: number, delta: number) => {
         setCart(prev => prev.map((item, i) => {
             if (i === index && !item.id) {
+                const isWeightBased = item.weight_grams !== undefined;
+                if (isWeightBased) {
+                    // For weight based, delta is usually +/- 0.1kg (100g) if we want to support it, 
+                    // but POS +/- buttons usually mean "add 1 more kg/piece".
+                    // Let's keep it consistent: piece adds 1, weight adds 1kg (1.0).
+                    return { ...item, quantity: Math.max(0.001, item.quantity + delta) };
+                }
                 return { ...item, quantity: Math.max(1, item.quantity + delta) };
             }
             return item;
@@ -307,12 +333,50 @@ export default function OrderTerminal() {
 
         if (newItems.length === 0 && !orderId) return true;
 
-        setSubmitting(true);
-        try {
-            const res = await api.post('/order/submit', {
-                resource_id: tableId,
-                items: newItems
+        // OPTIMISTIC NAVIGATION: Go back immediately if requested
+        if (shouldNavigate) {
+            // OPTIMISTIC CACHE UPDATE: Update the table status in cache so Dashboard shows it instantly
+            const cachedTables = CacheManager.get('tables');
+            if (cachedTables) {
+                const updatedTables = cachedTables.map((t: any) => {
+                    if (String(t.id) === tableId) {
+                        return {
+                            ...t,
+                            status: 'occupied',
+                            order: {
+                                ...(t.order || {}),
+                                opened_at: t.order?.opened_at || new Date().toISOString(),
+                                total_amount: (t.order?.total_amount || 0) + subtotal
+                            }
+                        };
+                    }
+                    return t;
+                });
+                CacheManager.set('tables', updatedTables);
+            }
+            navigate('/dashboard');
+            // We don't setSubmitting(true) because we are leaving the page
+        } else {
+            setSubmitting(true);
+        }
+
+        // Process in background (or foreground if staying)
+        const submitRequest = api.post('/order/submit', {
+            resource_id: tableId,
+            items: newItems
+        });
+
+        if (shouldNavigate) {
+            // FIRE AND FORGET (with background error handling)
+            submitRequest.catch(err => {
+                console.error('Arkaplan sipariş hatası:', err);
+                alert('Sipariş kaydedilirken bir hata oluştu. Lütfen bağlantınızı kontrol edin.');
             });
+            return true;
+        }
+
+        try {
+            const res = await submitRequest;
             if (res.data.success) {
                 const order = res.data.data;
                 setOrderId(order.id);
@@ -330,11 +394,30 @@ export default function OrderTerminal() {
                         notes: item.notes,
                         status: item.status
                     })));
-                if (shouldNavigate) navigate('/dashboard');
-                return order.id; // Return the ID on success
+
+                // CACHE UPDATE: Update specific table order cache immediately
+                CacheManager.set(`order_detail_${tableId}`, {
+                    id: order.id,
+                    items: order.items
+                        .filter((item: any) => !['completed', 'cancelled', 'deleted'].includes(item.status))
+                        .map((item: any) => ({
+                            id: item.id,
+                            menu_id: item.menu_id,
+                            name: item.name,
+                            quantity: Number(item.quantity) || 1,
+                            unit_price: Number(item.unit_price) || 0,
+                            selected_options: item.selected_options || [],
+                            weight_grams: item.weight_grams ? parseInt(item.weight_grams) : undefined,
+                            notes: item.notes,
+                            status: item.status
+                        }))
+                });
+
+                return order.id;
             }
         } catch (err) {
             console.error('Sipariş gönderim hatası:', err);
+            alert('Sipariş gönderilemedi.');
             return false;
         } finally {
             setSubmitting(false);
@@ -637,6 +720,18 @@ export default function OrderTerminal() {
             </div>
 
             <div className="w-full lg:w-[350px] xl:w-[400px] h-[400px] lg:h-full bg-white border-t lg:border-t-0 lg:border-l border-gray-200 flex flex-col shadow-2xl relative z-20 shrink-0">
+                {/* Paid via App Banner */}
+                {orderPaymentStatus === 'paid' && orderPaymentMethod === 'iyzico_app' && (
+                    <div className="bg-emerald-500 text-white px-6 py-4 flex items-center gap-3 shrink-0">
+                        <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center shrink-0">
+                            <CheckCircle2 size={18} />
+                        </div>
+                        <div>
+                            <p className="font-black text-sm uppercase tracking-widest">Uygulama Ödemesi Alındı</p>
+                            <p className="text-[10px] text-emerald-100 font-bold mt-0.5">Müşteri QR ile ödedi. Masayı kapatabilirsiniz.</p>
+                        </div>
+                    </div>
+                )}
                 <div className="p-6 border-b border-gray-200 shrink-0">
                     <div className="flex justify-between items-center mb-4">
                         <h2 className="text-xl font-extrabold text-gray-900 tracking-tight">Sipariş Özeti</h2>
@@ -696,14 +791,25 @@ export default function OrderTerminal() {
                         } else {
                             // Explode quantities into separate X1 rows
                             cart.forEach((item, originalIdx) => {
-                                const qty = Number(item.quantity || 1);
-                                for (let i = 0; i < qty; i++) {
+                                const isWeightBased = item.weight_grams !== undefined;
+
+                                if (isWeightBased) {
+                                    // PRESERVE FRACTIONAL QTY: Do not explode weight-based items
                                     displayItems.push({
                                         ...item,
-                                        quantity: 1, // Force each row to be 1x
                                         originalIdx: originalIdx,
-                                        explodedId: `${originalIdx}-${i}` // Unique for display key
+                                        explodedId: `${originalIdx}-0`
                                     });
+                                } else {
+                                    const qty = Number(item.quantity || 1);
+                                    for (let i = 0; i < qty; i++) {
+                                        displayItems.push({
+                                            ...item,
+                                            quantity: 1, // Force each row to be 1x
+                                            originalIdx: originalIdx,
+                                            explodedId: `${originalIdx}-${i}` // Unique for display key
+                                        });
+                                    }
                                 }
                             });
                         }

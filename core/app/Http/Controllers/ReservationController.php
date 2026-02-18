@@ -193,21 +193,20 @@ class ReservationController extends Controller
 
         // Only send confirmation email and log 'created' activity if NOT pending_payment
         if ($status !== 'pending_payment') {
-            // Send Confirmation Email
+            // Send In-App & Email Notification via Centralized System
             try {
-                \Illuminate\Support\Facades\Mail::to($request->user()->email)
-                    ->send(new \App\Mail\ReservationConfirmed($reservation));
+                $user->notify(new \App\Notifications\ReservationStatusNotification($reservation, $status));
 
-                // Send SMS via Twilio
+                // Send SMS via Twilio (Keeping SMS direct for now as it's separate from Mail lifecycle)
                 $smsService = new SmsService;
                 $smsMessage = "Sayın {$user->name}, {$reservation->business->name} için rezervasyonunuz başarıyla oluşturuldu. Tarih: {$reservation->start_time->format('d.m.Y H:i')}.";
                 $smsService->send($user->phone, $smsMessage);
 
             } catch (\Exception $e) {
-                \Log::error('Failed to send confirmation email/sms: '.$e->getMessage());
+                \Log::error('Failed to send notifications/sms: '.$e->getMessage());
             }
 
-            // Log activity as specifically 'created/confirmed'
+            // Log activity
             ActivityLog::logReservation($reservation, 'created');
         } else {
             // Log as 'initiated' for tracking unpaid ones

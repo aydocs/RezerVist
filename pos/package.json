@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "version": "1.0.0",
-  "author": "RezerveEt Inc.",
+  "author": "RezerVist Inc.",
   "description": "Premium Restaurant POS System",
   "main": "dist-electron/main.js",
   "scripts": {

@@ -21,6 +21,8 @@ interface Table {
         total_amount: number;
         paid_amount: number;
         remaining_amount: number;
+        payment_status?: string;
+        payment_method?: string;
     } | null;
 }
 
@@ -47,16 +49,18 @@ export default function Dashboard() {
         }
     };
 
-    const fetchTables = async (force = false) => {
-        if (!force) {
-            const cached = CacheManager.get('tables');
-            if (cached) {
-                setTables(cached);
-                return;
-            }
+    const fetchTables = async (force = false, isBackground = false) => {
+        // 1. Try Cache First
+        const cached = CacheManager.get('tables');
+        if (cached && !force) {
+            setTables(cached);
+            // If we have cache, we are done! no network call.
+            return;
         }
 
-        setLoading(true);
+        // 2. Network Call
+        if (!isBackground) setLoading(true);
+
         try {
             const res = await api.get('/tables');
             if (res.data.success) {
@@ -67,16 +71,29 @@ export default function Dashboard() {
         } catch (err) {
             console.error('Masa yükleme hatası:', err);
         } finally {
-            setLoading(false);
+            if (!isBackground) setLoading(false);
         }
     };
 
     useEffect(() => {
+        // Initial load
         fetchTables();
-        const interval = setInterval(() => {
+
+        // Timer for duration calculations (30s)
+        const timerInterval = setInterval(() => {
             setNow(new Date());
-        }, 30000); // Update every 30 seconds for timers
-        return () => clearInterval(interval);
+        }, 30000);
+
+        // Background Sync (15 Minutes)
+        const syncInterval = setInterval(() => {
+            console.log('Background Sync: Tables...');
+            fetchTables(true, true); // force=true, background=true
+        }, 15 * 60 * 1000);
+
+        return () => {
+            clearInterval(timerInterval);
+            clearInterval(syncInterval);
+        };
     }, []);
 
     const calculateDuration = (openedAt: string) => {
@@ -126,13 +143,26 @@ export default function Dashboard() {
 
                     <div className="flex items-center gap-3">
                         <button
+                            onClick={() => {
+                                CacheManager.invalidate('menu');
+                                fetchTables(true);
+                            }}
+                            disabled={loading}
+                            title="Menü ve Masaları Yenile"
+                            className="flex items-center gap-2 px-4 py-3 bg-gray-900 hover:bg-black text-white rounded-xl shadow-lg transition-all font-medium disabled:opacity-50"
+                        >
+                            {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <RefreshCw className="h-5 w-5" />}
+                            <span className="hidden sm:inline">Menüyü Güncelle</span>
+                        </button>
+
+                        <button
                             onClick={() => fetchTables(true)}
                             disabled={loading}
-                            title="Yenile"
+                            title="Masaları Yenile"
                             className="flex items-center gap-2 px-4 py-3 bg-[#6200EE] hover:bg-purple-700 text-white rounded-xl shadow-lg shadow-purple-200 transition-all font-medium disabled:opacity-50"
                         >
                             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <RefreshCw className="h-5 w-5" />}
-                            <span className="hidden sm:inline">Yenile</span>
+                            <span className="hidden sm:inline">Masaları Yenile</span>
                         </button>
                     </div>
                 </div>
@@ -169,21 +199,30 @@ export default function Dashboard() {
                         {filteredTables.map((table) => {
                             const isOccupied = table.status === 'occupied';
                             const isReserved = table.status === 'reserved';
+                            const isPaidViaApp = isOccupied && table.order?.payment_status === 'paid' && table.order?.payment_method === 'iyzico_app';
 
                             return (
                                 <div
                                     key={table.id}
                                     onClick={() => navigate(`/order/${table.id}`)}
                                     className={`relative border-2 rounded-[2rem] p-6 transition-all cursor-pointer group hover:shadow-2xl overflow-hidden
-                                        ${isOccupied
-                                            ? 'bg-red-50 border-red-100 hover:border-red-400'
-                                            : isReserved
-                                                ? 'bg-orange-50 border-orange-100 hover:border-orange-400'
-                                                : 'bg-white border-gray-100 hover:border-primary/50'
+                                        ${isPaidViaApp
+                                            ? 'bg-emerald-50 border-emerald-300 hover:border-emerald-500 ring-2 ring-emerald-200'
+                                            : isOccupied
+                                                ? 'bg-red-50 border-red-100 hover:border-red-400'
+                                                : isReserved
+                                                    ? 'bg-orange-50 border-orange-100 hover:border-orange-400'
+                                                    : 'bg-white border-gray-100 hover:border-primary/50'
                                         }`}
                                 >
-                                    {/* Duration Overlay for Occupied */}
-                                    {isOccupied && table.order && (
+                                    {/* Paid via App Badge */}
+                                    {isPaidViaApp && (
+                                        <div className="absolute top-0 right-0 bg-emerald-500 text-white px-3 py-1.5 text-[10px] font-black rounded-bl-[1.5rem] shadow-lg shadow-emerald-500/20 flex items-center gap-1">
+                                            <span>✓</span> ÖDENDİ
+                                        </div>
+                                    )}
+                                    {/* Duration Overlay for Occupied (not paid) */}
+                                    {isOccupied && !isPaidViaApp && table.order && (
                                         <div className="absolute top-0 right-0 bg-red-500 text-white px-3 py-1.5 text-[10px] font-black rounded-bl-[1.5rem] shadow-lg shadow-red-500/20">
                                             {calculateDuration(table.order.opened_at)}
                                         </div>
@@ -213,13 +252,21 @@ export default function Dashboard() {
 
                                         {/* Show total if occupied */}
                                         {isOccupied && table.order && (
-                                            <div className="pt-4 border-t border-red-200/50">
+                                            <div className={`pt-4 border-t ${isPaidViaApp ? 'border-emerald-200/50' : 'border-red-200/50'}`}>
                                                 <div className="flex justify-between items-center mb-1">
-                                                    <span className="text-[10px] font-black text-red-600/50 uppercase tracking-widest">Adisyon</span>
-                                                    <span className="text-xl font-black text-red-900 tracking-tighter">
-                                                        ₺{Number((table.order.total_amount || 0) - (table.order.paid_amount || 0)).toLocaleString('tr-TR', { minimumFractionDigits: 2 })}
+                                                    <span className={`text-[10px] font-black uppercase tracking-widest ${isPaidViaApp ? 'text-emerald-600/70' : 'text-red-600/50'}`}>
+                                                        {isPaidViaApp ? 'Uygulama Ödemesi' : 'Adisyon'}
+                                                    </span>
+                                                    <span className={`text-xl font-black tracking-tighter ${isPaidViaApp ? 'text-emerald-700' : 'text-red-900'}`}>
+                                                        {isPaidViaApp
+                                                            ? '✓ Ödendi'
+                                                            : `₺${Number((table.order.total_amount || 0) - (table.order.paid_amount || 0)).toLocaleString('tr-TR', { minimumFractionDigits: 2 })}`
+                                                        }
                                                     </span>
                                                 </div>
+                                                {isPaidViaApp && (
+                                                    <p className="text-[9px] text-emerald-500 font-black uppercase tracking-widest mt-1">Masayı kapatabilirsiniz</p>
+                                                )}
                                             </div>
                                         )}
 

@@ -27,6 +27,11 @@ class BusinessApplication extends Model
         'bank_document',
         'status', // pending, approved, rejected
         'admin_note',
+        'tags',
+    ];
+
+    protected $casts = [
+        'tags' => 'array',
     ];
 
     public function user()

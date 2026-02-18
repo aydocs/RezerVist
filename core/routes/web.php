@@ -43,6 +43,15 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/blog/categories', [\App\Http\Controllers\Admin\BlogController::class, 'storeCategory'])->name('blog.categories.store');
 });
 
+// --- Subdomain Routes ---
+Route::domain('menu.rezervist.com')->group(function () {
+    Route::get('/', function () {
+        return redirect(config('app.url')); // Redirect root subdomain to main site
+    });
+
+    Route::get('/{business}', [\App\Http\Controllers\BusinessController::class, 'show'])->name('subdomain.business.show');
+});
+
 Route::get('/', function () {
     $businesses = \Illuminate\Support\Facades\Cache::remember('home_featured_businesses', 3600, function () {
         return \App\Models\Business::where('is_active', true)->with(['category', 'approvedReviews'])->take(6)->get();
@@ -276,49 +285,45 @@ Route::middleware(['auth', 'role:business,admin'])->prefix('vendor')->name('vend
         Route::get('/reservations', [\App\Http\Controllers\VendorController::class, 'reservations'])->name('reservations.index');
         Route::patch('/reservations/{id}', [\App\Http\Controllers\VendorController::class, 'updateReservation'])->name('reservations.update');
 
-        // Menu Management
-        Route::resource('menus', \App\Http\Controllers\VendorMenuController::class);
+        // Operations & POS Access (Requires Standard/POS+)
+        Route::middleware(['subscribed:pos_access'])->group(function () {
+            Route::resource('menus', \App\Http\Controllers\VendorMenuController::class);
+            Route::resource('staff', \App\Http\Controllers\StaffController::class)->except(['show']);
+            Route::patch('staff/{staff}/toggle-status', [\App\Http\Controllers\StaffController::class, 'toggleStatus'])->name('staff.toggle-status');
+            Route::resource('coupons', \App\Http\Controllers\VendorCouponController::class);
+            Route::post('coupons/{coupon}/toggle', [\App\Http\Controllers\VendorCouponController::class, 'toggleStatus'])->name('coupons.toggle-status');
+            Route::get('resources/bulk-create', [\App\Http\Controllers\VendorResourceController::class, 'createBulk'])->name('resources.create-bulk');
+            Route::post('resources/bulk-create', [\App\Http\Controllers\VendorResourceController::class, 'storeBulk'])->name('resources.store-bulk');
+            Route::post('resources/bulk-action', [\App\Http\Controllers\VendorResourceController::class, 'bulkAction'])->name('resources.bulk-action');
+            Route::resource('resources', \App\Http\Controllers\VendorResourceController::class);
+            Route::resource('locations', \App\Http\Controllers\VendorLocationController::class);
+        });
 
-        // Staff Management
-        Route::resource('staff', \App\Http\Controllers\StaffController::class)->except(['show']);
-        Route::patch('staff/{staff}/toggle-status', [\App\Http\Controllers\StaffController::class, 'toggleStatus'])->name('staff.toggle-status');
+        // Mobile Ecosystem & QR (Requires Mobile+ / Ödeme+)
+        Route::middleware(['subscribed:mobile_access'])->group(function () {
+            Route::get('/kiosk', [\App\Http\Controllers\WaiterKioskController::class, 'index'])->name('kiosk.index');
+            Route::post('/kiosk/check-in/{reservation}', [\App\Http\Controllers\WaiterKioskController::class, 'checkIn'])->name('kiosk.check-in');
+            Route::post('/kiosk/check-out/{reservation}', [\App\Http\Controllers\WaiterKioskController::class, 'checkOut'])->name('kiosk.check-out');
+            Route::post('/kiosk/quick-book', [\App\Http\Controllers\WaiterKioskController::class, 'quickBook'])->name('kiosk.quick-book');
+        });
 
-        // Coupon Management
-        Route::resource('coupons', \App\Http\Controllers\VendorCouponController::class);
-        Route::post('coupons/{coupon}/toggle', [\App\Http\Controllers\VendorCouponController::class, 'toggleStatus'])->name('coupons.toggle-status');
+        // Finance & Analytics (Requires Pro Suite / Finans+)
+        Route::middleware(['subscribed:finance_access'])->group(function () {
+            Route::get('/finance', [\App\Http\Controllers\VendorController::class, 'finance'])->name('finance.index');
+            Route::get('/finance/export', [\App\Http\Controllers\VendorController::class, 'exportFinance'])->name('finance.export');
+            Route::post('/finance/withdrawals', [\App\Http\Controllers\WithdrawalController::class, 'store'])->name('withdrawals.store');
+            Route::post('/finance/iyzico-register', [\App\Http\Controllers\VendorController::class, 'registerIyzicoSubMerchant'])->name('finance.iyzico.register');
+            Route::get('/occupancy', [\App\Http\Controllers\VendorController::class, 'occupancy'])->name('occupancy.index');
+            Route::get('/analytics/data', [\App\Http\Controllers\VendorController::class, 'getAnalyticsData'])->name('analytics.data');
+        });
 
-        // Resource (Table/Space) Management
-        Route::get('resources/bulk-create', [\App\Http\Controllers\VendorResourceController::class, 'createBulk'])->name('resources.create-bulk');
-        Route::post('resources/bulk-create', [\App\Http\Controllers\VendorResourceController::class, 'storeBulk'])->name('resources.store-bulk');
-        Route::post('resources/bulk-action', [\App\Http\Controllers\VendorResourceController::class, 'bulkAction'])->name('resources.bulk-action');
-        Route::resource('resources', \App\Http\Controllers\VendorResourceController::class);
-        Route::resource('locations', \App\Http\Controllers\VendorLocationController::class);
-
-        // CRM
+        // CRM & General Monitoring (Standard for all plans)
         Route::get('/customers', [\App\Http\Controllers\VendorController::class, 'customers'])->name('customers');
         Route::get('/reviews', [\App\Http\Controllers\VendorController::class, 'reviews'])->name('reviews.index');
-
-        // Finance & Withdrawals
-        Route::get('/finance', [\App\Http\Controllers\VendorController::class, 'finance'])->name('finance.index');
-        Route::get('/finance/export', [\App\Http\Controllers\VendorController::class, 'exportFinance'])->name('finance.export');
-        Route::post('/finance/withdrawals', [\App\Http\Controllers\WithdrawalController::class, 'store'])->name('withdrawals.store');
-        Route::post('/finance/iyzico-register', [\App\Http\Controllers\VendorController::class, 'registerIyzicoSubMerchant'])->name('finance.iyzico.register');
-
-        // Occupancy Analysis
-        Route::get('/occupancy', [\App\Http\Controllers\VendorController::class, 'occupancy'])->name('occupancy.index');
-
-        // Analytics AJAX Data
-        Route::get('/analytics/data', [\App\Http\Controllers\VendorController::class, 'getAnalyticsData'])->name('analytics.data');
 
         // POS Demo Data Seeding
         Route::post('/business/seed-demo-data', [\App\Http\Controllers\VendorController::class, 'seedDemoData'])->name('business.seed-demo-data');
         Route::post('/business/clear-demo-data', [\App\Http\Controllers\VendorController::class, 'clearDemoData'])->name('business.clear-demo-data');
-
-        // Waiter Kiosk
-        Route::get('/kiosk', [\App\Http\Controllers\WaiterKioskController::class, 'index'])->name('kiosk.index');
-        Route::post('/kiosk/check-in/{reservation}', [\App\Http\Controllers\WaiterKioskController::class, 'checkIn'])->name('kiosk.check-in');
-        Route::post('/kiosk/check-out/{reservation}', [\App\Http\Controllers\WaiterKioskController::class, 'checkOut'])->name('kiosk.check-out');
-        Route::post('/kiosk/quick-book', [\App\Http\Controllers\WaiterKioskController::class, 'quickBook'])->name('kiosk.quick-book');
     });
 });
 
@@ -333,3 +338,12 @@ Route::post('/reviews/{review}/report', [\App\Http\Controllers\ReviewController:
 
 Route::get('/business/{business}/slots', [\App\Http\Controllers\BusinessController::class, 'getAvailableSlots'])->name('business.slots');
 Route::post('/coupons/check', [\App\Http\Controllers\BusinessController::class, 'checkCoupon'])->name('coupons.check');
+
+// --- Customer QR Routes ---
+Route::get('/q/{payload}', [\App\Http\Controllers\CustomerQrController::class, 'index'])->name('qr.index');
+Route::get('/m/{payload}', [\App\Http\Controllers\CustomerQrController::class, 'menu'])->name('qr.menu');
+Route::post('/q/pay/{payload}', [\App\Http\Controllers\CustomerQrController::class, 'initiatePayment'])->name('qr.payment.init');
+Route::post('/q/pay/callback/{payload}', [\App\Http\Controllers\CustomerQrController::class, 'paymentCallback'])->name('qr.payment.callback');
+Route::get('/b/{payload}', [\App\Http\Controllers\CustomerQrController::class, 'bill'])->name('qr.bill');
+
+

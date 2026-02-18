@@ -42,6 +42,7 @@ class User extends Authenticatable
         'is_review_blocked',
         'referral_code',
         'referred_by_id',
+        'email_verified_at',
     ];
 
     /**

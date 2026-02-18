@@ -115,7 +115,7 @@ class BusinessSliverAppBar extends ConsumerWidget {
             icon: const Icon(Icons.share_rounded, color: Colors.black),
             onPressed: () {
               Share.share(
-                  '${business.name} - RezerVist\n${business.address ?? ""}\nhttps://rezervist.com/business/${business.id}'); // TODO: Use actual deep link if available
+                  '${business.name} - RezerVist\n${business.address ?? ""}\nBusiness ID: ${business.id}'); // TODO: Use actual deep link if available
             },
           ),
         ),

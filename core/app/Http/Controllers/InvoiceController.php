@@ -27,7 +27,7 @@ class InvoiceController extends Controller
         $reservation->load(['business', 'user', 'menus']);
         $pdf = Pdf::loadView('pdf.invoice', compact('reservation'));
 
-        return $pdf->download("RezerveEt-Dekont-{$reservation->id}.pdf");
+        return $pdf->download("RezerVist-Dekont-{$reservation->id}.pdf");
     }
 
     /**

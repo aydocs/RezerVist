@@ -43,7 +43,7 @@ class WaitlistAvailableNotification extends Notification
             ->greeting("Merhaba {$notifiable->name},")
             ->line("{$businessName} işletmesinde {$date} tarihinde beklediğiniz liste için boş bir yer açıldı.")
             ->line('Hemen rezervasyonunuzu tamamlayarak yerinizi ayırtabilirsiniz.')
-            ->action('Hemen Rezerve Et', route('business.show', $this->waitlist->business->slug))
+            ->action('Hemen RezerVist', route('business.show', $this->waitlist->business->slug))
             ->line('Bizi tercih ettiğiniz için teşekkür ederiz!');
     }
 
@@ -77,7 +77,7 @@ class WaitlistAvailableNotification extends Notification
             ->title('Sevindirici Haber!')
             ->icon('/icon.png')
             ->body("{$this->waitlist->business->name} için yer açıldı! Rezervasyonunuzu tamamlayabilirsiniz.")
-            ->action('Hemen Rezerve Et', 'view_details')
+            ->action('Hemen RezerVist', 'view_details')
             ->data(['action_url' => route('business.show', $this->waitlist->business->slug)]);
     }
 }

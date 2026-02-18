@@ -25,7 +25,7 @@
 </head>
 <body>
     <div class="header">
-        <h1>REZERVE ET</h1>
+        <h1>RezerVist</h1>
         <p>Finansal Performans Raporu</p>
         <p>{{ \Carbon\Carbon::parse($startDate)->format('d.m.Y') }} - {{ \Carbon\Carbon::parse($endDate)->format('d.m.Y') }}</p>
     </div>
@@ -90,7 +90,7 @@
     </table>
 
     <div class="footer">
-        Bu rapor {{ now()->format('d.m.Y H:i:s') }} tarihinde Rezerve Et Yönetim Paneli tarafından otomatik olarak oluşturulmuştur.
+        Bu rapor {{ now()->format('d.m.Y H:i:s') }} tarihinde RezerVist Yönetim Paneli tarafından otomatik olarak oluşturulmuştur.
     </div>
 </body>
 </html>

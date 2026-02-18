@@ -1,31 +1,25 @@
 @extends('emails.layouts.master')
 
-@section('avatar', $user->profile_photo_url ?? 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=7c3aed&color=fff')
-
-@section('title', 'Şifre Sıfırlama')
+@section('title', 'Şifre Sıfırlama Talebi')
 
 @section('content')
-    <div style="text-align: center; margin-bottom: 32px;">
-        <h1 style="font-size: 28px; font-weight: 850; color: #0f172a; margin-bottom: 8px;">Şifrenizi mi unuttunuz, {{ $user->name }}?</h1>
-        <p style="color: #64748b; font-size: 16px;">Sorun değil! Aşağıdaki butona tıklayarak güvenli bir şekilde yeni şifrenizi belirleyebilirsiniz.</p>
-    </div>
-
-    <div class="card" style="background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 40px;">
-        <div class="button-container" style="padding: 0;">
-            <a href="{{ $resetUrl ?? '#' }}" class="button" style="background-color: #dc2626; box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.3);">
+    <div style="text-align: center;">
+        <div style="display: inline-block; background-color: #FEF2F2; color: #DC2626; font-size: 12px; font-weight: 700; padding: 6px 16px; border-radius: 100px; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px;">
+            ŞİFRE GÜVENLİĞİ
+        </div>
+        <h1>Şifrenizi mi unuttunuz?</h1>
+        <p>Merhaba <strong>{{ $user->name }}</strong>,<br>Sorun değil! Aşağıdaki butona tıklayarak güvenli bir şekilde yeni şifrenizi belirleyebilirsiniz.</p>
+        
+        <div class="card" style="text-align: center;">
+            <a href="{{ $resetUrl ?? '#' }}" class="button" style="background-color: #DC2626; box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.3);">
                 Şifremi Sıfırla
             </a>
+            <div style="font-size: 13px; font-weight: 500; color: #94A3B8; margin-top: 24px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 4px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                Bu bağlantı <strong>60 dakika</strong> boyunca geçerlidir.
+            </div>
         </div>
         
-        <p style="text-align: center; font-size: 13px; color: #94a3b8; margin-top: 24px; margin-bottom: 0;">
-            Bu bağlantı 60 dakika süresince geçerlidir.
-        </p>
-    </div>
-
-    <div style="text-align: center; margin-top: 32px;">
-        <p style="font-size: 14px; color: #64748b; line-height: 1.5;">
-            Eğer şifre sıfırlama talebinde bulunmadıysanız, bu e-postayı <br>
-            güvenle silebilirsiniz. Hesabınız güvende kalacaktır.
-        </p>
+        <p style="font-size: 14px; margin-bottom: 0;">Eğer şifre sıfırlama talebinde bulunmadıysanız, bu e-postayı güvenle silebilirsiniz. Hesabınız güvende kalacaktır.</p>
     </div>
 @endsection

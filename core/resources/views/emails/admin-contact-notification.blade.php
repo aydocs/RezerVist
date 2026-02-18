@@ -1,46 +1,40 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #1e293b; margin: 0; padding: 0; }
-        .wrapper { padding: 40px 20px; }
-        .content { max-width: 600px; margin: 0 auto; background: white; border-radius: 24px; padding: 40px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .badge { display: inline-block; background: #e0e7ff; color: #4338ca; font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 100px; text-transform: uppercase; margin-bottom: 20px; }
-        h1 { font-size: 24px; font-weight: 900; margin-bottom: 24px; color: #0f172a; }
-        .field { margin-bottom: 24px; border-bottom: 1px solid #f1f5f9; padding-bottom: 16px; }
-        .label { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; margin-bottom: 4px; display: block; }
-        .value { font-size: 15px; font-weight: 600; color: #1e293b; }
-        .message-box { background: #f8fafc; border-radius: 16px; padding: 24px; line-height: 1.6; font-size: 15px; color: #334155; border: 1px solid #e2e8f0; }
-        .footer { text-align: center; margin-top: 32px; font-size: 12px; color: #94a3b8; }
-    </style>
-</head>
-<body>
-    <div class="wrapper">
-        <div class="content">
-            <span class="badge">Yeni İletişim Mesajı</span>
-            <h1>Sistem Bildirimi</h1>
-            
-            <div class="field">
-                <span class="label">Gönderen</span>
-                <span class="value">{{ $name }} ({{ $email }})</span>
-            </div>
-            
-            <div class="field">
-                <span class="label">Konu</span>
-                <span class="value">{{ $subject }}</span>
-            </div>
-            
-            <div class="label">Mesaj İçeriği</div>
-            <div class="message-box">
-                {!! nl2br(e($contact_message)) !!}
-            </div>
-            
-            <div class="footer">
-                Rezervist Yönetim Sistemi • Otomatik Bildirim
+@extends('emails.layouts.master')
+
+@section('title', 'Yeni İletişim Mesajı')
+
+@section('content')
+    <div style="text-align: center;">
+        <div style="display: inline-block; background-color: #E0E7FF; color: #4338CA; font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 100px; text-transform: uppercase; margin-bottom: 20px;">
+            YENİ İLETİŞİM MESAJI
+        </div>
+        <h1>Sistem Bildirimi</h1>
+        <p>Yönetim Paneli üzerinden yeni bir iletişim formu gönderildi.</p>
+
+        <div class="card">
+            <div class="card-title">MESAJ DETAYLARI</div>
+            <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse: collapse;">
+                <tr>
+                    <td style="padding: 12px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px; color: #94A3B8;">Gönderen</td>
+                    <td style="padding: 12px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px; font-weight: 700; color: #1E293B; text-align: right;">{{ $name }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px; color: #94A3B8;">E-posta</td>
+                    <td style="padding: 12px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px; font-weight: 700; color: #1E293B; text-align: right;">{{ $email }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px; color: #94A3B8;">Konu</td>
+                    <td style="padding: 12px 0; border-bottom: 1px solid #F1F5F9; font-size: 14px; font-weight: 700; color: #1E293B; text-align: right;">{{ $subject }}</td>
+                </tr>
+            </table>
+
+            <div style="margin-top: 24px;">
+                <div class="card-title">MESAJ İÇERİĞİ</div>
+                <div style="background-color: #FFFFFF; border: 1px solid #F1F5F9; border-radius: 12px; padding: 16px; font-size: 14px; color: #475569; line-height: 1.6; text-align: left;">
+                    {!! nl2br(e($contact_message)) !!}
+                </div>
             </div>
         </div>
+
+        <p style="font-size: 12px; color: #94A3B8; margin-top: 32px;">Rezervist Yönetim Sistemi • Otomatik Bildirim</p>
     </div>
-</body>
-</html>
+@endsection

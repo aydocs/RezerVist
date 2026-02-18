@@ -67,7 +67,7 @@
                                 <svg class="w-8 h-8 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
                                 <span class="text-sm font-medium text-gray-900">{{ $label }}</span>
                             </div>
-                            <a href="{{ Storage::url($application->$field) }}" target="_blank" class="text-primary hover:text-purple-800 text-sm font-bold flex items-center">
+                            <a href="{{ route('admin.applications.document', ['id' => $application->id, 'field' => $field]) }}" target="_blank" class="text-primary hover:text-purple-800 text-sm font-bold flex items-center">
                                 Görüntüle
                                 <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                             </a>
@@ -123,23 +123,47 @@
                     <script>
                         function startApprovalProcess() {
                             const defaultEmail = "{{ $application->email }}";
-                            const defaultPassword = Math.random().toString(36).slice(-10); // Random string
+                            const defaultPassword = Math.random().toString(36).slice(-10);
 
                             Swal.fire({
-                                title: 'İşletme Hesabı Oluştur',
+                                title: '<div class="text-2xl font-black text-slate-900 mb-2">İşletme Hesabı Oluştur</div>',
                                 html: `
-                                    <div class="text-left">
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">E-posta</label>
-                                        <input type="email" id="swal-email" class="swal2-input w-full" value="${defaultEmail}" disabled style="margin: 0 0 15px 0;">
-                                        
-                                        <label class="block text-sm font-medium text-gray-700 mb-1">Şifre</label>
-                                        <div class="relative">
-                                            <input type="text" id="swal-password" class="swal2-input w-full" value="${defaultPassword}" style="margin: 0;">
-                                            <button type="button" onclick="document.getElementById('swal-password').value = Math.random().toString(36).slice(-10)" class="absolute right-2 top-2 text-xs text-primary font-bold">Yenile</button>
+                                    <div class="text-left px-2">
+                                        <div class="mb-5">
+                                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Giriş E-postası</label>
+                                            <div class="relative group">
+                                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                    <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path></svg>
+                                                </div>
+                                                <input type="email" value="${defaultEmail}" disabled 
+                                                    class="block w-full pl-10 pr-3 py-3 bg-slate-50 border border-slate-200 text-slate-500 text-sm rounded-xl cursor-not-allowed">
+                                            </div>
                                         </div>
-                                        <p class="text-xs text-gray-500 mt-2">Bu bilgiler kullanıcıya e-posta ile gönderilecektir.</p>
+                                        
+                                        <div class="mb-2">
+                                            <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Geçici Şifre</label>
+                                            <div class="relative group">
+                                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                                    <svg class="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                                                </div>
+                                                <input type="text" id="swal-password" value="${defaultPassword}"
+                                                    class="block w-full pl-10 pr-20 py-3 bg-white border border-slate-200 text-slate-900 text-sm rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none">
+                                                <button type="button" onclick="document.getElementById('swal-password').value = Math.random().toString(36).slice(-10)"
+                                                    class="absolute right-2 top-1.5 px-3 py-1.5 text-[10px] font-bold text-primary bg-primary/5 hover:bg-primary/10 rounded-lg transition-colors flex items-center">
+                                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+                                                    YENİLE
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <p class="text-[11px] text-slate-400 italic">Bu bilgiler onay sonrası kullanıcıya otomatik olarak e-posta ile iletilecektir.</p>
                                     </div>
                                 `,
+                                customClass: {
+                                    popup: 'rounded-[1.5rem] border-none shadow-2xl',
+                                    confirmButton: 'px-8 py-3 bg-primary text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:bg-indigo-700 transition-all',
+                                    cancelButton: 'px-8 py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-all ml-3'
+                                },
+                                buttonsStyling: false,
                                 showCancelButton: true,
                                 confirmButtonText: 'Devam Et',
                                 cancelButtonText: 'İptal',
@@ -157,23 +181,23 @@
 
                         function confirmFinalApproval(password) {
                             Swal.fire({
-                                title: 'Son Onay',
-                                text: "Başvuru onaylanacak ve kullanıcıya giriş bilgileri gönderilecek. Emin misiniz?",
-                                icon: 'warning',
+                                title: '<div class="text-xl font-bold text-slate-900">Onaylıyor musunuz?</div>',
+                                text: "İşletme hesabı oluşturulacak ve giriş bilgileri gönderilecektir.",
+                                icon: 'info',
                                 showCancelButton: true,
-                                confirmButtonColor: '#059669',
-                                cancelButtonColor: '#d33',
                                 confirmButtonText: 'Evet, Onayla',
-                                cancelButtonText: 'İptal'
+                                cancelButtonText: 'Vazgeç',
+                                customClass: {
+                                    popup: 'rounded-[1.5rem]',
+                                    confirmButton: 'px-8 py-3 bg-green-600 text-white font-bold rounded-xl shadow-lg shadow-green-600/20 hover:bg-green-700 transition-all',
+                                    cancelButton: 'px-8 py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-all ml-3'
+                                },
+                                buttonsStyling: false
                             }).then((result) => {
                                 if (result.isConfirmed) {
-                                    // Inject password into hidden input (or create one dynamically)
                                     let form = document.getElementById('statusForm');
-                                    
-                                    // Hidden status input
                                     document.getElementById('statusInput').value = 'approved';
                                     
-                                    // Hidden password input
                                     let passInput = document.createElement('input');
                                     passInput.type = 'hidden';
                                     passInput.name = 'custom_password';
@@ -187,14 +211,18 @@
 
                         function rejectApplication() {
                             Swal.fire({
-                                title: 'Reddetmek İstediğinize Emin misiniz?',
-                                text: "Bu işlem geri alınamaz.",
+                                title: '<div class="text-xl font-bold text-slate-900">Başvuruyu Reddet</div>',
+                                text: "Bu işletme başvurusu reddedilecektir. Emin misiniz?",
                                 icon: 'error',
                                 showCancelButton: true,
-                                confirmButtonColor: '#DC2626',
-                                cancelButtonColor: '#6B7280',
                                 confirmButtonText: 'Evet, Reddet',
-                                cancelButtonText: 'İptal'
+                                cancelButtonText: 'İptal',
+                                customClass: {
+                                    popup: 'rounded-[1.5rem]',
+                                    confirmButton: 'px-8 py-3 bg-red-600 text-white font-bold rounded-xl shadow-lg shadow-red-600/20 hover:bg-red-700 transition-all',
+                                    cancelButton: 'px-8 py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-all ml-3'
+                                },
+                                buttonsStyling: false
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     document.getElementById('statusInput').value = 'rejected';

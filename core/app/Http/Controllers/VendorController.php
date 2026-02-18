@@ -275,6 +275,7 @@ class VendorController extends Controller
             'reservation_start_time' => 'nullable|date_format:H:i',
             'reservation_end_time' => 'nullable|date_format:H:i',
             'reservation_slot_duration' => 'nullable|integer|in:30,60,90,120',
+
         ]);
 
         // Prepare reservation time slots JSON
@@ -301,6 +302,7 @@ class VendorController extends Controller
             'surge_threshold' => $validated['surge_threshold'] ?? 80,
             'surge_multiplier' => $validated['surge_multiplier'] ?? 1.5,
             'reservation_time_slots' => $timeSlots ?? $business->reservation_time_slots,
+
         ]);
 
         return back()->with('success', 'İşletme bilgileri güncellendi.');

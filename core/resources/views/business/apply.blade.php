@@ -19,28 +19,8 @@
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-indigo-600 to-purple-600">Dijitale Taşıyın</span>
         </h1>
         <p class="max-w-2xl mx-auto text-lg md:text-xl text-slate-600 mb-10 leading-relaxed">
-            Rezervist ile binlerce yeni müşteriye ulaşın, rezervasyon süreçlerinizi otomatikleştirin ve gelirinizi artırın. Şimdi başvurun, ilk 3 ay komisyon ödemeyin.
+            Rezervist ile binlerce yeni müşteriye ulaşın, rezervasyon süreçlerinizi otomatikleştirin ve gelirinizi artırın. Şimdi başvurun.
         </p>
-        
-        <!-- Trust/Stats Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto border-t border-slate-200/60 pt-10">
-            <div>
-                <p class="text-3xl font-bold text-slate-900">50K+</p>
-                <p class="text-sm font-medium text-slate-500 uppercase tracking-wide mt-1">Aktif Kullanıcı</p>
-            </div>
-            <div>
-                <p class="text-3xl font-bold text-slate-900">%0</p>
-                <p class="text-sm font-medium text-slate-500 uppercase tracking-wide mt-1">Komisyon (3 Ay)</p>
-            </div>
-            <div>
-                <p class="text-3xl font-bold text-slate-900">7/24</p>
-                <p class="text-sm font-medium text-slate-500 uppercase tracking-wide mt-1">Canlı Destek</p>
-            </div>
-            <div>
-                <p class="text-3xl font-bold text-slate-900">Mobil</p>
-                <p class="text-sm font-medium text-slate-500 uppercase tracking-wide mt-1">Yönetim Paneli</p>
-            </div>
-        </div>
     </div>
 
     <!-- Application Form Container -->
@@ -282,7 +262,7 @@
             
             <div class="space-y-4" x-data="{ active: null }">
                 @foreach([
-                    ['q' => 'Başvuru ücretli mi?', 'a' => 'Hayır, Rezervist\'e katılmak için herhangi bir giriş veya başvuru ücreti ödemezsiniz. İlk 3 ay boyunca tüm özelliklerden tamamen ücretsiz ve komisyonsuz yararlanabilirsiniz.'],
+                    ['q' => 'Başvuru ücretli mi?', 'a' => 'Hayır, Rezervist\'e katılmak için herhangi bir giriş veya başvuru ücreti ödemezsiniz. İlk 3 ay boyunca tüm özelliklerden tamamen ücretsiz yararlanabilirsiniz.'],
                     ['q' => 'Ödemeler ne zaman hesabıma geçer?', 'a' => 'İşletmenizde gerçekleşen rezervasyonların ödemeleri, operasyonun tamamlanmasını takip eden ilk iş gününde (Ertesi Gün Ödeme) banka hesabınıza otomatik olarak aktarılır.'],
                     ['q' => 'Hangi belgeler gerekli?', 'a' => 'Yasal olarak faaliyet gösterebilmeniz için Vergi Levhası, Ticaret Sicil Gazetesi (veya İmza Sirküsü) ve İşyeri Açma Ruhsatı gibi temel ticari belgelerin PDF formatında yüklenmesi yeterlidir.'],
                     ['q' => 'Teknik destek sağlıyor musunuz?', 'a' => 'Evet, her bir işletme ortağımıza özel bir portföy yöneticisi atanır. Ayrıca 7/24 canlı destek hattımız üzerinden her türlü teknik ve operasyonel sorunuza anında yanıt alabilirsiniz.']

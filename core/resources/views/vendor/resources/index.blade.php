@@ -269,7 +269,13 @@
                     </div>
 
                     <div class="pt-6 border-t border-slate-50 flex items-center justify-between">
-                        <a href="{{ route('vendor.resources.edit', $resource->id) }}" class="text-[10px] font-black text-slate-400 uppercase tracking-[0.1em] hover:text-primary transition-colors">Düzenle</a>
+                        <div class="flex gap-3">
+                            <a href="{{ route('vendor.resources.edit', $resource->id) }}" class="text-[10px] font-black text-slate-400 uppercase tracking-[0.1em] hover:text-primary transition-colors">Düzenle</a>
+                            <a href="{{ \App\Http\Controllers\CustomerQrController::generateLink($resource->business_id, $resource->id) }}" target="_blank" class="text-[10px] font-black text-slate-400 uppercase tracking-[0.1em] hover:text-black transition-colors flex items-center gap-1">
+                                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4h2v-4zM6 6h6v6H6V6zm12 0h6v6h-6V6zm-6 12h6v6h-6v-6z"></path></svg>
+                                QR
+                            </a>
+                        </div>
                         <form action="{{ route('vendor.resources.destroy', $resource->id) }}" method="POST" onsubmit="return confirm('Bu kaynağı silmek istediğinize emin misiniz?')">
                             @csrf
                             @method('DELETE')

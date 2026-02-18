@@ -265,13 +265,6 @@ class PaymentController extends Controller
                 // Log Reservation Confirmation (New standard flow)
                 \App\Models\ActivityLog::logReservation($reservation, 'confirmed');
 
-                // Send confirmation email (Now moved here for card payments)
-                try {
-                    \Illuminate\Support\Facades\Mail::to($reservation->user->email)
-                        ->send(new \App\Mail\ReservationConfirmed($reservation));
-                } catch (\Exception $e) {
-                    \Log::error('Failed to send confirmation email in callback: '.$e->getMessage());
-                }
 
                 // Send In-App Notification (Approved)
                 try {

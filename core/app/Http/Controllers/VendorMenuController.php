@@ -45,7 +45,7 @@ class VendorMenuController extends Controller
         $data['business_id'] = $business->id;
         // In this logic, 'price' in DB is the final price shown to customer?
         // OR 'price' is vendor price?
-        // User said: "product 100 lira company enters 100 lira and rezerve et commission is added on top so users buy it company knows this"
+        // User said: "product 100 lira company enters 100 lira and RezerVist commission is added on top so users buy it company knows this"
         // So DB should probably store the BASE price (100) and we calculate display price on fly?
         // OR store final price and base price?
         // Let's store the VENDOR PRICE (100) in 'price' column for now as the core value.

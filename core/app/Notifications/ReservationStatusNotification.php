@@ -51,6 +51,14 @@ class ReservationStatusNotification extends Notification
                 ->line("{$this->reservation->business->name} işletmesi rezervasyon talebinizi maalesef onaylayamadı.")
                 ->line('Lütfen başka bir tarih veya saat için tekrar deneyiniz.')
                 ->action('İşletmeleri Keşfet', url('/search'));
+        } elseif ($this->status === 'pending') {
+            return (new MailMessage)
+                ->subject('Rezervasyon Talebiniz Alındı')
+                ->greeting('Merhaba '.$notifiable->name.',')
+                ->line("{$this->reservation->business->name} için rezervasyon talebiniz başarıyla alınmıştır.")
+                ->line('Rezervasyonunuz 8 kişiden büyük olduğu için işletme onayına düşmüştür. İşletme onayladığında size tekrar bilgi vereceğiz.')
+                ->line('Tarih: '.$this->reservation->start_time->format('d.m.Y H:i'))
+                ->action('Rezervasyonlarımı Gör', url('/profile/reservations'));
         }
 
         return (new MailMessage)

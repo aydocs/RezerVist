@@ -71,7 +71,7 @@ class BusinessApplicationStatusNotification extends Notification
             $message->action('Durumu Takip Et', route('business.application.status'));
         }
 
-        return $message->line('Rezerve Et ailesini tercih ettiğiniz için teşekkür ederiz!');
+        return $message->line('RezerVist ailesini tercih ettiğiniz için teşekkür ederiz!');
     }
 
     /**

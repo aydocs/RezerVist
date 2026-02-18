@@ -12,7 +12,7 @@ import {
     Printer,
     Download,
     Eye,
-    TrendingUp
+    Smartphone
 } from 'lucide-react';
 import api from '../lib/api';
 import classNames from 'classnames';
@@ -33,7 +33,7 @@ interface Order {
     };
     status: 'active' | 'completed' | 'cancelled';
     payment_status: 'unpaid' | 'partial' | 'paid';
-    payment_method?: 'cash' | 'credit_card';
+    payment_method?: 'cash' | 'credit_card' | 'iyzico_app' | string;
     total_amount: number;
     paid_amount: number;
     opened_at: string;
@@ -47,7 +47,7 @@ export default function Invoices() {
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [statusFilter, setStatusFilter] = useState < 'all' | 'completed' | 'active' > ('all');
-    const [methodFilter, setMethodFilter] = useState < 'all' | 'cash' | 'credit_card' > ('all');
+    const [methodFilter, setMethodFilter] = useState < 'all' | 'cash' | 'credit_card' | 'iyzico_app' > ('all');
     const [dateRange, setDateRange] = useState < 'today' | 'yesterday' | 'last7' | 'thisMonth' > ('today');
     const [expandedId, setExpandedId] = useState < number | null > (null);
 
@@ -111,7 +111,12 @@ export default function Invoices() {
         return method === 'credit_card' || method === 'card' || method === 'creditcard' || method === 'kredi_karti';
     }).reduce((sum, o) => sum + Number(o.total_amount), 0);
 
-    const avgOrderValue = filteredOrders.length > 0 ? totalRevenue / filteredOrders.length : 0;
+    const appTotal = filteredOrders.filter(o => {
+        const method = (o.payment_method || '').toLowerCase();
+        return method === 'iyzico_app';
+    }).reduce((sum, o) => sum + Number(o.total_amount), 0);
+
+
 
     const handleExport = () => {
         if (filteredOrders.length === 0) return alert('Dışa aktarılacak veri yok.');
@@ -216,11 +221,11 @@ export default function Invoices() {
                         color="blue"
                     />
                     <KPICard
-                        title="Ort. Adisyon"
-                        value={avgOrderValue}
-                        icon={<TrendingUp size={20} />}
-                        subtitle="İşlem Başına"
-                        color="amber"
+                        title="QR App Ödemesi"
+                        value={appTotal}
+                        icon={<Smartphone size={20} />}
+                        subtitle={`${filteredOrders.filter(o => o.payment_method === 'iyzico_app').length} Adisyon`}
+                        color="violet"
                     />
                 </div>
 
@@ -280,7 +285,8 @@ export default function Invoices() {
                                     options={[
                                         { id: 'all', label: 'Hepsi' },
                                         { id: 'cash', label: 'Nakit' },
-                                        { id: 'credit_card', label: 'Kart' }
+                                        { id: 'credit_card', label: 'Kart' },
+                                        { id: 'iyzico_app', label: 'QR App' }
                                     ]}
                                     onChange={setMethodFilter as any}
                                 />
@@ -421,6 +427,8 @@ function InvoiceRow({ order, isExpanded, onToggle }: { order: Order, isExpanded:
                                     return <><Banknote size={16} className="text-emerald-500" /><span className="text-sm uppercase tracking-tighter">Nakit</span></>;
                                 } else if (method === 'credit_card' || method === 'card' || method === 'creditcard' || method === 'kredi_karti') {
                                     return <><CreditCard size={16} className="text-blue-500" /><span className="text-sm uppercase tracking-tighter">Kredi Kartı</span></>;
+                                } else if (method === 'iyzico_app') {
+                                    return <><Smartphone size={16} className="text-violet-500" /><span className="text-sm uppercase tracking-tighter">QR App</span></>;
                                 } else {
                                     return <span className="text-sm text-gray-400">---</span>;
                                 }

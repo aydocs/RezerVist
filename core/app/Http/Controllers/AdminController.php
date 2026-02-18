@@ -285,10 +285,17 @@ class AdminController extends Controller
                     'is_verified' => true,
                     'verified_at' => now(),
                     'is_active' => false, // Passive until setup is complete
+                    'latitude' => 41.0082, // Default coords
+                    'longitude' => 28.9784,
                 ]
             );
 
-            // 3. Link user to business if not already
+            // 3. Sync Tags (Features)
+            if ($application->tags && is_array($application->tags)) {
+                $business->tags()->sync($application->tags);
+            }
+
+            // 4. Link user to business
             $applicant->update(['business_id' => $business->id]);
         }
 

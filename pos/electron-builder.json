@@ -1,7 +1,7 @@
 {
-    "appId": "com.rezerveet.pos",
+    "appId": "com.RezerVist.pos",
     "productName": "RezerVistA POS",
-    "copyright": "Copyright © 2026 RezerveEt",
+    "copyright": "Copyright © 2026 RezerVist",
     "directories": {
         "output": "release"
     },
@@ -32,7 +32,7 @@
     "publish": [
         {
             "provider": "generic",
-            "url": "https://api.rezerveet.com/updates/"
+            "url": "https://api.RezerVist.com/updates/"
         }
     ]
 }

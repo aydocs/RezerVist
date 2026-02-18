@@ -359,25 +359,7 @@
                 </div>
             </div>
 
-            <!-- Stats & Trust -->
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                <div class="bg-primary/5 border border-primary/10 rounded-2xl p-4 text-center">
-                    <div class="text-2xl font-black text-primary mb-1">{{ ($business->reviews->count() * 12) + 120 }}+</div>
-                    <div class="text-[10px] uppercase font-bold text-primary/60 tracking-wider">Mutlu Müşteri</div>
-                </div>
-                <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-4 text-center">
-                    <div class="text-2xl font-black text-emerald-600 mb-1">4.9/5</div>
-                    <div class="text-[10px] uppercase font-bold text-emerald-600/60 tracking-wider">Memnuniyet</div>
-                </div>
-                <div class="bg-blue-50 border border-blue-100 rounded-2xl p-4 text-center">
-                    <div class="text-2xl font-black text-blue-600 mb-1">{{ round($business->id % 5) + 3 }}+ Yıl</div>
-                    <div class="text-[10px] uppercase font-bold text-blue-600/60 tracking-wider">Deneyim</div>
-                </div>
-                <div class="bg-purple-50 border border-purple-100 rounded-2xl p-4 text-center">
-                    <div class="text-2xl font-black text-purple-600 mb-1">Anında</div>
-                    <div class="text-[10px] uppercase font-bold text-purple-600/60 tracking-wider">Rezervasyon</div>
-                </div>
-            </div>
+
 
             <div class="grid md:grid-cols-2 gap-6">
                 <!-- Payment Methods -->
@@ -969,203 +951,199 @@
     </div>
 
     <!-- Menu Content -->
-    <div x-show="tab === 'menu'" class="space-y-4" x-data="{ openCategory: '0', menuSearch: '', viewMode: 'grid' }">
+    <!-- Menu Content (New Purple & White Theme) -->
+    <div x-show="tab === 'menu'" 
+         x-data="{ 
+            activeCategory: null, 
+            showModal: false,
+            selectedItem: null,
+            init() {
+                // Wait for Alpine to initialize and tab to be visible
+                this.$watch('tab', value => {
+                    if (value === 'menu') {
+                        setTimeout(() => this.initObserver(), 100);
+                    }
+                });
+                if (this.tab === 'menu') this.initObserver();
+            },
+            initObserver() {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            this.activeCategory = entry.target.id.replace('cat-', '');
+                            const navItem = document.getElementById('nav-' + this.activeCategory);
+                            if (navItem) {
+                                navItem.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                            }
+                        }
+                    });
+                }, { rootMargin: '-100px 0px -50% 0px' });
+
+                document.querySelectorAll('.category-section').forEach(section => {
+                    observer.observe(section);
+                });
+            },
+            openItem(item) {
+                this.selectedItem = item;
+                this.showModal = true;
+                document.body.style.overflow = 'hidden';
+            },
+            closeModal() {
+                this.showModal = false;
+                setTimeout(() => this.selectedItem = null, 300);
+                document.body.style.overflow = '';
+            }
+         }" class="space-y-6">
+
         @if($business->menus->isEmpty())
              <div class="py-20 text-center bg-gray-50 rounded-3xl border border-dashed border-gray-200 flex flex-col items-center">
-                <div class="w-20 h-20 bg-white rounded-full shadow-sm flex items-center justify-center mb-4 text-gray-300">
+                <div class="w-20 h-20 bg-white rounded-full shadow-sm flex items-center justify-center mb-4 text-purple-200">
                     <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
                 </div>
                 <p class="text-gray-900 font-black text-lg">Menü henüz eklenmedi</p>
                 <p class="text-gray-400 text-sm mt-1 max-w-xs mx-auto">İşletme tarafından tanımlanmış bir menü veya hizmet bulunmuyor.</p>
             </div>
         @else
-            <!-- Search Bar & Controls -->
-            <div class="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm flex flex-col md:flex-row gap-4 items-center">
-                <div class="relative flex-1 w-full">
-                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                    </div>
-                    <input type="text" 
-                           x-model="menuSearch"
-                           placeholder="Menüde ara... (ör: köfte, içecek, tatlı)"
-                           class="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition text-gray-900 placeholder:text-gray-400">
-                    <div x-show="menuSearch.length > 0" class="absolute inset-y-0 right-0 pr-4 flex items-center">
-                        <button @click="menuSearch = ''" class="text-gray-400 hover:text-gray-600 transition">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- View Toggle Buttons -->
-                <div class="flex items-center bg-gray-100/80 p-1 rounded-xl">
-                    <button @click="viewMode = 'list'" 
-                            :class="viewMode === 'list' ? 'bg-white text-primary shadow-sm' : 'text-gray-400 hover:text-gray-600'"
-                            class="p-2.5 rounded-lg transition-all duration-200">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+            
+            {{-- Sticky Category Navigation --}}
+            <div class="sticky top-[76px] z-30 bg-white/95 backdrop-blur-md border-b border-purple-100 shadow-sm py-3 px-4 -mx-4 mb-6">
+                <div class="flex gap-3 overflow-x-auto hide-scrollbar pb-1 snap-x">
+                    <button 
+                        @click="activeCategory = null; window.scrollTo({top: 0, behavior: 'smooth'})"
+                        class="px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all duration-300 border snap-start outline-none focus:ring-2 focus:ring-primary/50"
+                        :class="activeCategory === null 
+                            ? 'bg-primary text-white border-primary shadow-lg shadow-primary/25 scale-105' 
+                            : 'bg-white text-gray-500 border-gray-100 hover:border-purple-200 hover:bg-purple-50'">
+                        Tümü
                     </button>
-                    <button @click="viewMode = 'grid'" 
-                            :class="viewMode === 'grid' ? 'bg-white text-primary shadow-sm' : 'text-gray-400 hover:text-gray-600'"
-                            class="p-2.5 rounded-lg transition-all duration-200">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
+                    @foreach($groupedMenus as $category => $items)
+                    <button 
+                        id="nav-{{ Str::slug($category) }}"
+                        @click="activeCategory = '{{ Str::slug($category) }}'; document.getElementById('cat-{{ Str::slug($category) }}').scrollIntoView({behavior: 'smooth', block: 'center'})"
+                        class="px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all duration-300 border snap-start outline-none focus:ring-2 focus:ring-primary/50"
+                        :class="activeCategory === '{{ Str::slug($category) }}' 
+                            ? 'bg-primary text-white border-primary shadow-lg shadow-primary/25 scale-105' 
+                            : 'bg-white text-gray-500 border-gray-100 hover:border-purple-200 hover:bg-purple-50'">
+                        {{ $category }}
                     </button>
+                    @endforeach
                 </div>
             </div>
 
-            @php
-                $groupedMenus = $business->menus->groupBy('category');
-            @endphp
-
-            @foreach($groupedMenus as $category => $menus)
-                @php
-                    $menuItems = $menus->map(function($menu) {
-                        return [
-                            'name' => mb_strtolower($menu->name, 'UTF-8'),
-                            'description' => mb_strtolower($menu->description ?? '', 'UTF-8')
-                        ];
-                    })->toJson();
-                @endphp
-                <div x-data="{
-                    menuItems: {{ $menuItems }},
-                    get hasVisibleItems() {
-                        if (menuSearch === '') return true;
-                        const search = menuSearch.toLocaleLowerCase('tr');
-                        return this.menuItems.some(item => 
-                            (item.name + ' ' + item.description).includes(search)
-                        );
-                    }
-                }"
-                x-show="hasVisibleItems"
-                class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-                    <button @click="openCategory = openCategory === '{{ $loop->index }}' ? null : '{{ $loop->index }}'" 
-                            class="w-full flex items-center justify-between p-6 bg-gradient-to-r from-gray-50 to-white hover:from-primary/5 hover:to-white transition text-left group">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition">
-                                <svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                            </div>
-                            <h3 class="text-xl font-black text-gray-900">{{ $category }}</h3>
-                            <span class="text-xs font-bold text-gray-400 bg-gray-100 px-3 py-1 rounded-full">{{ $menus->count() }} ürün</span>
-                        </div>
-                        <svg class="w-5 h-5 text-gray-400 transition-transform duration-300" 
-                             :class="(menuSearch !== '' || openCategory === '{{ $loop->index }}') ? 'rotate-180' : ''" 
-                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
+            {{-- Menu Grid --}}
+            <div class="space-y-12">
+                @foreach($groupedMenus as $category => $items)
+                <div id="cat-{{ Str::slug($category) }}" class="category-section scroll-mt-40">
                     
-                    <div x-show="menuSearch !== '' || openCategory === '{{ $loop->index }}'" 
-                         x-collapse
-                         class="p-6 pt-0 bg-white">
-                        <div class="grid gap-4" :class="viewMode === 'grid' ? 'grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'">
-                            @foreach($menus as $menu)
-                            <div x-show="menuSearch === '' || ('{{ mb_strtolower($menu->name, 'UTF-8') }} ' + '{{ mb_strtolower($menu->description ?? '', 'UTF-8') }}').includes(menuSearch.toLocaleLowerCase('tr'))"
-                                 class="bg-gray-50 rounded-xl border border-gray-100 flex hover:shadow-md hover:bg-white transition group overflow-hidden"
-                                 :class="viewMode === 'grid' ? 'flex-col' : 'items-start space-x-4 p-4'">
-                                
-                                <div :class="viewMode === 'grid' ? 'w-full aspect-square relative overflow-hidden' : 'shrink-0'">
-                                    @if($menu->image)
-                                        <img src="{{ Storage::url($menu->image) }}" alt="{{ $menu->name }}" 
-                                             class="object-cover transition duration-500 group-hover:scale-110"
-                                             :class="viewMode === 'grid' ? 'w-full h-full' : 'w-24 h-24 rounded-lg'">
-                                    @else
-                                        <div class="bg-gray-200 flex items-center justify-center text-gray-400"
-                                             :class="viewMode === 'grid' ? 'w-full h-full' : 'w-24 h-24 rounded-lg'">
-                                             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                        </div>
-                                    @endif
-                                </div>
-                                
-                                <div class="flex-1" :class="viewMode === 'grid' ? 'p-4' : ''">
-                                    <div class="flex justify-between items-start mb-2" :class="viewMode === 'grid' ? 'flex-col-reverse' : ''">
-                                        <h4 class="font-bold text-gray-900 leading-tight group-hover:text-primary transition"
-                                            :class="viewMode === 'grid' ? 'text-lg mt-1' : 'text-base'">{{ $menu->name }}</h4>
-                                        <span class="font-black text-primary whitespace-nowrap"
-                                              :class="viewMode === 'grid' ? 'text-xl mb-1' : 'text-lg ml-2'">{{ number_format($menu->price, 2) }} ₺</span>
+                    {{-- Category Header --}}
+                    <div class="flex items-center gap-4 mb-6">
+                        <h2 class="text-2xl font-black text-slate-800 tracking-tight">{{ $category }}</h2>
+                        <div class="h-px bg-gradient-to-r from-purple-200 to-transparent flex-1"></div>
+                    </div>
+
+                    {{-- Items Grid --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        @foreach($items as $item)
+                        <div @click="openItem({{ json_encode($item) }})" 
+                             class="group bg-white rounded-2xl p-3 border border-gray-100 shadow-sm hover:shadow-soft hover:border-purple-100 transition-all duration-300 cursor-pointer active:scale-[0.98] flex gap-4 h-full relative overflow-hidden">
+                            
+                            {{-- Hover Glow --}}
+                            <div class="absolute inset-0 bg-gradient-to-r from-purple-500/0 via-purple-500/0 to-purple-500/0 group-hover:from-purple-50/50 group-hover:to-transparent transition-all duration-500"></div>
+
+                            {{-- Image --}}
+                            <div class="w-28 h-28 flex-shrink-0 relative rounded-xl overflow-hidden bg-gray-50">
+                                @if($item->image)
+                                    <img src="{{ Storage::url($item->image) }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" loading="lazy">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center text-purple-200">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
                                     </div>
-                                    <p class="text-gray-500 text-xs leading-relaxed line-clamp-2">{{ $menu->description }}</p>
-                                    
-                                    <!-- Attributes & Add Button -->
-                                    <div class="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between" 
-                                         :class="viewMode === 'grid' ? '' : 'mt-2 pt-2 border-t-0'">
-                                        <button @click="$dispatch('open-menu-modal', { 
-                                            name: '{{ addslashes($menu->name) }}', 
-                                            description: '{{ addslashes($menu->description) }}', 
-                                            price: '{{ number_format($menu->price, 2) }}', 
-                                            image: '{{ $menu->image ? Storage::url($menu->image) : '' }}' 
-                                        })"
-                                        class="py-2 bg-gray-100 hover:bg-primary hover:text-white text-gray-700 font-bold rounded-lg text-xs transition flex items-center justify-center"
-                                        :class="viewMode === 'grid' ? 'w-full' : 'px-4'">
-                                            İncele
-                                        </button>
+                                @endif
+                                <div class="absolute inset-0 ring-1 ring-black/5 rounded-xl"></div>
+                            </div>
+
+                            {{-- Content --}}
+                            <div class="flex-1 flex flex-col justify-between py-1 relative">
+                                <div>
+                                    <h3 class="font-bold text-gray-900 leading-tight mb-1 group-hover:text-primary transition-colors">{{ $item->name }}</h3>
+                                    <p class="text-xs text-gray-500 line-clamp-2 leading-relaxed">{{ $item->description }}</p>
+                                </div>
+                                <div class="flex items-center justify-between mt-3">
+                                    <span class="font-black text-lg text-primary tracking-tight">{{ number_format($item->price, 2) }}₺</span>
+                                    <div class="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300 shadow-sm">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                        </svg>
                                     </div>
                                 </div>
                             </div>
-                            @endforeach
                         </div>
+                        @endforeach
                     </div>
                 </div>
-            @endforeach
+                @endforeach
+            </div>
 
-            <!-- Menu Item Detail Modal -->
-            <div x-data="{ open: false, item: {} }" 
-                 @open-menu-modal.window="open = true; item = $event.detail"
-                 x-show="open" 
+            {{-- Product Modal (Alpine.js) --}}
+            <div x-show="showModal" 
                  style="display: none;"
-                 class="fixed inset-0 z-50 flex items-center justify-center p-4">
+                 class="fixed inset-0 z-[60] flex items-end sm:items-center justify-center pointer-events-none">
                 
-                <!-- Backdrop -->
-                <div x-show="open" 
+                {{-- Backdrop --}}
+                <div x-show="showModal"
                      x-transition:enter="transition ease-out duration-300"
                      x-transition:enter-start="opacity-0"
                      x-transition:enter-end="opacity-100"
                      x-transition:leave="transition ease-in duration-200"
                      x-transition:leave-start="opacity-100"
                      x-transition:leave-end="opacity-0"
-                     @click="open = false"
-                     class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+                     @click="closeModal"
+                     class="absolute inset-0 bg-black/60 backdrop-blur-sm pointer-events-auto"></div>
 
-                <!-- Modal Content -->
-                <div x-show="open" 
+                {{-- Modal Card --}}
+                <div x-show="showModal"
                      x-transition:enter="transition ease-out duration-300"
-                     x-transition:enter-start="opacity-0 scale-90 translate-y-4"
-                     x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                     x-transition:enter-start="translate-y-full sm:scale-95 sm:opacity-0"
+                     x-transition:enter-end="translate-y-0 sm:scale-100 sm:opacity-100"
                      x-transition:leave="transition ease-in duration-200"
-                     x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-                     x-transition:leave-end="opacity-0 scale-90 translate-y-4"
-                     class="relative bg-white rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh]">
+                     x-transition:leave-start="translate-y-0 sm:scale-100 sm:opacity-100"
+                     x-transition:leave-end="translate-y-full sm:scale-95 sm:opacity-0"
+                     class="bg-white w-full max-w-lg rounded-t-[2rem] sm:rounded-[2rem] shadow-2xl overflow-hidden pointer-events-auto max-h-[90vh] flex flex-col relative m-0 sm:m-4">
                     
-                    <!-- Close Button -->
-                    <button @click="open = false" class="absolute top-4 right-4 z-10 w-10 h-10 bg-black/10 hover:bg-black/20 text-white rounded-full flex items-center justify-center transition backdrop-blur-md">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    {{-- Close Button --}}
+                    <button @click="closeModal" class="absolute top-4 right-4 z-10 w-9 h-9 bg-white/80 backdrop-blur rounded-full flex items-center justify-center shadow-sm text-gray-500 hover:text-gray-900 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
                     </button>
 
-                    <!-- Image -->
-                    <div class="relative h-64 shrink-0 bg-gray-100">
-                        <template x-if="item.image">
-                            <img :src="item.image" :alt="item.name" class="w-full h-full object-cover">
+                    {{-- Modal Image --}}
+                    <div class="h-64 sm:h-72 bg-gray-100 relative shrink-0">
+                        <template x-if="selectedItem?.image">
+                            <img :src="'/storage/' + selectedItem.image" class="w-full h-full object-cover">
                         </template>
-                        <template x-if="!item.image">
+                        <template x-if="!selectedItem?.image">
                             <div class="w-full h-full flex items-center justify-center text-gray-300">
-                                <svg class="w-20 h-20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
                             </div>
                         </template>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                     </div>
 
-                    <!-- Details -->
-                    <div class="p-8 overflow-y-auto">
-                        <div class="flex justify-between items-start mb-4">
-                            <h3 class="text-2xl font-black text-gray-900" x-text="item.name"></h3>
-                            <span class="text-2xl font-black text-primary whitespace-nowrap" x-text="item.price + ' ₺'"></span>
-                        </div>
-                        <p class="text-gray-600 leading-relaxed text-lg" x-text="item.description || 'Açıklama bulunmuyor.'"></p>
+                    {{-- Modal Content --}}
+                    <div class="p-6 overflow-y-auto">
+                        <h3 x-text="selectedItem?.name" class="text-2xl font-black text-gray-900 leading-tight mb-2"></h3>
+                        <span x-text="selectedItem ? new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(selectedItem.price) : ''" class="text-3xl font-bold text-primary block mb-4"></span>
+                        <p x-text="selectedItem?.description" class="text-gray-600 leading-relaxed text-base"></p>
                     </div>
-
-                    <!-- Footer Action -->
-                    <div class="p-6 border-t border-gray-100 bg-gray-50">
-                        <button @click="open = false" class="w-full py-4 bg-primary text-white font-bold rounded-xl hover:bg-primary-dark transition shadow-lg shadow-primary/30">
+                </div>
+            </div>
+        @endif
+    </div>
                             Tamam
                         </button>
                     </div>
@@ -1309,6 +1287,24 @@
             minReservationAmount: {{ $business->min_reservation_amount ?? 0 }},
 
             init() {
+                // Default to Tomorrow
+                const tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                
+                this.month = tomorrow.getMonth();
+                this.year = tomorrow.getFullYear();
+                
+                // Manually select tomorrow
+                const y = tomorrow.getFullYear();
+                const m = String(tomorrow.getMonth() + 1).padStart(2, '0');
+                const d = String(tomorrow.getDate()).padStart(2, '0');
+                
+                this.selectedDate = `${y}-${m}-${d}`;
+                this.selectedDateFormatted = `${tomorrow.getDate()} ${this.monthNames[this.month]} ${this.year}`;
+                
+                this.getDays();
+                this.fetchSlots(); // Force fetch explicitly
+
                 this.getDays();
                 this.calculateTotal();
                 

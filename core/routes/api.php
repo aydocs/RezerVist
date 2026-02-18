@@ -90,8 +90,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/businesses/{id}/reject', [AdminController::class, 'rejectBusiness']);
     });
 
-    // QR Table Session (Customer Mobile)
-    Route::prefix('qr')->group(function () {
+    // QR Table Session (Customer Mobile) - Requires Mobile+
+    Route::prefix('qr')->middleware('subscribed:mobile_access')->group(function () {
         Route::post('/session', [\App\Http\Controllers\Api\QrTableController::class, 'startSession']);
         Route::get('/session/{token}', [\App\Http\Controllers\Api\QrTableController::class, 'getSession']);
         Route::get('/session/{token}/menu', [\App\Http\Controllers\Api\QrTableController::class, 'getMenu']);
@@ -113,58 +113,60 @@ Route::prefix('pos')->group(function () {
     Route::get('/version', [\App\Http\Controllers\Api\PosApiController::class, 'checkVersion']);
 });
 
-Route::prefix('pos')->middleware('auth:sanctum')->group(function () {
+Route::prefix('pos')->middleware(['auth:sanctum', 'subscribed:pos_access'])->group(function () {
     Route::get('/init', [\App\Http\Controllers\Api\PosApiController::class, 'init']);
     Route::post('/deactivate', [\App\Http\Controllers\Api\PosApiController::class, 'deactivate']);
-    Route::middleware('subscribed:pos_access')->group(function () {
-        Route::post('/update-occupancy', [\App\Http\Controllers\PosIntegrationController::class, 'updateOccupancy']);
-        Route::get('/occupancy', [\App\Http\Controllers\PosIntegrationController::class, 'getOccupancy']);
+    
+    Route::post('/update-occupancy', [\App\Http\Controllers\PosIntegrationController::class, 'updateOccupancy']);
+    Route::get('/occupancy', [\App\Http\Controllers\PosIntegrationController::class, 'getOccupancy']);
 
-        // Internal Desktop POS Endpoints
-        Route::get('/tables', [\App\Http\Controllers\Api\PosApiController::class, 'getTables']);
-        Route::get('/menu', [\App\Http\Controllers\Api\PosApiController::class, 'getMenu']);
-        Route::get('/orders', [\App\Http\Controllers\Api\PosApiController::class, 'getOrders']);
-        Route::get('/order/{resourceId}', [\App\Http\Controllers\Api\PosApiController::class, 'getOrder']);
-        Route::post('/order/submit', [\App\Http\Controllers\Api\PosApiController::class, 'submitOrder']);
-        Route::post('/order/{orderId}/pay', [\App\Http\Controllers\Api\PosApiController::class, 'processPayment']);
-        Route::patch('/order/{orderId}/items/{itemId}', [\App\Http\Controllers\Api\PosApiController::class, 'updateOrderItem']);
-        Route::delete('/order/{orderId}/items/{itemId}', [\App\Http\Controllers\Api\PosApiController::class, 'deleteOrderItem']);
-        Route::post('/validate-pin', [\App\Http\Controllers\Api\PosApiController::class, 'validatePin']);
-        Route::get('/summary', [\App\Http\Controllers\Api\PosApiController::class, 'getDailySummary']);
-        Route::get('/staff', [\App\Http\Controllers\Api\PosApiController::class, 'getStaff']);
-        Route::post('/staff/{id}/update-pin', [\App\Http\Controllers\Api\PosApiController::class, 'updateStaffPin']);
-        Route::get('/staff', [\App\Http\Controllers\Api\PosApiController::class, 'getStaff']);
-        Route::post('/staff', [\App\Http\Controllers\Api\PosApiController::class, 'storeStaff']);
-        Route::delete('/staff/{id}', [\App\Http\Controllers\Api\PosApiController::class, 'deleteStaff']);
-        Route::post('/staff/{id}/update-permissions', [\App\Http\Controllers\Api\PosApiController::class, 'updateStaffPermissions']);
-        Route::post('/staff/{id}/update-pin', [\App\Http\Controllers\Api\PosApiController::class, 'updateStaffPin']);
-        Route::post('/update-master-pin', [\App\Http\Controllers\Api\PosApiController::class, 'updateMasterPin']);
-        Route::post('/verify-master-pin', [\App\Http\Controllers\Api\PosApiController::class, 'verifyMasterPin']);
+    // Internal Desktop POS Endpoints
+    Route::get('/tables', [\App\Http\Controllers\Api\PosApiController::class, 'getTables']);
+    Route::get('/menu', [\App\Http\Controllers\Api\PosApiController::class, 'getMenu']);
+    Route::get('/orders', [\App\Http\Controllers\Api\PosApiController::class, 'getOrders']);
+    Route::get('/order/{resourceId}', [\App\Http\Controllers\Api\PosApiController::class, 'getOrder']);
+    Route::post('/order/submit', [\App\Http\Controllers\Api\PosApiController::class, 'submitOrder']);
+    Route::post('/order/{orderId}/pay', [\App\Http\Controllers\Api\PosApiController::class, 'processPayment']);
+    Route::patch('/order/{orderId}/items/{itemId}', [\App\Http\Controllers\Api\PosApiController::class, 'updateOrderItem']);
+    Route::delete('/order/{orderId}/items/{itemId}', [\App\Http\Controllers\Api\PosApiController::class, 'deleteOrderItem']);
+    Route::post('/validate-pin', [\App\Http\Controllers\Api\PosApiController::class, 'validatePin']);
+    Route::get('/summary', [\App\Http\Controllers\Api\PosApiController::class, 'getDailySummary']);
+    Route::get('/staff', [\App\Http\Controllers\Api\PosApiController::class, 'getStaff']);
+    Route::post('/staff', [\App\Http\Controllers\Api\PosApiController::class, 'storeStaff']);
+    Route::delete('/staff/{id}', [\App\Http\Controllers\Api\PosApiController::class, 'deleteStaff']);
+    Route::post('/staff/{id}/update-permissions', [\App\Http\Controllers\Api\PosApiController::class, 'updateStaffPermissions']);
+    Route::post('/staff/{id}/update-pin', [\App\Http\Controllers\Api\PosApiController::class, 'updateStaffPin']);
+    Route::post('/update-master-pin', [\App\Http\Controllers\Api\PosApiController::class, 'updateMasterPin']);
+    Route::post('/verify-master-pin', [\App\Http\Controllers\Api\PosApiController::class, 'verifyMasterPin']);
 
-        // Table Operations
-        Route::post('/tables/transfer', [\App\Http\Controllers\Api\PosApiController::class, 'transferTable']);
+    // Table Operations
+    Route::post('/tables/transfer', [\App\Http\Controllers\Api\PosApiController::class, 'transferTable']);
 
-        // Resource Management
-        Route::get('/tables', [\App\Http\Controllers\Api\PosApiController::class, 'getTables']);
-        Route::post('/tables', [\App\Http\Controllers\Api\PosApiController::class, 'storeResource']);
-        Route::post('/tables/{id}', [\App\Http\Controllers\Api\PosApiController::class, 'updateResource']);
-        Route::delete('/tables/{id}', [\App\Http\Controllers\Api\PosApiController::class, 'deleteResource']);
+    // Resource Management
+    Route::get('/tables', [\App\Http\Controllers\Api\PosApiController::class, 'getTables']);
+    Route::post('/tables', [\App\Http\Controllers\Api\PosApiController::class, 'storeResource']);
+    Route::post('/tables/{id}', [\App\Http\Controllers\Api\PosApiController::class, 'updateResource']);
+    Route::delete('/tables/{id}', [\App\Http\Controllers\Api\PosApiController::class, 'deleteResource']);
 
-        // KDS (Kitchen Display System) Routes
-        Route::get('/kds/orders', [\App\Http\Controllers\Api\PosApiController::class, 'getKitchenOrders']);
-        Route::post('/kds/items/{id}/status', [\App\Http\Controllers\Api\PosApiController::class, 'updateItemStatus']);
+    // Menu Management
+    Route::post('/menu/items', [\App\Http\Controllers\Api\PosApiController::class, 'storeMenuItem']);
+    Route::post('/menu/items/{id}', [\App\Http\Controllers\Api\PosApiController::class, 'updateMenuItem']);
+    Route::delete('/menu/items/{id}', [\App\Http\Controllers\Api\PosApiController::class, 'deleteMenuItem']);
 
-        // Happy Hour Management
-        Route::get('/happy-hours', [\App\Http\Controllers\Api\PosApiController::class, 'getHappyHours']);
-        Route::get('/happy-hours/active', [\App\Http\Controllers\Api\PosApiController::class, 'getActiveHappyHours']);
-        Route::post('/happy-hours', [\App\Http\Controllers\Api\PosApiController::class, 'storeHappyHour']);
-        Route::put('/happy-hours/{id}', [\App\Http\Controllers\Api\PosApiController::class, 'updateHappyHour']);
-        Route::delete('/happy-hours/{id}', [\App\Http\Controllers\Api\PosApiController::class, 'deleteHappyHour']);
+    // KDS (Kitchen Display System) Routes
+    Route::get('/kds/orders', [\App\Http\Controllers\Api\PosApiController::class, 'getKitchenOrders']);
+    Route::post('/kds/items/{id}/status', [\App\Http\Controllers\Api\PosApiController::class, 'updateItemStatus']);
 
-        // Advanced Analytics
-        Route::get('/analytics/top-products', [\App\Http\Controllers\Api\PosApiController::class, 'getTopProducts']);
-        Route::get('/analytics/hourly-sales', [\App\Http\Controllers\Api\PosApiController::class, 'getHourlySales']);
-        Route::get('/analytics/weekly-trend', [\App\Http\Controllers\Api\PosApiController::class, 'getWeeklyTrend']);
-        Route::get('/analytics/payment-breakdown', [\App\Http\Controllers\Api\PosApiController::class, 'getPaymentBreakdown']);
-    });
+    // Happy Hour Management
+    Route::get('/happy-hours', [\App\Http\Controllers\Api\PosApiController::class, 'getHappyHours']);
+    Route::get('/happy-hours/active', [\App\Http\Controllers\Api\PosApiController::class, 'getActiveHappyHours']);
+    Route::post('/happy-hours', [\App\Http\Controllers\Api\PosApiController::class, 'storeHappyHour']);
+    Route::put('/happy-hours/{id}', [\App\Http\Controllers\Api\PosApiController::class, 'updateHappyHour']);
+    Route::delete('/happy-hours/{id}', [\App\Http\Controllers\Api\PosApiController::class, 'deleteHappyHour']);
+
+    // Advanced Analytics
+    Route::get('/analytics/top-products', [\App\Http\Controllers\Api\PosApiController::class, 'getTopProducts']);
+    Route::get('/analytics/hourly-sales', [\App\Http\Controllers\Api\PosApiController::class, 'getHourlySales']);
+    Route::get('/analytics/weekly-trend', [\App\Http\Controllers\Api\PosApiController::class, 'getWeeklyTrend']);
+    Route::get('/analytics/payment-breakdown', [\App\Http\Controllers\Api\PosApiController::class, 'getPaymentBreakdown']);
 });

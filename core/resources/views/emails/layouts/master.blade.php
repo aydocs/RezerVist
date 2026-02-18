@@ -4,213 +4,163 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', config('app.name'))</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Base Styles */
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f8fafc;
-            color: #1e293b;
+            font-family: 'Outfit', 'Inter', -apple-system, sans-serif;
+            background-color: #F8FAFC;
+            color: #1E293B;
             margin: 0;
             padding: 0;
             -webkit-font-smoothing: antialiased;
         }
-
         .wrapper {
             width: 100%;
             table-layout: fixed;
-            background-color: #f8fafc;
+            background-color: #F8FAFC;
             padding-bottom: 40px;
         }
-
-        .main {
-            background-color: #ffffff;
-            margin: 0 auto;
-            width: 100%;
+        .container {
             max-width: 600px;
-            border-spacing: 0;
-            font-family: inherit;
-            color: #1e293b;
+            margin: 40px auto;
+            background-color: #ffffff;
             border-radius: 24px;
             overflow: hidden;
-            margin-top: 40px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
         }
-
-        /* Header */
         .header {
-            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
-            padding: 48px 32px;
+            padding: 40px 40px 20px;
             text-align: center;
         }
-
-        .header.auth-header {
-            background: #ffffff;
-            padding: 40px 32px 20px 32px;
-        }
-
-        .avatar-container {
-            margin-bottom: 24px;
-        }
-
-        .avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #f1f5f9;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
         .logo {
             font-size: 24px;
-            font-weight: 900;
-            color: #ffffff;
-            text-decoration: none;
-            letter-spacing: -1px;
-        }
-
-        /* Content */
-        .content {
-            padding: 48px 32px;
-        }
-
-        h1 {
-            font-size: 24px;
             font-weight: 800;
-            color: #0f172a;
-            margin: 0 0 16px 0;
-            letter-spacing: -0.5px;
-            line-height: 1.2;
+            color: #6200EE;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            text-decoration: none;
         }
-
+        .content {
+            padding: 0 40px 40px;
+            text-align: center;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1E293B;
+            margin: 0 0 16px;
+            letter-spacing: -0.5px;
+        }
         p {
             font-size: 16px;
             line-height: 1.6;
-            margin: 0 0 24px 0;
-            color: #475569;
+            color: #64748B;
+            margin: 0 0 24px;
         }
-
-        /* Card Component */
+        /* Components */
         .card {
-            background-color: #f1f5f9;
+            background-color: #F8FAFC;
+            border: 2px solid #F1F5F9;
             border-radius: 20px;
             padding: 24px;
             margin-bottom: 32px;
+            text-align: left;
         }
-
-        .card-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .card-row:last-child {
-            border-bottom: none;
-        }
-
-        .label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .value {
-            font-size: 15px;
+        .card-title {
+            font-size: 12px;
             font-weight: 700;
-            color: #1e293b;
-            text-align: right;
+            color: #94A3B8;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
         }
-
-        /* Button */
-        .button-container {
-            text-align: center;
-            padding: 24px 0;
-        }
-
         .button {
             display: inline-block;
-            background-color: #7c3aed;
-            color: #ffffff !important;
-            padding: 16px 40px;
-            border-radius: 16px;
+            background-color: #6200EE;
+            color: #FFFFFF !important;
+            padding: 16px 32px;
+            border-radius: 14px;
             font-weight: 700;
             text-decoration: none;
             font-size: 16px;
-            box-shadow: 0 10px 15px -3px rgba(124, 58, 237, 0.3);
-            transition: all 0.2s;
+            box-shadow: 0 10px 15px -3px rgba(98, 0, 238, 0.3);
+            margin: 20px 0;
         }
-
-        /* Footer */
+        .divider {
+            height: 1px;
+            background-color: #F1F5F9;
+            margin: 32px 0;
+        }
         .footer {
             text-align: center;
-            padding-top: 32px;
-            color: #94a3b8;
+            padding: 0 40px 40px;
+        }
+        .footer-text {
             font-size: 12px;
+            color: #94A3B8;
+            line-height: 1.5;
         }
-
-        .footer a {
-            color: #7c3aed;
-            text-decoration: none;
-            font-weight: 600;
+        .digit {
+            display: inline-block;
+            width: 45px;
+            height: 55px;
+            line-height: 55px;
+            background-color: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            font-size: 28px;
+            font-weight: 700;
+            color: #6200EE;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin: 0 4px;
         }
-
         .social-links {
-            margin-top: 16px;
+            margin-bottom: 20px;
         }
-
-        .social-links a {
+        .social-link {
             display: inline-block;
             margin: 0 8px;
-            opacity: 0.5;
+            color: #CBD5E1;
+            text-decoration: none;
         }
-
-        /* Mobile Adjustments */
         @media screen and (max-width: 600px) {
-            .main {
-                margin-top: 0;
-                border-radius: 0;
-            }
-            .content {
-                padding: 32px 20px;
-            }
-            .card {
-                padding: 16px;
-            }
+            .container { margin: 20px auto; border-radius: 0; }
+            .content { padding: 0 24px 32px; }
         }
     </style>
 </head>
 <body>
     <div class="wrapper">
-        <table class="main" cellpadding="0" cellspacing="0">
-            <tr>
-                <td>
-                    @hasSection('avatar')
-                        <div class="header auth-header">
-                            <div class="avatar-container">
-                                <img src="@yield('avatar')" alt="Profile" class="avatar">
-                            </div>
-                        </div>
-                    @else
-                        <div class="header">
-                            <a href="{{ config('app.url') }}" class="logo">REZERVIST</a>
-                        </div>
-                    @endif
+        <div class="container">
+            <div class="header">
+                <a href="{{ config('app.url') }}" class="logo">REZERVIST</a>
+            </div>
 
-                    <div class="content">
-                        @yield('content')
-                    </div>
+            <div class="content">
+                @yield('content')
+            </div>
 
-                    <div class="footer">
-                        <p>&copy; {{ date('Y') }} {{ config('app.name') }}. Tüm hakları saklıdır.</p>
-                        <p>Sorularınız mı var? <a href="mailto:destek@rezervist.com">destek@rezervist.com</a></p>
-                        <p style="margin-top: 8px;">rezervist.com • Modern Rezervasyon Platformu</p>
-                    </div>
-                </td>
-            </tr>
-        </table>
+            <div class="divider"></div>
+
+            <div class="footer">
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #64748B;"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                    </a>
+                    <a href="#" class="social-link">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #64748B;"><path d="M4 4l11.733 16h4.267l-11.733 -16z"/><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"/></svg>
+                    </a>
+                    <a href="#" class="social-link">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #64748B;"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+                    </a>
+                </div>
+                <div class="footer-text">
+                    &copy; {{ date('Y') }} Rezervist.com. Tüm hakları saklıdır.<br>
+                    Premium Rezervasyon Deneyimi
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

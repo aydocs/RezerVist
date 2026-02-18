@@ -319,6 +319,7 @@
                         </div>
                     </div>
 
+
                     <!-- POS Readiness & Setup Center -->
                     <div class="bg-gray-900 rounded-[2rem] shadow-2xl shadow-indigo-500/10 overflow-hidden mb-8 border border-white/5 relative z-10" x-data="{ seeding: false }">
                         <div class="p-8 border-b border-white/5 bg-gradient-to-r from-gray-900 via-indigo-950 to-gray-900 flex items-center justify-between">

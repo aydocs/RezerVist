@@ -133,7 +133,7 @@ class PosApiController extends Controller
         }
 
         // Fetch resources
-        $resources = $business->resources()->get()->map(function ($resource) {
+        $resources = $business->resources()->get()->map(function ($resource) use ($business) {
             // Determine status - check reservations first
             $status = 'empty';
             $activeRes = $resource->reservations()
@@ -146,16 +146,15 @@ class PosApiController extends Controller
                 $status = $activeRes->status === 'checked_in' ? 'occupied' : 'reserved';
             }
 
-            // Also check for active orders - explicitly pick the LATEST active one
-            $activeOrder = $resource->orders()
+            // Also check for active orders - explicitly pick the LATEST active one using direct query
+            $activeOrder = \App\Models\Order::where('business_id', $business->id)
+                ->where('resource_id', $resource->id)
                 ->where('status', 'active')
-                ->latest()
+                ->latest('id')
                 ->first();
 
             if ($activeOrder) {
                 $status = 'occupied';
-                // Force refresh totals from items
-                $this->refreshOrderTotals($activeOrder);
             }
 
             return [
@@ -175,6 +174,8 @@ class PosApiController extends Controller
                     'total_amount' => (float) $activeOrder->total_amount,
                     'paid_amount' => (float) ($activeOrder->paid_amount ?? 0),
                     'remaining_amount' => (float) $activeOrder->total_amount - (float) ($activeOrder->paid_amount ?? 0),
+                    'payment_status' => $activeOrder->payment_status ?? 'unpaid',
+                    'payment_method' => $activeOrder->payment_method,
                 ] : null,
             ];
         });
@@ -253,20 +254,20 @@ class PosApiController extends Controller
         \Log::info("POS_GET_ORDER: Business {$business->id}, looking for active order on resource {$resourceId}");
 
         $order = \App\Models\Order::where('business_id', $business->id)
-            ->where(function ($query) use ($resourceId) {
-                if ($resourceId === 'takeaway') {
-                    $query->whereNull('resource_id');
-                } else {
-                    $query->where('resource_id', $resourceId);
-                }
-            })
+            ->where('resource_id', $resourceId === 'takeaway' ? null : $resourceId)
             ->where('status', 'active')
             ->with(['items' => function ($query) {
                 $query->whereNotIn('status', ['completed', 'cancelled']);
             }])
+            ->latest('id')
             ->first();
 
-        \Log::info('POS_GET_ORDER: Order found: '.($order ? $order->id : 'null'));
+        \Log::info('POS_GET_ORDER: Order query result', [
+            'order_id' => $order ? $order->id : 'null',
+            'items_count' => $order ? $order->items->count() : 0,
+            'items_statuses' => $order ? $order->items->pluck('status') : [],
+            'resource_id' => $resourceId
+        ]);
 
         return response()->json([
             'success' => true,
@@ -287,7 +288,7 @@ class PosApiController extends Controller
         $order = \App\Models\Order::where('business_id', $business->id)
             ->where('resource_id', $resourceId === 'takeaway' ? null : $resourceId)
             ->where('status', 'active')
-            ->latest()
+            ->latest('id')
             ->first();
 
         if (! $order) {
@@ -324,9 +325,7 @@ class PosApiController extends Controller
             if (isset($itemData['menu_id'])) {
                 $menuItem = \App\Models\Menu::find($itemData['menu_id']);
                 if ($menuItem && $menuItem->stock_enabled) {
-                    $quantityToDecrement = ($menuItem->unit_type === 'weight')
-                        ? ceil($quantity) // For weight items, round up quantity
-                        : $quantity;
+                    $quantityToDecrement = $quantity;
 
                     $menuItem->decrement('stock_quantity', $quantityToDecrement);
 

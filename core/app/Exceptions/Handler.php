@@ -102,7 +102,7 @@ class Handler extends ExceptionHandler
     protected function notifyCriticalError(Throwable $e): void
     {
         try {
-            $adminEmail = config('mail.admin_email', 'admin@rezerveet.com');
+            $adminEmail = config('mail.admin_email', 'admin@RezerVist.com');
 
             Mail::to($adminEmail)->send(new CriticalErrorNotification([
                 'message' => $e->getMessage(),
