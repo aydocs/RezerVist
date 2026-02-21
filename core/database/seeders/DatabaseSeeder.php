@@ -76,31 +76,13 @@ class DatabaseSeeder extends Seeder
                 'icon' => 'restaurant',
             ]
         );
-
+ 
         $cafe = Category::updateOrCreate(
             ['slug' => 'kafe'],
             [
                 'name' => 'Kafe',
                 'type' => 'place',
                 'icon' => 'cafe',
-            ]
-        );
-
-        $salon = Category::updateOrCreate(
-            ['slug' => 'guzellik-salonu'],
-            [
-                'name' => 'Güzellik Salonu',
-                'type' => 'service',
-                'icon' => 'salon',
-            ]
-        );
-
-        $hotel = Category::updateOrCreate(
-            ['slug' => 'otel'],
-            [
-                'name' => 'Otel',
-                'type' => 'place',
-                'icon' => 'hotel',
             ]
         );
 
@@ -160,30 +142,6 @@ class DatabaseSeeder extends Seeder
             'is_active' => true,
         ]);
 
-        // ========== BUSINESSES - BEAUTY ==========
-        $business6 = Business::create([
-            'owner_id' => $owner2->id,
-            'category_id' => $salon->id,
-            'name' => 'Güzellik Uzmanı Studio',
-            'description' => 'Profesyonel cilt bakımı, makyaj ve saç tasarımı. Uzman ekibimizle özel günleriniz için hazırlanın.',
-            'address' => 'Nişantaşı, Teşvikiye Cad. No:67, İstanbul',
-            'phone' => '02122223344',
-            'rating' => 4.9,
-            'is_active' => true,
-        ]);
-
-        // ========== BUSINESSES - HOTELS ==========
-        $business7 = Business::create([
-            'owner_id' => $owner1->id,
-            'category_id' => $hotel->id,
-            'name' => 'Grand Luxury Hotel',
-            'description' => '5 yıldızlı konfor, spa merkezi ve gourmet restoran. İş ve tatil için mükemmel konaklama.',
-            'address' => 'Taksim Meydanı, Beyoğlu, İstanbul',
-            'phone' => '02122220000',
-            'rating' => 4.8,
-            'is_active' => true,
-        ]);
-
         // ========== RESOURCES (Tables/Rooms) ==========
         foreach ([$business1, $business2, $business3] as $restaurant) {
             for ($i = 1; $i <= 10; $i++) {
@@ -205,19 +163,6 @@ class DatabaseSeeder extends Seeder
                     'capacity' => rand(2, 4),
                 ]);
             }
-        }
-
-        Resource::create(['business_id' => $business6->id, 'name' => 'Bakım Kabini 1', 'type' => 'room', 'capacity' => 1]);
-        Resource::create(['business_id' => $business6->id, 'name' => 'Bakım Kabini 2', 'type' => 'room', 'capacity' => 1]);
-        Resource::create(['business_id' => $business6->id, 'name' => 'Makyaj Salonu', 'type' => 'room', 'capacity' => 2]);
-
-        for ($i = 101; $i <= 110; $i++) {
-            Resource::create([
-                'business_id' => $business7->id,
-                'name' => "Oda $i",
-                'type' => 'room',
-                'capacity' => 2,
-            ]);
         }
 
         // ========== REVIEWS ==========
@@ -256,22 +201,14 @@ class DatabaseSeeder extends Seeder
             'comment' => 'Kahveleri gerçekten çok iyi, pastalar taze. Atmosfer harika.',
         ]);
 
-        Review::create([
-            'business_id' => $business6->id,
-            'user_id' => $customer1->id,
-            'rating' => 5,
-            'comment' => 'Profesyonel ekip, harika sonuç. Düğün öncesi hazırlık için mükemmeldi!',
-        ]);
-
         // ========== FAVORITES ==========
         Favorite::firstOrCreate(['user_id' => $customer1->id, 'business_id' => $business1->id]);
         Favorite::firstOrCreate(['user_id' => $customer1->id, 'business_id' => $business2->id]);
         Favorite::firstOrCreate(['user_id' => $customer1->id, 'business_id' => $business4->id]);
         Favorite::firstOrCreate(['user_id' => $customer2->id, 'business_id' => $business1->id]);
-        Favorite::firstOrCreate(['user_id' => $customer2->id, 'business_id' => $business6->id]);
 
         // ========== MENUS & TAGS FOR FEATURED ==========
-        $this->seedMenusAndTags([$business1, $business2, $business3, $business4, $business5, $business6, $business7]);
+        $this->seedMenusAndTags([$business1, $business2, $business3, $business4, $business5]);
 
         // ========== MASSIVE SEEDING (81 Cities x 50 Businesses) ==========
         /*
@@ -294,33 +231,22 @@ class DatabaseSeeder extends Seeder
             $business->tags()->sync($tags->random(rand(3, 6))->pluck('id'));
 
             // Create some menus
-            if ($business->category_id == 1 || $business->category_id == 2) { // Restaurant or Cafe
-                \App\Models\Menu::create([
-                    'business_id' => $business->id,
-                    'category' => 'Ana Yemekler',
-                    'name' => 'Özel Izgara Köfte',
-                    'description' => 'Geleneksel Soslu Izgara Köfte, patates tava ile.',
-                    'price' => 250.00,
-                    'is_available' => true,
-                ]);
-                \App\Models\Menu::create([
-                    'business_id' => $business->id,
-                    'category' => 'İçecekler',
-                    'name' => 'Ev Yapımı Limonata',
-                    'description' => 'Taze nane ve limon ile hazırlanmıştır.',
-                    'price' => 65.00,
-                    'is_available' => true,
-                ]);
-            } elseif ($business->category_id == 3) { // Beauty
-                \App\Models\Menu::create([
-                    'business_id' => $business->id,
-                    'category' => 'Cilt Bakımı',
-                    'name' => 'Klasik Cilt Bakımı',
-                    'description' => 'Derinlemesine temizlik ve nemlendirme.',
-                    'price' => 750.00,
-                    'is_available' => true,
-                ]);
-            }
+            \App\Models\Menu::create([
+                'business_id' => $business->id,
+                'category' => 'Ana Yemekler',
+                'name' => 'Özel Izgara Köfte',
+                'description' => 'Geleneksel Soslu Izgara Köfte, patates tava ile.',
+                'price' => 250.00,
+                'is_available' => true,
+            ]);
+            \App\Models\Menu::create([
+                'business_id' => $business->id,
+                'category' => 'İçecekler',
+                'name' => 'Ev Yapımı Limonata',
+                'description' => 'Taze nane ve limon ile hazırlanmıştır.',
+                'price' => 65.00,
+                'is_available' => true,
+            ]);
         }
     }
 

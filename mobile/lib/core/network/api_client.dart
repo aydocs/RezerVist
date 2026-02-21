@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 class ApiClient {
-  static const String _host = 'http://10.0.2.2:8000';
+  static const String _host = 'https://rezervist.com';
 
   static final Dio _dio = Dio(
     BaseOptions(

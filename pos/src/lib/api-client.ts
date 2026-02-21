@@ -2,7 +2,7 @@ import axios from 'axios';
 import SecureStorage from './SecureStorage';
 
 // Production API URL
-export const API_BASE_ROOT = 'http://localhost:8000';
+export const API_BASE_ROOT = 'https://rezervist.com';
 const API_BASE_URL = `${API_BASE_ROOT}/api/pos`;
 
 const apiClient = axios.create({
