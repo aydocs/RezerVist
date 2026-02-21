@@ -31,7 +31,7 @@ return [
     | The direct link where the user can download the latest installer.
     |
     */
-    'download_url' => env('POS_DOWNLOAD_URL', 'http://localhost:8000/download/pos'),
+    'download_url' => env('POS_DOWNLOAD_URL', 'https://rezervist.com/download/pos'),
 
     /*
     |--------------------------------------------------------------------------
