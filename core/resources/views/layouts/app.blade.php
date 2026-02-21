@@ -440,151 +440,204 @@
 
                     <!-- Desktop Menu (Center) -->
                     <div class="hidden lg:flex items-center justify-center gap-8 h-full">
-                        <!-- Keşfet Megamenu -->
+                        <!-- Yeme & İçme Dropdown -->
                         <div class="static h-full flex items-center group">
-                            <button class="h-10 text-gray-700 hover:text-primary transition font-medium flex items-center justify-center gap-1 text-sm outline-none tracking-wide text-center group-hover:text-primary">
-                                <span>Keşfet</span>
-                                <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180 text-gray-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            <button class="h-10 text-gray-700 hover:text-primary transition font-medium flex items-center justify-center gap-1 text-sm outline-none tracking-wide text-center">
+                                <span class="relative top-[1px] leading-tight">{{ __('common.categories.food_drink') }}</span>
+                                <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180 relative top-[1px] text-gray-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                             </button>
-
-                            <!-- Megamenu Dropdown Container -->
-                            <div class="absolute top-full left-0 w-screen bg-white shadow-[0_50px_100px_-20px_rgba(0,0,0,0.2)] border-t border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500 transform origin-top translate-y-4 group-hover:translate-y-0 z-[110]">
-                                <div class="max-w-[1400px] mx-auto grid grid-cols-12 gap-0">
-                                    
-                                    <!-- Sidebar: Mekan Tipleri (4 cols) -->
-                                    <div class="col-span-3 p-10 border-r border-gray-50 bg-gray-50">
-                                        <div class="space-y-1">
-                                            <h4 class="px-4 text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-6">Kategoriler</h4>
-                                            
-                                            <a href="/search?category=restoran" class="group/nav flex items-center gap-4 p-4 rounded-2xl hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300">
-                                                <div class="w-11 h-11 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600 group-hover/nav:scale-110 transition-transform duration-300 shadow-sm shadow-orange-100">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                                                </div>
-                                                <div>
-                                                    <p class="font-semibold text-gray-900 text-[15px] group-hover/nav:text-primary transition-colors">Restoranlar</p>
-                                                    <p class="text-[11px] text-gray-400 font-medium">Şık ve gurme duraklar</p>
-                                                </div>
-                                            </a>
-
-                                            <a href="/search?category=kafe" class="group/nav flex items-center gap-4 p-4 rounded-2xl hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300">
-                                                <div class="w-11 h-11 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600 group-hover/nav:scale-110 transition-transform duration-300 shadow-sm shadow-blue-100">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                                                </div>
-                                                <div>
-                                                    <p class="font-semibold text-gray-900 text-[15px] group-hover/nav:text-primary transition-colors">Kafeler</p>
-                                                    <p class="text-[11px] text-gray-400 font-medium">Samimi kahve molaları</p>
-                                                </div>
-                                            </a>
-
-                                            <a href="/search?category=kahvalti" class="group/nav flex items-center gap-4 p-4 rounded-2xl hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300">
-                                                <div class="w-11 h-11 rounded-xl bg-yellow-100 flex items-center justify-center text-yellow-600 group-hover/nav:scale-110 transition-transform duration-300 shadow-sm shadow-yellow-100">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                                                </div>
-                                                <div>
-                                                    <p class="font-semibold text-gray-900 text-[15px] group-hover/nav:text-primary transition-colors">Kahvaltı</p>
-                                                    <p class="text-[11px] text-gray-400 font-medium">Güne mükellef bir başlangıç</p>
-                                                </div>
-                                            </a>
-
-                                            <a href="/search?category=pastane" class="group/nav flex items-center gap-4 p-4 rounded-2xl hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-300">
-                                                <div class="w-11 h-11 rounded-xl bg-pink-100 flex items-center justify-center text-pink-600 group-hover/nav:scale-110 transition-transform duration-300 shadow-sm shadow-pink-100">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 15.546c-.523 0-1.046.151-1.5.454a2.704 2.704 0 01-3 0 2.703 2.703 0 00-3 0 2.704 2.704 0 01-3 0 2.703 2.703 0 00-3 0 2.704 2.704 0 01-3 0 2.703 2.703 0 00-3 0 2.704 2.704 0 01-3 0 2.703 2.703 0 00-1.5-.454M9 20l1-9h4l1 9M4 9h16l-1 2H5l-1-2z"></path></svg>
-                                                </div>
-                                                <div>
-                                                    <p class="font-semibold text-gray-900 text-[15px] group-hover/nav:text-primary transition-colors">Pastaneler</p>
-                                                    <p class="text-[11px] text-gray-400 font-medium">Taptaze fırın lezzetleri</p>
-                                                </div>
-                                            </a>
+                            <div class="absolute top-full left-0 w-full bg-white border-b border-gray-200 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top z-50">
+                                <div class="w-full px-6 lg:px-12 py-8">
+                                    <div class="grid grid-cols-12 gap-8">
+                                        <div class="col-span-3 border-r border-gray-100">
+                                            <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                                <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                                                {{ __('common.categories.places') }}
+                                            </h3>
+                                            <ul class="space-y-3">
+                                                <li><a href="/search?category=restoran" class="flex items-center text-gray-600 hover:text-primary transition group/item"><span class="w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary mr-2 transition"></span>{{ __('common.subcategories.restaurants') }}</a></li>
+                                                <li><a href="/search?category=kafe" class="flex items-center text-gray-600 hover:text-primary transition group/item"><span class="w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary mr-2 transition"></span>{{ __('common.subcategories.cafes') }}</a></li>
+                                                <li><a href="/search?category=kahvalti" class="flex items-center text-gray-600 hover:text-primary transition group/item"><span class="w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary mr-2 transition"></span>{{ __('common.subcategories.breakfast') }}</a></li>
+                                                <li><a href="/search?category=bar" class="flex items-center text-gray-600 hover:text-primary transition group/item"><span class="w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary mr-2 transition"></span>{{ __('common.subcategories.bars') }}</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-span-3 border-r border-gray-100 px-4">
+                                            <h3 class="font-bold text-gray-900 mb-4">{{ __('common.categories.popular_cuisines') }}</h3>
+                                            <div class="grid grid-cols-2 gap-3">
+                                                <a href="/search?cuisine=italyan" class="px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-orange-500 hover:text-white transition text-center">{{ __('common.tags.italian') }}</a>
+                                                <a href="/search?cuisine=uzakdogu" class="px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-orange-500 hover:text-white transition text-center">{{ __('common.tags.far_east') }}</a>
+                                                <a href="/search?cuisine=ocakbasi" class="px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-orange-500 hover:text-white transition text-center">{{ __('common.tags.ocakbasi') }}</a>
+                                                <a href="/search?cuisine=deniz" class="px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-orange-500 hover:text-white transition text-center">{{ __('common.tags.sea_food') }}</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-span-6 pl-4">
+                                            <div class="grid grid-cols-2 gap-4">
+                                                <a href="/search?tag=romantik" class="group/card relative overflow-hidden rounded-xl h-32 hover:shadow-lg transition">
+                                                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" class="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover/card:scale-110" alt="Restaurant">
+                                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4">
+                                                        <p class="text-white font-bold">{{ __('common.tags.romantic') }}</p>
+                                                    </div>
+                                                </a>
+                                                <a href="/search?tag=kahve" class="group/card relative overflow-hidden rounded-xl h-32 hover:shadow-lg transition">
+                                                    <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" class="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover/card:scale-110" alt="Coffee">
+                                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4">
+                                                        <p class="text-white font-bold">{{ __('common.tags.coffee') }}</p>
+                                                    </div>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
 
-                                    <!-- Main Content (9 cols) -->
-                                    <div class="col-span-9 p-10 flex flex-col">
-                                        <div class="grid grid-cols-2 gap-10 flex-grow">
-                                            <!-- Column: Popüler Mutfaklar -->
-                                            <div>
-                                                <h4 class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-8">Popüler Mutfaklar</h4>
-                                                <div class="grid gap-3">
-                                                    @php
-                                                        $cuisines = [
-                                                            ['name' => 'Türk Mutfağı', 'slug' => 'turk', 'count' => '120+'],
-                                                            ['name' => 'İtalyan', 'slug' => 'italyan', 'count' => '45+'],
-                                                            ['name' => 'Uzak Doğu', 'slug' => 'uzakdogu', 'count' => '32+'],
-                                                            ['name' => 'Burger & Steak', 'slug' => 'hamburger', 'count' => '68+'],
-                                                            ['name' => 'Deniz Ürünleri', 'slug' => 'deniz-urunleri', 'count' => '15+']
-                                                        ];
-                                                    @endphp
-                                                    @foreach($cuisines as $cuisine)
-                                                        <a href="/search?cuisine={{ $cuisine['slug'] }}" class="group/link flex items-center justify-between px-4 py-3 rounded-2xl bg-gray-50 hover:bg-primary transition-all duration-300">
-                                                            <div class="flex items-center gap-3">
-                                                                <span class="w-1.5 h-1.5 rounded-full bg-primary group-hover/link:bg-white transition-colors"></span>
-                                                                <span class="text-[15px] font-medium text-gray-800 group-hover/link:text-white transition-colors">{{ $cuisine['name'] }}</span>
-                                                            </div>
-                                                            <span class="text-[11px] font-bold text-gray-400 group-hover/link:text-white/60 transition-colors uppercase tracking-wider">{{ $cuisine['count'] }}</span>
-                                                        </a>
-                                                    @endforeach
-                                                </div>
-                                            </div>
-
-                                            <!-- Column: Günün Modu -->
-                                            <div>
-                                                <h4 class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em] mb-8">Sana Özel Seçimler</h4>
-                                                <div class="space-y-6">
-                                                    <a href="/search?category=restoran" class="group/card relative overflow-hidden rounded-[2.5rem] h-44 block shadow-lg shadow-gray-200/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl">
-                                                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover/card:scale-110" alt="Gurme">
-                                                        <div class="absolute inset-0 bg-gradient-to-tr from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8">
-                                                            <div class="mb-3 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full w-fit border border-white/10">
-                                                                <span class="text-[10px] font-bold text-white uppercase tracking-[0.1em]">Trend 🔥</span>
-                                                            </div>
-                                                            <p class="text-white font-bold text-xl mb-1">Gurme Deneyimler</p>
-                                                            <p class="text-white/70 text-xs font-medium">Şehrin en iyi gurme durakları</p>
-                                                        </div>
-                                                    </a>
-                                                    
-                                                    <a href="/search?category=kafe" class="group/card relative overflow-hidden rounded-[2.5rem] h-44 block shadow-lg shadow-gray-200/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl">
-                                                        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover/card:scale-110" alt="Kafe">
-                                                        <div class="absolute inset-0 bg-gradient-to-tr from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8">
-                                                            <div class="mb-3 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full w-fit border border-white/10">
-                                                                <span class="text-[10px] font-bold text-white uppercase tracking-[0.1em]">Popüler ☕️</span>
-                                                            </div>
-                                                            <p class="text-white font-bold text-xl mb-1">Yeni Nesil Kahve</p>
-                                                            <p class="text-white/70 text-xs font-medium">En taze kahve kokuları burada</p>
-                                                        </div>
-                                                    </a>
-                                                </div>
+                        <!-- Güzellik & Bakım Dropdown -->
+                        <div class="static h-full flex items-center group">
+                            <button class="h-10 text-gray-700 hover:text-primary transition font-medium flex items-center justify-center gap-1 text-sm outline-none tracking-wide text-center">
+                                <span class="relative top-[1px] leading-tight">{{ __('common.categories.beauty') }}</span>
+                                <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180 relative top-[1px] text-gray-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="absolute top-full left-0 w-full bg-white border-b border-gray-200 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top z-50">
+                                <div class="w-full px-6 lg:px-12 py-8">
+                                    <div class="grid grid-cols-12 gap-8">
+                                        <div class="col-span-3 border-r border-gray-100">
+                                            <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                                <svg class="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                                {{ __('common.categories.services') }}
+                                            </h3>
+                                            <ul class="space-y-3">
+                                                <li><a href="/search?category=kuafor" class="flex items-center text-gray-600 hover:text-primary transition group/item"><span class="w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary mr-2 transition"></span>{{ __('common.subcategories.coiffeur_woman') }}</a></li>
+                                                <li><a href="/search?category=berber" class="flex items-center text-gray-600 hover:text-primary transition group/item"><span class="w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary mr-2 transition"></span>{{ __('common.subcategories.barber') }}</a></li>
+                                                <li><a href="/search?category=guzellik" class="flex items-center text-gray-600 hover:text-primary transition group/item"><span class="w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary mr-2 transition"></span>{{ __('common.subcategories.beauty_center') }}</a></li>
+                                                <li><a href="/search?category=spa" class="flex items-center text-gray-600 hover:text-primary transition group/item"><span class="w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary mr-2 transition"></span>{{ __('common.subcategories.spa_massage') }}</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-span-3 border-r border-gray-100 px-4">
+                                            <h3 class="font-bold text-gray-900 mb-4">{{ __('common.categories.popular_procedures') }}</h3>
+                                            <div class="grid grid-cols-2 gap-3">
+                                                <a href="/search?tag=sac" class="px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-pink-500 hover:text-white transition text-center">{{ __('common.tags.hair_cut') }}</a>
+                                                <a href="/search?tag=manikur" class="px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-pink-500 hover:text-white transition text-center">{{ __('common.tags.manicure') }}</a>
+                                                <a href="/search?tag=cilt" class="px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-pink-500 hover:text-white transition text-center">{{ __('common.tags.skin_care') }}</a>
+                                                <a href="/search?tag=lazer" class="px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-pink-500 hover:text-white transition text-center">{{ __('common.tags.laser') }}</a>
                                             </div>
                                         </div>
-
-                                        <!-- Footer: Stats & CTA -->
-                                        <div class="mt-12 pt-8 border-t border-gray-100 flex items-center justify-between">
-                                            <div class="flex items-center gap-10">
-                                                <div class="flex items-center gap-4">
-                                                    <div class="flex -space-x-3">
-                                                        <div class="w-10 h-10 rounded-full border-4 border-white bg-gradient-to-tr from-primary to-purple-600 shadow-xl overflow-hidden flex items-center justify-center">
-                                                            <span class="text-[10px] text-white font-bold tracking-tighter">RV</span>
-                                                        </div>
-                                                        <div class="w-10 h-10 rounded-full border-4 border-white bg-gray-100 shadow-xl overflow-hidden">
-                                                            <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" class="w-full h-full object-cover">
-                                                        </div>
-                                                        <div class="w-10 h-10 rounded-full border-4 border-white bg-gray-200 shadow-xl overflow-hidden flex items-center justify-center">
-                                                            <span class="text-[10px] text-gray-500 font-bold">+500</span>
-                                                        </div>
+                                        <div class="col-span-6 pl-4">
+                                            <div class="grid grid-cols-2 gap-4">
+                                                <a href="/search?tag=spa" class="group/card relative overflow-hidden rounded-xl h-32 hover:shadow-lg transition">
+                                                    <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" class="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover/card:scale-110" alt="SPA">
+                                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4">
+                                                        <p class="text-white font-bold">{{ __('common.tags.spa_wellness') }}</p>
                                                     </div>
-                                                    <div class="space-y-0.5">
-                                                        <p class="text-sm font-bold text-gray-900 tracking-tight leading-none">Keşfedilmeyi Bekliyor</p>
-                                                        <p class="text-[11px] text-primary font-bold uppercase tracking-[0.05em] leading-none">RezerVist Topluluğu</p>
+                                                </a>
+                                                <a href="/search?tag=sac" class="group/card relative overflow-hidden rounded-xl h-32 hover:shadow-lg transition">
+                                                    <img src="https://images.unsplash.com/photo-1560066984-2f1bd43b452b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" class="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover/card:scale-110" alt="Hair">
+                                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4">
+                                                        <p class="text-white font-bold">{{ __('common.tags.trend_hair') }}</p>
                                                     </div>
-                                                </div>
-                                                <div class="h-8 w-px bg-gray-100"></div>
-                                                <div class="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-full border border-gray-100">
-                                                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                                                    <span class="text-[11px] font-bold text-gray-600 tracking-wide">BUGÜN: <span class="text-gray-900">42 YENİ MEKAN</span></span>
-                                                </div>
+                                                </a>
                                             </div>
-                                            <a href="/search" class="group/btn flex items-center gap-3 px-8 py-4 bg-primary text-white rounded-[1.5rem] font-bold text-sm transition-all duration-300 hover:shadow-2xl hover:shadow-primary/40 hover:-translate-y-1">
-                                                <span>Tümünü Keşfet</span>
-                                                <svg class="w-5 h-5 transform group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Etkinlik & Eğlence Dropdown -->
+                        <div class="static h-full flex items-center group">
+                            <button class="h-10 text-gray-700 hover:text-primary transition font-medium flex items-center justify-center gap-1 text-sm outline-none tracking-wide text-center">
+                                <span class="relative top-[1px] leading-tight">{{ __('common.categories.events') }}</span>
+                                <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180 relative top-[1px] text-gray-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                             <div class="absolute top-full left-0 w-full bg-white border-b border-gray-200 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top z-50">
+                                <div class="w-full px-6 lg:px-12 py-8">
+                                    <div class="grid grid-cols-12 gap-8">
+                                        <div class="col-span-3 border-r border-gray-100">
+                                            <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                                <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
+                                                {{ __('common.categories.categories') }}
+                                            </h3>
+                                            <ul class="space-y-3">
+                                                <li><a href="/search?category=konser" class="flex items-center text-gray-600 hover:text-primary transition group/item"><span class="w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary mr-2 transition"></span>{{ __('common.subcategories.concerts') }}</a></li>
+                                                <li><a href="/search?category=tiyatro" class="flex items-center text-gray-600 hover:text-primary transition group/item"><span class="w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary mr-2 transition"></span>{{ __('common.subcategories.theater') }}</a></li>
+                                                <li><a href="/search?category=festival" class="flex items-center text-gray-600 hover:text-primary transition group/item"><span class="w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary mr-2 transition"></span>{{ __('common.subcategories.festivals') }}</a></li>
+                                                <li><a href="/search?category=atolye" class="flex items-center text-gray-600 hover:text-primary transition group/item"><span class="w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary mr-2 transition"></span>{{ __('common.subcategories.workshops') }}</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-span-3 border-r border-gray-100 px-4">
+                                            <h3 class="font-bold text-gray-900 mb-4">{{ __('common.categories.popular_events') }}</h3>
+                                            <div class="grid grid-cols-2 gap-3">
+                                                <a href="/search?tag=standup" class="px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-purple-500 hover:text-white transition text-center">{{ __('common.tags.standup') }}</a>
+                                                <a href="/search?tag=jazz" class="px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-purple-500 hover:text-white transition text-center">{{ __('common.tags.jazz') }}</a>
+                                                <a href="/search?tag=rock" class="px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-purple-500 hover:text-white transition text-center">{{ __('common.tags.rock') }}</a>
+                                                <a href="/search?tag=sinema" class="px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-purple-500 hover:text-white transition text-center">{{ __('common.tags.cinema') }}</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-span-6 pl-4">
+                                            <div class="grid grid-cols-2 gap-4">
+                                                <a href="/search?tag=live" class="group/card relative overflow-hidden rounded-xl h-32 hover:shadow-lg transition">
+                                                    <img src="https://images.unsplash.com/photo-1533174072545-e8d4aa97d893?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" class="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover/card:scale-110" alt="Concert">
+                                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4">
+                                                        <p class="text-white font-bold">{{ __('common.tags.live_music') }}</p>
+                                                    </div>
+                                                </a>
+                                                <a href="/search?tag=art" class="group/card relative overflow-hidden rounded-xl h-32 hover:shadow-lg transition">
+                                                    <img src="https://images.unsplash.com/photo-1544219163-54216d601d36?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" class="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover/card:scale-110" alt="Theater">
+                                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4">
+                                                        <p class="text-white font-bold">{{ __('common.tags.performing_arts') }}</p>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Hizmet & Sağlık Dropdown -->
+                         <div class="static h-full flex items-center group">
+                            <button class="h-10 text-gray-700 hover:text-primary transition font-medium flex items-center justify-center gap-1 text-sm outline-none tracking-wide text-center">
+                                <span class="relative top-[1px] leading-tight">{{ __('common.categories.services') }}</span>
+                                <svg class="w-4 h-4 transition-transform duration-300 group-hover:rotate-180 relative top-[1px] text-gray-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="absolute top-full left-0 w-full bg-white border-b border-gray-200 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top z-50">
+                                <div class="w-full px-6 lg:px-12 py-8">
+                                    <div class="grid grid-cols-12 gap-8">
+                                        <div class="col-span-3 border-r border-gray-100">
+                                            <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                                <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                                                {{ __('common.categories.places') }}
+                                            </h3>
+                                            <ul class="space-y-3">
+                                                <li><a href="/search?category=restoran" class="flex items-center text-gray-600 hover:text-primary transition group/item"><span class="w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary mr-2 transition"></span>{{ __('common.subcategories.restaurants') }}</a></li>
+                                                <li><a href="/search?category=kafe" class="flex items-center text-gray-600 hover:text-primary transition group/item"><span class="w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary mr-2 transition"></span>{{ __('common.subcategories.cafes') }}</a></li>
+                                                <li><a href="/search?category=kahvalti" class="flex items-center text-gray-600 hover:text-primary transition group/item"><span class="w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary mr-2 transition"></span>{{ __('common.subcategories.breakfast') }}</a></li>
+                                                <li><a href="/search?category=bar" class="flex items-center text-gray-600 hover:text-primary transition group/item"><span class="w-1.5 h-1.5 rounded-full bg-gray-300 group-hover/item:bg-primary mr-2 transition"></span>{{ __('common.subcategories.bars') }}</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-span-3 border-r border-gray-100 px-4">
+                                            <h3 class="font-bold text-gray-900 mb-4">{{ __('common.categories.popular_cuisines') }}</h3>
+                                            <div class="grid grid-cols-2 gap-3">
+                                                <a href="/search?cuisine=italyan" class="px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-orange-500 hover:text-white transition text-center">{{ __('common.tags.italian') }}</a>
+                                                <a href="/search?cuisine=uzakdogu" class="px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-orange-500 hover:text-white transition text-center">{{ __('common.tags.far_east') }}</a>
+                                                <a href="/search?cuisine=ocakbasi" class="px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-orange-500 hover:text-white transition text-center">{{ __('common.tags.ocakbasi') }}</a>
+                                                <a href="/search?cuisine=deniz" class="px-3 py-2 bg-gray-50 rounded-lg text-sm text-gray-700 hover:bg-orange-500 hover:text-white transition text-center">{{ __('common.tags.sea_food') }}</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-span-6 pl-4">
+                                            <div class="grid grid-cols-2 gap-4">
+                                                <a href="/search?tag=romantik" class="group/card relative overflow-hidden rounded-xl h-32 hover:shadow-lg transition">
+                                                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" class="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover/card:scale-110" alt="Restaurant">
+                                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4">
+                                                        <p class="text-white font-bold">{{ __('common.tags.romantic') }}</p>
+                                                    </div>
+                                                </a>
+                                                <a href="/search?tag=kahve" class="group/card relative overflow-hidden rounded-xl h-32 hover:shadow-lg transition">
+                                                    <img src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" class="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover/card:scale-110" alt="Coffee">
+                                                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4">
+                                                        <p class="text-white font-bold">{{ __('common.tags.coffee') }}</p>
+                                                    </div>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -593,29 +646,8 @@
 
                         <!-- Blog Link -->
                         <div class="h-full flex items-center">
-                            <a href="{{ route('blog.index') }}" class="h-10 px-4 text-gray-700 hover:text-primary transition font-medium flex items-center justify-center text-sm outline-none tracking-wide text-center {{ request()->routeIs('blog.*') ? 'text-primary' : '' }}">
+                            <a href="{{ route('blog.index') }}" class="h-10 px-4 text-gray-700 hover:text-primary transition font-bold flex items-center justify-center text-sm outline-none tracking-wide text-center {{ request()->routeIs('blog.*') ? 'text-primary' : '' }}">
                                 {{ __('common.menu.blog') }}
-                            </a>
-                        </div>
-
-                        <!-- Campaigns Link -->
-                        <div class="h-full flex items-center">
-                            <a href="{{ route('pages.campaigns') }}" class="h-10 px-4 text-gray-700 hover:text-primary transition font-medium flex items-center justify-center text-sm outline-none tracking-wide text-center {{ request()->routeIs('pages.campaigns') ? 'text-primary' : '' }}">
-                                Kampanyalar
-                            </a>
-                        </div>
-
-                        <!-- About Us Link -->
-                        <div class="h-full flex items-center">
-                            <a href="{{ route('pages.about') }}" class="h-10 px-4 text-gray-700 hover:text-primary transition font-medium flex items-center justify-center text-sm outline-none tracking-wide text-center {{ request()->routeIs('pages.about') ? 'text-primary' : '' }}">
-                                Hakkımızda
-                            </a>
-                        </div>
-
-                        <!-- Contact Link -->
-                        <div class="h-full flex items-center">
-                            <a href="{{ route('pages.contact') }}" class="h-10 px-4 text-gray-700 hover:text-primary transition font-medium flex items-center justify-center text-sm outline-none tracking-wide text-center {{ request()->routeIs('pages.contact') ? 'text-primary' : '' }}">
-                                İletişim
                             </a>
                         </div>
                     </div>
@@ -737,28 +769,28 @@
                                     </div>
 
                                     <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                                         {{ __('common.menu.profile_info') }}
                                     </a>
 
                                     <a href="{{ route('profile.reservations') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="m9 16 2 2 4-4"/></svg>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v12a2 2 0 002 2z"></path></svg>
                                         {{ __('common.menu.my_reservations') }}
                                     </a>
 
                                     <a href="{{ route('profile.favorites') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
                                         {{ __('common.menu.my_favorites') }}
                                     </a>
 
                                     <a href="{{ route('profile.wallet.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V7a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                                         {{ __('common.menu.wallet') }}
                                     </a>
 
                                     <a href="{{ route('messages.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center justify-between">
                                         <div class="flex items-center gap-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
                                             {{ __('common.menu.messages') }}
                                         </div>
                                         @if(Auth::user()->unread_messages_count > 0)
@@ -767,40 +799,40 @@
                                     </a>
 
                                     <a href="{{ route('profile.support') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                                         {{ __('common.menu.support') }}
                                     </a>
 
                                     @if(Auth::user()->role === 'admin')
                                         <div class="border-t border-gray-100 my-1"></div>
-                                        <div class="px-4 py-1.5 text-[10px] font-medium text-gray-400 uppercase tracking-widest">{{ __('common.roles.admin') }}</div>
+                                        <div class="px-4 py-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ __('common.roles.admin') }}</div>
                                         <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                                             {{ __('common.menu.admin_panel') }}
                                         </a>
                                         <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="19" cy="11" r="2"/></svg>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                                             {{ __('common.menu.user_management') }}
                                         </a>
                                         <a href="{{ route('admin.applications.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                                             {{ __('common.menu.business_applications') }}
                                         </a>
                                         <a href="{{ route('admin.contact-messages.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 0 0 2.22 0L21 8M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"></path></svg>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                                             {{ __('common.admin.dashboard.contact_messages') }}
                                         </a>
                                         <a href="{{ route('admin.platform-activity.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                             {{ __('common.admin.dashboard.platform_activity') }}
                                         </a>
                                         <a href="{{ route('admin.settings.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                                             {{ __('common.menu.settings') }}
                                         </a>
                                     @elseif(Auth::user()->role === 'business')
                                         <div class="border-t border-gray-100 my-1"></div>
-                                        <div class="px-4 py-1.5 text-[10px] font-medium text-gray-400 uppercase tracking-widest">{{ __('common.menu.business_management') }}</div>
+                                        <div class="px-4 py-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ __('common.menu.business_management') }}</div>
                                         <a href="{{ route('vendor.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                                             {{ __('common.menu.business_panel') }}
@@ -817,19 +849,19 @@
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01m-.01 4h.01"></path></svg>
                                             {{ __('common.menu.menus_services') }}
                                         </a>
-                                        <a href="{{ route('vendor.staff.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2 font-medium">
+                                        <a href="{{ route('vendor.staff.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2 font-semibold">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                                             {{ __('common.menu.staff') }}
                                         </a>
-                                        <a href="{{ route('vendor.resources.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2 font-medium">
+                                        <a href="{{ route('vendor.resources.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2 font-semibold">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                                             {{ __('common.menu.resources') }}
                                         </a>
-                                        <a href="{{ route('vendor.finance.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2 font-medium">
+                                        <a href="{{ route('vendor.finance.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2 font-semibold">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                                             {{ __('common.menu.financial_reports') }}
                                         </a>
-                                        <a href="{{ route('vendor.billing.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2 font-medium">
+                                        <a href="{{ route('vendor.billing.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2 font-semibold">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 002-2V7a2 2 0 00-2-2H6a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                                             {{ __('common.menu.plans') }}
                                         </a>
@@ -857,10 +889,10 @@
                                 </a>
                                 
                                 <div class="flex items-center gap-3">
-                                    <a href="/login" class="px-5 py-2.5 border-2 border-blue-600 text-blue-600 font-medium rounded-xl hover:bg-blue-50 transition text-sm">
+                                    <a href="/login" class="px-5 py-2.5 border-2 border-blue-600 text-blue-600 font-bold rounded-xl hover:bg-blue-50 transition text-sm">
                                         {{ __('common.menu.login') }}
                                     </a>
-                                    <a href="/register" class="px-6 py-2.5 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition shadow-lg shadow-blue-600/30 text-sm">
+                                    <a href="/register" class="px-6 py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-600/30 text-sm">
                                         {{ __('common.menu.register') }}
                                     </a>
                                 </div>
@@ -988,21 +1020,21 @@
                             <svg class="w-5 h-5 text-gray-400 transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
                         <div x-show="open" x-transition class="space-y-1 pl-4 border-l-2 border-gray-100 ml-4 my-2">
-                             <a href="/search?category=restoran" class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50">
+                             <a href="/search?category=yeme-icme" class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50">
                                 <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-                                Restoranlar
+                                {{ __('common.categories.food_drink') }}
                              </a>
-                             <a href="/search?category=kafe" class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50">
+                             <a href="/search?category=guzellik-bakim" class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50">
                                 <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-                                Kafeler
+                                {{ __('common.categories.beauty') }}
                              </a>
-                             <a href="/search?category=kahvalti" class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50">
+                             <a href="/search?category=etkinlik-eglence" class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50">
                                 <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-                                Kahvaltı Mekanları
+                                {{ __('common.categories.events') }}
                              </a>
-                             <a href="/search?category=pastane" class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50">
+                             <a href="/search?category=hizmet-saglik" class="flex items-center gap-3 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-primary hover:bg-gray-50">
                                 <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
-                                Pastaneler
+                                {{ __('common.categories.services') }}
                              </a>
                         </div>
                     </div>
@@ -1015,24 +1047,6 @@
                     <a href="{{ route('blog.index') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-gray-900 hover:bg-gray-50 flex items-center justify-between group {{ request()->routeIs('blog.*') ? 'bg-primary/5 text-primary' : '' }}">
                         {{ __('Blog') }}
                         <svg class="w-5 h-5 text-gray-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1M19 20a2 2 0 002-2V8a2 2 0 00-2-2h-5"></path></svg>
-                    </a>
-
-                    <!-- Mobile Campaigns -->
-                    <a href="{{ route('pages.campaigns') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-gray-900 hover:bg-gray-50 flex items-center justify-between group {{ request()->routeIs('pages.campaigns') ? 'bg-primary/5 text-primary' : '' }}">
-                        Kampanyalar
-                        <svg class="w-5 h-5 text-gray-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path></svg>
-                    </a>
-
-                    <!-- Mobile About -->
-                    <a href="{{ route('pages.about') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-gray-900 hover:bg-gray-50 flex items-center justify-between group {{ request()->routeIs('pages.about') ? 'bg-primary/5 text-primary' : '' }}">
-                        Hakkımızda
-                        <svg class="w-5 h-5 text-gray-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    </a>
-
-                    <!-- Mobile Contact -->
-                    <a href="{{ route('pages.contact') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-gray-900 hover:bg-gray-50 flex items-center justify-between group {{ request()->routeIs('pages.contact') ? 'bg-primary/5 text-primary' : '' }}">
-                        İletişim
-                        <svg class="w-5 h-5 text-gray-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v10a2 2 0 002 2z"></path></svg>
                     </a>
 
                     @auth
