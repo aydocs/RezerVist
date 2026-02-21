@@ -55,12 +55,16 @@ class AppServiceProvider extends ServiceProvider
             'seo_keywords' => 'rezervasyon, online, restoran',
         ];
 
-        // Load global settings and share with all views
+        // Load global settings, categories, and cuisines
         try {
             if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
                 // Fetch all settings and group by key for easy access
                 $settingsData = \App\Models\Setting::all()->pluck('value', 'key')->toArray();
                 $globalSettings = array_merge($defaults, $settingsData);
+
+                // Fetch categories for navbar
+                $navbarCategories = \App\Models\Category::where('type', 'business')->take(10)->get();
+                $navbarCuisines = \App\Models\Tag::where('category', 'cuisine')->take(10)->get();
 
                 // Load Service Configs (existing logic)
                 \App\Services\SettingService::loadToConfig('google', 'services.google');
@@ -74,15 +78,23 @@ class AppServiceProvider extends ServiceProvider
                 ]);
             } else {
                 $globalSettings = $defaults;
+                $navbarCategories = collect();
+                $navbarCuisines = collect();
             }
         } catch (\Exception $e) {
             // Silently fail if DB is not ready (during migrations)
-            \Log::warning('Could not load settings: '.$e->getMessage());
+            \Log::warning('Could not load settings or data: '.$e->getMessage());
             $globalSettings = $defaults;
+            $navbarCategories = collect();
+            $navbarCuisines = collect();
         }
 
         // Share globally with all views
-        \Illuminate\Support\Facades\View::share('globalSettings', $globalSettings ?? $defaults);
+        \Illuminate\Support\Facades\View::share([
+            'globalSettings' => $globalSettings ?? $defaults,
+            'navbarCategories' => $navbarCategories,
+            'navbarCuisines' => $navbarCuisines
+        ]);
 
         // Also set in config for programmatic access
         foreach ($globalSettings ?? $defaults as $key => $value) {
