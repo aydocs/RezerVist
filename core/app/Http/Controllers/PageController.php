@@ -53,7 +53,9 @@ class PageController extends Controller
                 'subject' => $validated['subject'],
                 'contact_message' => $validated['message'],
             ], function ($mail) use ($validated) {
-                $mail->to('iletisim@rezervist.com')
+                $mail->from('no-reply@rezervist.com', 'Rezervist İletişim Formu')
+                    ->replyTo($validated['email'], $validated['name'])
+                    ->to('iletisim@rezervist.com')
                     ->subject('🔔 Yeni İletişim Formu Mesajı: '.$validated['subject']);
             });
 
@@ -62,7 +64,8 @@ class PageController extends Controller
                 'name' => $validated['name'],
                 'contact_message' => $validated['message'],
             ], function ($mail) use ($validated) {
-                $mail->to($validated['email'])
+                $mail->from('no-reply@rezervist.com', 'Rezervist İletişim')
+                    ->to($validated['email'])
                     ->subject('Mesajınızı Aldık - Rezervist');
             });
         } catch (\Exception $e) {
