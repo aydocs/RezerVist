@@ -69,8 +69,8 @@ FILESYSTEM_DISK=public
 MAIL_MAILER=smtp
 MAIL_HOST=smtp.turkticaret.net
 MAIL_PORT=587
-MAIL_USERNAME=destek@rezervist.com
-MAIL_FROM_ADDRESS=destek@rezervist.com
+MAIL_USERNAME=no-reply@rezervist.com
+MAIL_FROM_ADDRESS=no-reply@rezervist.com
 
 IYZICO_API_KEY=sandbox-SOdBDDbZVdQhyqoxEfUqkQmV6VXFmbA3
 IYZICO_SECRET_KEY=sandbox-RQaPpG9N47wUVuSen4lxLxkQuSw6byAY

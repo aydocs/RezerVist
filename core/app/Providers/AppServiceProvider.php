@@ -43,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
             'site_description' => 'Türkiye\'nin en seçkin rezervasyon platformu.',
             'site_copyright' => 'Rezervist - Tüm Hakları Saklıdır.',
             'contact_phone' => '0850 555 1234',
-            'contact_email' => 'destek@rezervist.com',
+            'contact_email' => 'iletisim@rezervist.com',
             'contact_address' => '',
             'social_facebook' => 'https://facebook.com',
             'social_twitter' => 'https://twitter.com',
