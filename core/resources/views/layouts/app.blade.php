@@ -459,6 +459,18 @@
                                 {{ __('common.menu.blog') }}
                             </a>
                         </div>
+                        <!-- Hakkımızda Link -->
+                        <div class="h-full flex items-center">
+                            <a href="{{ route('pages.about') }}" class="h-10 px-4 text-gray-700 hover:text-primary transition font-bold flex items-center justify-center text-sm outline-none tracking-wide text-center {{ request()->routeIs('pages.about') ? 'text-primary' : '' }}">
+                                {{ __('common.footer.about_us') ?? 'Hakkımızda' }}
+                            </a>
+                        </div>
+                        <!-- İletişim Link -->
+                        <div class="h-full flex items-center">
+                            <a href="{{ route('pages.contact') }}" class="h-10 px-4 text-gray-700 hover:text-primary transition font-bold flex items-center justify-center text-sm outline-none tracking-wide text-center {{ request()->routeIs('pages.contact') ? 'text-primary' : '' }}">
+                                {{ __('common.footer.contact') ?? 'İletişim' }}
+                            </a>
+                        </div>
                     </div>
 
                 <!-- Auth Buttons + Mobile Menu (Right Side) -->
@@ -841,6 +853,16 @@
                     <a href="{{ route('blog.index') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-gray-900 hover:bg-gray-50 flex items-center justify-between group {{ request()->routeIs('blog.*') ? 'bg-primary/5 text-primary' : '' }}">
                         {{ __('Blog') }}
                         <svg class="w-5 h-5 text-gray-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1M19 20a2 2 0 002-2V8a2 2 0 00-2-2h-5"></path></svg>
+                    </a>
+                    
+                    <a href="{{ route('pages.about') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-gray-900 hover:bg-gray-50 flex items-center justify-between group {{ request()->routeIs('pages.about') ? 'bg-primary/5 text-primary' : '' }}">
+                        {{ __('common.footer.about_us') ?? 'Hakkımızda' }}
+                        <svg class="w-5 h-5 text-gray-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </a>
+                    
+                    <a href="{{ route('pages.contact') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-gray-900 hover:bg-gray-50 flex items-center justify-between group {{ request()->routeIs('pages.contact') ? 'bg-primary/5 text-primary' : '' }}">
+                        {{ __('common.footer.contact') ?? 'İletişim' }}
+                        <svg class="w-5 h-5 text-gray-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     </a>
 
                     @auth
