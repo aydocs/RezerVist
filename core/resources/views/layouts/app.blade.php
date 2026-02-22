@@ -1219,7 +1219,7 @@
                         </div>
                         <div class="flex flex-col">
                             <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{{ __('common.form.email') }}</span>
-                            <span class="text-base font-bold text-slate-900">{{ $globalSettings['contact_email'] ?? 'destek@rezervist.com' }}</span>
+                            <span class="text-base font-bold text-slate-900">{{ $globalSettings['contact_email'] ?? 'iletisim@rezervist.com' }}</span>
                         </div>
                     </div>
                     <div class="flex items-center gap-5 group">
