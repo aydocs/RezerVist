@@ -443,7 +443,14 @@
                         <!-- Keşfet Linki -->
                         <div class="h-full flex items-center">
                             <a href="/search" class="h-10 px-4 text-gray-700 hover:text-primary transition font-bold flex items-center justify-center text-sm outline-none tracking-wide text-center {{ request()->is('search*') ? 'text-primary' : '' }}">
-                                {{ __('common.header.discover') ?? 'Keşfet' }}
+                                Keşfet
+                            </a>
+                        </div>
+                        
+                        <!-- Ürünlerimiz Linki (POS) -->
+                        <div class="h-full flex items-center">
+                            <a href="{{ route('pages.pos') }}" class="h-10 px-4 text-gray-700 hover:text-primary transition font-bold flex items-center justify-center text-sm outline-none tracking-wide text-center">
+                                Ürünlerimiz
                             </a>
                         </div>
                         <!-- Blog Link -->
@@ -817,8 +824,14 @@
  
                     <!-- Keşfet Mobile Link -->
                     <a href="/search" class="block px-4 py-3 rounded-xl text-base font-bold text-gray-900 hover:bg-gray-50 flex items-center justify-between group {{ request()->is('search*') ? 'bg-primary/5 text-primary' : '' }}">
-                        {{ __('common.header.discover') ?? 'Keşfet' }}
+                        Keşfet
                         <svg class="w-5 h-5 text-gray-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </a>
+
+                    <!-- Ürünlerimiz Mobile Link -->
+                    <a href="{{ route('pages.pos') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-gray-900 hover:bg-gray-50 flex items-center justify-between group">
+                        Ürünlerimiz
+                        <svg class="w-5 h-5 text-gray-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
                     </a>
                     <a href="/business-partner" class="block px-4 py-3 rounded-xl text-base font-bold text-gray-900 hover:bg-gray-50 flex items-center justify-between group {{ request()->is('business-partner') ? 'bg-primary/5 text-primary' : '' }}">
                         {{ __('common.header.business_partner') }}
