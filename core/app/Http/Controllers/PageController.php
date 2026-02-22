@@ -53,7 +53,7 @@ class PageController extends Controller
                 'subject' => $validated['subject'],
                 'contact_message' => $validated['message'],
             ], function ($mail) use ($validated) {
-                $mail->to('admin@rezervist.com')
+                $mail->to('iletisim@rezervist.com')
                     ->subject('🔔 Yeni İletişim Formu Mesajı: '.$validated['subject']);
             });
 
