@@ -468,7 +468,7 @@
                         <!-- İletişim Link -->
                         <div class="h-full flex items-center">
                             <a href="{{ route('pages.contact') }}" class="h-10 px-4 text-gray-700 hover:text-primary transition font-bold flex items-center justify-center text-sm outline-none tracking-wide text-center {{ request()->routeIs('pages.contact') ? 'text-primary' : '' }}">
-                                {{ __('common.footer.contact') ?? 'İletişim' }}
+                                İletişim
                             </a>
                         </div>
                     </div>
@@ -861,7 +861,7 @@
                     </a>
                     
                     <a href="{{ route('pages.contact') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-gray-900 hover:bg-gray-50 flex items-center justify-between group {{ request()->routeIs('pages.contact') ? 'bg-primary/5 text-primary' : '' }}">
-                        {{ __('common.footer.contact') ?? 'İletişim' }}
+                        İletişim
                         <svg class="w-5 h-5 text-gray-400 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                     </a>
 
