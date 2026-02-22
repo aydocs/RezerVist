@@ -19,7 +19,7 @@
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">E-posta Gönderin</h3>
                     <p class="text-gray-500 mb-4">Sorularınız için bize e-posta yoluyla ulaşabilirsiniz.</p>
-                    <a href="mailto:{{ $globalSettings['contact_email'] ?? '' }}" class="text-primary font-bold hover:underline">{{ $globalSettings['contact_email'] ?? 'destek@rezervist.com' }}</a>
+                    <a href="mailto:{{ $globalSettings['contact_email'] ?? '' }}" class="text-primary font-bold hover:underline">{{ $globalSettings['contact_email'] ?? 'iletisim@rezervist.com' }}</a>
                 </div>
 
                 <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 transition-all hover:shadow-xl hover:shadow-primary/5 group">
