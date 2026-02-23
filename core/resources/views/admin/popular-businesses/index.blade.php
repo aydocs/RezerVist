@@ -116,7 +116,7 @@
 
         <!-- Pagination -->
         <div class="mt-8">
-            {{ $businesses->links() }}
+            {{ $businesses->links('vendor.pagination.console') }}
         </div>
 
     </div>

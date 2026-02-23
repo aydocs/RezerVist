@@ -114,7 +114,7 @@
                         @endforelse
                         
                         <div class="p-6">
-                            {{ $messages->appends(request()->query())->links('vendor.pagination.simple-tailwind') }}
+                            {{ $messages->appends(request()->query())->links('vendor.pagination.console') }}
                         </div>
                     </div>
                 </div>

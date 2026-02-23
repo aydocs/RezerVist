@@ -141,7 +141,7 @@
         <!-- Pagination -->
         @if($users->hasPages())
             <div class="flex justify-center pt-4">
-                {{ $users->links() }}
+                {{ $users->links('vendor.pagination.console') }}
             </div>
         @endif
 

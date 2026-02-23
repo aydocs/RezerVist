@@ -85,7 +85,7 @@
         <!-- Professional Pagination -->
         @if($applications->hasPages())
             <div class="mt-12 flex justify-center">
-                {{ $applications->links('vendor.pagination.tailwind') }}
+                {{ $applications->links('vendor.pagination.console') }}
             </div>
         @endif
 
