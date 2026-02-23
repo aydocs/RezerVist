@@ -321,50 +321,49 @@ class AdminController extends Controller
         return redirect()->route('admin.applications.show', $id)->with('success', 'Başvuru onaylandı. Kullanıcı işletme rolüne yükseltildi ve taslak işletme profili oluşturuldu.');
     }
 
-    public function viewDocument($id, $field)
-    {
-        $application = BusinessApplication::findOrFail($id);
+public function viewDocument($id, $field)
+{
+    $application = BusinessApplication::findOrFail($id);
 
-        // Security check: Only admins can view documents
-        if (auth()->user()->role !== 'admin') {
-            abort(403, 'Bu belgeyi görüntülemek için yetkiniz bulunmamaktadır.');
-        }
-
-        // Allowed fields for security
-        $allowedFields = [
-            'trade_registry_document',
-            'tax_document',
-            'license_document',
-            'id_document',
-            'bank_document',
-        ];
-
-        if (! in_array($field, $allowedFields)) {
-            abort(403, 'Geçersiz belge alanı.');
-        }
-
-        $path = $application->$field;
-
-        if (! $path) {
-            abort(404, 'Belge yolu bulunamadı.');
-        }
-
-        // Normalize path separators for Storage facade (always forward slashes)
-        $path = str_replace(['\\', '/'], '/', $path);
-
-        // Debug: Check local disk (private)
-        if (\Storage::disk('local')->exists($path)) {
-            return \Storage::disk('local')->response($path);
-        }
-
-        // Check public disk for legacy files
-        if (\Storage::disk('public')->exists($path)) {
-            return \Storage::disk('public')->response($path);
-        }
-
-        \Log::error("Document not found on any disk: {$path} (App ID: {$id})");
-        abort(404, 'Belge fiziksel olarak bulunamadı.');
+    if (auth()->user()->role !== 'admin') {
+        abort(403, 'Yetkisiz erişim.');
     }
+
+    $allowedFields = ['trade_registry_document', 'tax_document', 'license_document', 'id_document', 'bank_document'];
+    if (!in_array($field, $allowedFields)) {
+        abort(403, 'Geçersiz belge.');
+    }
+
+    $path = $application->$field;
+    if (!$path) {
+        abort(404, 'Belge bulunamadı.');
+    }
+
+    // Dosya yolunu temizle
+    $path = str_replace(['\\', '/'], '/', $path);
+
+    // Her iki diski de kontrol et (local ve public)
+    $disk = null;
+    if (\Storage::disk('local')->exists($path)) {
+        $disk = 'local';
+    } elseif (\Storage::disk('public')->exists($path)) {
+        $disk = 'public';
+    }
+
+    if (!$disk) {
+        \Log::error("Dosya bulunamadı: {$path}");
+        abort(404, 'Dosya sunucuda fiziksel olarak yok.');
+    }
+
+    // Tarayıcı hatasını önlemek için buffer'ı temizle
+    if (ob_get_level()) ob_end_clean();
+
+    // Dosyayı doğrudan response olarak değil, download-inline olarak gönder (daha güvenlidir)
+    return \Storage::disk($disk)->download($path, null, [
+        'Content-Disposition' => 'inline; filename="' . basename($path) . '"'
+    ]);
+}
+
 
     public function handleNotification($user, $application, $request, $tempPassword)
     {
