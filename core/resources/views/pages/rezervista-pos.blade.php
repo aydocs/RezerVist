@@ -812,12 +812,39 @@ pre.api-code{
 #chat-bubble:hover .chat-tooltip{opacity:1;}
 
 /* ============================
+   NAVBAR
+============================ */
+.pos-nav{
+  position:fixed;top:24px;left:50%;transform:translateX(-50%);
+  width:min(1380px,94vw);height:68px;background:rgba(255,255,255,0.8);
+  backdrop-filter:blur(16px);border:1.5px solid rgba(255,255,255,0.4);
+  border-radius:20px;z-index:9000;display:flex;align-items:center;
+  justify-content:space-between;padding:0 24px;
+  box-shadow:0 8px 32px rgba(0,0,0,0.06);transition:all 0.4s cubic-bezier(0.19,1,0.22,1);
+  opacity:0;visibility:hidden;
+}
+.pos-nav.on{opacity:1;visibility:visible;}
+.pos-nav.scrolled{top:12px;height:60px;background:rgba(255,255,255,0.9);box-shadow:0 12px 48px rgba(0,0,0,0.12);border-radius:15px;}
+.nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--ff-h);font-size:1.1rem;font-weight:800;color:var(--tx);}
+.nav-logo-mark{width:32px;height:32px;background:var(--p);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-size:1rem;font-weight:900;}
+.nav-links{display:flex;align-items:center;gap:32px;}
+.nav-link{font-size:0.875rem;font-weight:600;color:var(--txm);transition:color 0.2s;}
+.nav-link:hover{color:var(--p);}
+.nav-acts{display:flex;align-items:center;gap:12px;}
+.btn-nav-p{padding:10px 20px;background:var(--p);color:white;border-radius:12px;font-size:0.85rem;font-weight:700;box-shadow:0 4px 12px rgba(91,33,182,0.2);transition:all 0.2s;}
+.btn-nav-p:hover{background:var(--pd);transform:translateY(-1px);}
+.btn-nav-o{padding:9px 18px;border:1.5px solid var(--br);border-radius:12px;font-size:0.85rem;font-weight:700;color:var(--txm);transition:all 0.2s;}
+.btn-nav-o:hover{border-color:var(--p);color:var(--p);}
+
+/* ============================
    RESPONSIVE
 ============================ */
 @media(max-width:1100px){
+  .pos-nav{top:0;left:0;right:0;width:100%;border-radius:0;transform:none;height:64px;}
+  .nav-links{display:none;}
   .sec,.sec-sm,.footer{padding:80px 24px;}
   .stats-wrap{padding:56px 24px;}
-  .hero{padding:88px 24px 64px;}
+  .hero{padding:120px 24px 64px;}
   .hero-in{grid-template-columns:1fr;gap:52px;text-align:center;}
   .hero-stats{justify-content:center;}
   .hero-sub,.sec-sub{margin-left:auto;margin-right:auto;}
@@ -837,7 +864,7 @@ pre.api-code{
   .api-block{flex-direction:column;padding:28px 22px;}
   .footer-top{grid-template-columns:1fr 1fr;}
   .footer-mid{grid-template-columns:1fr;}
-  .footer-bottom{flex-direction:column;text-align:center;}
+  .footer-bottom{flex-direction:column;gap:12px;text-align:center;}
   #kvkk-banner{flex-direction:column;align-items:flex-start;}
   #chat-bubble{bottom:24px;left:24px;}
 }
@@ -851,6 +878,7 @@ pre.api-code{
   .cta-trust{gap:16px;}
   #skip-intro{bottom:18px;right:18px;}
   .intro-dots{bottom:18px;}
+  .nav-acts .btn-nav-o{display:none;}
 }
 </style>
 
@@ -1056,6 +1084,27 @@ pre.api-code{
      MAIN PAGE
 ===================== -->
 <div id="main-page" :class="{ 'on': done }">
+
+<!-- =====================
+     NAVBAR
+============================ -->
+<nav class="pos-nav" :class="{ 'on': done, 'scrolled': scrolled }">
+  <div class="nav-logo">
+    <div class="nav-logo-mark">R</div>
+    <span>RezerVist POS</span>
+  </div>
+  <div class="nav-links">
+    <a href="#features" class="nav-link">Özellikler</a>
+    <a href="#roi" class="nav-link">Kazanç</a>
+    <a href="#hardware" class="nav-link">Donanım</a>
+    <a href="#pricing" class="nav-link">Fiyatlar</a>
+    <a href="#faq" class="nav-link">Yardım</a>
+  </div>
+  <div class="nav-acts">
+    <a href="{{ route('pages.contact') }}" class="btn-nav-o">Demo Al</a>
+    <a href="{{ route('register') }}" class="btn-nav-p">Hemen Başla</a>
+  </div>
+</nav>
 
 <!-- =====================
      HERO
@@ -2032,6 +2081,99 @@ pre.api-code{
   </div>
 </section>
 
+<!-- =====================
+     FOOTER
+===================== -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-logo">
+          <div class="fbl-mark">R</div>
+          <div class="fbl-name">RezerVist POS</div>
+        </div>
+        <p class="footer-brand-desc">İşletmenizin sinir sistemi. Rezervasyon, mutfak, stok ve analitik süreçlerinizi tek noktadan yönetin.</p>
+        <div class="footer-socials">
+          <a href="#" class="fsoc"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#" class="fsoc"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="fsoc"><i class="fa-brands fa-linkedin"></i></a>
+          <a href="#" class="fsoc"><i class="fa-brands fa-facebook"></i></a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Ürün Çözümleri</div>
+        <div class="footer-links">
+          <a href="#features" class="footer-link">POS Terminali</a>
+          <a href="#hardware" class="footer-link">Donanım Paketleri</a>
+          <a href="#integrations" class="footer-link">Entegrasyonlar</a>
+          <a href="#demo" class="footer-link">Canlı Demo</a>
+          <a href="#roi" class="footer-link">Yatırım Getirisi</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Kurumsal</div>
+        <div class="footer-links">
+          <a href="{{ route('pages.about') }}" class="footer-link">Hakkımızda</a>
+          <a href="{{ route('pages.contact') }}" class="footer-link">İletişim & Destek</a>
+          <a href="{{ route('pages.pos.versions') }}" class="footer-link">Sürüm Notları</a>
+          <a href="#" class="footer-link">İş Ortaklığı</a>
+          <a href="#" class="footer-link">Blog & Haberler</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Müşteri Köşesi</div>
+        <div class="footer-links">
+          <a href="/docs" class="footer-link">Geliştirici dökümanları</a>
+          <a href="#" class="footer-link">Yardım Merkezi SSS</a>
+          <a href="#" class="footer-link">Kullanıcı Klavuzu</a>
+          <a href="#" class="footer-link">Topluluk Forumu</a>
+          <a href="#" class="footer-link">Sistem Durumu</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-mid">
+      <div>
+        <div class="footer-badge">BÜLTEN</div>
+        <div class="footer-col-title" style="margin-bottom:12px;">Yeniliklerden ve kampanyalardan haberdar olun</div>
+        <div class="footer-newsletter">
+          <input type="email" placeholder="E-posta adresiniz" class="fn-input">
+          <button class="fn-btn">Abone Ol</button>
+        </div>
+      </div>
+      <div class="footer-cert">
+        <div class="fcert"><i class="fa-solid fa-certificate"></i> PCI-DSS v4.0 Compliant</div>
+        <div class="fcert"><i class="fa-solid fa-shield"></i> ISO 27001 Certified</div>
+        <div class="fcert"><i class="fa-solid fa-lock"></i> AES-256 Encrypted Security</div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="fb-copy">&copy; {{ date('Y') }} RezerVist Systems Inc. Tüm hakları saklıdır.</div>
+      <div class="fb-links">
+        <a href="#" class="fb-link">Kullanım Koşulları</a>
+        <a href="#" class="fb-link">Gizlilik Politikası</a>
+        <a href="#" class="fb-link">Çerez Politikası</a>
+        <a href="#" class="fb-link">KVKK Aydınlatma Metni</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- KVKK Banner -->
+<div id="kvkk-banner">
+  <div class="kvkk-text">Deneyiminizi iyileştirmek ve kişiselleştirmek için çerezleri kullanıyoruz. <a href="#">Çerez Politikamızı</a> inceleyerek daha fazla bilgi edinebilirsiniz.</div>
+  <div class="kvkk-actions">
+    <button class="kvkk-btn-no">Reddet</button>
+    <button class="kvkk-btn-ok">Kabul Et</button>
+  </div>
+</div>
+
+<!-- Live Chat -->
+<div id="chat-bubble">
+  <i class="fa-solid fa-comment-dots"></i>
+  <div class="cbadge">1</div>
+  <div class="chat-tooltip">Merhaba! Size nasıl yardımcı olabiliriz?</div>
+</div>
+
 </div><!-- /main-page -->
 </div><!-- /x-data -->
 
@@ -2164,9 +2306,14 @@ document.querySelectorAll('.kvkk-btn-ok,.kvkk-btn-no').forEach(b=>{
 // ============================
 function posIntro(){
   return{
-    scene:0,done:false,progress:0,total:8,timer:null,progTimer:null,
+    scene:0,done:false,progress:0,total:8,timer:null,progTimer:null,scrolled:false,
     durations:[1800,2200,2600,2800,2800,2600,2600,3600],
-    init(){this.runScene(0);},
+    init(){
+      this.runScene(0);
+      window.addEventListener('scroll', () => {
+        this.scrolled = window.scrollY > 50;
+      });
+    },
     runScene(idx){
       if(idx>=this.total){this.finish();return;}
       this.scene=idx;const dur=this.durations[idx];
