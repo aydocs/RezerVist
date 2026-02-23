@@ -605,7 +605,7 @@
                                     </a>
 
                                     <a href="{{ route('profile.wallet.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"></path></svg>
+                                        <i class="fa-solid fa-credit-card text-[14px]"></i>
                                         {{ __('common.menu.wallet') }}
                                     </a>
 
@@ -683,7 +683,7 @@
                                             {{ __('common.menu.financial_reports') }}
                                         </a>
                                         <a href="{{ route('vendor.billing.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2 font-semibold">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"></path></svg>
+                                            <i class="fa-solid fa-credit-card text-[14px]"></i>
                                             {{ __('common.menu.plans') }}
                                         </a>
                                     @endif
@@ -1004,7 +1004,7 @@
                                     </a>
                                     <a href="{{ route('vendor.billing.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-700 hover:bg-primary/5 hover:text-primary transition-all group font-semibold">
                                         <div class="w-9 h-9 bg-gray-100 group-hover:bg-primary/10 rounded-lg flex items-center justify-center transition-colors">
-                                            <svg class="w-5 h-5 text-gray-600 group-hover:text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"></path></svg>
+                                            <i class="fa-solid fa-credit-card text-lg text-gray-600 group-hover:text-primary"></i>
                                         </div>
                                         <span>{{ __('common.menu.plans') }}</span>
                                     </a>

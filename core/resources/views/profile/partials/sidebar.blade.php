@@ -53,7 +53,7 @@
 
     <a href="{{ route('profile.wallet.index') }}" class="flex items-center px-4 py-3.5 {{ request()->is('profile/wallet*') ? 'bg-primary/5 text-primary font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }} rounded-2xl transition-all group">
         <div class="w-8 h-8 rounded-full {{ request()->is('profile/wallet*') ? 'bg-primary/10 text-primary' : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600' }} flex items-center justify-center mr-3 transition">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"></path></svg>
+            <i class="fa-solid fa-credit-card"></i>
         </div>
         Cüzdanım
     </a>
