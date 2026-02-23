@@ -1770,7 +1770,7 @@ pre.api-code{
 <section class="sec" id="faq" style="position:relative;background:var(--bg);overflow:hidden;padding:120px 64px;">
   <div style="position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(91,33,182,0.06) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
   
-  <div class="sec-in" style="position:relative;z-index:2;max-width:1100px;">
+  <div class="sec-in" style="position:relative;z-index:2;max-width:1200px;">
     <div class="reveal" style="text-align:center;margin-bottom:60px;">
       <span class="sec-tag">SSS</span>
       <h2 class="sec-h" style="font-size:3.2rem;margin-top:16px;">Aklınızdaki<br><em>Sorular.</em></h2>
@@ -1825,74 +1825,6 @@ pre.api-code{
 .new-faq-item.open .faq-q { color:var(--p); }
 </style>
 
-<!-- =====================
-     CTA
-===================== -->
-<section class="sec" id="contact" style="padding:140px 64px;">
-  <div class="sec-in" style="max-width:1200px;">
-    <div class="cta-premium-box reveal" style="position:relative;background:linear-gradient(145deg, #1e0b3b 0%, #0a041a 100%);border-radius:32px;padding:80px 60px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);box-shadow:0 60px 120px rgba(10,4,26,0.6), inset 0 1px 0 rgba(255,255,255,0.15);">
-      
-      <!-- Background glows -->
-      <div style="position:absolute;top:-20%;left:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(167,139,250,0.2) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
-      <div style="position:absolute;bottom:-30%;right:-10%;width:700px;height:700px;background:radial-gradient(circle,rgba(6,182,212,0.15) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
-      
-      <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;">
-        
-        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:8px 16px;border-radius:100px;color:white;font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:24px;backdrop-filter:blur(10px);">
-          <i class="fa-solid fa-bolt" style="color:#F59E0B;"></i> Hazır Mısınız?
-        </div>
-        
-        <h2 class="cta-h2" style="font-family:var(--ff-h);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:900;color:white;line-height:1.05;letter-spacing:-0.03em;margin-bottom:24px;">Hemen Bugün<br><span style="background:linear-gradient(135deg,#A78BFA 0%,#6EE7B7 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Dijitalleşin.</span></h2>
-        
-        <p class="cta-p" style="font-size:1.1rem;color:rgba(255,255,255,0.6);max-width:600px;margin-bottom:40px;line-height:1.6;">14 gün boyunca tüm özellikleri ücretsiz deneyin. Kredi kartı gerekmez. Kurulum ekibimiz aynı gün sisteminizi hazır hale getirsin.</p>
-        
-        <!-- Premium Countdown -->
-        <div class="cta-cd-box" style="background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:24px 32px;display:inline-flex;flex-direction:column;align-items:center;margin-bottom:48px;backdrop-filter:blur(12px);">
-          <div style="font-size:0.7rem;font-weight:800;color:rgba(255,255,255,0.4);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:16px;font-family:var(--ff-b);">Lansmana Özel İndirim Bitiyor</div>
-          <div class="trial-countdown" style="display:flex;align-items:center;gap:16px;">
-            <div class="cd-item" style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:60px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.1);"><div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;" id="ct-d">03</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:700;margin-top:2px;">Gün</div></div>
-            <div class="cd-sep" style="color:rgba(255,255,255,0.2);font-size:1.5rem;font-weight:800;margin-top:-16px;">:</div>
-            <div class="cd-item" style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:60px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.1);"><div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;" id="ct-h">14</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:700;margin-top:2px;">Saat</div></div>
-            <div class="cd-sep" style="color:rgba(255,255,255,0.2);font-size:1.5rem;font-weight:800;margin-top:-16px;">:</div>
-            <div class="cd-item" style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:60px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.1);"><div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;" id="ct-m">37</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:700;margin-top:2px;">Dak</div></div>
-            <div class="cd-sep" style="color:rgba(255,255,255,0.2);font-size:1.5rem;font-weight:800;margin-top:-16px;">:</div>
-            <div class="cd-item" style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:60px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.1);"><div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;" id="ct-s">22</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:700;margin-top:2px;">Sn</div></div>
-          </div>
-        </div>
-        
-        <div class="cta-actions" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:32px;width:100%;">
-          <a href="{{ route('register') }}" style="display:inline-flex;align-items:center;gap:10px;padding:18px 36px;background:white;color:var(--p);font-weight:800;font-size:1rem;border-radius:100px;text-decoration:none;box-shadow:0 15px 35px rgba(255,255,255,0.15);transition:all 0.3s;position:relative;overflow:hidden;" class="premium-btn">
-            <span style="position:relative;z-index:2;"><i class="fa-solid fa-rocket"></i> Ücretsiz Başlat</span>
-          </a>
-          <button onclick="document.getElementById('video-modal').classList.add('open')" style="display:inline-flex;align-items:center;gap:10px;padding:18px 36px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:white;font-weight:700;font-size:1rem;border-radius:100px;cursor:pointer;backdrop-filter:blur(10px);transition:all 0.3s;" class="premium-btn-o">
-            <i class="fa-solid fa-play"></i> Demo İzle
-          </button>
-        </div>
-        
-        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center;">
-          <div style="display:flex;align-items:center;gap:8px;font-size:0.75rem;color:rgba(255,255,255,0.45);font-weight:600;"><i class="fa-solid fa-shield-check"></i> PCI-DSS Uyumlu</div>
-          <div style="display:flex;align-items:center;gap:8px;font-size:0.75rem;color:rgba(255,255,255,0.45);font-weight:600;"><i class="fa-solid fa-headset"></i> 7/24 Destek</div>
-          <div style="display:flex;align-items:center;gap:8px;font-size:0.75rem;color:rgba(255,255,255,0.45);font-weight:600;"><i class="fa-solid fa-rotate-left"></i> Anında İptal</div>
-          <div style="display:flex;align-items:center;gap:8px;font-size:0.75rem;color:rgba(255,255,255,0.45);font-weight:600;"><i class="fa-solid fa-users"></i> {{ $formattedBusinessesCount }}{{ $businessSuffix }}+ İşletme</div>
-        </div>
-        
-        <!-- Mini testimonial -->
-        <div class="cta-mini-testi" style="display:inline-flex;align-items:center;gap:14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:16px 24px;margin-top:24px;">
-          <div style="display:flex;margin-right:4px;">
-            @foreach(['var(--p),#A78BFA','#0ABBA3,#06B6D4','#F59E0B,#EF4444'] as $g)
-            <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,{{ $g }});border:2px solid rgba(255,255,255,0.2);margin-left:-8px;display:flex;align-items:center;justify-content:center;font-family:var(--ff-h);font-weight:900;font-size:0.75rem;color:white;">{{ ['M','S','E'][$loop->index] }}</div>
-            @endforeach
-          </div>
-          <div style="text-align:left;">
-            <div style="font-size:0.78rem;font-weight:700;color:white;">"İlk haftada fark ettik. Harika!"</div>
-            <div style="font-size:0.65rem;color:rgba(255,255,255,0.45);margin-top:2px;">{{ $formattedBusinessesCount }}{{ $businessSuffix }}+ memnun işletme katıldı</div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
 
 <style>
 .premium-btn:hover { transform:translateY(-3px); box-shadow:0 20px 45px rgba(255,255,255,0.25); background:#f8f9fa; }
