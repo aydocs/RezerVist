@@ -24,10 +24,18 @@ class AdminController extends Controller
 
         $stats = [
             'pending_applications' => BusinessApplication::where('status', 'pending')->count(),
-            'active_businesses' => Business::count(),
+            'active_businesses' => Business::where('is_active', true)->count(),
+            'inactive_businesses' => Business::where('is_active', false)->count(),
             'total_users' => User::count(),
+            'verified_users' => User::whereNotNull('email_verified_at')->count(),
+            'unverified_users' => User::whereNull('email_verified_at')->count(),
             'total_reservations' => \App\Models\Reservation::count(),
             'total_revenue' => $totalRevenue,
+            'today_revenue' => \App\Models\Reservation::where('reservations.status', '!=', 'cancelled')
+                ->join('businesses', 'reservations.business_id', '=', 'businesses.id')
+                ->whereDate('reservations.created_at', now())
+                ->selectRaw('SUM(COALESCE(reservations.total_amount, reservations.price, 0) * COALESCE(businesses.commission_rate, 5) / 100) as revenue')
+                ->first()->revenue ?? 0,
             'total_volume' => $totalVolume,
             'pending_reviews' => \App\Models\Review::where('status', 'pending')->count(),
         ];
