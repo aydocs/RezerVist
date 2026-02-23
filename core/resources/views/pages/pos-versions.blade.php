@@ -56,8 +56,8 @@
 
   /* TIMELINE */
   .timeline-section{padding:0 60px 120px;}
-  .timeline-inner{max-width:760px;margin:0 auto;position:relative;}
-  .timeline-line{position:absolute;left:28px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--primary) 0%,var(--border) 100%);border-radius:2px;}
+  .timeline-inner{max-width:760px;margin:0 auto;position:relative;padding-left:10px;}
+  .timeline-line{position:absolute;left:23px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--primary) 0%,var(--border) 100%);border-radius:2px;}
 
   .ver-card{
     position:relative;padding-left:72px;margin-bottom:40px;
@@ -66,7 +66,7 @@
   .ver-card.visible{opacity:1;transform:translateY(0);}
 
   .ver-dot{
-    position:absolute;left:16px;top:28px;width:26px;height:26px;border-radius:50%;
+    position:absolute;left:11px;top:28px;width:26px;height:26px;border-radius:50%;
     border:3px solid white;box-shadow:0 0 0 2px var(--border),0 4px 12px var(--shadow);
     z-index:2;
   }
@@ -102,8 +102,8 @@
   }
   .ver-item:hover{border-color:rgba(98,0,238,0.1);background:var(--surface-2);}
   .ver-check{
-    width:18px;height:18px;border-radius:6px;flex-shrink:0;margin-top:1px;
-    display:flex;align-items:center;justify-content:center;font-size:0.55rem;
+    width:20px;height:20px;border-radius:6px;flex-shrink:0;margin-top:1px;
+    display:flex;align-items:center;justify-content:center;font-size:0.6rem;
   }
   .ver-check.feat{background:rgba(98,0,238,0.08);color:var(--primary);}
   .ver-check.perf{background:rgba(3,218,198,0.1);color:#0ABBA3;}
@@ -115,9 +115,9 @@
   @media(max-width:768px){
     .ver-hero{padding:110px 22px 60px;}
     .timeline-section{padding:0 22px 80px;}
-    .ver-card{padding-left:56px;margin-bottom:28px;}
-    .timeline-line{left:20px;}
-    .ver-dot{left:8px;width:22px;height:22px;}
+    .ver-card{padding-left:52px;margin-bottom:28px;}
+    .timeline-line{left:15px;}
+    .ver-dot{left:3px;width:22px;height:22px;}
     .ver-box{padding:22px 20px;}
     .ver-box-header{flex-direction:column;align-items:flex-start;gap:6px;}
   }
@@ -156,7 +156,7 @@
             <div class="ver-box-ver">v4.2.0</div>
             <div class="ver-box-title">Akıllı Terminal Motoru</div>
           </div>
-          <div class="ver-tag new"><i class="fa-solid fa-sparkles" style="font-size:.5rem;"></i> En Yeni</div>
+          <div class="ver-tag new"><i class="fa-solid fa-star" style="font-size:.5rem;"></i> En Yeni</div>
         </div>
         <div class="ver-box-date">20 Şubat 2026</div>
         <ul class="ver-list">
@@ -218,7 +218,7 @@
             <div class="ver-box-ver">v3.0.0</div>
             <div class="ver-box-title">Masa Yönetimi 2.0</div>
           </div>
-          <div class="ver-tag new"><i class="fa-solid fa-sparkles" style="font-size:.5rem;"></i> Major</div>
+          <div class="ver-tag new"><i class="fa-solid fa-star" style="font-size:.5rem;"></i> Major</div>
         </div>
         <div class="ver-box-date">30 Ocak 2026</div>
         <ul class="ver-list">
@@ -247,7 +247,7 @@
             <div class="ver-box-ver">v2.3.1</div>
             <div class="ver-box-title">Performans İyileştirmeleri</div>
           </div>
-          <div class="ver-tag fix"><i class="fa-solid fa-wrench" style="font-size:.5rem;"></i> Düzeltme</div>
+          <div class="ver-tag fix"><i class="fa-solid fa-screwdriver-wrench" style="font-size:.5rem;"></i> Düzeltme</div>
         </div>
         <div class="ver-box-date">15 Ocak 2026</div>
         <ul class="ver-list">
