@@ -11,7 +11,7 @@
     <!-- Premium Global Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- TailwindCSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -25,25 +25,30 @@
                     },
                     colors: {
                         brand: {
+                            50: '#F5F3FF',
+                            100: '#EDE9FE',
                             500: '#6200EE',
                             600: '#5000D3',
+                            700: '#4c00b0',
                         },
-                        dark: {
-                            900: '#050505',
-                            800: '#0A0A0A',
-                            700: '#111111',
-                            600: '#1A1A1A',
+                        slate: {
+                            50: '#F8FAFC',
+                            100: '#F1F5F9',
+                            200: '#E2E8F0',
+                            300: '#CBD5E1',
+                            400: '#94A3B8',
+                            500: '#64748B',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1E293B',
+                            900: '#0F172A',
+                            950: '#020617',
                         }
                     },
-                    animation: {
-                        'slow-float': 'float 10s ease-in-out infinite',
-                        'subtle-pulse': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-15px)' },
-                        }
+                    boxShadow: {
+                        'premium': '0 20px 50px -12px rgba(0, 0, 0, 0.08)',
+                        'inner-subtle': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
+                        'card': '0 10px 30px -5px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02)',
                     }
                 }
             }
@@ -54,258 +59,337 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        body { background-color: #050505; }
-        .hero-grid {
-            background-image: 
-                radial-gradient(circle at 2px 2px, #1a1a1a 1px, transparent 0);
-            background-size: 40px 40px;
+        body { 
+            background-color: #FFFFFF;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        .bento-card {
-            background: #0A0A0A;
-            border: 1px solid #161616;
-            transition: all 0.3s ease;
+        .dot-pattern {
+            background-image: radial-gradient(#E2E8F0 1px, transparent 1px);
+            background-size: 32px 32px;
         }
-        .bento-card:hover {
-            border-color: #6200EE;
-            background: #0D0D0D;
+        .pos-window {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.15), 0 18px 36px -18px rgba(0, 0, 0, 0.2);
+        }
+        .receipt-shadow {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
         .text-gradient {
-            background: linear-gradient(135deg, #fff 0%, #666 100%);
+            background: linear-gradient(135deg, #1E293B 0%, #64748B 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .purple-glow {
-            box-shadow: 0 0 50px -10px rgba(98, 0, 238, 0.4);
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .animate-float {
+            animation: float 5s ease-in-out infinite;
         }
     </style>
 </head>
-<body class="text-slate-400 font-sans selection:bg-brand-500/30 selection:text-white">
+<body class="text-slate-600 font-sans selection:bg-brand-100 selection:text-brand-600">
 
-    <!-- Minimalist Navbar -->
-    <nav class="fixed top-0 w-full z-50 border-b border-white/[0.03] bg-dark-900/90 backdrop-blur-md">
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 border-b border-slate-100 bg-white/80 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <a href="/" class="flex items-center gap-4 group">
-                <div class="w-9 h-9 bg-brand-500 rounded flex items-center justify-center text-white">
-                    <i class="fas fa-terminal text-sm"></i>
+                <div class="w-10 h-10 bg-brand-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand-500/20">
+                    <i class="fas fa-bolt"></i>
                 </div>
-                <span class="text-lg font-black text-white tracking-tighter">RezerVist<span class="text-brand-500 italic">A</span></span>
+                <span class="text-xl font-black text-slate-900 tracking-tighter">RezerVist<span class="text-brand-500">A</span></span>
             </a>
             <div class="flex items-center gap-8">
-                <a href="/" class="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500 hover:text-white transition-colors">Ana Sayfa</a>
-                <a href="/login" class="px-5 py-2 bg-white text-black rounded text-[10px] font-black uppercase tracking-widest hover:bg-brand-500 hover:text-white transition-all">GİRİŞ</a>
+                <a href="/" class="text-xs font-bold uppercase tracking-widest text-slate-500 hover:text-brand-500 transition-colors">Ana Sayfa</a>
+                <a href="/login" class="px-6 py-2.5 bg-brand-500 text-white rounded-lg text-xs font-black uppercase tracking-widest hover:bg-brand-600 transition-all shadow-md">Giriş Yap</a>
             </div>
         </div>
     </nav>
 
     <main>
-        <!-- Dynamic Hero -->
-        <section class="relative pt-40 pb-32 lg:pt-56 lg:pb-48 hero-grid">
-            <div class="absolute inset-0 bg-gradient-to-b from-dark-900 via-transparent to-dark-900 pointer-events-none"></div>
+        <!-- Hero Section: Premium Light -->
+        <section class="relative pt-40 pb-32 lg:pt-56 lg:pb-64 dot-pattern overflow-hidden">
+            <div class="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-white to-transparent"></div>
             
-            <div class="max-w-7xl mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-24 items-center">
+            <div class="max-w-7xl mx-auto px-6 relative z-10 grid lg:grid-cols-12 gap-20 items-center">
                 
-                <!-- Hero Content: Always Visible -->
-                <div class="text-center lg:text-left">
-                    <div class="inline-flex items-center gap-3 px-3 py-1 bg-white/5 border border-white/10 rounded text-[9px] font-black tracking-widest text-brand-500 uppercase mb-8">
-                        <span class="w-1 h-1 rounded-full bg-brand-500 animate-ping"></span>
-                        Enterprise POS Solution
+                <!-- Hero Content -->
+                <div class="lg:col-span-5 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-50 border border-brand-100 rounded-full text-[10px] font-black tracking-widest text-brand-500 uppercase mb-10">
+                        <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+                        Yeni Nesil POS Deneyimi
                     </div>
                     
-                    <h1 class="text-5xl lg:text-8xl font-black text-white tracking-tighter leading-[0.9] mb-10 font-display">
-                        <span class="text-gradient">Siz Yönetin,</span> <br>
-                        <span class="text-brand-500 italic">Teknoloji <br> Çalışsın.</span>
+                    <h1 class="text-5xl lg:text-7xl font-black text-slate-950 tracking-tight leading-[1] mb-10 font-display">
+                        <span class="text-gradient">İşletmenizi</span> <br>
+                        <span class="text-brand-500 italic">Yeniden <br> Tanımlayın.</span>
                     </h1>
                     
-                    <p class="text-base lg:text-lg text-slate-500 font-medium leading-relaxed max-w-lg mb-12 mx-auto lg:mx-0">
-                        Hantallıktan arındırılmış, saf performans için optimize edilmiş bir ekosistem. RezerVistA ile işletmenizi saniyeler içinde dijital geleceğe entegre edin.
+                    <p class="text-lg text-slate-500 font-medium leading-relaxed mb-12 max-w-xl mx-auto lg:mx-0">
+                        Karmaşık sistemleri unutun. RezerVistA POS ile hız, güvenlik ve kusursuz bir kullanıcı deneyimi tek bir platformda birleşiyor.
                     </p>
                     
-                    <div class="flex flex-wrap gap-5 justify-center lg:justify-start">
-                        <a href="<?php echo route('pages.pos.versions'); ?>" class="px-9 py-5 bg-brand-500 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-brand-600 transition-all purple-glow flex items-center gap-3">
-                            <i class="fab fa-windows"></i> İndir
+                    <div class="flex flex-wrap gap-4 justify-center lg:justify-start">
+                        <a href="<?php echo route('pages.pos.versions'); ?>" class="px-10 py-5 bg-slate-950 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-brand-500 transition-all shadow-xl shadow-slate-950/10 flex items-center gap-3">
+                            <i class="fab fa-windows"></i> Hemen İndir
                         </a>
-                        <a href="/business-partner" class="px-9 py-5 bg-dark-700 border border-white/5 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-dark-600 transition-all flex items-center gap-3">
-                            Demo İzle
+                        <a href="/business-partner" class="px-10 py-5 bg-white border border-slate-200 text-slate-900 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-50 transition-all flex items-center gap-3">
+                            ÜCRETSİZ DEMO
                         </a>
-                    </div>
-                    
-                    <div class="mt-20 flex gap-8 justify-center lg:justify-start">
-                        <div class="space-y-1">
-                            <p class="text-[9px] font-black text-slate-600 tracking-widest uppercase italic">Latency</p>
-                            <p class="text-xl font-black text-white italic">&lt; 15ms</p>
-                        </div>
-                        <div class="w-px h-10 bg-white/5"></div>
-                        <div class="space-y-1">
-                            <p class="text-[9px] font-black text-slate-600 tracking-widest uppercase italic">Security</p>
-                            <p class="text-xl font-black text-white italic">AES-256</p>
-                        </div>
                     </div>
                 </div>
 
-                <!-- Abstract Visual Mockup -->
-                <div class="relative group lg:block hidden">
-                    <div class="relative bg-dark-800 border-2 border-white/[0.02] rounded-[2.5rem] p-3 shadow-2xl animate-slow-float">
-                        <div class="bg-dark-900 rounded-[2rem] p-10 overflow-hidden relative">
-                            <!-- Terminal UI Sim -->
-                            <div class="flex items-center justify-between mb-12">
-                                <div class="flex gap-2">
-                                    <div class="w-2.5 h-2.5 rounded-full bg-white/10"></div>
-                                    <div class="w-2.5 h-2.5 rounded-full bg-white/10"></div>
+                <!-- Realistic POS Window Mockup -->
+                <div class="lg:col-span-7 relative">
+                    <div class="pos-window rounded-[2.5rem] p-3 overflow-hidden animate-float">
+                        <div class="bg-slate-50 rounded-[2rem] h-[500px] overflow-hidden flex flex-col border border-slate-200 shadow-inner-subtle">
+                            <!-- Window Header -->
+                            <div class="h-14 bg-white border-b border-slate-200 px-6 flex items-center justify-between">
+                                <div class="flex items-center gap-6">
+                                    <div class="flex gap-1.5">
+                                        <div class="w-3 h-3 rounded-full bg-slate-200"></div>
+                                        <div class="w-3 h-3 rounded-full bg-slate-200"></div>
+                                        <div class="w-3 h-3 rounded-full bg-slate-200"></div>
+                                    </div>
+                                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">RezerVistA Terminal v4.0</span>
                                 </div>
-                                <div class="text-[9px] font-black text-slate-700 uppercase tracking-[0.4em]">Floor_Master.09</div>
+                                <div class="flex items-center gap-3 text-slate-400">
+                                    <i class="fas fa-wifi text-[10px]"></i>
+                                    <span class="text-[10px] font-bold">12:45 PM</span>
+                                </div>
                             </div>
                             
-                            <div class="grid grid-cols-4 gap-4 mb-20">
-                                <template x-for="i in 12">
-                                    <div class="h-8 rounded bg-white/[0.02] border border-white/[0.03]"
-                                         :class="[1, 5, 8, 12].includes(i) ? 'bg-brand-500/20 border-brand-500/30' : ''"></div>
-                                </template>
-                            </div>
-                            
-                            <div class="flex items-end justify-between">
-                                <div class="space-y-4 w-1/2">
-                                    <div class="h-1 bg-white/5 w-full"></div>
-                                    <div class="h-1 bg-white/5 w-2/3"></div>
-                                    <div class="h-1 bg-brand-500 w-1/2"></div>
+                            <div class="flex-1 flex overflow-hidden">
+                                <!-- POS Sidebar (Categories) -->
+                                <div class="w-20 bg-white border-r border-slate-200 py-6 flex flex-col items-center gap-6">
+                                    <div class="w-10 h-10 bg-brand-500 text-white rounded-xl flex items-center justify-center text-sm shadow-md">
+                                        <i class="fas fa-utensils"></i>
+                                    </div>
+                                    <div class="w-10 h-10 bg-slate-100 text-slate-400 rounded-xl flex items-center justify-center text-sm">
+                                        <i class="fas fa-coffee"></i>
+                                    </div>
+                                    <div class="w-10 h-10 bg-slate-100 text-slate-400 rounded-xl flex items-center justify-center text-sm">
+                                        <i class="fas fa-wine-glass"></i>
+                                    </div>
+                                    <div class="w-10 h-10 bg-slate-100 text-slate-400 rounded-xl flex items-center justify-center text-sm">
+                                        <i class="fas fa-ice-cream"></i>
+                                    </div>
                                 </div>
-                                <div class="text-3xl font-black text-white italic tracking-tighter">₺12.4K</div>
+                                
+                                <!-- POS Main View (Tables/Grid) -->
+                                <div class="flex-1 p-6 overflow-y-auto">
+                                    <div class="flex items-center justify-between mb-8">
+                                        <h3 class="text-sm font-black text-slate-900 uppercase">Zemin Kat - Salon</h3>
+                                        <div class="flex gap-2">
+                                            <div class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[9px] font-bold">12 Boş</div>
+                                            <div class="px-3 py-1 bg-brand-50 text-brand-600 rounded-full text-[9px] font-bold">8 Dolu</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="grid grid-cols-4 gap-4">
+                                        <template x-for="i in 12">
+                                            <div class="aspect-square rounded-2xl border-2 flex flex-col items-center justify-center gap-2 transition-all cursor-pointer"
+                                                 :class="[1, 3, 6, 8, 10].includes(i) ? 'bg-white border-slate-200' : (i == 2 ? 'bg-brand-500 border-brand-500 shadow-lg shadow-brand-500/20' : 'bg-brand-50 border-brand-100')">
+                                                <span class="text-[10px] font-black uppercase" :class="i == 2 ? 'text-white' : 'text-slate-400'">Masa</span>
+                                                <span class="text-lg font-black" :class="i == 2 ? 'text-white' : 'text-slate-900'" x-text="i"></span>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                                
+                                <!-- POS Order (Receipt) -->
+                                <div class="w-64 bg-white border-l border-slate-200 flex flex-col p-5">
+                                    <div class="mb-6">
+                                        <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Masa 2</div>
+                                        <div class="text-xs font-black text-slate-900">Aktif Sipariş</div>
+                                    </div>
+                                    
+                                    <div class="flex-1 space-y-4 overflow-y-auto">
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <div class="text-[11px] font-bold text-slate-800">Antrikot Izgara</div>
+                                                <div class="text-[9px] text-slate-400">Orta Pişmiş</div>
+                                            </div>
+                                            <div class="text-[11px] font-black text-slate-900">₺450</div>
+                                        </div>
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <div class="text-[11px] font-bold text-slate-800">Sezar Salata</div>
+                                            </div>
+                                            <div class="text-[11px] font-black text-slate-900">₺220</div>
+                                        </div>
+                                        <div class="flex justify-between items-start">
+                                            <div>
+                                                <div class="text-[11px] font-bold text-slate-800">Coca Cola (x2)</div>
+                                            </div>
+                                            <div class="text-[11px] font-black text-slate-900">₺140</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="pt-5 border-t border-slate-100 mt-5">
+                                        <div class="flex justify-between items-center mb-6">
+                                            <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Toplam</span>
+                                            <span class="text-xl font-black text-slate-950">₺810,00</span>
+                                        </div>
+                                        <button class="w-full py-3 bg-brand-500 text-white rounded-xl text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-brand-500/20">ÖDEME AL</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Floating Solid Badges -->
-                    <div class="absolute -top-6 -right-6 bg-dark-700 border border-brand-500/30 px-6 py-4 rounded-2xl shadow-2xl">
-                        <p class="text-[9px] font-black text-brand-500 uppercase tracking-widest mb-1">Peak Mode</p>
-                        <p class="text-xs font-black text-white">Aktif & Stabil</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Bento Grid: Value Prop -->
-        <section class="py-32 bg-dark-900 relative">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="grid lg:grid-cols-12 gap-6">
-                    
-                    <!-- Bento Main -->
-                    <div class="lg:col-span-8 bento-card rounded-[3rem] p-12 flex flex-col justify-between">
-                        <div class="w-16 h-16 bg-brand-500 text-white rounded-2xl flex items-center justify-center text-3xl mb-24 rotate-3">
-                            <i class="fas fa-layer-group"></i>
+                    <!-- Floating Sales Card -->
+                    <div class="absolute -bottom-10 -left-10 bg-white p-6 rounded-3xl shadow-premium border border-slate-100 flex items-center gap-5 z-20 hover:scale-105 transition-transform">
+                        <div class="w-14 h-14 bg-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center text-2xl">
+                            <i class="fas fa-chart-line"></i>
                         </div>
                         <div>
-                            <h2 class="text-3xl lg:text-5xl font-black text-white tracking-tighter mb-4 italic uppercase leading-none">Saf Teknoloji, <br> Kesin Sonuçlar.</h2>
-                            <p class="text-slate-500 font-medium max-w-md">Karmaşıklıktan uzak, tamamen performans ve hız odaklı geliştirilmiş altyapı her an yanınızda.</p>
-                        </div>
-                    </div>
-
-                    <!-- Bento Small 1 -->
-                    <div class="lg:col-span-4 bento-card rounded-[3rem] p-12">
-                        <div class="text-indigo-500 text-4xl mb-12">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                        <h3 class="text-xl font-black text-white uppercase mb-4 tracking-tight">Hız Odaklı</h3>
-                        <p class="text-slate-500 font-medium text-sm leading-relaxed">Saniyelerin kritik olduğu anlarda asla bekletmez.</p>
-                    </div>
-
-                    <!-- Bento Small 2 -->
-                    <div class="lg:col-span-4 bento-card rounded-[3rem] p-12">
-                        <div class="text-emerald-500 text-4xl mb-12">
-                            <i class="fas fa-microchip"></i>
-                        </div>
-                        <h3 class="text-xl font-black text-white uppercase mb-4 tracking-tight">Hibrit Mimari</h3>
-                        <p class="text-slate-500 font-medium text-sm leading-relaxed">Lokal hız, bulut güvenliği. Kesintisiz işleyiş.</p>
-                    </div>
-
-                    <!-- Bento Wide -->
-                    <div class="lg:col-span-8 bento-card rounded-[3rem] p-12 flex flex-col lg:flex-row items-center gap-12">
-                        <div class="lg:flex-1">
-                            <h3 class="text-2xl font-black text-white uppercase mb-4 tracking-tight italic">Eşsiz Veri Kontrolü</h3>
-                            <p class="text-slate-500 font-medium text-sm leading-relaxed">Raporlamadan stok yönetimine, her şey tek bir merkezden en profesyonel şekilde yönetilir.</p>
-                        </div>
-                        <div class="lg:w-1/3 w-full bg-white/5 border border-white/10 rounded-2xl p-6">
-                            <div class="flex justify-between items-center mb-4">
-                                <span class="text-[10px] font-bold text-slate-500">Peak Load</span>
-                                <span class="w-3 h-3 rounded-full bg-brand-500 shadow-[0_0_8px_#6200EE]"></span>
-                            </div>
-                            <div class="space-y-3">
-                                <div class="h-1 bg-white/10 rounded-full w-full"></div>
-                                <div class="h-1 bg-white/10 rounded-full w-3/4"></div>
-                                <div class="h-1 bg-brand-500 rounded-full w-1/2"></div>
+                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Günlük Ciro</p>
+                            <p class="text-xl font-black text-slate-900">₺14,820</p>
+                            <div class="flex items-center gap-1.5 mt-1">
+                                <span class="text-[9px] font-bold text-emerald-500">+12.5%</span>
+                                <span class="text-[9px] text-slate-400 font-medium tracking-tight">düne göre</span>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </section>
 
-        <!-- Technical Excellence Section -->
-        <section class="py-40 bg-white border-t border-white/5">
-            <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-24 items-center">
-                <div class="order-2 lg:order-1">
-                    <div class="grid grid-cols-2 gap-8">
-                        <div class="p-8 bg-slate-50 rounded-3xl border border-slate-100">
-                            <p class="text-4xl font-black text-black mb-2 tracking-tighter">60ms</p>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Sync Duration</p>
+        <!-- Features Bento: Light Luxe -->
+        <section class="py-32 bg-slate-50 relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-6 relative z-10">
+                <div class="text-center mb-24">
+                    <h2 class="text-4xl lg:text-5xl font-black text-slate-950 tracking-tight leading-tighter mb-6 font-display">Teknolojinin Kalbi Burada.</h2>
+                    <p class="text-slate-500 font-medium max-w-2xl mx-auto">Her detayı titizlikle düşünülmüş, işletmenizi bir adım öteye taşıyacak profesyonel araçlar.</p>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div class="bg-white p-10 rounded-[2.5rem] border border-slate-200 shadow-card flex flex-col group hover:border-brand-500/50 transition-colors">
+                        <div class="w-16 h-16 bg-brand-50 text-brand-500 rounded-2xl flex items-center justify-center text-3xl mb-12 shadow-inner-subtle group-hover:bg-brand-500 group-hover:text-white transition-all">
+                            <i class="fas fa-bolt"></i>
                         </div>
-                        <div class="p-8 bg-slate-50 rounded-3xl border border-slate-100">
-                            <p class="text-4xl font-black text-black mb-2 tracking-tighter">99.9%</p>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Uptime</p>
+                        <h3 class="text-xl font-black text-slate-900 uppercase tracking-tight mb-4 italic">Kusursuz Hız</h3>
+                        <p class="text-slate-500 font-medium leading-relaxed mb-8 flex-1">En yoğun saatlerde bile donmayan, kasmayan ve anında yanıt veren bir arayüz ile operasyonunuz aksamasın.</p>
+                        <div class="h-1 w-12 bg-brand-500"></div>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="bg-white p-10 rounded-[2.5rem] border border-slate-200 shadow-card flex flex-col group hover:border-emerald-500/50 transition-colors">
+                        <div class="w-16 h-16 bg-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center text-3xl mb-12 shadow-inner-subtle group-hover:bg-emerald-500 group-hover:text-white transition-all">
+                            <i class="fas fa-shield-alt"></i>
                         </div>
-                        <div class="p-8 bg-slate-50 rounded-3xl border border-slate-100">
-                            <p class="text-4xl font-black text-black mb-2 tracking-tighter">AES</p>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Military Grade</p>
+                        <h3 class="text-xl font-black text-slate-900 uppercase tracking-tight mb-4 italic">Üstün Güvenlik</h3>
+                        <p class="text-slate-500 font-medium leading-relaxed mb-8 flex-1">Verileriniz bizimle güvende. Uçtan uca şifreleme ve gelişmiş kullanıcı yetkilendirme sistemleri ile her şey kontrolünüzde.</p>
+                        <div class="h-1 w-12 bg-emerald-500"></div>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="bg-white p-10 rounded-[2.5rem] border border-slate-200 shadow-card flex flex-col group hover:border-slate-900/50 transition-colors">
+                        <div class="w-16 h-16 bg-slate-100 text-slate-800 rounded-2xl flex items-center justify-center text-3xl mb-12 shadow-inner-subtle group-hover:bg-slate-900 group-hover:text-white transition-all">
+                            <i class="fas fa-microchip"></i>
                         </div>
-                        <div class="p-8 bg-slate-50 rounded-3xl border border-slate-100">
-                            <p class="text-4xl font-black text-black mb-2 tracking-tighter">&infin;</p>
-                            <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Scale</p>
+                        <h3 class="text-xl font-black text-slate-900 uppercase tracking-tight mb-4 italic">Hibrit Altyapı</h3>
+                        <p class="text-slate-500 font-medium leading-relaxed mb-8 flex-1">İnternet bağlantınız kopsa dahi terminaliniz çalışmaya devam eder. Bağlantı geldiğinde verileriniz otomatik senkronize olur.</p>
+                        <div class="h-1 w-12 bg-slate-950"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product Philosophy: Light/Dark Contrast -->
+        <section class="py-40 bg-white">
+            <div class="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-24">
+                <div class="lg:w-1/2">
+                    <h2 class="text-5xl lg:text-7xl font-black text-slate-950 tracking-tighter leading-[0.95] mb-12 uppercase italic">Arayüz Değil, <br> <span class="text-brand-500">Standart.</span></h2>
+                    <p class="text-xl text-slate-500 font-medium leading-relaxed mb-12">
+                        RezerVistA bir yazılımdan fazlasıdır. İhtiyacınız olan her özelliği, en sade ve en şık haliyle işletmenizin merkezine yerleştirir. Karmaşıklığa yer yok.
+                    </p>
+                    <div class="grid grid-cols-2 gap-10">
+                        <div class="space-y-4">
+                            <div class="text-5xl font-black text-slate-950 tracking-tighter">99.9%</div>
+                            <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Hizmet Süresi</div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="text-5xl font-black text-brand-500 tracking-tighter">&infin;</div>
+                            <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Sınırsız Kapasite</div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="order-1 lg:order-2">
-                    <h2 class="text-5xl lg:text-7xl font-black text-black tracking-tighter leading-[0.95] mb-10 italic uppercase">Cihaz Değil, <br> Deneyim.</h2>
-                    <p class="text-lg text-slate-500 font-medium leading-relaxed mb-12">
-                        Personelinizin öğrenmesi gereken karmaşık sayfalar yok. Her piksel, hata payını sıfıra indirmek ve işlem hızını en tepeye taşımak için özenle yerleştirildi.
-                    </p>
-                    <ul class="space-y-4">
-                        <li class="flex items-center gap-4 text-black font-bold uppercase tracking-tight text-sm">
-                            <div class="w-6 h-6 bg-brand-500 rounded text-white flex items-center justify-center text-xs"><i class="fas fa-check"></i></div>
-                            Fiziksel / Dijital Tam Entegrasyon
-                        </li>
-                        <li class="flex items-center gap-4 text-black font-bold uppercase tracking-tight text-sm">
-                            <div class="w-6 h-6 bg-brand-500 rounded text-white flex items-center justify-center text-xs"><i class="fas fa-check"></i></div>
-                            Bulut Tabanlı Raporlama
-                        </li>
-                    </ul>
+                <div class="lg:w-1/2 w-full">
+                    <!-- Realistic Dashboard Feature Card -->
+                    <div class="bg-slate-950 rounded-[3rem] p-10 text-white shadow-2xl relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-brand-500/10 blur-[100px]"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-between mb-16">
+                                <h4 class="text-xl font-black uppercase tracking-tight">Akıllı Raporlama</h4>
+                                <div class="px-4 py-1.5 bg-brand-500 text-white rounded-full text-[10px] font-bold uppercase tracking-widest">Canlı</div>
+                            </div>
+                            
+                            <div class="space-y-8 mb-16">
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-end">
+                                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Haftalık Satış Hedefi</span>
+                                        <span class="text-sm font-black">₺140,000 / ₺200,000</span>
+                                    </div>
+                                    <div class="h-2 bg-white/5 rounded-full overflow-hidden">
+                                        <div class="h-full bg-brand-500 w-[70%]" style="box-shadow: 0 0 15px #6200EE;"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="grid grid-cols-3 gap-6">
+                                    <div class="bg-white/5 p-5 rounded-2xl border border-white/5">
+                                        <div class="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-3">Siparişler</div>
+                                        <div class="text-2xl font-black">1.2k</div>
+                                    </div>
+                                    <div class="bg-white/5 p-5 rounded-2xl border border-white/5">
+                                        <div class="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-3">Ort. Sepet</div>
+                                        <div class="text-2xl font-black">₺340</div>
+                                    </div>
+                                    <div class="bg-white/5 p-5 rounded-2xl border border-white/5">
+                                        <div class="text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-3">İptaller</div>
+                                        <div class="text-2xl font-black text-emerald-400">-4%</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p class="text-slate-400 font-medium text-sm">
+                                Tek bir panel üzerinden tüm şubelerinizin verilerini eş zamanlı takip edin, analiz edin ve işletmenizi büyütün.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Final Call to Action -->
-        <section class="py-48 bg-dark-900 text-center relative overflow-hidden">
-            <div class="absolute inset-0 hero-grid opacity-10"></div>
+        <section class="py-48 bg-slate-950 text-center relative overflow-hidden">
+            <div class="absolute inset-0 dot-pattern opacity-10"></div>
             <div class="max-w-4xl mx-auto px-6 relative z-10">
-                <h2 class="text-5xl lg:text-8xl font-black text-white tracking-tighter uppercase italic leading-[0.9] mb-16">Hazırsan <br> Başlayalım.</h2>
+                <h2 class="text-6xl lg:text-8xl font-black text-white tracking-tighter uppercase italic leading-[0.9] mb-16">Deneyİme <br> Hazır mısın?</h2>
                 <div class="flex flex-col sm:flex-row justify-center gap-6">
-                    <a href="<?php echo route('pages.pos.versions'); ?>" class="px-12 py-6 bg-brand-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-brand-600 transition-all purple-glow flex items-center justify-center gap-4">
-                        <i class="fab fa-windows text-xl"></i> Terminali İndir
+                    <a href="<?php echo route('pages.pos.versions'); ?>" class="px-12 py-6 bg-brand-500 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-brand-600 transition-all shadow-xl shadow-brand-500/20 flex items-center justify-center gap-4">
+                        <i class="fab fa-windows text-xl"></i> TERMİNALİ İNDİR
                     </a>
-                    <a href="/register" class="px-12 py-6 bg-dark-700 border border-white/5 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-dark-600 transition-all flex items-center justify-center gap-4">
-                        Hesap Oluştur
+                    <a href="/register" class="px-12 py-6 bg-white text-slate-950 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-50 transition-all flex items-center justify-center gap-4">
+                        HESAP OLUŞTUR
                     </a>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-dark-900 border-t border-white/[0.03] py-12">
+    <footer class="bg-white border-t border-slate-100 py-12">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="flex items-center gap-3">
-                <div class="w-7 h-7 bg-white/5 rounded flex items-center justify-center font-black text-white text-[10px]">R</div>
-                <span class="font-bold text-white text-xs tracking-widest uppercase">RezerVist</span>
+            <div class="flex items-center gap-3 text-slate-900 transition-colors">
+                <div class="w-8 h-8 rounded-lg bg-slate-950 text-white flex items-center justify-center font-black text-xs">R</div>
+                <span class="font-bold text-sm tracking-widest uppercase">RezerVist</span>
             </div>
-            <p class="text-slate-600 text-[10px] font-bold uppercase tracking-[0.4em]">© <?php echo date('Y'); ?> RezerVist Engineering. Tüm Hakları Saklıdır.</p>
+            <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.4em]">© <?php echo date('Y'); ?> RezerVist Engineering. Tüm Hakları Saklıdır.</p>
         </div>
     </footer>
 
