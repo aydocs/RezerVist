@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'RezerVist POS — Akıllı İşletme Terminali')
+@section('title', 'RezerVistA POS — Akıllı İşletme Terminali')
 
 @section('content')
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -930,7 +930,7 @@ pre.api-code{
         <div style="width:36px;height:36px;background:var(--p);border-radius:10px;display:flex;align-items:center;justify-content:center;"><span style="color:white;font-family:var(--ff-h);font-weight:900;font-size:1.1rem;">R</span></div>
         <span style="font-size:0.68rem;font-weight:800;color:var(--txm);letter-spacing:0.22em;text-transform:uppercase;font-family:var(--ff-b);">Satış Noktası Çözümü</span>
       </div>
-      <h1 class="i-type" style="font-family:var(--ff-h);font-size:clamp(2.4rem,6vw,4.5rem);font-weight:900;color:var(--tx);letter-spacing:-0.05em;margin:0 auto;">RezerVist POS</h1>
+      <h1 class="i-type" style="font-family:var(--ff-h);font-size:clamp(2.4rem,6vw,4.5rem);font-weight:900;color:var(--tx);letter-spacing:-0.05em;margin:0 auto;">RezerVistA POS</h1>
       <div class="a-f d9" style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:28px;">
         <div class="i-statcard" style="text-align:center;"><div class="i-sv" style="color:var(--p);">v1.0</div><div class="i-sl">Sürüm</div></div>
         <div class="i-statcard" style="text-align:center;"><div class="i-sv" style="color:var(--grn);">Aktif</div><div class="i-sl">Durum</div></div>
@@ -1136,7 +1136,7 @@ pre.api-code{
       <div class="terminal">
         <div class="t-hdr">
           <div class="t-dots"><div class="t-dot td-r"></div><div class="t-dot td-o"></div><div class="t-dot td-g"></div></div>
-          <span class="t-lbl">RezerVist POS v1.0</span>
+          <span class="t-lbl">RezerVistA POS v1.0</span>
           <div style="width:32px;"></div>
         </div>
         <div class="t-body">
@@ -1176,7 +1176,7 @@ pre.api-code{
     <div class="vmod-header">
 <div class="vmod-title">
   <i class="fa-solid fa-video" style="margin-right:8px;color:var(--p);"></i>
-  RezerVist POS — Demo Videosu
+  RezerVistA POS — Demo Videosu
 </div>
       <div class="vmod-close" onclick="document.getElementById('video-modal').classList.remove('open')"><i class="fa-solid fa-xmark"></i></div>
     </div>
@@ -1186,7 +1186,7 @@ pre.api-code{
           <i class="fa-solid fa-play"></i>
         </div>
         <p style="font-family:var(--ff-h);font-size:1.1rem;font-weight:700;color:var(--tx);">3 Dakikada Tüm Özellikler</p>
-        <p style="font-size:0.82rem;color:var(--txs);">Kurulumdan ilk siparişe — RezerVist POS'u canlı görün.</p>
+        <p style="font-size:0.82rem;color:var(--txs);">Kurulumdan ilk siparişe — RezerVistA POS'u canlı görün.</p>
         <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px;">
           <div class="i-chip"><i class="fa-solid fa-clock" style="font-size:.55rem;"></i> 3:24 dk</div>
           <div class="i-chip"><i class="fa-solid fa-cc" style="font-size:.55rem;"></i> Türkçe Altyazı</div>
@@ -1684,66 +1684,6 @@ pre.api-code{
   </div>
 </section>
 
-<!-- =====================
-     ROI CALCULATOR
-===================== -->
-<section class="sec roi-sec" id="roi">
-  <div class="sec-in">
-    <div class="reveal" style="text-align:center;">
-      <span class="sec-tag">Yatırım Geri Dönüşü</span>
-      <h2 class="sec-h">RezerVist ile<br><em>Ne Kadar Kazanırsınız?</em></h2>
-      <p class="sec-sub" style="margin:0 auto;">Parametrelerinizi girin, tahmini gelir artışınızı hesaplayın.</p>
-    </div>
-    <div class="roi-wrap">
-      <div class="roi-card reveal" style="transition-delay:.1s;">
-        <div style="margin-bottom:24px;padding-bottom:20px;border-bottom:1.5px solid var(--br);">
-          <div style="font-family:var(--ff-h);font-size:1.1rem;font-weight:700;color:var(--tx);margin-bottom:4px;">İşletme Bilgileri</div>
-          <div style="font-size:0.78rem;color:var(--txm);">Slider'ları hareket ettirerek sonuçları güncelleyin.</div>
-        </div>
-        <label class="roi-label">Aylık Ortalama Ciro (₺)</label>
-        <input type="number" class="roi-input" id="roi-rev" value="150000" oninput="calcROI()">
-        <label class="roi-label">Günlük Masa Sayısı</label>
-        <input type="range" class="roi-slider" id="roi-tables" min="4" max="80" value="56" oninput="document.getElementById('tables-val').textContent=this.value;calcROI()">
-        <div class="roi-slider-val"><span>4 masa</span><span id="tables-val" style="color:var(--p);font-size:0.8rem;font-weight:800;">56</span><span>80 masa</span></div>
-        <label class="roi-label">Ortalama Masa Devir Süresi (dk)</label>
-        <input type="range" class="roi-slider" id="roi-turn" min="20" max="120" value="20" oninput="document.getElementById('turn-val').textContent=this.value;calcROI()">
-        <div class="roi-slider-val"><span>20 dk</span><span id="turn-val" style="color:var(--p);font-size:0.8rem;font-weight:800;">20</span><span>120 dk</span></div>
-        <label class="roi-label">Aylık Personel Sayısı</label>
-        <input type="range" class="roi-slider" id="roi-staff" min="2" max="50" value="2" oninput="document.getElementById('staff-val').textContent=this.value;calcROI()">
-        <div class="roi-slider-val"><span>2 kişi</span><span id="staff-val" style="color:var(--p);font-size:0.8rem;font-weight:800;">2</span><span>50 kişi</span></div>
-      </div>
-
-      <div class="reveal" style="transition-delay:.2s;display:flex;flex-direction:column;justify-content:center;">
-        <div class="roi-result">
-          <div class="roi-r-label">Tahmini Ek Aylık Gelir</div>
-          <div class="roi-r-val" id="roi-income">₺52.416</div>
-          <div class="roi-r-sub" id="roi-sub">RezerVist'in optimize ettiği operasyon kazancı</div>
-          <div class="roi-result-grid">
-            <div class="roi-mini"><div class="roi-mini-v" id="roi-efficiency">+%24</div><div class="roi-mini-l">Verimlilik Artışı</div></div>
-            <div class="roi-mini"><div class="roi-mini-v" id="roi-waste">-₺8.250</div><div class="roi-mini-l">Azalan İsraf</div></div>
-            <div class="roi-mini"><div class="roi-mini-v" id="roi-payback">1.1 ay</div><div class="roi-mini-l">Geri Ödeme Süresi</div></div>
-            <div class="roi-mini"><div class="roi-mini-v" id="roi-annual">₺628.992</div><div class="roi-mini-l">Yıllık Ek Gelir</div></div>
-          </div>
-        </div>
-        <div style="background:white;border:1.5px solid var(--br);border-radius:var(--r);padding:24px;margin-top:16px;">
-          <div style="font-family:var(--ff-h);font-size:1rem;font-weight:700;color:var(--tx);margin-bottom:14px;">Nasıl Hesaplandı?</div>
-          <div style="display:flex;flex-direction:column;gap:9px;">
-            @foreach(['Sipariş kayıplarında %12 azalma','Masa devir hızında %15 artış','Stok israfında %22 düşüş','Personel verimliliğinde %18 artış'] as $r)
-            <div style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--txs);">
-              <div style="width:16px;height:16px;border-radius:5px;background:rgba(16,185,129,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-check" style="font-size:.45rem;color:var(--grn);"></i></div>
-              {{ $r }}
-            </div>
-            @endforeach
-          </div>
-          <div class="roi-disclaimer">* Tahminler RezerVist müşteri verilerine dayanmaktadır. Gerçek sonuçlar farklılık gösterebilir.</div>
-        </div>
-        <a href="{{ route('register') }}" class="btn-p" style="width:100%;justify-content:center;margin-top:14px;">
-          <i class="fa-solid fa-rocket" style="font-size:.72rem;"></i> Hemen Başla — 14 Gün Ücretsiz
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- =====================
      SECURITY
@@ -1794,76 +1734,6 @@ pre.api-code{
   </div>
 </section>
 
-<!-- =====================
-     HARDWARE
-===================== -->
-<section class="sec hw-sec" id="hardware">
-  <div class="sec-in">
-    <div class="reveal" style="text-align:center;">
-      <span class="sec-tag">Donanım</span>
-      <h2 class="sec-h">İşletmenize Özel<br><em>Terminal Seçenekleri.</em></h2>
-      <p class="sec-sub" style="margin:0 auto;text-align:center;">Kendi donanımınızı getirebilir ya da RezerVist sertifikalı cihazlarla eksiksiz başlangıç yapabilirsiniz.</p>
-    </div>
-    <div class="hw-grid reveal" style="transition-delay:.1s;">
-      <!-- Terminal Pro -->
-      <div class="hwcard">
-        <div class="hw-icon-wrap">🖥️</div>
-        <div class="hw-name">POS Terminal Lite</div>
-        <div class="hw-desc">Küçük ve orta ölçekli işletmeler için kompakt ve dayanıklı dokunmatik ekranlı terminal.</div>
-        <div class="hw-specs">
-          @foreach(['Ekran:10.1" Full HD IPS','İşlemci:Octa-core 1.8GHz','RAM:4GB DDR4','Depolama:64GB eMMC','Bağlantı:Wi-Fi + Ethernet','Pil:Yok (AC Güç)'] as $sp)
-          @php [$k,$v]=explode(':',$sp); @endphp
-          <div class="hw-spec"><div class="hw-spec-k">{{ $k }}</div><div class="hw-spec-v">{{ $v }}</div></div>
-          @endforeach
-        </div>
-        <div class="hw-price">
-          <div class="hwp-amount">₺8.990</div>
-          <div class="hwp-old">₺11.200</div>
-        </div>
-        <a href="{{ route('pages.contact') }}" class="btn-o" style="width:100%;justify-content:center;">Teklif Al</a>
-      </div>
-      <!-- Terminal Pro (Featured) -->
-      <div class="hwcard featured">
-        <div class="hw-icon-wrap">💻</div>
-        <div class="hw-name">POS Terminal Pro</div>
-        <div class="hw-desc">Yoğun kullanım için tasarlanmış yüksek performanslı, pil destekli mobil kasa terminali.</div>
-        <div class="hw-specs">
-          @foreach(['Ekran:15.6" Full HD IPS','İşlemci:Octa-core 2.4GHz','RAM:8GB DDR4','Depolama:128GB SSD','Bağlantı:Wi-Fi 6 + 4G LTE','Pil:8 Saat Kullanım'] as $sp)
-          @php [$k,$v]=explode(':',$sp); @endphp
-          <div class="hw-spec"><div class="hw-spec-k">{{ $k }}</div><div class="hw-spec-v">{{ $v }}</div></div>
-          @endforeach
-        </div>
-        <div class="hw-price">
-          <div class="hwp-amount">₺14.990</div>
-          <div class="hwp-old">₺18.500</div>
-        </div>
-        <a href="{{ route('pages.contact') }}" class="btn-p" style="width:100%;justify-content:center;">Teklif Al</a>
-      </div>
-      <!-- Tablet -->
-      <div class="hwcard">
-        <div class="hw-icon-wrap">📱</div>
-        <div class="hw-name">Garson Tableti</div>
-        <div class="hw-desc">Garsonlar için hafif ve dayanıklı Android tablet. Darbe korumalı kılıf ve el kayışı dahil.</div>
-        <div class="hw-specs">
-          @foreach(['Ekran:8" HD IPS','İşlemci:Hexa-core 1.6GHz','RAM:3GB','Depolama:32GB','Bağlantı:Wi-Fi + Bluetooth','Pil:10 Saat Kullanım'] as $sp)
-          @php [$k,$v]=explode(':',$sp); @endphp
-          <div class="hw-spec"><div class="hw-spec-k">{{ $k }}</div><div class="hw-spec-v">{{ $v }}</div></div>
-          @endforeach
-        </div>
-        <div class="hw-price">
-          <div class="hwp-amount">₺4.490</div>
-          <div class="hwp-old">₺5.800</div>
-        </div>
-        <a href="{{ route('pages.contact') }}" class="btn-o" style="width:100%;justify-content:center;">Teklif Al</a>
-      </div>
-    </div>
-    <div class="reveal" style="transition-delay:.2s;margin-top:20px;background:var(--sf);border:1.5px solid var(--br);border-radius:var(--r);padding:24px 32px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
-      <i class="fa-solid fa-laptop" style="font-size:1.5rem;color:var(--p);"></i>
-      <div style="flex:1;"><div style="font-family:var(--ff-h);font-size:0.95rem;font-weight:700;color:var(--tx);">Kendi Cihazınızı Kullanın (BYOD)</div><div style="font-size:0.8rem;color:var(--txs);margin-top:3px;">Windows, macOS, iPad veya Android tablet — RezerVist herhangi bir modern cihazda çalışır. Tarayıcı tabanlı veya native uygulama desteği mevcuttur.</div></div>
-      <a href="{{ route('pages.contact') }}" class="btn-o" style="white-space:nowrap;">Uyumluluğu Kontrol Et</a>
-    </div>
-  </div>
-</section>
 <!-- =====================
      INTEGRATIONS
 ===================== -->
@@ -1950,7 +1820,7 @@ pre.api-code{
   <div class="sec-in">
     <div class="reveal" style="text-align:center;">
       <span class="sec-tag">Müşteri Görüşleri</span>
-      <h2 class="sec-h">3.200+ İşletme<br><em>Konuşuyor.</em></h2>
+      <h2 class="sec-h">{{ $formattedBusinessesCount }}{{ $businessSuffix }}+ İşletme<br><em>Konuşuyor.</em></h2>
     </div>
     <div class="testi-grid">
       @php $testis=[
@@ -1993,7 +1863,7 @@ pre.api-code{
   
   <div class="sec-in" style="position:relative;z-index:2;max-width:1100px;">
     <div class="reveal" style="text-align:center;margin-bottom:60px;">
-      <span class="sec-tag" style="background:rgba(91,33,182,0.1);padding:6px 14px;border-radius:100px;border:1px solid rgba(91,33,182,0.2);">SSS</span>
+      <span class="sec-tag">SSS</span>
       <h2 class="sec-h" style="font-size:3.2rem;margin-top:16px;">Aklınızdaki<br><em>Sorular.</em></h2>
       <p class="sec-sub" style="margin:0 auto;max-width:500px;">Merak ettiklerinizi derledik. Bulamadığınız bir soru varsa, 7/24 destek ekibimiz yanınızda.</p>
     </div>
@@ -2042,7 +1912,7 @@ pre.api-code{
 <style>
 .new-faq-item:hover { border-color:var(--p); box-shadow:0 12px 24px rgba(91,33,182,0.06); transform:translateY(-2px); }
 .new-faq-item.open .faq-icon { transform:rotate(45deg); background:var(--p); color:white; }
-.new-faq-item.open .faq-a { max-height:400px; opacity:1; }
+.new-faq-item.open .faq-a { max-height:400px !important; opacity:1 !important; }
 .new-faq-item.open .faq-q { color:var(--p); }
 </style>
 
