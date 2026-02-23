@@ -430,14 +430,22 @@
 .afv{font-family:var(--ff-h);font-size:0.95rem;font-weight:700;color:var(--tx);margin-top:2px;}
 .app-stores{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
 .app-store-btn{
-  display:flex;align-items:center;gap:11px;padding:12px 22px;
-  background:var(--tx);color:white;border-radius:14px;transition:all 0.3s cubic-bezier(0.19,1,0.22,1);
-  border:1px solid rgba(255,255,255,0.05);box-shadow:0 10px 30px rgba(0,0,0,0.15);
+  display:flex;align-items:center;gap:12px;padding:12px 24px;
+  background:linear-gradient(180deg, #2A2D34 0%, #13151A 100%);
+  color:#ffffff !important;border-radius:14px;transition:all 0.3s cubic-bezier(0.19,1,0.22,1);
+  border:1px solid rgba(255,255,255,0.08);text-decoration:none;
+  box-shadow:0 8px 24px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.05);
 }
-.app-store-btn:hover{background:var(--p);transform:translateY(-3px);box-shadow:0 15px 40px rgba(91,33,182,0.3);border-color:rgba(255,255,255,0.15);}
-.asb-icon{font-size:1.6rem;opacity:0.95;}
-.asb-small{font-size:0.6rem;font-weight:600;opacity:0.6;letter-spacing:0.02em;text-transform:uppercase;}
-.asb-big{font-size:0.95rem;font-weight:800;line-height:1.1;margin-top:1px;}
+.app-store-btn:hover{
+  background:linear-gradient(180deg, #32363E 0%, #1A1D24 100%);
+  transform:translateY(-3px);
+  box-shadow:0 14px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.1);
+  border-color:rgba(255,255,255,0.15);
+}
+.app-store-btn * { color: #ffffff !important; }
+.asb-icon{font-size:1.7rem;line-height:1;}
+.asb-small{font-size:0.6rem;font-weight:600;opacity:0.75;letter-spacing:0.04em;text-transform:uppercase;}
+.asb-big{font-size:1rem;font-weight:800;line-height:1.1;margin-top:1px;letter-spacing:-0.01em;}
 .app-features{display:flex;flex-direction:column;gap:14px;margin-top:28px;}
 .app-feat{display:flex;align-items:flex-start;gap:14px;}
 .app-feat-ic{width:42px;height:42px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.95rem;}
@@ -1001,27 +1009,6 @@ pre.api-code{
           <div style="width:26px;border-radius:5px 5px 0 0;background:{{ $h>=90?'var(--grn)':($h>=70?'var(--p)':'rgba(91,33,182,0.2)') }};height:{{ $h }}%;animation:barGrow 0.8s cubic-bezier(0.19,1,0.22,1) {{ $idx*0.08 }}s both;align-self:flex-end;"></div>
         @endforeach
       </div>
-    </div>
-  </div>
-
-  <!-- SCENE 5 — Pricing preview -->
-  <div class="iscene" x-show="scene===5" x-cloak>
-    <div style="max-width:700px;width:100%;text-align:center;">
-      <div class="a-fd" style="margin-bottom:24px;">
-        <div class="i-chip" style="margin-bottom:12px;"><i class="fa-solid fa-tag" style="font-size:.58rem;"></i> Fiyatlandırma</div>
-        <h2 style="font-family:var(--ff-h);font-size:clamp(1.8rem,4vw,3rem);font-weight:900;color:var(--tx);letter-spacing:-0.045em;">İşletmenize Uygun <span style="color:var(--p);">Plan</span></h2>
-      </div>
-      <div class="a-sc d3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
-        @foreach([['Lite','₺990','1 Terminal','Küçük işletmeler için','sf'],['Pro','₺1.990','3 Terminal','Büyüyen işletmeler','p'],['Elite','₺3.490','Sınırsız','Zincir & Çok Şube','tx']] as $plan)
-        <div style="background:{{ $plan[4]==='p'?'var(--p)':($plan[4]==='tx'?'var(--tx)':'white') }};border:1.5px solid {{ $plan[4]==='p'?'var(--p)':($plan[4]==='tx'?'var(--tx)':'var(--br)') }};border-radius:16px;padding:22px 18px;text-align:center;">
-          <div style="font-size:0.68rem;font-weight:800;color:{{ $plan[4]==='p'||$plan[4]==='tx'?'rgba(255,255,255,0.6)':'var(--txm)' }};letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px;font-family:var(--ff-b);">{{ $plan[0] }}</div>
-          <div style="font-family:var(--ff-h);font-size:2rem;font-weight:900;color:{{ $plan[4]==='p'||$plan[4]==='tx'?'white':'var(--tx)' }};letter-spacing:-0.04em;margin-bottom:4px;">{{ $plan[1] }}<span style="font-size:0.75rem;font-weight:500;opacity:0.6;">/ay</span></div>
-          <div style="font-size:0.72rem;font-weight:600;color:{{ $plan[4]==='p'||$plan[4]==='tx'?'rgba(255,255,255,0.55)':'var(--txm)' }};">{{ $plan[2] }}</div>
-          <div style="font-size:0.68rem;color:{{ $plan[4]==='p'||$plan[4]==='tx'?'rgba(255,255,255,0.4)':'var(--txm)' }};margin-top:6px;">{{ $plan[3] }}</div>
-        </div>
-        @endforeach
-      </div>
-      <div class="a-f d7" style="margin-top:16px;font-size:0.75rem;color:var(--txm);">14 gün ücretsiz deneme · Kredi kartı gerekmez · Anında iptal</div>
     </div>
   </div>
 
