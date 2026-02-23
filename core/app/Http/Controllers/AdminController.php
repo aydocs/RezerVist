@@ -1262,6 +1262,9 @@ class AdminController extends Controller
         ];
 
         // 5. App Env
+
+
+        
         $health['environment'] = [
             'env' => config('app.env'),
             'debug' => config('app.debug') ? 'Enabled' : 'Disabled',
