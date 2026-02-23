@@ -547,9 +547,9 @@ class AdminController extends Controller
         $endDate = $request->get('end_date', now()->format('Y-m-d'));
 
         // Basic query builder for reuse
-        $detailsQuery = Reservation::whereDate('created_at', '>=', $startDate)
-            ->whereDate('created_at', '<=', $endDate)
-            ->where('status', '!=', 'cancelled');
+        $detailsQuery = Reservation::whereDate('reservations.created_at', '>=', $startDate)
+            ->whereDate('reservations.created_at', '<=', $endDate)
+            ->where('reservations.status', '!=', 'cancelled');
 
         // 1. Total Volume (Gross)
         $totalVolume = (clone $detailsQuery)->sum('price') ?? 0;
