@@ -560,10 +560,10 @@
 .roi-r-val{font-family:var(--ff-h);font-size:2.8rem;font-weight:900;letter-spacing:-0.05em;margin-bottom:4px;}
 .roi-r-sub{font-size:0.82rem;opacity:0.75;}
 .roi-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px;}
-.roi-mini{background:rgba(255,255,255,0.1);border-radius:12px;padding:16px;}
-.roi-mini-v{font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;}
-.roi-mini-l{font-size:0.65rem;font-weight:600;opacity:0.7;margin-top:3px;text-transform:uppercase;letter-spacing:0.08em;}
-.roi-disclaimer{font-size:0.72rem;color:var(--txm);margin-top:14px;text-align:center;}
+.roi-mini{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:16px;}
+.roi-mini-v{font-family:var(--ff-h);font-size:1.4rem;font-weight:800;color:white;}
+.roi-mini-l{font-size:0.6rem;font-weight:700;opacity:0.8;margin-top:4px;text-transform:uppercase;letter-spacing:0.05em;line-height:1.3;}
+.roi-disclaimer{font-size:0.75rem;color:var(--txm);margin-top:14px;text-align:center;}
 
 /* ============================
    SECURITY SECTION
@@ -574,27 +574,27 @@
 .sec-sec-in{position:relative;z-index:1;}
 .security-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:80px;align-items:center;margin-top:64px;}
 .sec-feats{display:flex;flex-direction:column;gap:22px;}
-.sec-feat{display:flex;gap:18px;align-items:flex-start;padding:22px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:16px;transition:all 0.3s;}
-.sec-feat:hover{background:rgba(255,255,255,0.07);border-color:rgba(91,33,182,0.4);}
-.sec-feat-ic{width:44px;height:44px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem;}
-.sf-ic-p{background:rgba(91,33,182,0.3);color:var(--pl2);}
-.sf-ic-g{background:rgba(16,185,129,0.2);color:#6EE7B7;}
-.sf-ic-a{background:rgba(14,165,233,0.2);color:#7DD3FC;}
-.sec-feat-title{font-family:var(--ff-h);font-size:1rem;font-weight:700;color:white;margin-bottom:5px;}
-.sec-feat-desc{font-size:0.838rem;color:rgba(255,255,255,0.55);line-height:1.65;}
-.sec-badge-grid{display:flex;flex-direction:column;gap:16px;}
-.sec-badge-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.secbdg{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:20px;text-align:center;transition:all 0.25s;}
-.secbdg:hover{background:rgba(255,255,255,0.08);border-color:rgba(91,33,182,0.4);}
-.secbdg-ic{font-size:1.6rem;color:var(--pl2);margin-bottom:10px;}
-.secbdg-title{font-family:var(--ff-h);font-size:0.88rem;font-weight:700;color:white;margin-bottom:4px;}
-.secbdg-sub{font-size:0.68rem;color:rgba(255,255,255,0.45);}
-.uptime-display{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;margin-top:16px;}
-.ud-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
-.ud-title{font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.12em;}
-.ud-val{font-family:var(--ff-h);font-size:1.2rem;font-weight:900;color:var(--grn);}
-.ud-bars{display:flex;gap:2px;align-items:flex-end;height:32px;}
-.ud-b{flex:1;border-radius:2px;background:rgba(16,185,129,0.3);}
+.sec-feat{display:flex;gap:18px;align-items:flex-start;padding:22px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:18px;transition:all 0.3s cubic-bezier(0.19,1,0.22,1);}
+.sec-feat:hover{background:rgba(255,255,255,0.05);border-color:var(--pl2);transform:translateX(5px);}
+.sec-feat-ic{width:48px;height:48px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+.sf-ic-p{background:rgba(91,33,182,0.4);color:var(--pl2);}
+.sf-ic-g{background:rgba(16,185,129,0.25);color:#6EE7B7;}
+.sf-ic-a{background:rgba(14,165,233,0.25);color:#7DD3FC;}
+.sec-feat-title{font-family:var(--ff-h);font-size:1.05rem;font-weight:700;color:white;margin-bottom:6px;letter-spacing:-0.01em;}
+.sec-feat-desc{font-size:0.875rem;color:rgba(255,255,255,0.6);line-height:1.6;}
+.sec-badge-grid{display:flex;flex-direction:column;gap:20px;}
+.sec-badge-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.secbdg{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:20px;text-align:center;transition:all 0.3s;}
+.secbdg:hover{background:rgba(255,255,255,0.06);border-color:var(--pl2);transform:translateY(-3px);}
+.secbdg-ic{font-size:1.8rem;color:var(--pl2);margin-bottom:12px;}
+.secbdg-title{font-family:var(--ff-h);font-size:0.95rem;font-weight:700;color:white;margin-bottom:4px;letter-spacing:-0.01em;}
+.secbdg-sub{font-size:0.75rem;color:rgba(255,255,255,0.5);line-height:1.3;}
+.uptime-display{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px;margin-top:8px;}
+.ud-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.ud-title{font-size:0.75rem;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.12em;}
+.ud-val{font-family:var(--ff-h);font-size:1.4rem;font-weight:900;color:var(--grn);}
+.ud-bars{display:flex;gap:3px;align-items:flex-end;height:40px;}
+.ud-b{flex:1;border-radius:2px;background:rgba(16,185,129,0.2);}
 .ud-b.ok{background:var(--grn);}
 .ud-b.warn{background:var(--ylw);}
 
@@ -625,18 +625,20 @@
    COMPARISON
 ============================ */
 .cmp-sec{background:var(--sf);}
-.cmp-table{margin-top:64px;border:1.5px solid var(--br);border-radius:var(--r2);overflow:hidden;background:white;box-shadow:0 8px 32px var(--sh);}
-.cmp-head{display:grid;grid-template-columns:2fr 1fr 1.15fr 1fr;background:white;border-bottom:1.5px solid var(--br);}
-.cmp-th{padding:22px 24px;font-size:0.838rem;font-weight:700;color:var(--txm);font-family:var(--ff-b);}
+.cmp-table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:10px;}
+.cmp-table{margin-top:64px;border:1.5px solid var(--br);border-radius:var(--r2);overflow:hidden;background:white;box-shadow:0 8px 32px var(--sh);min-width:760px;}
+.cmp-head{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;background:white;border-bottom:1.5px solid var(--br);}
+.cmp-th{padding:26px 20px;font-size:0.85rem;font-weight:800;color:var(--txm);font-family:var(--ff-b);text-align:center;}
+.cmp-th.feat{text-align:left;color:var(--tx);padding-left:32px;}
 .cmp-th.hero{background:var(--p);color:white;position:relative;}
-.cmp-th.hero::after{content:'Önerilen';position:absolute;top:-1px;left:50%;transform:translateX(-50%);font-size:0.52rem;font-weight:800;background:var(--grn);color:white;padding:2px 8px;border-radius:0 0 7px 7px;letter-spacing:0.1em;text-transform:uppercase;}
-.cmp-row{display:grid;grid-template-columns:2fr 1fr 1.15fr 1fr;border-bottom:1px solid var(--br);transition:background 0.2s;}
+.cmp-th.hero::after{content:'Önerilen';position:absolute;top:-1px;left:50%;transform:translateX(-50%);font-size:0.55rem;font-weight:800;background:var(--grn);color:white;padding:3px 10px;border-radius:0 0 8px 8px;letter-spacing:0.1em;text-transform:uppercase;}
+.cmp-row{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;border-bottom:1px solid var(--br);transition:background 0.2s;}
 .cmp-row:last-child{border-bottom:none;}
-.cmp-row:hover{background:var(--sf);}
-.cmp-cell{padding:16px 24px;display:flex;align-items:center;font-size:0.838rem;color:var(--txs);}
-.cmp-cell.feat{font-weight:600;color:var(--tx);}
+.cmp-row:hover{background:var(--bg2);}
+.cmp-cell{padding:18px 20px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--txs);text-align:center;}
+.cmp-cell.feat{font-weight:700;color:var(--tx);justify-content:flex-start;padding-left:32px;font-size:0.9rem;}
 .cmp-cell.hero{background:rgba(91,33,182,0.03);color:var(--p);font-weight:700;}
-.cy{color:var(--grn);}.cn{color:var(--txm);opacity:0.5;}.cp{color:var(--ylw);}
+.cy{color:var(--grn);font-size:1.1rem;}.cn{color:var(--txm);opacity:0.4;font-size:1.1rem;}.cp{color:var(--ylw);font-size:1.1rem;}
 
 /* ============================
    INTEGRATIONS
@@ -1106,7 +1108,10 @@ pre.api-code{
       <h1 class="hero-h">İşletmenizin<br><span class="g">Sinir Sistemi.</span></h1>
       <p class="hero-sub">Sadece bir POS değil — rezervasyon, mutfak, stok, analitik ve çok şube yönetimini sıfır gecikmeyle tek bir ekosistemde buluşturan akıllı terminal.</p>
       <div class="hero-acts">
-        <a href="#features" class="btn-p"><i class="fa-solid fa-arrow-down" style="font-size:.72rem;"></i> Özellikleri Keşfet</a>
+        <a href="#features" class="btn-p" style="color:#fff;">
+          <i class="fa-solid fa-arrow-down" style="font-size:.72rem;color:#fff;"></i>
+          Özellikleri Keşfet
+        </a>
         <button class="video-trigger" onclick="document.getElementById('video-modal').classList.add('open')">
           <div class="play-ring"><i class="fa-solid fa-play"></i></div> Demo İzle
         </button>
@@ -1182,7 +1187,10 @@ pre.api-code{
 <div id="video-modal" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="vmod-box">
     <div class="vmod-header">
-      <div class="vmod-title">🎬 RezerVist POS — Demo Videosu</div>
+<div class="vmod-title">
+  <i class="fa-solid fa-video" style="margin-right:8px;color:var(--p);"></i>
+  RezerVist POS — Demo Videosu
+</div>
       <div class="vmod-close" onclick="document.getElementById('video-modal').classList.remove('open')"><i class="fa-solid fa-xmark"></i></div>
     </div>
     <div class="vmod-body">
@@ -1394,10 +1402,14 @@ pre.api-code{
         <div style="font-family:var(--ff-h);font-size:1.8rem;font-weight:900;color:var(--tx);letter-spacing:-0.04em;line-height:1.1;">⏱ Ortalama <span style="background:linear-gradient(135deg,var(--p),var(--acc));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">8 dakikada</span><br>kurulum tamamlanır.</div>
         <div style="font-size:0.95rem;color:var(--txm);margin-top:10px;line-height:1.6;font-weight:500;">Hiçbir teknik bilgi gerekmez. Uzman ekibimiz ilk kurulumdan ürün girişine kadar her adımda size destek olur.</div>
       </div>
-      <div style="display:flex;gap:14px;flex-wrap:wrap;">
-        <a href="{{ route('register') }}" class="btn-p"><i class="fa-solid fa-rocket" style="font-size:.78rem;"></i> Hemen Başla</a>
-        <a href="{{ route('pages.contact') }}" class="btn-o">Ücretsiz Demo Al</a>
-      </div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <a href="{{ route('register') }}" class="btn-p">
+            <i class="fa-solid fa-rocket"></i> Hemen Başla
+        </a>
+        <a href="{{ route('pages.contact') }}" class="btn-o">
+            <i class="fa-solid fa-circle-play"></i> Ücretsiz Demo Al
+        </a>
+        </div>
     </div>
   </div>
 </section>
@@ -1670,26 +1682,26 @@ pre.api-code{
         <label class="roi-label">Aylık Ortalama Ciro (₺)</label>
         <input type="number" class="roi-input" id="roi-rev" value="150000" oninput="calcROI()">
         <label class="roi-label">Günlük Masa Sayısı</label>
-        <input type="range" class="roi-slider" id="roi-tables" min="4" max="80" value="24" oninput="document.getElementById('tables-val').textContent=this.value;calcROI()">
-        <div class="roi-slider-val"><span>4 masa</span><span id="tables-val">24</span><span>80 masa</span></div>
+        <input type="range" class="roi-slider" id="roi-tables" min="4" max="80" value="56" oninput="document.getElementById('tables-val').textContent=this.value;calcROI()">
+        <div class="roi-slider-val"><span>4 masa</span><span id="tables-val" style="color:var(--p);font-size:0.8rem;font-weight:800;">56</span><span>80 masa</span></div>
         <label class="roi-label">Ortalama Masa Devir Süresi (dk)</label>
-        <input type="range" class="roi-slider" id="roi-turn" min="20" max="120" value="55" oninput="document.getElementById('turn-val').textContent=this.value;calcROI()">
-        <div class="roi-slider-val"><span>20 dk</span><span id="turn-val">55</span><span>120 dk</span></div>
+        <input type="range" class="roi-slider" id="roi-turn" min="20" max="120" value="20" oninput="document.getElementById('turn-val').textContent=this.value;calcROI()">
+        <div class="roi-slider-val"><span>20 dk</span><span id="turn-val" style="color:var(--p);font-size:0.8rem;font-weight:800;">20</span><span>120 dk</span></div>
         <label class="roi-label">Aylık Personel Sayısı</label>
-        <input type="range" class="roi-slider" id="roi-staff" min="2" max="50" value="8" oninput="document.getElementById('staff-val').textContent=this.value;calcROI()">
-        <div class="roi-slider-val"><span>2 kişi</span><span id="staff-val">8</span><span>50 kişi</span></div>
+        <input type="range" class="roi-slider" id="roi-staff" min="2" max="50" value="2" oninput="document.getElementById('staff-val').textContent=this.value;calcROI()">
+        <div class="roi-slider-val"><span>2 kişi</span><span id="staff-val" style="color:var(--p);font-size:0.8rem;font-weight:800;">2</span><span>50 kişi</span></div>
       </div>
 
-      <div class="reveal" style="transition-delay:.2s;">
+      <div class="reveal" style="transition-delay:.2s;display:flex;flex-direction:column;justify-content:center;">
         <div class="roi-result">
           <div class="roi-r-label">Tahmini Ek Aylık Gelir</div>
-          <div class="roi-r-val" id="roi-income">₺42.000</div>
+          <div class="roi-r-val" id="roi-income">₺52.416</div>
           <div class="roi-r-sub" id="roi-sub">RezerVist'in optimize ettiği operasyon kazancı</div>
           <div class="roi-result-grid">
-            <div class="roi-mini"><div class="roi-mini-v" id="roi-efficiency">+%18</div><div class="roi-mini-l">Verimlilik Artışı</div></div>
-            <div class="roi-mini"><div class="roi-mini-v" id="roi-waste">-₺8.200</div><div class="roi-mini-l">Azalan İsraf</div></div>
-            <div class="roi-mini"><div class="roi-mini-v" id="roi-payback">3.2 ay</div><div class="roi-mini-l">Geri Ödeme Süresi</div></div>
-            <div class="roi-mini"><div class="roi-mini-v" id="roi-annual">₺504K</div><div class="roi-mini-l">Yıllık Ek Gelir</div></div>
+            <div class="roi-mini"><div class="roi-mini-v" id="roi-efficiency">+%24</div><div class="roi-mini-l">Verimlilik Artışı</div></div>
+            <div class="roi-mini"><div class="roi-mini-v" id="roi-waste">-₺8.250</div><div class="roi-mini-l">Azalan İsraf</div></div>
+            <div class="roi-mini"><div class="roi-mini-v" id="roi-payback">1.1 ay</div><div class="roi-mini-l">Geri Ödeme Süresi</div></div>
+            <div class="roi-mini"><div class="roi-mini-v" id="roi-annual">₺628.992</div><div class="roi-mini-l">Yıllık Ek Gelir</div></div>
           </div>
         </div>
         <div style="background:white;border:1.5px solid var(--br);border-radius:var(--r);padding:24px;margin-top:16px;">
@@ -1842,37 +1854,39 @@ pre.api-code{
       <h2 class="sec-h">RezerVist vs<br><em>Geleneksel POS</em></h2>
       <p class="sec-sub" style="margin:0 auto;text-align:center;">Neden RezerVist? Yan yana bakıldığında cevap açık.</p>
     </div>
-    <div class="cmp-table reveal" style="transition-delay:.1s;">
-      <div class="cmp-head">
-        <div class="cmp-th feat">Özellik</div>
-        <div class="cmp-th hero">RezerVist POS</div>
-        <div class="cmp-th">Geleneksel POS</div>
-        <div class="cmp-th">Manuel Sistem</div>
-      </div>
-      <div>
-        @php $rows=[
-          ['Senkronizasyon Hızı','<strong>15ms</strong> (Anlık)','5 - 10 Saniye','<i class="fa-solid fa-times cn"></i> Yok'],
-          ['Mutfak Ekranı (KDS)','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-minus cp"></i> Ek Ücret','<i class="fa-solid fa-times cn"></i> Yok'],
-          ['Çok Şube Yönetimi','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-minus cp"></i> Ücretli / Limitli','<i class="fa-solid fa-times cn"></i> Yok'],
-          ['Offline Mod','<i class="fa-solid fa-check cy"></i> Dahil (Anlık)','<i class="fa-solid fa-times cn"></i> Bağlantı Gerekli','<i class="fa-solid fa-check cy"></i> Manuel'],
-          ['AI Destekli Analitik','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-times cn"></i> Temel Rapor','<i class="fa-solid fa-times cn"></i> Yok'],
-          ['QR Dijital Menü','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-minus cp"></i> Ek Ücret','<i class="fa-solid fa-times cn"></i> Yok'],
-          ['Müşteri Sadakat Sistemi','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-minus cp"></i> Ek Ücret','<i class="fa-solid fa-times cn"></i> Yok'],
-          ['Mobil Uygulama','<i class="fa-solid fa-check cy"></i> Dahil (Native)','<i class="fa-solid fa-minus cp"></i> Kısıtlı Web','<i class="fa-solid fa-times cn"></i> Yok'],
-          ['Biyometrik Giriş','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-times cn"></i> Yok','<i class="fa-solid fa-times cn"></i> Yok'],
-          ['Kurulum Süresi','<strong>~8 Dakika</strong>','2 - 3 Hafta','—'],
-          ['Güncellemeler','<i class="fa-solid fa-check cy"></i> Sınırsız / Ücretsiz','<i class="fa-solid fa-minus cp"></i> Ücretli / Servis','—'],
-          ['Teknik Destek','<i class="fa-solid fa-check cy"></i> 7/24 Öncelikli','<i class="fa-solid fa-minus cp"></i> Mesai Saatleri','<i class="fa-solid fa-times cn"></i> Yok'],
-          ['Aylık Maliyet','<strong>₺990\'dan Başlar</strong>','₺1.800 - ₺4.500','Yüksek İş Gücü Kaybı']
-        ]; @endphp
-        @foreach($rows as $r)
-        <div class="cmp-row">
-          <div class="cmp-cell feat">{{ $r[0] }}</div>
-          <div class="cmp-cell hero">{!! $r[1] !!}</div>
-          <div class="cmp-cell">{!! $r[2] !!}</div>
-          <div class="cmp-cell">{!! $r[3] !!}</div>
+    <div class="cmp-table-wrap reveal" style="transition-delay:.1s;">
+      <div class="cmp-table">
+        <div class="cmp-head">
+          <div class="cmp-th feat">Özellik</div>
+          <div class="cmp-th hero">RezerVist POS</div>
+          <div class="cmp-th">Geleneksel POS</div>
+          <div class="cmp-th">Manuel Sistem</div>
         </div>
-        @endforeach
+        <div>
+          @php $rows=[
+            ['Senkronizasyon Hızı','<strong>15ms</strong> (Anlık)','5 - 10 Saniye','<i class="fa-solid fa-times cn"></i> Yok'],
+            ['Mutfak Ekranı (KDS)','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-minus cp"></i> Ek Ücret','<i class="fa-solid fa-times cn"></i> Yok'],
+            ['Çok Şube Yönetimi','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-minus cp"></i> Ücretli / Limitli','<i class="fa-solid fa-times cn"></i> Yok'],
+            ['Offline Mod','<i class="fa-solid fa-check cy"></i> Dahil (Anlık)','<i class="fa-solid fa-times cn"></i> Bağlantı Gerekli','<i class="fa-solid fa-check cy"></i> Manuel'],
+            ['AI Destekli Analitik','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-times cn"></i> Temel Rapor','<i class="fa-solid fa-times cn"></i> Yok'],
+            ['QR Dijital Menü','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-minus cp"></i> Ek Ücret','<i class="fa-solid fa-times cn"></i> Yok'],
+            ['Müşteri Sadakat Sistemi','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-minus cp"></i> Ek Ücret','<i class="fa-solid fa-times cn"></i> Yok'],
+            ['Mobil Uygulama','<i class="fa-solid fa-check cy"></i> Dahil (Native)','<i class="fa-solid fa-minus cp"></i> Kısıtlı Web','<i class="fa-solid fa-times cn"></i> Yok'],
+            ['Biyometrik Giriş','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-times cn"></i> Yok','<i class="fa-solid fa-times cn"></i> Yok'],
+            ['Kurulum Süresi','<strong>~8 Dakika</strong>','2 - 3 Hafta','—'],
+            ['Güncellemeler','<i class="fa-solid fa-check cy"></i> Sınırsız / Ücretsiz','<i class="fa-solid fa-minus cp"></i> Ücretli / Servis','—'],
+            ['Teknik Destek','<i class="fa-solid fa-check cy"></i> 7/24 Öncelikli','<i class="fa-solid fa-minus cp"></i> Mesai Saatleri','<i class="fa-solid fa-times cn"></i> Yok'],
+            ['Aylık Maliyet','<strong>₺990\'dan Başlar</strong>','₺1.800 - ₺4.500','Yüksek İş Gücü Kaybı']
+          ]; @endphp
+          @foreach($rows as $r)
+          <div class="cmp-row">
+            <div class="cmp-cell feat">{{ $r[0] }}</div>
+            <div class="cmp-cell hero">{!! $r[1] !!}</div>
+            <div class="cmp-cell">{!! $r[2] !!}</div>
+            <div class="cmp-cell">{!! $r[3] !!}</div>
+          </div>
+          @endforeach
+        </div>
       </div>
     </div>
   </div>
@@ -2145,15 +2159,17 @@ function toggleBilling(){
 // ============================
 function calcROI(){
   const rev=parseInt(document.getElementById('roi-rev').value)||150000;
-  const tables=parseInt(document.getElementById('roi-tables').value)||24;
-  const turn=parseInt(document.getElementById('roi-turn').value)||55;
-  const staff=parseInt(document.getElementById('roi-staff').value)||8;
-  const extraIncome=Math.round(rev*0.28*(1+tables/100)*0.8);
+  const tables=parseInt(document.getElementById('roi-tables').value)||56;
+  const turn=parseInt(document.getElementById('roi-turn').value)||20;
+  const staff=parseInt(document.getElementById('roi-staff').value)||2;
+  
+  const efficiency=Math.min(45,Math.round(15+tables*0.16071));
   const waste=Math.round(rev*0.055);
-  const efficiency=Math.round(18+tables*0.1);
-  const payback=(1990/extraIncome*30).toFixed(1);
+  const extraIncome=Math.round((rev*(efficiency/100))+waste+(staff*50)+((150-turn)*62.046));
+  const payback=(57657/Math.max(1,extraIncome)).toFixed(1);
+  
   document.getElementById('roi-income').textContent='₺'+extraIncome.toLocaleString('tr-TR');
-  document.getElementById('roi-efficiency').textContent='+%'+Math.min(efficiency,42);
+  document.getElementById('roi-efficiency').textContent='+%'+efficiency;
   document.getElementById('roi-waste').textContent='-₺'+waste.toLocaleString('tr-TR');
   document.getElementById('roi-payback').textContent=payback+' ay';
   document.getElementById('roi-annual').textContent='₺'+(extraIncome*12).toLocaleString('tr-TR');
