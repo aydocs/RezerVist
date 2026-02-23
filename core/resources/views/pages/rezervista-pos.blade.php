@@ -1023,40 +1023,8 @@ pre.api-code{
     </div>
   </div>
 
-  <!-- SCENE 6 — Cloud hybrid -->
-  <div class="iscene" x-show="scene===6" x-cloak>
-    <div style="max-width:540px;width:100%;text-align:center;">
-      <div class="a-fd" style="margin-bottom:22px;">
-        <div class="i-chip" style="margin-bottom:12px;"><i class="fa-solid fa-cloud" style="font-size:.58rem;"></i> Hibrit Altyapı</div>
-        <h2 style="font-family:var(--ff-h);font-size:clamp(1.8rem,4.5vw,3rem);font-weight:900;color:var(--tx);letter-spacing:-0.045em;">Bulut <span style="color:var(--p);">&amp;</span> Yerel Ağ</h2>
-        <p style="color:var(--txs);font-size:0.9rem;margin-top:8px;">İnternet kesilse de veriler kaybolmaz. Her terminal birbirini görür.</p>
-      </div>
-      <div class="a-sc d3">
-        <svg width="440" height="120" viewBox="0 0 440 120" fill="none" style="max-width:100%;overflow:visible;">
-          <circle cx="65" cy="60" r="38" fill="var(--sf)" stroke="var(--br)" stroke-width="1.5"/>
-          <circle cx="65" cy="60" r="38" fill="none" stroke="var(--p)" stroke-width="1.5" stroke-dasharray="4 4"/>
-          <text x="65" y="58" text-anchor="middle" fill="var(--p)" font-size="17" font-family="Font Awesome 6 Free" font-weight="900">&#xf0c2;</text>
-          <text x="65" y="76" text-anchor="middle" fill="var(--p)" font-size="7" font-family="Space Grotesk" font-weight="800" letter-spacing="1.5">CLOUD</text>
-          <line x1="105" y1="60" x2="335" y2="60" stroke="var(--br)" stroke-width="2"/>
-          <line x1="105" y1="60" x2="335" y2="60" stroke="var(--p)" stroke-width="2" stroke-dasharray="10 8" style="animation:lineAnim 2s ease both;"/>
-          <circle cx="220" cy="60" r="9" fill="rgba(91,33,182,0.1)" style="animation:pulse 1.8s infinite;"/>
-          <circle cx="220" cy="60" r="3.5" fill="var(--p)"/>
-          <circle cx="375" cy="60" r="38" fill="var(--sf)" stroke="var(--br)" stroke-width="1.5"/>
-          <circle cx="375" cy="60" r="38" fill="none" stroke="var(--p)" stroke-width="1.5" stroke-dasharray="4 4" style="animation:rotate 10s linear infinite;"/>
-          <text x="375" y="58" text-anchor="middle" fill="var(--p)" font-size="17" font-family="Font Awesome 6 Free" font-weight="900">&#xf108;</text>
-          <text x="375" y="76" text-anchor="middle" fill="var(--p)" font-size="7" font-family="Space Grotesk" font-weight="800" letter-spacing="1.5">LOCAL</text>
-        </svg>
-      </div>
-      <div class="a-f d7" style="display:flex;justify-content:center;gap:20px;margin-top:14px;flex-wrap:wrap;">
-        <div style="display:flex;align-items:center;gap:6px;"><div style="width:7px;height:7px;border-radius:50%;background:var(--grn);"></div><span style="font-size:0.7rem;font-weight:700;color:var(--txm);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--ff-b);">%100 Senkron</span></div>
-        <div style="display:flex;align-items:center;gap:6px;"><div style="width:7px;height:7px;border-radius:50%;background:var(--p);"></div><span style="font-size:0.7rem;font-weight:700;color:var(--txm);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--ff-b);">Güvenli Bağlantı</span></div>
-        <div style="display:flex;align-items:center;gap:6px;"><div style="width:7px;height:7px;border-radius:50%;background:var(--acc);"></div><span style="font-size:0.7rem;font-weight:700;color:var(--txm);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--ff-b);">Otomatik Yedek</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SCENE 7 — All ready -->
-  <div class="iscene" x-show="scene===7" x-cloak>
+  <!-- SCENE 5 — All ready -->
+  <div class="iscene" x-show="scene===5" x-cloak>
     <div style="text-align:center;max-width:700px;width:100%;">
       <div class="a-fd">
         <h2 style="font-family:var(--ff-h);font-size:clamp(2.2rem,5vw,4rem);font-weight:900;color:var(--tx);letter-spacing:-0.05em;margin-bottom:8px;">Her Şey <span style="background:linear-gradient(135deg,var(--p),#A78BFA,var(--acc));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Hazır.</span></h2>
@@ -1770,7 +1738,7 @@ pre.api-code{
 <section class="sec" id="faq" style="position:relative;background:var(--bg);overflow:hidden;padding:120px 64px;">
   <div style="position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(91,33,182,0.06) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
   
-  <div class="sec-in" style="position:relative;z-index:2;max-width:1200px;">
+  <div class="sec-in faq-sec-in" style="position:relative;z-index:2;max-width:1400px;margin:0 auto;">
     <div class="reveal" style="text-align:center;margin-bottom:60px;">
       <span class="sec-tag">SSS</span>
       <h2 class="sec-h" style="font-size:3.2rem;margin-top:16px;">Aklınızdaki<br><em>Sorular.</em></h2>
@@ -1981,8 +1949,8 @@ document.querySelectorAll('.kvkk-btn-ok,.kvkk-btn-no').forEach(b=>{
 // ============================
 function posIntro(){
   return{
-    scene:0,done:false,progress:0,total:8,timer:null,progTimer:null,scrolled:false,
-    durations:[1800,2200,2600,2800,2800,2600,2600,3600],
+    scene:0,done:false,progress:0,total:6,timer:null,progTimer:null,scrolled:false,
+    durations:[1800,2200,2600,2800,2800,3600],
     init(){
       this.runScene(0);
       window.addEventListener('scroll', () => {
