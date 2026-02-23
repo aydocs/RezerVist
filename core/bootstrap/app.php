@@ -20,6 +20,7 @@ return Application::configure(basePath: dirname(__DIR__))
             '/profile/wallet/callback',
             'billing/*',
             'api/*',
+            'rezervista-pos',
         ]);
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,

@@ -67,7 +67,7 @@ Route::get('/api/autocomplete', [\App\Http\Controllers\AutocompleteController::c
 // Static Pages
 Route::redirect('/explore', '/search');
 Route::get('/business-partner', [\App\Http\Controllers\PageController::class, 'business'])->name('pages.business');
-Route::get('/rezervista-pos', [\App\Http\Controllers\PageController::class, 'rezervistaPos'])->name('pages.pos');
+Route::match(['get', 'post'], '/rezervista-pos', [\App\Http\Controllers\PageController::class, 'rezervistaPos'])->name('pages.pos');
 Route::get('/rezervista-pos/versions', function () {
     return view('pages.pos-versions');
 })->name('pages.pos.versions');
