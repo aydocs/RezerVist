@@ -207,6 +207,55 @@
   .reveal{opacity:0;transform:translateY(26px);transition:opacity 0.6s ease,transform 0.6s ease;}
   .reveal.visible{opacity:1;transform:translateY(0);}
 
+  /* ─── INTRO OVERLAY ─── */
+  #intro-overlay{
+    position:fixed;inset:0;z-index:99999;
+    background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    transition:opacity 0.8s ease,visibility 0.8s ease;
+  }
+  #intro-overlay.hidden-overlay{opacity:0;visibility:hidden;pointer-events:none;}
+  #intro-progress{position:absolute;top:0;left:0;height:3px;background:var(--primary);transition:width 0.15s linear;}
+  #skip-btn{
+    position:absolute;top:24px;right:28px;
+    padding:10px 22px;border-radius:50px;
+    border:1.5px solid var(--primary);color:var(--primary);
+    font-size:11px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;
+    cursor:pointer;background:transparent;
+    transition:background 0.2s,color 0.2s;
+    font-family:'Inter',sans-serif;
+  }
+  #skip-btn:hover{background:var(--primary);color:#fff;}
+  .intro-scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:40px;}
+  [x-cloak]{display:none!important;}
+
+  @keyframes introFadeSlideUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes introFadeSlideDown{from{opacity:0;transform:translateY(-30px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes introFadeIn{from{opacity:0;}to{opacity:1;}}
+  @keyframes introScaleIn{from{opacity:0;transform:scale(0.7);}to{opacity:1;transform:scale(1);}}
+  @keyframes introScaleInBig{from{opacity:0;transform:scale(0.3);}to{opacity:1;transform:scale(1);}}
+  @keyframes introSlideInLeft{from{opacity:0;transform:translateX(-60px);}to{opacity:1;transform:translateX(0);}}
+  @keyframes introSlideInRight{from{opacity:0;transform:translateX(60px);}to{opacity:1;transform:translateX(0);}}
+  @keyframes introPulseBrand{0%,100%{box-shadow:0 0 0 0 rgba(98,0,238,0.3);}50%{box-shadow:0 0 0 18px rgba(98,0,238,0);}}
+  @keyframes introBarGrow{from{height:0;}}
+  @keyframes introDrawLine{from{stroke-dashoffset:300;}to{stroke-dashoffset:0;}}
+  @keyframes introTyping{from{max-width:0;}to{max-width:100%;}}
+  @keyframes introBlink{50%{border-color:transparent;}}
+
+  .ia-fadeSlideUp{animation:introFadeSlideUp 0.7s cubic-bezier(0.19,1,0.22,1) both;}
+  .ia-fadeSlideDown{animation:introFadeSlideDown 0.7s cubic-bezier(0.19,1,0.22,1) both;}
+  .ia-fadeIn{animation:introFadeIn 0.6s ease both;}
+  .ia-scaleIn{animation:introScaleIn 0.7s cubic-bezier(0.19,1,0.22,1) both;}
+  .ia-scaleInBig{animation:introScaleInBig 0.9s cubic-bezier(0.19,1,0.22,1) both;}
+  .ia-slideInLeft{animation:introSlideInLeft 0.7s cubic-bezier(0.19,1,0.22,1) both;}
+  .ia-slideInRight{animation:introSlideInRight 0.7s cubic-bezier(0.19,1,0.22,1) both;}
+  .ia-d100{animation-delay:0.1s;}.ia-d200{animation-delay:0.2s;}.ia-d300{animation-delay:0.3s;}.ia-d500{animation-delay:0.5s;}.ia-d700{animation-delay:0.7s;}
+  .intro-typewriter{overflow:hidden;border-right:3px solid var(--primary);white-space:nowrap;animation:introTyping 1.8s steps(16,end) both,introBlink 0.6s step-end infinite alternate;}
+  .intro-bar{width:28px;border-radius:6px 6px 0 0;background:var(--primary);align-self:flex-end;}
+  .intro-net-line{stroke-dasharray:300;animation:introDrawLine 1.5s ease both;}
+  #main-page{opacity:0;transition:opacity 0.8s ease;}
+  #main-page.visible{opacity:1;}
+
   /* RESPONSIVE */
   @media(max-width:1024px){
     .hero{padding:96px 22px 68px;}
@@ -220,12 +269,186 @@
     .feat-card.span2{grid-column:1;display:block;}
     .feat-card.span2 .mini-viz{margin-top:24px;}
     .testi-grid{grid-template-columns:1fr;}
-    .api-block{flex-direction:column;padding:32px 24px;}
-  }
-  @media(max-width:640px){
-    pre.api-code{font-size:0.63rem;}
   }
 </style>
+
+<!-- ════════════════ INTRO OVERLAY ════════════════ -->
+<div x-data="posIntro()" x-init="start()">
+
+<div id="intro-overlay" :class="{ 'hidden-overlay': done }">
+  <div id="intro-progress" :style="'width:' + progress + '%'"></div>
+  <button id="skip-btn" @click="skip()">Tanıtımı Geç &rarr;</button>
+
+  <!-- Scene 0: Logo Reveal -->
+  <div class="intro-scene" x-show="scene === 0" x-cloak>
+    <div class="ia-scaleInBig" style="display:flex;flex-direction:column;align-items:center;gap:24px;">
+      <div style="width:128px;height:128px;background:var(--primary);border-radius:2rem;display:flex;align-items:center;justify-content:center;box-shadow:0 25px 50px rgba(98,0,238,0.3);animation:introPulseBrand 2s infinite 0.9s;">
+        <span style="color:white;font-weight:900;font-size:3.5rem;font-family:'Inter',sans-serif;">R</span>
+      </div>
+      <p class="ia-fadeIn ia-d500" style="color:var(--text-muted);font-size:0.85rem;font-weight:600;letter-spacing:0.4em;text-transform:uppercase;">RezerVist Systems</p>
+    </div>
+  </div>
+
+  <!-- Scene 1: Name Typewriter -->
+  <div class="intro-scene" x-show="scene === 1" x-cloak>
+    <div style="text-align:center;">
+      <div class="ia-fadeSlideDown" style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px;">
+        <div style="width:40px;height:40px;background:var(--primary);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+          <span style="color:white;font-weight:900;font-size:1.2rem;font-family:'Inter',sans-serif;">R</span>
+        </div>
+      </div>
+      <h1 class="intro-typewriter" style="font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;color:var(--text);font-family:'Inter',sans-serif;letter-spacing:-0.04em;">RezerVistA POS</h1>
+      <p class="ia-fadeIn ia-d700" style="color:var(--text-muted);font-size:1rem;font-weight:500;margin-top:20px;letter-spacing:0.2em;text-transform:uppercase;">Satış Noktası Çözümü</p>
+      <div class="ia-fadeIn ia-d700" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:28px;">
+        <div style="width:8px;height:8px;border-radius:50%;background:#10B981;"></div>
+        <span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);letter-spacing:0.15em;text-transform:uppercase;">v4.5 — Hazır</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 2: Speed -->
+  <div class="intro-scene" x-show="scene === 2" x-cloak>
+    <div style="max-width:640px;width:100%;display:flex;align-items:center;gap:60px;flex-wrap:wrap;justify-content:center;">
+      <div class="ia-slideInLeft" style="flex:1;min-width:260px;">
+        <div style="width:72px;height:72px;background:var(--surface);border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:22px;border:1.5px solid var(--border);">
+          <i class="fa-solid fa-bolt" style="color:var(--primary);font-size:1.8rem;"></i>
+        </div>
+        <div style="font-size:clamp(3rem,6vw,4.5rem);font-weight:900;color:var(--text);font-family:'Inter',sans-serif;letter-spacing:-0.04em;line-height:1;">15<span style="color:var(--primary);">ms</span></div>
+        <p style="color:var(--text-subtle);font-size:1.1rem;font-weight:400;margin-top:12px;line-height:1.6;">Maksimum yanıt süresi. İnternet olmadan bile yerel ağda tam hızda çalışır.</p>
+      </div>
+      <div class="ia-slideInRight" style="flex-shrink:0;">
+        <div style="width:180px;height:180px;border-radius:50%;border:6px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative;animation:introPulseBrand 2s infinite;">
+          <div style="text-align:center;"><div style="font-size:2.5rem;font-weight:900;color:var(--primary);font-family:'Inter',sans-serif;">~15</div><div style="font-size:0.65rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.15em;">ms avg</div></div>
+          <svg style="position:absolute;inset:0;" viewBox="0 0 192 192"><circle cx="96" cy="96" r="86" fill="none" stroke="var(--border)" stroke-width="6"/><circle cx="96" cy="96" r="86" fill="none" stroke="var(--primary)" stroke-width="6" stroke-dasharray="540" stroke-dashoffset="54" stroke-linecap="round" transform="rotate(-90 96 96)" class="intro-net-line"/></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 3: Table Management -->
+  <div class="intro-scene" x-show="scene === 3" x-cloak>
+    <div style="max-width:580px;width:100%;">
+      <div class="ia-fadeSlideDown" style="text-align:center;margin-bottom:32px;">
+        <div style="display:inline-flex;align-items:center;gap:10px;padding:6px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;margin-bottom:12px;">
+          <i class="fa-solid fa-table-cells" style="color:var(--primary);font-size:0.8rem;"></i>
+          <span style="font-size:0.7rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:0.15em;">Masa Yönetimi</span>
+        </div>
+        <h2 style="font-size:clamp(2rem,4vw,3.5rem);font-weight:900;color:var(--text);font-family:'Inter',sans-serif;letter-spacing:-0.04em;">Tüm Masaları <span style="color:var(--primary);">Tek Ekranda</span></h2>
+      </div>
+      <div class="ia-scaleIn ia-d300" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;">
+        <template x-for="n in 18">
+          <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid;font-size:0.7rem;"
+               :style="[2,5,9,14].includes(n) ? 'background:var(--primary);color:white;border-color:var(--primary);box-shadow:0 4px 16px rgba(98,0,238,0.3);transform:scale(1.05);' : (n%3===0 ? 'background:rgba(244,63,94,0.05);color:#F43F5E;border-color:rgba(244,63,94,0.15);' : 'background:white;color:var(--text-muted);border-color:var(--border);')">
+            <span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;" x-text="[2,5,9,14].includes(n)?'Dolu':(n%3===0?'Meşgul':'Boş')"></span>
+            <span style="font-size:1rem;font-family:'Inter',sans-serif;" x-text="n<10?'0'+n:n"></span>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 4: Reporting -->
+  <div class="intro-scene" x-show="scene === 4" x-cloak>
+    <div style="max-width:640px;width:100%;display:flex;align-items:center;gap:60px;flex-wrap:wrap;justify-content:center;">
+      <div class="ia-slideInLeft" style="flex:1;min-width:260px;">
+        <div style="width:72px;height:72px;background:var(--surface);border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:22px;border:1.5px solid var(--border);">
+          <i class="fa-solid fa-chart-column" style="color:var(--primary);font-size:1.8rem;"></i>
+        </div>
+        <div style="font-size:clamp(2rem,4vw,3.5rem);font-weight:900;color:var(--text);font-family:'Inter',sans-serif;letter-spacing:-0.04em;line-height:1.05;">Anlık<br><span style="color:var(--primary);">Raporlama</span></div>
+        <p style="color:var(--text-subtle);font-size:1rem;font-weight:400;margin-top:12px;line-height:1.6;">Günlük, haftalık, aylık satış grafikleri. Personel performansı. PDF ihracat.</p>
+        <div style="display:flex;gap:14px;margin-top:20px;">
+          <div style="padding:8px 16px;background:var(--surface);border-radius:12px;border:1.5px solid var(--border);">
+            <div style="font-size:1.2rem;font-weight:900;color:var(--primary);font-family:'Inter',sans-serif;">₺124K</div>
+            <div style="font-size:0.6rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;">Bu Ay</div>
+          </div>
+          <div style="padding:8px 16px;background:rgba(16,185,129,0.05);border-radius:12px;border:1.5px solid rgba(16,185,129,0.15);">
+            <div style="font-size:1.2rem;font-weight:900;color:#10B981;font-family:'Inter',sans-serif;">+32%</div>
+            <div style="font-size:0.6rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;">Büyüme</div>
+          </div>
+        </div>
+      </div>
+      <div class="ia-slideInRight" style="flex-shrink:0;display:flex;align-items:flex-end;gap:10px;height:160px;">
+        <div class="intro-bar" style="height:50%;animation:introBarGrow 0.8s cubic-bezier(0.19,1,0.22,1) 0.1s both;"></div>
+        <div class="intro-bar" style="height:75%;animation:introBarGrow 0.8s cubic-bezier(0.19,1,0.22,1) 0.2s both;"></div>
+        <div class="intro-bar" style="height:40%;animation:introBarGrow 0.8s cubic-bezier(0.19,1,0.22,1) 0.3s both;"></div>
+        <div class="intro-bar" style="height:90%;animation:introBarGrow 0.8s cubic-bezier(0.19,1,0.22,1) 0.4s both;background:#A855F7;"></div>
+        <div class="intro-bar" style="height:60%;animation:introBarGrow 0.8s cubic-bezier(0.19,1,0.22,1) 0.5s both;"></div>
+        <div class="intro-bar" style="height:100%;animation:introBarGrow 0.8s cubic-bezier(0.19,1,0.22,1) 0.6s both;"></div>
+        <div class="intro-bar" style="height:70%;animation:introBarGrow 0.8s cubic-bezier(0.19,1,0.22,1) 0.7s both;background:#A855F7;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 5: Cloud + Local Network -->
+  <div class="intro-scene" x-show="scene === 5" x-cloak>
+    <div style="max-width:580px;width:100%;text-align:center;">
+      <div class="ia-fadeSlideDown" style="margin-bottom:28px;">
+        <div style="display:inline-flex;align-items:center;gap:10px;padding:6px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;margin-bottom:12px;">
+          <i class="fa-solid fa-cloud" style="color:var(--primary);font-size:0.8rem;"></i>
+          <span style="font-size:0.7rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:0.15em;">Hibrit Altyapı</span>
+        </div>
+        <h2 style="font-size:clamp(2rem,4vw,3.5rem);font-weight:900;color:var(--text);font-family:'Inter',sans-serif;letter-spacing:-0.04em;">Bulut <span style="color:var(--primary);">&</span> Yerel Ağ</h2>
+        <p style="color:var(--text-subtle);font-size:1rem;font-weight:400;margin-top:10px;">İnternet kesilse de veriler kaybolmaz. Tüm terminaller birbirini görür.</p>
+      </div>
+      <div class="ia-scaleIn ia-d300" style="display:flex;align-items:center;justify-content:center;">
+        <svg width="460" height="120" viewBox="0 0 460 120" fill="none" style="max-width:100%;">
+          <circle cx="70" cy="60" r="36" fill="var(--surface)" stroke="var(--primary)" stroke-width="2"/>
+          <text x="70" y="56" text-anchor="middle" fill="var(--primary)" font-size="16" font-family="Font Awesome 6 Free" font-weight="900">&#xf0c2;</text>
+          <text x="70" y="74" text-anchor="middle" fill="var(--primary)" font-size="8" font-family="Inter" font-weight="800" letter-spacing="1">CLOUD</text>
+          <line x1="106" y1="60" x2="354" y2="60" stroke="var(--primary)" stroke-width="2" stroke-dasharray="8 6" class="intro-net-line"/>
+          <circle cx="230" cy="60" r="6" fill="var(--primary)" opacity="0.3" style="animation:introPulseBrand 1.5s infinite"/>
+          <circle cx="230" cy="60" r="3" fill="var(--primary)"/>
+          <circle cx="390" cy="60" r="36" fill="var(--surface)" stroke="var(--primary)" stroke-width="2"/>
+          <text x="390" y="56" text-anchor="middle" fill="var(--primary)" font-size="16" font-family="Font Awesome 6 Free" font-weight="900">&#xf108;</text>
+          <text x="390" y="74" text-anchor="middle" fill="var(--primary)" font-size="8" font-family="Inter" font-weight="800" letter-spacing="1">LOCAL</text>
+        </svg>
+      </div>
+      <div class="ia-fadeIn ia-d700" style="display:flex;justify-content:center;gap:20px;margin-top:20px;">
+        <div style="display:flex;align-items:center;gap:6px;"><div style="width:8px;height:8px;border-radius:50%;background:#10B981;"></div><span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;">Senkron: %100</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--primary);"></div><span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;">Bağlı</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scene 6: Feature Burst -->
+  <div class="intro-scene" x-show="scene === 6" x-cloak>
+    <div style="text-align:center;margin-bottom:32px;" class="ia-fadeSlideDown">
+      <h2 style="font-size:clamp(2rem,4vw,3.5rem);font-weight:900;color:var(--text);font-family:'Inter',sans-serif;letter-spacing:-0.04em;">Her Şey <span style="color:var(--primary);">Hazır.</span></h2>
+      <p style="color:var(--text-muted);font-size:1rem;font-weight:400;margin-top:10px;">Saniyeler içinde kurulum. Yıllarca kararlı çalışma.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:640px;width:100%;" class="ia-scaleIn ia-d200">
+      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px 14px;text-align:center;">
+        <i class="fa-solid fa-bolt" style="color:var(--primary);font-size:1.5rem;margin-bottom:10px;display:block;"></i>
+        <div style="font-size:0.85rem;font-weight:800;color:var(--text);">Ultra Hız</div>
+        <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">15ms latency</div>
+      </div>
+      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px 14px;text-align:center;">
+        <i class="fa-solid fa-table-cells" style="color:var(--primary);font-size:1.5rem;margin-bottom:10px;display:block;"></i>
+        <div style="font-size:0.85rem;font-weight:800;color:var(--text);">Masa Grid</div>
+        <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">Sürükle & bırak</div>
+      </div>
+      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px 14px;text-align:center;">
+        <i class="fa-solid fa-chart-column" style="color:var(--primary);font-size:1.5rem;margin-bottom:10px;display:block;"></i>
+        <div style="font-size:0.85rem;font-weight:800;color:var(--text);">Raporlama</div>
+        <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">PDF & Excel</div>
+      </div>
+      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px 14px;text-align:center;">
+        <i class="fa-solid fa-cloud" style="color:var(--primary);font-size:1.5rem;margin-bottom:10px;display:block;"></i>
+        <div style="font-size:0.85rem;font-weight:800;color:var(--text);">Hibrit Ağ</div>
+        <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">%99.9 uptime</div>
+      </div>
+    </div>
+    <div class="ia-fadeIn ia-d700" style="margin-top:36px;">
+      <button onclick="document.querySelector('[x-data]').__x.$data.skip()" style="padding:14px 32px;background:var(--primary);color:white;border:none;border-radius:14px;font-weight:800;font-size:0.875rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;box-shadow:0 8px 24px rgba(98,0,238,0.3);transition:all 0.3s;font-family:'Inter',sans-serif;">
+        POS Sistemini İncele &rarr;
+      </button>
+    </div>
+  </div>
+
+</div><!-- /intro-overlay -->
+
+<!-- ════════════════ MAIN PAGE ════════════════ -->
+<div id="main-page" :class="{ 'visible': done }">
 
 <!-- ════════════════ HERO ════════════════ -->
 <section class="hero">
@@ -464,6 +687,9 @@
   </div>
 </section>
 
+</div><!-- /main-page -->
+</div><!-- /x-data -->
+
 <script>
   // Canlı saat
   function tick() {
@@ -477,5 +703,59 @@
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.08 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // ─── POS Intro Animation ───
+  function posIntro() {
+    return {
+      scene: 0,
+      done: false,
+      progress: 0,
+      totalScenes: 7,
+      timer: null,
+      progressTimer: null,
+      durations: [2000, 2200, 2500, 2800, 2800, 2800, 3500],
+
+      start() {
+        this.runScene(0);
+      },
+
+      runScene(index) {
+        if (index >= this.totalScenes) { this.finish(); return; }
+        this.scene = index;
+        const duration = this.durations[index];
+        const startProgress = (index / this.totalScenes) * 100;
+        const endProgress = ((index + 1) / this.totalScenes) * 100;
+
+        clearInterval(this.progressTimer);
+        const steps = 60;
+        const stepTime = duration / steps;
+        const stepSize = (endProgress - startProgress) / steps;
+        let step = 0;
+        this.progress = startProgress;
+        this.progressTimer = setInterval(() => {
+          step++;
+          this.progress = startProgress + (stepSize * step);
+          if (step >= steps) clearInterval(this.progressTimer);
+        }, stepTime);
+
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => this.runScene(index + 1), duration);
+      },
+
+      skip() {
+        clearTimeout(this.timer);
+        clearInterval(this.progressTimer);
+        this.progress = 100;
+        setTimeout(() => this.finish(), 300);
+      },
+
+      finish() {
+        clearTimeout(this.timer);
+        clearInterval(this.progressTimer);
+        this.done = true;
+        window.scrollTo(0, 0);
+      }
+    }
+  }
 </script>
 @endsection
