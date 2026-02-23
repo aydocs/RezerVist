@@ -354,7 +354,7 @@ class Business extends Model
     public function activeSubscription()
     {
         return $this->hasOne(Subscription::class)
-            ->where('status', 'active')
+            ->whereIn('status', ['active', 'trial'])
             ->where(function ($q) {
                 $q->whereNull('ends_at')
                     ->orWhere('ends_at', '>', now());
