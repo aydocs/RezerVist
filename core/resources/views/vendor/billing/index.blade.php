@@ -233,7 +233,7 @@
                                     ['Bulut Tabanlı Merkezi Yönetim Paneli', [true, true, true, true, true]],
                                     ['SSL Sertifikalı Güvenli Veri İletişimi', [true, true, true, true, true]],
                                     ['Günlük Otomatik Veritabanı Yedekleme', [true, true, true, true, true]],
-                                    ['Personel Yetkilendirme Sistemi', ['1 Roller', '3 Roller', 'Sınırsız', 'Sınırsız', 'Sınırsız']],
+                                    ['Personel Yetkilendirme Sistemi', ['3 Roller', 'Sınırsız', 'Sınırsız', 'Sınırsız', 'Sınırsız']],
                                     ['Anlık Cihaz Senkronizasyonu', [true, true, true, true, true]]
                                 ],
                                 '02 — REZERVASYON & CRM' => [
@@ -271,7 +271,7 @@
                                     ['7/24 Teknik Destek (Standart)', [true, true, true, true, true]],
                                     ['Öncelikli Canlı Destek (Premium)', [false, false, true, true, true]],
                                     ['Atanmış Özel Danışman Hizmeti', [false, false, false, false, true]],
-                                    ['Multi-Branch (Birleşik Şube Yönetimi)', [false, false, false, true, true]],
+                                    ['Multi-Branch (Birleşik Şube Yönetimi)', [false, true, true, true, true]],
                                     ['Yerinde Kurulum & Personel Eğitimi', [false, false, false, false, true]],
                                     ['Beyaz Etiket (Tüm Marka İmzalarının Kaldırılması)', [false, false, false, false, true]]
                                 ]
