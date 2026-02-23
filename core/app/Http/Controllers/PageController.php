@@ -6,15 +6,7 @@ class PageController extends Controller
 {
     public function rezervistaPos()
     {
-        try {
-            // Bypass Blade Engine - Serve Plain PHP
-            // Note: 'pages.pos-plain' will look for pos-plain.blade.php OR pos-plain.php
-            return view('pages.pos-plain');
-        } catch (\Throwable $e) {
-            \Log::error('POS Rendering Error: '.$e->getMessage());
-
-            return response('<h1>Kritik Hata</h1><p>'.$e->getMessage().'</p>', 500);
-        }
+        return view('pages.rezervista-pos');
     }
 
     public function business()
