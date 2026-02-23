@@ -303,6 +303,32 @@ class AdminController extends Controller
 
             // 4. Link user to business
             $applicant->update(['business_id' => $business->id]);
+
+            // 5. Assign 14-Day Free Trial
+            $freePackage = \App\Models\Package::where('slug', 'free')->first();
+            if ($freePackage) {
+                $subscriptionService = app(\App\Services\SubscriptionService::class);
+                
+                // Create a 14-day active subscription manually
+                $endsAt = now()->addDays(14);
+                
+                $subscription = \App\Models\Subscription::create([
+                    'business_id' => $business->id,
+                    'package_id' => $freePackage->id,
+                    'starts_at' => now(),
+                    'ends_at' => $endsAt,
+                    'status' => 'active',
+                    'payment_method' => 'system',
+                ]);
+
+                // Create a zero-amount invoice for records
+                $subscriptionService->createInvoice($business, $subscription, 0, 'system_trial');
+
+                $business->update([
+                    'subscription_status' => 'active',
+                    'subscription_ends_at' => $endsAt,
+                ]);
+            }
         }
 
         $targetUser = $applicant ?? $user;
