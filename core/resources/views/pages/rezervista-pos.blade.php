@@ -1842,25 +1842,25 @@ pre.api-code{
           <i class="fa-solid fa-bolt" style="color:#F59E0B;"></i> Hazır Mısınız?
         </div>
         
-        <h2 style="font-family:var(--ff-h);font-size:clamp(2.8rem,5vw,4.5rem);font-weight:900;color:white;line-height:1.05;letter-spacing:-0.03em;margin-bottom:24px;">Hemen Bugün<br><span style="background:linear-gradient(135deg,#A78BFA 0%,#6EE7B7 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Dijitalleşin.</span></h2>
+        <h2 class="cta-h2" style="font-family:var(--ff-h);font-size:clamp(2.5rem,5vw,4.5rem);font-weight:900;color:white;line-height:1.05;letter-spacing:-0.03em;margin-bottom:24px;">Hemen Bugün<br><span style="background:linear-gradient(135deg,#A78BFA 0%,#6EE7B7 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Dijitalleşin.</span></h2>
         
-        <p style="font-size:1.1rem;color:rgba(255,255,255,0.6);max-width:600px;margin-bottom:40px;line-height:1.6;">14 gün boyunca tüm özellikleri ücretsiz deneyin. Kredi kartı gerekmez. Kurulum ekibimiz aynı gün sisteminizi hazır hale getirsin.</p>
+        <p class="cta-p" style="font-size:1.1rem;color:rgba(255,255,255,0.6);max-width:600px;margin-bottom:40px;line-height:1.6;">14 gün boyunca tüm özellikleri ücretsiz deneyin. Kredi kartı gerekmez. Kurulum ekibimiz aynı gün sisteminizi hazır hale getirsin.</p>
         
         <!-- Premium Countdown -->
-        <div style="background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:24px 32px;display:inline-flex;flex-direction:column;align-items:center;margin-bottom:48px;backdrop-filter:blur(12px);">
+        <div class="cta-cd-box" style="background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:24px 32px;display:inline-flex;flex-direction:column;align-items:center;margin-bottom:48px;backdrop-filter:blur(12px);">
           <div style="font-size:0.7rem;font-weight:800;color:rgba(255,255,255,0.4);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:16px;font-family:var(--ff-b);">Lansmana Özel İndirim Bitiyor</div>
           <div class="trial-countdown" style="display:flex;align-items:center;gap:16px;">
-            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:60px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.1);"><div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;" id="ct-d">03</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:700;margin-top:2px;">Gün</div></div>
-            <div style="color:rgba(255,255,255,0.2);font-size:1.5rem;font-weight:800;margin-top:-16px;">:</div>
-            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:60px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.1);"><div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;" id="ct-h">14</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:700;margin-top:2px;">Saat</div></div>
-            <div style="color:rgba(255,255,255,0.2);font-size:1.5rem;font-weight:800;margin-top:-16px;">:</div>
-            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:60px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.1);"><div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;" id="ct-m">37</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:700;margin-top:2px;">Dak</div></div>
-            <div style="color:rgba(255,255,255,0.2);font-size:1.5rem;font-weight:800;margin-top:-16px;">:</div>
-            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:60px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.1);"><div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;" id="ct-s">22</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:700;margin-top:2px;">Sn</div></div>
+            <div class="cd-item" style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:60px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.1);"><div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;" id="ct-d">03</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:700;margin-top:2px;">Gün</div></div>
+            <div class="cd-sep" style="color:rgba(255,255,255,0.2);font-size:1.5rem;font-weight:800;margin-top:-16px;">:</div>
+            <div class="cd-item" style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:60px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.1);"><div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;" id="ct-h">14</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:700;margin-top:2px;">Saat</div></div>
+            <div class="cd-sep" style="color:rgba(255,255,255,0.2);font-size:1.5rem;font-weight:800;margin-top:-16px;">:</div>
+            <div class="cd-item" style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:60px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.1);"><div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;" id="ct-m">37</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:700;margin-top:2px;">Dak</div></div>
+            <div class="cd-sep" style="color:rgba(255,255,255,0.2);font-size:1.5rem;font-weight:800;margin-top:-16px;">:</div>
+            <div class="cd-item" style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:60px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.1);"><div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;" id="ct-s">22</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:700;margin-top:2px;">Sn</div></div>
           </div>
         </div>
         
-        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:32px;">
+        <div class="cta-actions" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:32px;width:100%;">
           <a href="{{ route('register') }}" style="display:inline-flex;align-items:center;gap:10px;padding:18px 36px;background:white;color:var(--p);font-weight:800;font-size:1rem;border-radius:100px;text-decoration:none;box-shadow:0 15px 35px rgba(255,255,255,0.15);transition:all 0.3s;position:relative;overflow:hidden;" class="premium-btn">
             <span style="position:relative;z-index:2;"><i class="fa-solid fa-rocket"></i> Ücretsiz Başlat</span>
           </a>
@@ -1877,7 +1877,7 @@ pre.api-code{
         </div>
         
         <!-- Mini testimonial -->
-        <div style="display:inline-flex;align-items:center;gap:14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:16px 24px;margin-top:24px;">
+        <div class="cta-mini-testi" style="display:inline-flex;align-items:center;gap:14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:16px 24px;margin-top:24px;">
           <div style="display:flex;margin-right:4px;">
             @foreach(['var(--p),#A78BFA','#0ABBA3,#06B6D4','#F59E0B,#EF4444'] as $g)
             <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,{{ $g }});border:2px solid rgba(255,255,255,0.2);margin-left:-8px;display:flex;align-items:center;justify-content:center;font-family:var(--ff-h);font-weight:900;font-size:0.75rem;color:white;">{{ ['M','S','E'][$loop->index] }}</div>
@@ -1898,6 +1898,21 @@ pre.api-code{
 .premium-btn:hover { transform:translateY(-3px); box-shadow:0 20px 45px rgba(255,255,255,0.25); background:#f8f9fa; }
 .premium-btn::after { content:''; position:absolute; top:0; left:-100%; width:50%; height:100%; background:linear-gradient(90deg,transparent,rgba(91,33,182,0.1),transparent); animation:shine 3s infinite 1s; }
 .premium-btn-o:hover { background:rgba(255,255,255,0.15); border-color:rgba(255,255,255,0.3); transform:translateY(-3px); }
+
+@media(max-width: 640px) {
+  #contact { padding: 60px 16px !important; }
+  .cta-premium-box { padding: 48px 24px !important; border-radius: 24px !important; }
+  .cta-h2 { font-size: 2.2rem !important; }
+  .cta-p { font-size: 0.95rem !important; margin-bottom: 32px !important; }
+  .trial-countdown { gap: 8px !important; }
+  .cd-item { width: 50px !important; height: 50px !important; }
+  .cd-item div:first-child { font-size: 1.2rem !important; }
+  .cd-sep { margin-top: -10px !important; }
+  .cta-actions { flex-direction: column; gap: 12px !important; }
+  .premium-btn, .premium-btn-o { width: 100%; justify-content: center; }
+  .cta-mini-testi { flex-direction: column; text-align: center !important; }
+  .cta-mini-testi > div { text-align: center !important; margin: 0 !important; justify-content: center; }
+}
 </style>
 
 </div><!-- /main-page -->
