@@ -11,7 +11,7 @@
 
     <div class="max-w-7xl mx-auto relative z-10">
         <!-- Header Section -->
-        <header class="text-center mb-24 space-y-6" data-aos="fade-down">
+        <header class="text-center mb-20 space-y-6" data-aos="fade-down">
             <div class="inline-flex items-center gap-2 px-3 py-1 bg-white rounded-full border border-slate-200 shadow-sm mb-4">
                 <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-2">Abonelik Merkezi</span>
             </div>
@@ -22,6 +22,47 @@
                 İhtiyacınıza en uygun paketi seçerek dijital dönüşümünüzü başlatın ve ödeme trafiğinizi anlık takip edin.
             </p>
         </header>
+
+        <!-- Current Plan Banner -->
+        @if($subscription && $subscription->package)
+        <div class="max-w-4xl mx-auto mb-20 relative" data-aos="fade-up">
+            <div class="absolute inset-0 bg-gradient-to-r from-primary/10 to-purple-500/10 rounded-[2.5rem] transform rotate-1 scale-105 opacity-50 blur-lg"></div>
+            <div class="relative bg-white border border-slate-200/60 rounded-[2.5rem] p-8 md:p-10 shadow-xl shadow-slate-200/50 flex flex-col md:flex-row items-center justify-between gap-8 backdrop-blur-xl">
+                <div class="flex items-center gap-6">
+                    <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center shadow-lg shadow-primary/30 flex-shrink-0">
+                        <i class="fa-solid fa-crown text-2xl md:text-3xl text-white"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="text-[10px] md:text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Kullanılan Paket</span>
+                            <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[9px] font-black tracking-widest border border-emerald-100 flex items-center gap-1.5">
+                                <span class="relative flex h-1.5 w-1.5">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                                </span>
+                                AKTİF
+                            </span>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-[1000] text-slate-900 tracking-tight italic">{{ $subscription->package->name }}</h2>
+                    </div>
+                </div>
+                
+                <div class="w-px h-16 bg-slate-200 hidden md:block"></div>
+                
+                <div class="flex flex-col md:flex-row items-center gap-8 w-full md:w-auto mt-4 md:mt-0 pt-6 md:pt-0 border-t border-slate-100 md:border-0">
+                    <div class="text-center md:text-left">
+                        <div class="text-[10px] md:text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Bitiş / Yenileme</div>
+                        <div class="text-lg font-bold text-slate-700">{{ $subscription->ends_at ? $subscription->ends_at->translatedFormat('d F Y') : 'Sınırsız' }}</div>
+                        @if($subscription->ends_at)
+                            <div class="text-xs font-semibold text-slate-500 mt-1">
+                                Kalan Süre: <span class="text-primary font-black">{{ now()->diffInDays($subscription->ends_at, false) > 0 ? now()->diffInDays($subscription->ends_at) . ' gün' : 'Süresi Doldu' }}</span>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
 
         <!-- Dynamic Billing Toggle -->
         <div class="flex justify-center mb-20" x-data="{ globalSelected: 1 }" id="billing-container"
@@ -155,7 +196,7 @@
                     <p class="text-slate-500 font-bold text-sm">Tüm özellikleri detaylıca inceleyin.</p>
                 </div>
                 <div class="px-6 py-2 bg-slate-100 rounded-full text-[10px] font-black text-slate-500 uppercase tracking-widest border border-slate-200">
-                    SİSTEM ÖZELLİKLERİ — v2
+                    SİSTEM ÖZELLİKLERİ
                 </div>
             </div>
 
