@@ -195,7 +195,7 @@
 .hero-trust{display:flex;align-items:center;gap:20px;font-size:0.78rem;color:var(--txm);font-weight:600;}
 .hero-trust-item{display:flex;align-items:center;gap:6px;}
 .hero-trust-item i{color:var(--grn);font-size:0.75rem;}
-.hero-stats{display:flex;gap:40px;padding-top:48px;border-top:1.5px solid var(--br);}
+.hero-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:32px;padding-top:40px;border-top:1.5px solid var(--br);}
 .hs-num{font-family:var(--ff-h);font-size:1.9rem;font-weight:800;color:var(--tx);letter-spacing:-0.04em;line-height:1;}
 .hs-num span{color:var(--p);}
 .hs-lbl{font-size:0.73rem;color:var(--txm);font-weight:500;margin-top:5px;}
@@ -318,6 +318,8 @@
 .sblock-lbl{font-size:0.875rem;font-weight:600;color:var(--txm);}
 .sblock-sub{font-size:0.73rem;color:var(--txm);margin-top:5px;font-weight:400;}
 .sblock-icon{position:absolute;bottom:20px;right:20px;font-size:2rem;color:var(--p);opacity:0.06;}
+.trust-summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+.masa-demo-grid{display:grid;grid-template-columns:repeat(6,1fr);}
 
 /* ============================
    FEATURES
@@ -396,9 +398,9 @@
 .app-phone{position:relative;display:flex;justify-content:center;}
 .app-phone-glow{position:absolute;inset:-30px;background:radial-gradient(circle,rgba(91,33,182,0.1) 0%,transparent 65%);border-radius:50%;}
 .phone-frame{
-  width:240px;background:white;border-radius:36px;
+  width:280px;max-width:100%;background:white;border-radius:36px;
   border:8px solid var(--tx);box-shadow:0 28px 72px rgba(0,0,0,0.2),inset 0 0 0 1px rgba(255,255,255,0.1);
-  overflow:hidden;position:relative;z-index:1;
+  overflow:hidden;position:relative;z-index:1;margin:0 auto;
 }
 .phone-notch{height:30px;background:var(--tx);display:flex;align-items:center;justify-content:center;}
 .phone-notch-pill{width:90px;height:10px;background:#1a1a1a;border-radius:100px;}
@@ -874,6 +876,7 @@ pre.api-code{
   .cmp-head,.cmp-row{grid-template-columns:2fr 1.5fr;}
   .cmp-cell:nth-child(n+3),.cmp-th:nth-child(n+3){display:none;}
   .api-block{flex-direction:column;padding:28px 22px;}
+  .trust-summary-grid{grid-template-columns:repeat(2,1fr);}
   .footer-top{grid-template-columns:1fr 1fr;}
   .footer-mid{grid-template-columns:1fr;}
   .footer-bottom{flex-direction:column;gap:12px;text-align:center;}
@@ -881,8 +884,15 @@ pre.api-code{
   #chat-bubble{bottom:24px;left:24px;}
 }
 @media(max-width:640px){
+  .sec,.sec-sm,.footer{padding:60px 16px;}
+  .stats-wrap{padding:40px 16px;}
+  .hero{padding:100px 16px 48px;}
+  .hero-in{gap:32px;}
+  .hero-h{font-size:2.5rem;}
+  .hero-stats{gap:20px;padding-top:32px;}
   .stats-grid{grid-template-columns:1fr;}
-  .masa-grid{grid-template-columns:repeat(4,1fr);}
+  .masa-demo-grid{grid-template-columns:repeat(3,1fr);}
+  .trust-summary-grid{grid-template-columns:1fr;gap:36px;}
   .pricing-toggle{flex-wrap:wrap;justify-content:center;}
   .roi-result-grid{grid-template-columns:1fr;}
   .sec-badge-row{grid-template-columns:1fr;}
@@ -975,7 +985,7 @@ pre.api-code{
         <div class="i-chip" style="margin-bottom:12px;"><i class="fa-solid fa-table-cells" style="font-size:.58rem;"></i> Masa Yönetimi</div>
         <h2 style="font-family:var(--ff-h);font-size:clamp(1.8rem,4.5vw,3.2rem);font-weight:900;color:var(--tx);letter-spacing:-0.045em;">Tüm Masalar <span style="color:var(--p);">Tek Ekranda</span></h2>
       </div>
-      <div class="a-sc d2" style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;">
+      <div class="a-sc d2 masa-demo-grid" style="gap:6px;">
         @php $tbs2=[['t'=>'empty','n'=>'01'],['t'=>'full','n'=>'02'],['t'=>'busy','n'=>'03'],['t'=>'empty','n'=>'04'],['t'=>'full','n'=>'05'],['t'=>'reserve','n'=>'06'],['t'=>'empty','n'=>'07'],['t'=>'full','n'=>'08'],['t'=>'busy','n'=>'09'],['t'=>'empty','n'=>'10'],['t'=>'cleaning','n'=>'11'],['t'=>'full','n'=>'12'],['t'=>'empty','n'=>'13'],['t'=>'busy','n'=>'14'],['t'=>'full','n'=>'15'],['t'=>'reserve','n'=>'16'],['t'=>'empty','n'=>'17'],['t'=>'full','n'=>'18']]; @endphp
         @foreach($tbs2 as $t)
           @php $lmap2=['empty'=>'Boş','full'=>'Dolu','busy'=>'Meşgul','reserve'=>'Rezerv','cleaning'=>'Temiz']; @endphp
@@ -1418,21 +1428,7 @@ pre.api-code{
       <div class="how-step reveal" style="transition-delay:.2s;"><div class="how-num">3</div><div class="how-icon-wrap"><i class="fa-solid fa-users"></i></div><h3 class="how-title">Ekibi Tanımlayın</h3><p class="how-desc">Personel rollerini ve yetkilerini atayın. Garson, kasiyer, mutfak, yönetici profillerini 2 dakikada oluşturun.</p><div class="how-eta"><i class="fa-solid fa-clock" style="font-size:.65rem;"></i> ~2 dk</div></div>
       <div class="how-step reveal" style="transition-delay:.3s;"><div class="how-num">4</div><div class="how-icon-wrap"><i class="fa-solid fa-rocket"></i></div><h3 class="how-title">Hizmete Başlayın</h3><p class="how-desc">İlk siparişinizi alın. Mutfak ekranı, garson tableti ve kasa terminali anında senkronize olur.</p><div class="how-eta"><i class="fa-solid fa-check" style="font-size:.65rem;"></i> Hemen</div></div>
     </div>
-    <!-- Timeline bar -->
-    <div class="reveal" style="transition-delay:.4s;margin-top:72px;background:white;border:1.5px solid var(--br);border-radius:var(--r2);padding:42px 48px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap;box-shadow:0 24px 56px var(--sh);">
-      <div style="flex:1;min-width:320px;">
-        <div style="font-family:var(--ff-h);font-size:1.8rem;font-weight:900;color:var(--tx);letter-spacing:-0.04em;line-height:1.1;">⏱ Ortalama <span style="background:linear-gradient(135deg,var(--p),var(--acc));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">8 dakikada</span><br>kurulum tamamlanır.</div>
-        <div style="font-size:0.95rem;color:var(--txm);margin-top:10px;line-height:1.6;font-weight:500;">Hiçbir teknik bilgi gerekmez. Uzman ekibimiz ilk kurulumdan ürün girişine kadar her adımda size destek olur.</div>
-      </div>
-        <div style="display:flex;gap:14px;flex-wrap:wrap;">
-        <a href="{{ route('register') }}" class="btn-p btn-white">
-            <i class="fa-solid fa-rocket"></i> Hemen Başla
-        </a>
-        <a href="{{ route('pages.contact') }}" class="btn-o btn-white">
-            <i class="fa-solid fa-circle-play"></i> Ücretsiz Demo Al
-        </a>
-        </div>
-    </div>
+
   </div>
 </section>
 
@@ -1760,9 +1756,9 @@ pre.api-code{
       @endforeach
     </div>
     <!-- Trust summary bar -->
-    <div class="reveal" style="transition-delay:.3s;margin-top:56px;background:var(--bg2);border:1.5px solid var(--br);border-radius:var(--r);padding:32px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center;">
+    <div class="reveal trust-summary-grid" style="transition-delay:.3s;margin-top:56px;background:var(--bg2);border:1.5px solid var(--br);border-radius:var(--r);padding:32px 40px;text-align:center;">
       @foreach([[$averageRating,'Ortalama Puan','★★★★★'],[$formattedBusinessesCount.$businessSuffix.'+','Aktif Müşteri','Türkiye geneli'],[$customerSatisfaction,'Müşteri Memnuniyeti','Net Promoter Score'],[$supportResponseTime,'Ortalama Destek','Yanıt süresi']] as $s)
-      <div><div style="font-family:var(--ff-h);font-size:1.8rem;font-weight:900;color:var(--p);letter-spacing:-0.04em;">{{ $s[0] }}</div><div style="font-size:0.85rem;font-weight:600;color:var(--tx);margin-top:3px;">{{ $s[1] }}</div><div style="font-size:0.72rem;color:var(--txm);margin-top:2px;">{{ $s[2] }}</div></div>
+      <div><div style="font-family:var(--ff-h);font-size:1.8rem;font-weight:900;color:var(--p);letter-spacing:-0.04em;line-height:1;">{{ $s[0] }}</div><div style="font-size:0.85rem;font-weight:700;color:var(--tx);margin-top:6px;">{{ $s[1] }}</div><div style="font-size:0.72rem;color:var(--txm);margin-top:2px;">{{ $s[2] }}</div></div>
       @endforeach
     </div>
   </div>
