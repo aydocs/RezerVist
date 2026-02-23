@@ -82,9 +82,10 @@
   color:var(--txm);font-family:var(--ff-b);font-size:0.72rem;font-weight:700;
   letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;
   background:transparent;transition:all 0.2s;display:flex;align-items:center;gap:7px;
+  z-index:10;
 }
 #skip-intro:hover{background:var(--p);color:white;border-color:var(--p);}
-.intro-dots{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;gap:6px;}
+.intro-dots{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:10;}
 .i-dot{width:5px;height:5px;border-radius:50%;background:var(--br);transition:all 0.3s;}
 .i-dot.on{background:var(--p);transform:scale(1.5);}
 [x-cloak]{display:none!important;}
