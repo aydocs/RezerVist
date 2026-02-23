@@ -120,146 +120,108 @@
 
     <main>
         <!-- Immersive Hero Section -->
-        <section class="relative min-h-screen pt-40 pb-32 dot-pattern overflow-hidden flex flex-col items-center">
-            <div class="absolute inset-x-0 bottom-0 h-96 bg-gradient-to-t from-white via-white/80 to-transparent"></div>
-            
-            <div class="max-w-7xl mx-auto px-6 relative z-10 w-full text-center mb-16" x-show="booted" x-transition:enter="reveal-up">
-                <div class="inline-flex items-center gap-3 px-4 py-2 bg-brand-50 border border-brand-100 rounded-xl text-[10px] font-black tracking-[0.3em] text-brand-500 uppercase mb-8">
-                    <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
-                    </span>
-                    Professional POS Environment
-                </div>
-                
-                <h1 class="text-6xl lg:text-[10rem] font-black text-slate-950 tracking-tighter leading-[0.85] mb-8 font-display">
-                    <span class="text-gradient">Teknolojiyle</span> <br>
-                    <span class="text-brand-500 italic">Hükmedİn.</span>
-                </h1>
-                
-                <p class="text-xl text-slate-500 font-medium leading-relaxed mb-12 max-w-2xl mx-auto">
-                    Dünyanın en hızlı ve en kararlı bulut tabanlı POS arayüzü. Karmaşıklığı geride bırakın, işletmenizi milisaniyelik hızlarla yönetin.
-                </p>
+        <section class="relative pt-28 pb-24 dot-pattern overflow-hidden flex flex-col items-center">
+            <div class="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-white via-white/80 to-transparent"></div>
 
-                <div class="flex flex-wrap gap-5 justify-center mb-24">
-                    <a href="{{ route('pages.pos.versions') }}" class="px-14 py-6 bg-slate-950 text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] hover:bg-brand-500 transition-all shadow-2xl shadow-slate-950/20 flex items-center gap-4">
-                        <i class="fab fa-windows text-xl"></i> TERMİNALİ İNDİR
-                    </a>
-                    <a href="/business-partner" class="px-14 py-6 bg-white border border-slate-200 text-slate-900 rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] hover:bg-slate-50 transition-all">
-                        DEMOYU BAŞLAT
-                    </a>
-                </div>
-            </div>
-
-            <!-- Ultra-Large Terminal Container -->
+            <!-- Terminal Container -->
             <div class="w-full max-w-[1400px] px-6 relative z-20" x-show="booted" x-transition:enter="reveal-up" x-transition:enter-start="opacity-0 translate-y-20 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100" style="transition-delay: 200ms;">
-                <div class="pos-window rounded-[4rem] p-4 shadow-pos-large animate-subtle-float">
+                <div class="pos-window rounded-[2.5rem] p-3 shadow-pos-large animate-subtle-float">
                     <!-- Main App Window -->
-                    <div class="bg-white rounded-[3.5rem] h-[720px] lg:h-[840px] overflow-hidden flex flex-col border border-slate-100 shadow-inner-subtle relative">
+                    <div class="bg-white rounded-[2.2rem] h-[600px] lg:h-[700px] overflow-hidden flex flex-col border border-slate-100 shadow-inner-subtle relative">
                         
-                        <!-- Window Title Bar: High Fidelity -->
-                        <div class="h-16 bg-slate-50/50 border-b border-slate-100 px-10 flex items-center justify-between">
-                            <div class="flex items-center gap-10">
-                                <div class="flex gap-3">
-                                    <div class="w-3.5 h-3.5 rounded-full bg-slate-300"></div>
-                                    <div class="w-3.5 h-3.5 rounded-full bg-slate-300"></div>
-                                    <div class="w-3.5 h-3.5 rounded-full bg-slate-200"></div>
+                        <!-- Window Title Bar -->
+                        <div class="h-10 bg-slate-50/80 border-b border-slate-100 px-6 flex items-center justify-between">
+                            <div class="flex items-center gap-6">
+                                <div class="flex gap-2">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-slate-200"></div>
                                 </div>
-                                <div class="h-6 w-px bg-slate-200"></div>
-                                <div class="flex items-center gap-4 text-slate-400">
-                                    <i class="fas fa-terminal text-[10px]"></i>
-                                    <span class="text-[12px] font-black uppercase tracking-[0.4em]">RezerVistA Terminal Enterprise v4.5.12</span>
+                                <div class="h-4 w-px bg-slate-200"></div>
+                                <div class="flex items-center gap-2 text-slate-400">
+                                    <i class="fas fa-terminal text-[8px]"></i>
+                                    <span class="text-[9px] font-black uppercase tracking-[0.3em]">RezerVistA Terminal v4.5.12</span>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-8">
-                                <div class="flex items-center gap-3 px-4 py-1.5 bg-emerald-50 border border-emerald-100 rounded-xl">
-                                    <div class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981]"></div>
-                                    <span class="text-[10px] font-black text-emerald-600 tracking-widest uppercase">SYSCALL: SUCCESS</span>
+                            <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-2 px-3 py-1 bg-emerald-50 border border-emerald-100 rounded-lg">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_#10b981]"></div>
+                                    <span class="text-[8px] font-black text-emerald-600 tracking-widest uppercase">ONLINE</span>
                                 </div>
-                                <div class="flex items-center gap-3 text-slate-400">
-                                    <i class="fas fa-satellite-dish text-xs"></i>
-                                    <span class="text-[12px] font-bold">16:42:01 LOCAL</span>
+                                <div class="flex items-center gap-2 text-slate-400">
+                                    <i class="fas fa-satellite-dish text-[9px]"></i>
+                                    <span class="text-[9px] font-bold">16:42:01</span>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="flex-1 flex overflow-hidden">
-                            <!-- Detailed Sidebar -->
-                            <div class="w-24 bg-white border-r border-slate-100 py-10 flex flex-col items-center gap-10">
-                                <div class="w-14 h-14 bg-brand-500 text-white rounded-3xl flex items-center justify-center text-2xl shadow-2xl shadow-brand-500/40 relative">
+                            <!-- Sidebar -->
+                            <div class="w-14 bg-white border-r border-slate-100 py-6 flex flex-col items-center gap-5">
+                                <div class="w-8 h-8 bg-brand-500 text-white rounded-xl flex items-center justify-center text-sm shadow-lg shadow-brand-500/30 relative">
                                     <i class="fas fa-desktop"></i>
-                                    <div class="absolute -top-1 -right-1 w-4 h-4 bg-rose-500 border-2 border-white rounded-full"></div>
+                                    <div class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-rose-500 border border-white rounded-full"></div>
                                 </div>
-                                <div class="w-14 h-14 bg-slate-50 text-slate-400 rounded-3xl flex flex-col items-center justify-center gap-1 hover:text-brand-500 group transition-all">
-                                    <i class="fas fa-utensils text-lg"></i>
-                                    <span class="text-[7px] font-black uppercase tracking-tighter opacity-0 group-hover:opacity-100 transition-opacity">Floor</span>
+                                <div class="w-8 h-8 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center hover:text-brand-500 transition-all">
+                                    <i class="fas fa-utensils text-xs"></i>
                                 </div>
-                                <div class="w-14 h-14 bg-slate-50 text-slate-400 rounded-3xl flex flex-col items-center justify-center gap-1 hover:text-brand-500 group transition-all">
-                                    <i class="fas fa-file-invoice-dollar text-lg"></i>
-                                    <span class="text-[7px] font-black uppercase tracking-tighter opacity-0 group-hover:opacity-100 transition-opacity">Bills</span>
+                                <div class="w-8 h-8 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center hover:text-brand-500 transition-all">
+                                    <i class="fas fa-file-invoice-dollar text-xs"></i>
                                 </div>
-                                <div class="w-14 h-14 bg-slate-50 text-slate-400 rounded-3xl flex flex-col items-center justify-center gap-1 hover:text-brand-500 group transition-all">
-                                    <i class="fas fa-chart-pie text-lg"></i>
-                                    <span class="text-[7px] font-black uppercase tracking-tighter opacity-0 group-hover:opacity-100 transition-opacity">Stats</span>
+                                <div class="w-8 h-8 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center hover:text-brand-500 transition-all">
+                                    <i class="fas fa-chart-pie text-xs"></i>
                                 </div>
-                                <div class="w-14 h-14 bg-slate-50 text-slate-400 rounded-3xl flex flex-col items-center justify-center gap-1 hover:text-brand-500 group transition-all">
-                                    <i class="fas fa-box text-lg"></i>
-                                    <span class="text-[7px] font-black uppercase tracking-tighter opacity-0 group-hover:opacity-100 transition-opacity">Stock</span>
+                                <div class="w-8 h-8 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center hover:text-brand-500 transition-all">
+                                    <i class="fas fa-box text-xs"></i>
                                 </div>
-                                <div class="mt-auto mb-4">
-                                    <div class="w-12 h-12 rounded-full border-2 border-slate-100 p-0.5">
-                                        <div class="w-full h-full rounded-full bg-slate-200 flex items-center justify-center text-slate-400">
-                                            <i class="fas fa-user-tie text-lg"></i>
-                                        </div>
+                                <div class="mt-auto">
+                                    <div class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
+                                        <i class="fas fa-user-tie text-xs"></i>
                                     </div>
                                 </div>
                             </div>
                             
                             <!-- Main Workspace: Massive Table Grid -->
                             <div class="flex-1 flex flex-col bg-white">
-                                <!-- Top Navigation & Filtering -->
-                                <div class="px-10 py-8 border-b border-slate-50 flex items-center justify-between bg-slate-50/20">
-                                    <div class="flex gap-2">
-                                        <button class="px-6 py-3 bg-slate-950 text-white rounded-2xl text-[11px] font-black shadow-lg">ANA SALON</button>
-                                        <button class="px-6 py-3 bg-white text-slate-400 border border-slate-100 rounded-2xl text-[11px] font-black hover:bg-slate-50 transition-colors">VIP ROOM</button>
-                                        <button class="px-6 py-3 bg-white text-slate-400 border border-slate-100 rounded-2xl text-[11px] font-black hover:bg-slate-50 transition-colors">DIŞ ALAN</button>
-                                        <button class="px-6 py-3 bg-white text-slate-400 border border-slate-100 rounded-2xl text-[11px] font-black hover:bg-slate-50 transition-colors">TERAS</button>
+                                <!-- Top Bar -->
+                                <div class="px-5 py-3 border-b border-slate-50 flex items-center justify-between bg-slate-50/20">
+                                    <div class="flex gap-1.5">
+                                        <button class="px-3 py-1.5 bg-slate-950 text-white rounded-lg text-[9px] font-black">ANA SALON</button>
+                                        <button class="px-3 py-1.5 bg-white text-slate-400 border border-slate-100 rounded-lg text-[9px] font-black hover:bg-slate-50 transition-colors">VIP ROOM</button>
+                                        <button class="px-3 py-1.5 bg-white text-slate-400 border border-slate-100 rounded-lg text-[9px] font-black hover:bg-slate-50 transition-colors">DIŞ ALAN</button>
+                                        <button class="px-3 py-1.5 bg-white text-slate-400 border border-slate-100 rounded-lg text-[9px] font-black hover:bg-slate-50 transition-colors">TERAS</button>
                                     </div>
-                                    <div class="flex items-center gap-4">
+                                    <div class="flex items-center gap-2">
                                         <div class="relative">
-                                            <input type="text" placeholder="Masa veya bekleyen ara..." class="bg-white border border-slate-200 rounded-2xl px-12 py-3.5 text-[11px] w-64 focus:border-brand-500 focus:outline-none transition-colors">
-                                            <i class="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                                            <input type="text" placeholder="Masa ara..." class="bg-white border border-slate-200 rounded-lg px-7 py-1.5 text-[9px] w-40 focus:border-brand-500 focus:outline-none transition-colors">
+                                            <i class="fas fa-search absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[8px]"></i>
                                         </div>
-                                        <div class="w-12 h-12 bg-white border border-slate-100 rounded-2xl flex items-center justify-center text-slate-400 cursor-pointer">
-                                            <i class="fas fa-sync-alt text-xs"></i>
+                                        <div class="w-7 h-7 bg-white border border-slate-100 rounded-lg flex items-center justify-center text-slate-400 cursor-pointer">
+                                            <i class="fas fa-sync-alt text-[8px]"></i>
                                         </div>
                                     </div>
                                 </div>
                                 
-                                <!-- Extended Table Grid -->
-                                <div class="flex-1 p-10 overflow-y-auto custom-scrollbar bg-slate-50/10">
-                                    <div class="grid grid-cols-5 gap-6">
+                                <!-- Table Grid -->
+                                <div class="flex-1 p-4 overflow-y-auto custom-scrollbar bg-slate-50/10">
+                                    <div class="grid grid-cols-6 gap-2.5">
                                         <!-- Active Tables with Real Data -->
-                                        <template x-for="i in 20">
-                                            <div class="aspect-square bg-white border rounded-[2rem] p-6 flex flex-col justify-between group cursor-pointer transition-all duration-300 shadow-sm"
-                                                 :class="[1, 4, 7, 12, 18].includes(i) ? 'border-rose-100 bg-rose-50/10 shadow-rose-100/50' : (i == 2 ? 'bg-brand-500 border-brand-500 shadow-2xl shadow-brand-500/40 transform scale-[1.08] z-10' : 'border-slate-100 hover:border-brand-500/30 hover:shadow-xl hover:shadow-brand-500/5')">
+                                        <template x-for="i in 24">
+                                            <div class="aspect-square bg-white border rounded-2xl p-3 flex flex-col justify-between cursor-pointer transition-all duration-300 shadow-sm"
+                                                 :class="[1, 4, 7, 12, 18].includes(i) ? 'border-rose-100 bg-rose-50/20' : (i == 2 ? 'bg-brand-500 border-brand-500 shadow-lg shadow-brand-500/30 scale-[1.05] z-10' : 'border-slate-100 hover:border-brand-500/30')">
                                                 
                                                 <div class="flex justify-between items-start">
-                                                    <span class="text-[10px] font-black uppercase tracking-widest" :class="i == 2 ? 'text-white/60' : ([1,4,7,12,18].includes(i) ? 'text-rose-500' : 'text-emerald-500')" x-text="i == 2 ? 'SELECTED' : ([1,4,7,12,18].includes(i) ? 'OCCUPIED' : 'READY')"></span>
-                                                    <span class="text-[9px] font-bold italic" :class="i == 2 ? 'text-white/40' : 'text-slate-300'" x-text="[1,4,7,12,18].includes(i) ? (i*3 + 'min') : ''"></span>
+                                                    <span class="text-[7px] font-black uppercase tracking-widest" :class="i == 2 ? 'text-white/60' : ([1,4,7,12,18].includes(i) ? 'text-rose-400' : 'text-emerald-500')" x-text="i == 2 ? 'SEL' : ([1,4,7,12,18].includes(i) ? 'OCC' : 'RDY')"></span>
+                                                    <span class="text-[7px] font-bold" :class="i == 2 ? 'text-white/40' : 'text-slate-300'" x-text="[1,4,7,12,18].includes(i) ? (i*3+'m') : ''"></span>
                                                 </div>
                                                 
                                                 <div class="text-center">
-                                                    <p class="text-[11px] font-black uppercase tracking-widest mb-1" :class="i == 2 ? 'text-white/40' : 'text-slate-300'">TABLE</p>
-                                                    <p class="text-4xl font-black font-display" :class="i == 2 ? 'text-white' : 'text-slate-950'" x-text="i < 10 ? '0'+i : i"></p>
+                                                    <p class="text-[7px] font-black uppercase tracking-widest mb-0.5" :class="i == 2 ? 'text-white/30' : 'text-slate-300'">T</p>
+                                                    <p class="text-xl font-black font-display leading-none" :class="i == 2 ? 'text-white' : 'text-slate-950'" x-text="i < 10 ? '0'+i : i"></p>
                                                 </div>
                                                 
                                                 <div class="text-center">
-                                                    <div class="px-3 py-1 bg-black/5 rounded-full inline-block" :class="i == 2 ? 'bg-white/10' : ''">
-                                                        <span class="text-xs font-black tracking-tighter" :class="i == 2 ? 'text-white' : ([1,4,7,12,18].includes(i) ? 'text-slate-800' : 'text-transparent')">
-                                                            <span x-text="[1,4,7,12,18].includes(i) ? '₺' + (i * 240) : '—'"></span>
-                                                        </span>
-                                                    </div>
+                                                    <span class="text-[8px] font-black tracking-tighter" :class="i == 2 ? 'text-white' : ([1,4,7,12,18].includes(i) ? 'text-slate-700' : 'text-transparent')" x-text="[1,4,7,12,18].includes(i) ? '₺'+(i*240) : '-'"></span>
                                                 </div>
                                             </div>
                                         </template>
@@ -267,70 +229,66 @@
                                 </div>
                             </div>
                             
-                            <!-- Immersive Receipt Sidebar -->
-                            <div class="w-96 bg-white border-l border-slate-100 flex flex-col shadow-inner-subtle">
-                                <div class="p-10 border-b border-slate-50 bg-slate-50/20">
-                                    <div class="flex items-center justify-between mb-2">
-                                        <h4 class="text-xs font-black text-slate-950 uppercase tracking-[0.2em]">CURRENT ORDER</h4>
-                                        <span class="px-3 py-1 bg-brand-500 text-white rounded-lg text-[9px] font-black">TABLE 02</span>
+                            <!-- Receipt Sidebar -->
+                            <div class="w-64 bg-white border-l border-slate-100 flex flex-col">
+                                <div class="px-5 py-4 border-b border-slate-50">
+                                    <div class="flex items-center justify-between mb-1">
+                                        <h4 class="text-[9px] font-black text-slate-950 uppercase tracking-[0.15em]">CURRENT ORDER</h4>
+                                        <span class="px-2 py-0.5 bg-brand-500 text-white rounded text-[7px] font-black">T-02</span>
                                     </div>
-                                    <p class="text-[10px] font-bold text-slate-400">GUEST: 4 PERSONS • SERVER: MEHMET CAN</p>
+                                    <p class="text-[8px] font-bold text-slate-400">4 PERSONS • MEHMET CAN</p>
                                 </div>
                                 
-                                <div class="flex-1 p-10 space-y-8 overflow-y-auto custom-scrollbar">
-                                    <!-- Order Items -->
-                                    <div class="group flex justify-between items-start animate-pulse">
-                                        <div class="flex gap-5">
-                                            <div class="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 text-[11px] font-black border border-slate-100">x2</div>
+                                <div class="flex-1 px-5 py-3 space-y-4 overflow-y-auto custom-scrollbar">
+                                    <div class="flex justify-between items-center">
+                                        <div class="flex gap-2 items-center">
+                                            <span class="text-[8px] font-black text-slate-400 w-5">x2</span>
                                             <div>
-                                                <p class="text-[13px] font-black text-slate-950 leading-tight mb-0.5">Premium Ribeye Steak</p>
-                                                <p class="text-[10px] text-brand-500 font-bold uppercase tracking-widest">Medium Rare • Buttered</p>
+                                                <p class="text-[9px] font-black text-slate-950">Ribeye Steak</p>
+                                                <p class="text-[7px] text-brand-500 font-bold">Med. Rare</p>
                                             </div>
                                         </div>
-                                        <p class="text-[13px] font-black text-slate-950 tracking-tighter">₺1,840</p>
+                                        <p class="text-[9px] font-black text-slate-950">₺1,840</p>
                                     </div>
-                                    <div class="flex justify-between items-start">
-                                        <div class="flex gap-5">
-                                            <div class="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 text-[11px] font-black border border-slate-100">x1</div>
+                                    <div class="flex justify-between items-center">
+                                        <div class="flex gap-2 items-center">
+                                            <span class="text-[8px] font-black text-slate-400 w-5">x1</span>
                                             <div>
-                                                <p class="text-[13px] font-black text-slate-950 leading-tight mb-0.5">Classic Caesar Salad</p>
-                                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest italic">No Anchovies</p>
+                                                <p class="text-[9px] font-black text-slate-950">Caesar Salad</p>
+                                                <p class="text-[7px] text-slate-400 italic">No Anchovies</p>
                                             </div>
                                         </div>
-                                        <p class="text-[13px] font-black text-slate-950 tracking-tighter">₺220</p>
+                                        <p class="text-[9px] font-black text-slate-950">₺220</p>
                                     </div>
-                                    <div class="flex justify-between items-start">
-                                        <div class="flex gap-5">
-                                            <div class="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 text-[11px] font-black border border-slate-100">x3</div>
+                                    <div class="flex justify-between items-center">
+                                        <div class="flex gap-2 items-center">
+                                            <span class="text-[8px] font-black text-slate-400 w-5">x3</span>
                                             <div>
-                                                <p class="text-[13px] font-black text-slate-950 leading-tight mb-0.5">Chardonnay (Bottle)</p>
+                                                <p class="text-[9px] font-black text-slate-950">Chardonnay</p>
                                             </div>
                                         </div>
-                                        <p class="text-[13px] font-black text-slate-950 tracking-tighter">₺3,450</p>
+                                        <p class="text-[9px] font-black text-slate-950">₺3,450</p>
                                     </div>
                                 </div>
                                 
-                                <!-- Multi-tier Checkout -->
-                                <div class="p-10 bg-slate-50/50 border-t border-slate-100">
-                                    <div class="space-y-4 mb-10">
-                                        <div class="flex justify-between text-xs font-bold text-slate-400">
-                                            <span class="uppercase tracking-widest">Subtotal</span>
-                                            <span>₺5,510.00</span>
+                                <!-- Checkout -->
+                                <div class="px-5 py-4 bg-slate-50/50 border-t border-slate-100">
+                                    <div class="space-y-2 mb-4">
+                                        <div class="flex justify-between text-[8px] font-bold text-slate-400">
+                                            <span>Subtotal</span><span>₺5,510</span>
                                         </div>
-                                        <div class="flex justify-between text-xs font-bold text-slate-400">
-                                            <span class="uppercase tracking-widest">Tax (18%)</span>
-                                            <span>₺991.80</span>
+                                        <div class="flex justify-between text-[8px] font-bold text-slate-400">
+                                            <span>Tax 18%</span><span>₺991</span>
                                         </div>
-                                        <div class="pt-4 border-t border-slate-200/50 flex justify-between items-baseline">
-                                            <span class="text-sm font-black text-slate-950 uppercase tracking-widest">Grand Total</span>
-                                            <span class="text-4xl font-black text-slate-950 tracking-tighter italic">₺6,501<span class="text-brand-500 font-normal">.80</span></span>
+                                        <div class="pt-2 border-t border-slate-200 flex justify-between items-baseline">
+                                            <span class="text-[8px] font-black text-slate-950 uppercase tracking-wide">Total</span>
+                                            <span class="text-lg font-black text-slate-950 tracking-tighter">₺6,501<span class="text-brand-500 text-xs font-normal">.80</span></span>
                                         </div>
                                     </div>
-                                    
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <button class="py-5 bg-white border border-slate-200 text-slate-950 rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.2em] shadow-sm hover:bg-slate-50 transition-all">Split Bill</button>
-                                        <button class="py-5 bg-brand-500 text-white rounded-[1.5rem] text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl shadow-brand-500/30 hover:bg-brand-600 transition-all flex items-center justify-center gap-3">
-                                            <i class="fas fa-credit-card"></i> PROCEED
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <button class="py-2.5 bg-white border border-slate-200 text-slate-950 rounded-xl text-[8px] font-black uppercase hover:bg-slate-50 transition-all">Split</button>
+                                        <button class="py-2.5 bg-brand-500 text-white rounded-xl text-[8px] font-black uppercase shadow-lg shadow-brand-500/30 hover:bg-brand-600 transition-all flex items-center justify-center gap-1.5">
+                                            <i class="fas fa-credit-card text-[8px]"></i> Pay
                                         </button>
                                     </div>
                                 </div>
