@@ -3,296 +3,232 @@
 @section('title', 'Sürüm Notları — RezerVist POS')
 
 @section('content')
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
 <style>
-  :root {
-    --primary: #6200EE;
-    --primary-dark: #4A00B4;
-    --accent: #03DAC6;
-    --bg: #FFFFFF;
-    --surface: #F8F7FF;
-    --surface-2: #F0EDF9;
-    --border: #EAE6F5;
-    --text: #0D0920;
-    --text-muted: #9189AC;
-    --text-subtle: #5C5270;
-    --shadow: rgba(98,0,238,0.08);
-  }
+  .vp-hero{padding:140px 24px 80px;background:linear-gradient(180deg,#F5F3FF 0%,#fff 100%);text-align:center;}
+  .vp-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:50px;background:#fff;border:1px solid #E9E5F5;font-size:12px;font-weight:700;color:#6200EE;letter-spacing:0.05em;margin-bottom:20px;box-shadow:0 2px 8px rgba(98,0,238,0.06);}
+  .vp-badge i{font-size:10px;}
+  .vp-title{font-family:'Outfit',sans-serif;font-size:48px;font-weight:800;color:#0F172A;letter-spacing:-0.03em;line-height:1.1;margin-bottom:14px;}
+  .vp-title span{color:#6200EE;}
+  .vp-desc{font-size:16px;color:#64748B;max-width:460px;margin:0 auto 28px;line-height:1.7;}
+  .vp-back{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:12px;background:#6200EE;color:#fff;font-size:13px;font-weight:700;text-decoration:none;transition:all 0.25s;box-shadow:0 4px 14px rgba(98,0,238,0.25);}
+  .vp-back:hover{background:#4A00B4;transform:translateY(-2px);box-shadow:0 8px 24px rgba(98,0,238,0.3);}
+  .vp-back i{font-size:11px;}
 
-  /* HERO */
-  .ver-hero{
-    padding:140px 60px 80px;position:relative;overflow:hidden;background:var(--bg);text-align:center;
-  }
-  .ver-hero-orb{
-    position:absolute;width:700px;height:700px;border-radius:50%;pointer-events:none;
-    background:radial-gradient(circle,rgba(98,0,238,0.06) 0%,transparent 65%);
-    top:-200px;left:50%;transform:translateX(-50%);
-  }
-  .ver-hero-inner{position:relative;z-index:1;max-width:680px;margin:0 auto;}
-  .ver-badge{
-    display:inline-flex;align-items:center;gap:7px;
-    padding:5px 14px 5px 5px;
-    border:1.5px solid rgba(98,0,238,0.15);border-radius:100px;
-    background:rgba(98,0,238,0.04);
-    font-size:0.7rem;font-weight:700;color:var(--primary);
-    letter-spacing:0.08em;text-transform:uppercase;margin-bottom:22px;
-  }
-  .ver-badge-dot{width:8px;height:8px;border-radius:50%;background:var(--primary);margin-right:2px;}
-  .ver-title{
-    font-family:'Inter',sans-serif;font-size:clamp(2.2rem,4.5vw,3.8rem);
-    font-weight:800;line-height:1.05;letter-spacing:-0.04em;color:var(--text);margin-bottom:16px;
-  }
-  .ver-title em{font-style:normal;background:linear-gradient(135deg,var(--primary),#A855F7,#06B6D4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-  .ver-sub{font-size:1.05rem;color:var(--text-subtle);font-weight:300;line-height:1.7;max-width:520px;margin:0 auto 32px;}
-  .ver-back{
-    display:inline-flex;align-items:center;gap:7px;font-size:0.85rem;font-weight:600;
-    color:var(--primary);text-decoration:none;padding:9px 18px;border-radius:10px;
-    border:1.5px solid rgba(98,0,238,0.15);background:rgba(98,0,238,0.04);transition:all 0.25s;
-  }
-  .ver-back:hover{background:var(--primary);color:white;border-color:var(--primary);transform:translateY(-1px);}
+  .vp-grid{max-width:880px;margin:0 auto;padding:0 24px 100px;display:flex;flex-direction:column;gap:24px;}
 
-  /* TIMELINE */
-  .timeline-section{padding:0 60px 120px;}
-  .timeline-inner{max-width:760px;margin:0 auto;position:relative;padding-left:10px;}
-  .timeline-line{position:absolute;left:23px;top:0;bottom:0;width:2px;background:linear-gradient(180deg,var(--primary) 0%,var(--border) 100%);border-radius:2px;}
+  .vp-release{background:#fff;border-radius:20px;border:1px solid #E9E5F5;overflow:hidden;transition:all 0.3s;box-shadow:0 1px 4px rgba(0,0,0,0.04);}
+  .vp-release:hover{border-color:#D4C9EE;box-shadow:0 12px 40px rgba(98,0,238,0.08);transform:translateY(-3px);}
 
-  .ver-card{
-    position:relative;padding-left:72px;margin-bottom:40px;
-    opacity:0;transform:translateY(20px);transition:all 0.5s ease;
-  }
-  .ver-card.visible{opacity:1;transform:translateY(0);}
+  .vp-release-head{padding:24px 28px 20px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .vp-release-left{display:flex;align-items:center;gap:16px;}
+  .vp-ver-icon{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+  .vp-ver-icon.latest{background:linear-gradient(135deg,#6200EE,#A855F7);color:#fff;box-shadow:0 4px 16px rgba(98,0,238,0.3);}
+  .vp-ver-icon.update{background:linear-gradient(135deg,#06B6D4,#22D3EE);color:#fff;box-shadow:0 4px 16px rgba(6,182,212,0.3);}
+  .vp-ver-icon.major{background:linear-gradient(135deg,#F59E0B,#FBBF24);color:#fff;box-shadow:0 4px 16px rgba(245,158,11,0.3);}
+  .vp-ver-icon.fix{background:linear-gradient(135deg,#EF4444,#F87171);color:#fff;box-shadow:0 4px 16px rgba(239,68,68,0.2);}
+  .vp-ver-icon.stable{background:#F1F5F9;color:#64748B;}
 
-  .ver-dot{
-    position:absolute;left:11px;top:28px;width:26px;height:26px;border-radius:50%;
-    border:3px solid white;box-shadow:0 0 0 2px var(--border),0 4px 12px var(--shadow);
-    z-index:2;
-  }
-  .ver-dot.latest{background:var(--primary);box-shadow:0 0 0 2px var(--primary),0 4px 16px rgba(98,0,238,0.35);}
-  .ver-dot.update{background:var(--accent);box-shadow:0 0 0 2px var(--accent),0 4px 12px rgba(3,218,198,0.25);}
-  .ver-dot.stable{background:#94A3B8;box-shadow:0 0 0 2px #94A3B8,0 4px 12px rgba(0,0,0,0.1);}
+  .vp-ver-info{}
+  .vp-ver-num{font-size:12px;font-weight:800;color:#6200EE;letter-spacing:0.08em;text-transform:uppercase;}
+  .vp-ver-name{font-family:'Outfit',sans-serif;font-size:20px;font-weight:700;color:#0F172A;letter-spacing:-0.02em;margin-top:2px;}
+  .vp-ver-date{font-size:12px;color:#94A3B8;font-weight:500;margin-top:3px;}
 
-  .ver-box{
-    background:white;border:1.5px solid var(--border);border-radius:20px;padding:28px 30px;
-    transition:all 0.3s;box-shadow:0 2px 8px rgba(0,0,0,0.03);
-  }
-  .ver-box:hover{border-color:rgba(98,0,238,0.2);box-shadow:0 12px 32px var(--shadow);transform:translateY(-3px);}
+  .vp-tag{padding:5px 12px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:0.04em;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;}
+  .vp-tag i{font-size:9px;}
+  .vp-tag.new{background:#ECFDF5;color:#059669;border:1px solid #A7F3D0;}
+  .vp-tag.update{background:#EFF6FF;color:#2563EB;border:1px solid #BFDBFE;}
+  .vp-tag.major{background:#FFF7ED;color:#EA580C;border:1px solid #FED7AA;}
+  .vp-tag.fix{background:#FEF2F2;color:#DC2626;border:1px solid #FECACA;}
+  .vp-tag.release{background:#F5F3FF;color:#6200EE;border:1px solid #DDD6FE;}
 
-  .ver-box-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px;flex-wrap:wrap;}
-  .ver-box-ver{font-family:'Inter',sans-serif;font-size:0.72rem;font-weight:800;color:var(--primary);letter-spacing:0.06em;text-transform:uppercase;}
-  .ver-box-title{font-family:'Inter',sans-serif;font-size:1.2rem;font-weight:700;color:var(--text);letter-spacing:-0.02em;margin-bottom:4px;}
-  .ver-box-date{font-size:0.78rem;color:var(--text-muted);font-weight:500;margin-bottom:18px;}
+  .vp-changes{padding:0 28px 24px;}
+  .vp-changes-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;}
+  .vp-change{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-radius:12px;background:#FAFAFE;font-size:14px;color:#475569;line-height:1.6;transition:background 0.2s;}
+  .vp-change:hover{background:#F1F0FA;}
 
-  .ver-tag{
-    display:inline-flex;align-items:center;gap:5px;font-size:0.65rem;font-weight:700;
-    padding:4px 10px;border-radius:100px;letter-spacing:0.04em;text-transform:uppercase;
-  }
-  .ver-tag.new{background:rgba(16,185,129,0.08);color:#10B981;border:1px solid rgba(16,185,129,0.15);}
-  .ver-tag.update{background:rgba(59,130,246,0.08);color:#3B82F6;border:1px solid rgba(59,130,246,0.15);}
-  .ver-tag.fix{background:rgba(245,158,11,0.08);color:#F59E0B;border:1px solid rgba(245,158,11,0.15);}
-  .ver-tag.release{background:rgba(98,0,238,0.06);color:var(--primary);border:1px solid rgba(98,0,238,0.12);}
+  .vp-change-icon{width:24px;height:24px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;margin-top:2px;}
+  .vp-change-icon.feat{background:#EDE9FE;color:#7C3AED;}
+  .vp-change-icon.perf{background:#CCFBF1;color:#0D9488;}
+  .vp-change-icon.bugfix{background:#FEF3C7;color:#D97706;}
 
-  .ver-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;}
-  .ver-item{
-    display:flex;align-items:flex-start;gap:10px;font-size:0.875rem;color:var(--text-subtle);
-    font-weight:400;line-height:1.55;padding:8px 12px;border-radius:10px;
-    background:var(--surface);border:1px solid transparent;transition:all 0.2s;
-  }
-  .ver-item:hover{border-color:rgba(98,0,238,0.1);background:var(--surface-2);}
-  .ver-check{
-    width:20px;height:20px;border-radius:6px;flex-shrink:0;margin-top:1px;
-    display:flex;align-items:center;justify-content:center;font-size:0.6rem;
-  }
-  .ver-check.feat{background:rgba(98,0,238,0.08);color:var(--primary);}
-  .ver-check.perf{background:rgba(3,218,198,0.1);color:#0ABBA3;}
-  .ver-check.bugfix{background:rgba(245,158,11,0.1);color:#F59E0B;}
+  .vp-release-text{padding:0 28px 24px;font-size:14px;color:#64748B;line-height:1.7;}
 
-  .ver-desc{font-size:0.875rem;color:var(--text-subtle);line-height:1.6;}
-
-  /* RESPONSIVE */
-  @media(max-width:768px){
-    .ver-hero{padding:110px 22px 60px;}
-    .timeline-section{padding:0 22px 80px;}
-    .ver-card{padding-left:52px;margin-bottom:28px;}
-    .timeline-line{left:15px;}
-    .ver-dot{left:3px;width:22px;height:22px;}
-    .ver-box{padding:22px 20px;}
-    .ver-box-header{flex-direction:column;align-items:flex-start;gap:6px;}
+  @media(max-width:640px){
+    .vp-hero{padding:110px 20px 60px;}
+    .vp-title{font-size:32px;}
+    .vp-release-head{padding:20px;flex-direction:column;gap:10px;}
+    .vp-changes{padding:0 20px 20px;}
+    .vp-change{padding:10px 12px;font-size:13px;}
+    .vp-grid{padding:0 16px 60px;gap:18px;}
   }
 </style>
 
-<!-- ════════════════ HERO ════════════════ -->
-<section class="ver-hero">
-  <div class="ver-hero-orb"></div>
-  <div class="ver-hero-inner">
-    <a href="{{ route('pages.pos') }}" class="ver-back">
-      <i class="fa-solid fa-arrow-left" style="font-size:.7rem;"></i>
+<!-- ═══════ HERO ═══════ -->
+<section class="vp-hero">
+  <div>
+    <a href="{{ route('pages.pos') }}" class="vp-back">
+      <i class="fa-solid fa-arrow-left"></i>
       POS Sayfasına Dön
     </a>
-    <div style="margin-top:28px;">
-      <div class="ver-badge">
-        <div class="ver-badge-dot"></div>
-        Changelog
+    <div style="margin-top:32px;">
+      <div class="vp-badge">
+        <i class="fa-solid fa-code-branch"></i>
+        CHANGELOG
       </div>
-      <h1 class="ver-title">Sürüm<br><em>Geçmişi.</em></h1>
-      <p class="ver-sub">RezerVist POS ekosistemindeki her güncelleme, yeni özellik ve iyileştirmeyi buradan takip edin.</p>
+      <h1 class="vp-title">Sürüm <span>Notları</span></h1>
+      <p class="vp-desc">RezerVist POS ekosistemindeki tüm güncellemeler, yeni özellikler ve iyileştirmeler.</p>
     </div>
   </div>
 </section>
 
-<!-- ════════════════ TIMELINE ════════════════ -->
-<section class="timeline-section">
-  <div class="timeline-inner">
-    <div class="timeline-line"></div>
+<!-- ═══════ RELEASES ═══════ -->
+<div class="vp-grid">
 
-    <!-- v4.2.0 -->
-    <div class="ver-card">
-      <div class="ver-dot latest"></div>
-      <div class="ver-box">
-        <div class="ver-box-header">
-          <div>
-            <div class="ver-box-ver">v4.2.0</div>
-            <div class="ver-box-title">Akıllı Terminal Motoru</div>
-          </div>
-          <div class="ver-tag new"><i class="fa-solid fa-star" style="font-size:.5rem;"></i> En Yeni</div>
+  <!-- v4.2.0 -->
+  <div class="vp-release">
+    <div class="vp-release-head">
+      <div class="vp-release-left">
+        <div class="vp-ver-icon latest"><i class="fa-solid fa-rocket"></i></div>
+        <div class="vp-ver-info">
+          <div class="vp-ver-num">v4.2.0</div>
+          <div class="vp-ver-name">Akıllı Terminal Motoru</div>
+          <div class="vp-ver-date">20 Şubat 2026</div>
         </div>
-        <div class="ver-box-date">20 Şubat 2026</div>
-        <ul class="ver-list">
-          <li class="ver-item">
-            <div class="ver-check feat"><i class="fa-solid fa-plus"></i></div>
-            AI destekli satış tahmini motoru eklendi — geçmiş verilere göre günlük ciro öngörüsü.
-          </li>
-          <li class="ver-item">
-            <div class="ver-check feat"><i class="fa-solid fa-plus"></i></div>
-            Yeni dashboard tasarımı: Isı haritası, personel KPI ve anlık tablo görünümü.
-          </li>
-          <li class="ver-item">
-            <div class="ver-check perf"><i class="fa-solid fa-bolt"></i></div>
-            Terminal başlatma süresi %65 azaltıldı (Cold Start optimizasyonu).
-          </li>
-          <li class="ver-item">
-            <div class="ver-check feat"><i class="fa-solid fa-plus"></i></div>
-            Biyometrik giriş (parmak izi + yüz tanıma) üretim ortamında aktif.
-          </li>
-        </ul>
       </div>
+      <div class="vp-tag new"><i class="fa-solid fa-circle-check"></i> En Yeni</div>
     </div>
-
-    <!-- v4.1.0 -->
-    <div class="ver-card">
-      <div class="ver-dot update"></div>
-      <div class="ver-box">
-        <div class="ver-box-header">
-          <div>
-            <div class="ver-box-ver">v4.1.0</div>
-            <div class="ver-box-title">Çoklu Şube Yönetimi</div>
-          </div>
-          <div class="ver-tag update"><i class="fa-solid fa-arrow-up" style="font-size:.5rem;"></i> Güncelleme</div>
-        </div>
-        <div class="ver-box-date">5 Şubat 2026</div>
-        <ul class="ver-list">
-          <li class="ver-item">
-            <div class="ver-check feat"><i class="fa-solid fa-plus"></i></div>
-            Tek panelden 50+ şube yönetimi desteği — merkezi stok ve personel kontrolü.
-          </li>
-          <li class="ver-item">
-            <div class="ver-check feat"><i class="fa-solid fa-plus"></i></div>
-            Şube karşılaştırma raporları ve performans sıralaması eklendi.
-          </li>
-          <li class="ver-item">
-            <div class="ver-check perf"><i class="fa-solid fa-bolt"></i></div>
-            WebSocket altyapısı yeniden yazıldı — senkronizasyon gecikmesi 0.2ms'ye düşürüldü.
-          </li>
-        </ul>
-      </div>
+    <div class="vp-changes">
+      <ul class="vp-changes-list">
+        <li class="vp-change">
+          <div class="vp-change-icon feat"><i class="fa-solid fa-plus"></i></div>
+          AI destekli satış tahmini motoru eklendi — geçmiş verilere göre günlük ciro öngörüsü.
+        </li>
+        <li class="vp-change">
+          <div class="vp-change-icon feat"><i class="fa-solid fa-plus"></i></div>
+          Yeni dashboard tasarımı: Isı haritası, personel KPI ve anlık tablo görünümü.
+        </li>
+        <li class="vp-change">
+          <div class="vp-change-icon perf"><i class="fa-solid fa-bolt"></i></div>
+          Terminal başlatma süresi %65 azaltıldı (Cold Start optimizasyonu).
+        </li>
+        <li class="vp-change">
+          <div class="vp-change-icon feat"><i class="fa-solid fa-plus"></i></div>
+          Biyometrik giriş (parmak izi + yüz tanıma) üretim ortamında aktif.
+        </li>
+      </ul>
     </div>
-
-    <!-- v3.0.0 -->
-    <div class="ver-card">
-      <div class="ver-dot update"></div>
-      <div class="ver-box">
-        <div class="ver-box-header">
-          <div>
-            <div class="ver-box-ver">v3.0.0</div>
-            <div class="ver-box-title">Masa Yönetimi 2.0</div>
-          </div>
-          <div class="ver-tag new"><i class="fa-solid fa-star" style="font-size:.5rem;"></i> Major</div>
-        </div>
-        <div class="ver-box-date">30 Ocak 2026</div>
-        <ul class="ver-list">
-          <li class="ver-item">
-            <div class="ver-check feat"><i class="fa-solid fa-plus"></i></div>
-            Sürükle & Bırak masa düzenleme özelliği eklendi.
-          </li>
-          <li class="ver-item">
-            <div class="ver-check perf"><i class="fa-solid fa-bolt"></i></div>
-            Canlı sipariş takibi için WebSocket optimizasyonları yapıldı.
-          </li>
-          <li class="ver-item">
-            <div class="ver-check feat"><i class="fa-solid fa-plus"></i></div>
-            Karanlık mod desteği geliştirildi.
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- v2.3.1 -->
-    <div class="ver-card">
-      <div class="ver-dot stable"></div>
-      <div class="ver-box">
-        <div class="ver-box-header">
-          <div>
-            <div class="ver-box-ver">v2.3.1</div>
-            <div class="ver-box-title">Performans İyileştirmeleri</div>
-          </div>
-          <div class="ver-tag fix"><i class="fa-solid fa-screwdriver-wrench" style="font-size:.5rem;"></i> Düzeltme</div>
-        </div>
-        <div class="ver-box-date">15 Ocak 2026</div>
-        <ul class="ver-list">
-          <li class="ver-item">
-            <div class="ver-check perf"><i class="fa-solid fa-bolt"></i></div>
-            Veritabanı sorguları optimize edildi (%40 hız artışı).
-          </li>
-          <li class="ver-item">
-            <div class="ver-check bugfix"><i class="fa-solid fa-bug"></i></div>
-            Mobil uyumluluk sorunları giderildi.
-          </li>
-          <li class="ver-item">
-            <div class="ver-check bugfix"><i class="fa-solid fa-bug"></i></div>
-            Ödeme ekranında yaşanan zaman aşımı hatası düzeltildi.
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- v1.0.0 -->
-    <div class="ver-card">
-      <div class="ver-dot stable"></div>
-      <div class="ver-box">
-        <div class="ver-box-header">
-          <div>
-            <div class="ver-box-ver">v1.0.0</div>
-            <div class="ver-box-title">İlk Sürüm</div>
-          </div>
-          <div class="ver-tag release"><i class="fa-solid fa-rocket" style="font-size:.5rem;"></i> Release</div>
-        </div>
-        <div class="ver-box-date">1 Ocak 2024</div>
-        <p class="ver-desc">
-          RezerVist POS sisteminin ilk kararlı sürümü yayınlandı. Temel sipariş yönetimi, masa takibi, stok kontrolü ve ödeme entegrasyonu ile işletmelerin dijital dönüşümü başladı.
-        </p>
-      </div>
-    </div>
-
   </div>
-</section>
 
-<script>
-  // Scroll reveal for version cards
-  const vio = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.ver-card').forEach(el => vio.observe(el));
-</script>
+  <!-- v4.1.0 -->
+  <div class="vp-release">
+    <div class="vp-release-head">
+      <div class="vp-release-left">
+        <div class="vp-ver-icon update"><i class="fa-solid fa-arrow-up"></i></div>
+        <div class="vp-ver-info">
+          <div class="vp-ver-num">v4.1.0</div>
+          <div class="vp-ver-name">Çoklu Şube Yönetimi</div>
+          <div class="vp-ver-date">5 Şubat 2026</div>
+        </div>
+      </div>
+      <div class="vp-tag update"><i class="fa-solid fa-arrow-trend-up"></i> Güncelleme</div>
+    </div>
+    <div class="vp-changes">
+      <ul class="vp-changes-list">
+        <li class="vp-change">
+          <div class="vp-change-icon feat"><i class="fa-solid fa-plus"></i></div>
+          Tek panelden 50+ şube yönetimi desteği — merkezi stok ve personel kontrolü.
+        </li>
+        <li class="vp-change">
+          <div class="vp-change-icon feat"><i class="fa-solid fa-plus"></i></div>
+          Şube karşılaştırma raporları ve performans sıralaması eklendi.
+        </li>
+        <li class="vp-change">
+          <div class="vp-change-icon perf"><i class="fa-solid fa-bolt"></i></div>
+          WebSocket altyapısı yeniden yazıldı — senkronizasyon gecikmesi 0.2ms'ye düşürüldü.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- v3.0.0 -->
+  <div class="vp-release">
+    <div class="vp-release-head">
+      <div class="vp-release-left">
+        <div class="vp-ver-icon major"><i class="fa-solid fa-fire"></i></div>
+        <div class="vp-ver-info">
+          <div class="vp-ver-num">v3.0.0</div>
+          <div class="vp-ver-name">Masa Yönetimi 2.0</div>
+          <div class="vp-ver-date">30 Ocak 2026</div>
+        </div>
+      </div>
+      <div class="vp-tag major"><i class="fa-solid fa-fire"></i> Major</div>
+    </div>
+    <div class="vp-changes">
+      <ul class="vp-changes-list">
+        <li class="vp-change">
+          <div class="vp-change-icon feat"><i class="fa-solid fa-plus"></i></div>
+          Sürükle &amp; Bırak masa düzenleme özelliği eklendi.
+        </li>
+        <li class="vp-change">
+          <div class="vp-change-icon perf"><i class="fa-solid fa-bolt"></i></div>
+          Canlı sipariş takibi için WebSocket optimizasyonları yapıldı.
+        </li>
+        <li class="vp-change">
+          <div class="vp-change-icon feat"><i class="fa-solid fa-plus"></i></div>
+          Karanlık mod desteği geliştirildi.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- v2.3.1 -->
+  <div class="vp-release">
+    <div class="vp-release-head">
+      <div class="vp-release-left">
+        <div class="vp-ver-icon fix"><i class="fa-solid fa-bug"></i></div>
+        <div class="vp-ver-info">
+          <div class="vp-ver-num">v2.3.1</div>
+          <div class="vp-ver-name">Performans İyileştirmeleri</div>
+          <div class="vp-ver-date">15 Ocak 2026</div>
+        </div>
+      </div>
+      <div class="vp-tag fix"><i class="fa-solid fa-bug"></i> Düzeltme</div>
+    </div>
+    <div class="vp-changes">
+      <ul class="vp-changes-list">
+        <li class="vp-change">
+          <div class="vp-change-icon perf"><i class="fa-solid fa-bolt"></i></div>
+          Veritabanı sorguları optimize edildi (%40 hız artışı).
+        </li>
+        <li class="vp-change">
+          <div class="vp-change-icon bugfix"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          Mobil uyumluluk sorunları giderildi.
+        </li>
+        <li class="vp-change">
+          <div class="vp-change-icon bugfix"><i class="fa-solid fa-triangle-exclamation"></i></div>
+          Ödeme ekranında yaşanan zaman aşımı hatası düzeltildi.
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- v1.0.0 -->
+  <div class="vp-release">
+    <div class="vp-release-head">
+      <div class="vp-release-left">
+        <div class="vp-ver-icon stable"><i class="fa-solid fa-flag-checkered"></i></div>
+        <div class="vp-ver-info">
+          <div class="vp-ver-num">v1.0.0</div>
+          <div class="vp-ver-name">İlk Sürüm</div>
+          <div class="vp-ver-date">1 Ocak 2024</div>
+        </div>
+      </div>
+      <div class="vp-tag release"><i class="fa-solid fa-flag"></i> Release</div>
+    </div>
+    <div class="vp-release-text">
+      RezerVist POS sisteminin ilk kararlı sürümü yayınlandı. Temel sipariş yönetimi, masa takibi, stok kontrolü ve ödeme entegrasyonu ile işletmelerin dijital dönüşümü başladı.
+    </div>
+  </div>
+
+</div>
 @endsection
