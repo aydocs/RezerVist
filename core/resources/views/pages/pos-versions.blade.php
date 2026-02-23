@@ -92,9 +92,9 @@
       <div class="vp-release-left">
         <div class="vp-ver-icon latest"><i class="fa-solid fa-rocket"></i></div>
         <div class="vp-ver-info">
-          <div class="vp-ver-num">v4.2.0</div>
+          <div class="vp-ver-num">v1.0.5</div>
           <div class="vp-ver-name">Akıllı Terminal Motoru</div>
-          <div class="vp-ver-date">20 Şubat 2026</div>
+          <div class="vp-ver-date">23 Şubat 2026</div>
         </div>
       </div>
       <div class="vp-tag new"><i class="fa-solid fa-circle-check"></i> En Yeni</div>
@@ -127,9 +127,9 @@
       <div class="vp-release-left">
         <div class="vp-ver-icon update"><i class="fa-solid fa-arrow-up"></i></div>
         <div class="vp-ver-info">
-          <div class="vp-ver-num">v4.1.0</div>
+          <div class="vp-ver-num">v1.0.2</div>
           <div class="vp-ver-name">Çoklu Şube Yönetimi</div>
-          <div class="vp-ver-date">5 Şubat 2026</div>
+          <div class="vp-ver-date">10 Şubat 2026</div>
         </div>
       </div>
       <div class="vp-tag update"><i class="fa-solid fa-arrow-trend-up"></i> Güncelleme</div>
@@ -158,9 +158,9 @@
       <div class="vp-release-left">
         <div class="vp-ver-icon major"><i class="fa-solid fa-fire"></i></div>
         <div class="vp-ver-info">
-          <div class="vp-ver-num">v3.0.0</div>
+          <div class="vp-ver-num">v1.0.0</div>
           <div class="vp-ver-name">Masa Yönetimi 2.0</div>
-          <div class="vp-ver-date">30 Ocak 2026</div>
+          <div class="vp-ver-date">1 Şubat 2026</div>
         </div>
       </div>
       <div class="vp-tag major"><i class="fa-solid fa-fire"></i> Major</div>
@@ -189,7 +189,7 @@
       <div class="vp-release-left">
         <div class="vp-ver-icon fix"><i class="fa-solid fa-bug"></i></div>
         <div class="vp-ver-info">
-          <div class="vp-ver-num">v2.3.1</div>
+          <div class="vp-ver-num">v0.9.8</div>
           <div class="vp-ver-name">Performans İyileştirmeleri</div>
           <div class="vp-ver-date">15 Ocak 2026</div>
         </div>
@@ -220,9 +220,9 @@
       <div class="vp-release-left">
         <div class="vp-ver-icon stable"><i class="fa-solid fa-flag-checkered"></i></div>
         <div class="vp-ver-info">
-          <div class="vp-ver-num">v1.0.0</div>
-          <div class="vp-ver-name">İlk Sürüm</div>
-          <div class="vp-ver-date">1 Ocak 2024</div>
+          <div class="vp-ver-num">v0.9.0</div>
+          <div class="vp-ver-name">Beta Sürüm</div>
+          <div class="vp-ver-date">1 Ocak 2026</div>
         </div>
       </div>
       <div class="vp-tag release"><i class="fa-solid fa-flag"></i> Release</div>

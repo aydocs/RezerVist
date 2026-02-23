@@ -301,7 +301,7 @@
       <p class="ia-fadeIn ia-d700" style="color:var(--text-muted);font-size:1rem;font-weight:500;margin-top:20px;letter-spacing:0.2em;text-transform:uppercase;">Satış Noktası Çözümü</p>
       <div class="ia-fadeIn ia-d700" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:28px;">
         <div style="width:8px;height:8px;border-radius:50%;background:#10B981;"></div>
-        <span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);letter-spacing:0.15em;text-transform:uppercase;">v4.5 — Hazır</span>
+        <span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);letter-spacing:0.15em;text-transform:uppercase;">v1 — Hazır</span>
       </div>
     </div>
   </div>
@@ -469,9 +469,13 @@
 
   <div class="hero-inner">
     <div>
-      <div class="hero-badge">
-        <div class="badge-ping"><div class="badge-dot"></div></div>
-        Yeni Nesil Donanım · v1
+      <div class="hero-badge" style="gap:12px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <div class="badge-ping"><div class="badge-dot"></div></div>
+          Yeni Nesil Donanım · v1
+        </div>
+        <div style="width:1px;height:12px;background:rgba(98,0,238,0.15);"></div>
+        <a href="{{ route('pages.pos.versions') }}" style="color:var(--primary);text-decoration:none;font-weight:800;font-size:0.65rem;hover:opacity:0.8;">SÜRÜM NOTLARI &rarr;</a>
       </div>
       <h1 class="hero-title">
         İşletmenizin<br>
