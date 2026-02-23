@@ -2,431 +2,663 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>RezerVistA POS | Yetenekli, Hızlı, Keskin.</title>
-    
-    <!-- Premium Global Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- TailwindCSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
                         display: ['Outfit', 'sans-serif'],
                     },
                     colors: {
                         brand: {
-                            50: '#F5F3FF',
-                            100: '#EDE9FE',
-                            500: '#6200EE',
-                            600: '#5000D3',
-                            700: '#4c00b0',
-                        },
-                        slate: {
-                            50: '#F8FAFC',
-                            100: '#F1F5F9',
-                            200: '#E2E8F0',
-                            300: '#CBD5E1',
-                            400: '#94A3B8',
-                            500: '#64748B',
-                            600: '#475569',
-                            700: '#334155',
-                            800: '#1E293B',
-                            900: '#0F172A',
-                            950: '#020617',
+                            50: '#F5F3FF', 100: '#EDE9FE', 200: '#DDD6FE',
+                            300: '#C4B5FD', 400: '#A78BFA',
+                            500: '#6200EE', 600: '#5000D3', 700: '#4200AF',
                         }
-                    },
-                    boxShadow: {
-                        'premium': '0 20px 50px -12px rgba(0, 0, 0, 0.08)',
-                        'inner-subtle': 'inset 0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-                        'card': '0 10px 30px -5px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02)',
-                        'pos-large': '0 60px 150px -30px rgba(0, 0, 0, 0.2), 0 30px 60px -20px rgba(0, 0, 0, 0.15)',
                     }
                 }
             }
         }
     </script>
-    
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        body { 
-            background-color: #FFFFFF;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+        * { -webkit-font-smoothing: antialiased; }
+        body { background: #fff; overflow-x: hidden; }
+
+        /* ─── Intro Overlay ─── */
+        #intro-overlay {
+            position: fixed; inset: 0; z-index: 9999;
+            background: #fff;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
         }
-        .dot-pattern {
-            background-image: radial-gradient(#CBD5E1 0.7px, transparent 0.7px);
-            background-size: 32px 32px;
+        #intro-overlay.hidden-overlay { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        /* ─── Progress Bar ─── */
+        #intro-progress {
+            position: absolute; top: 0; left: 0; height: 3px;
+            background: #6200EE;
+            transition: width 0.15s linear;
         }
-        .pos-window {
-            background: #FFFFFF;
-            border: 8px solid #F1F5F9;
+
+        /* ─── Skip Button ─── */
+        #skip-btn {
+            position: absolute; top: 24px; right: 28px;
+            padding: 10px 22px; border-radius: 50px;
+            border: 1.5px solid #6200EE; color: #6200EE;
+            font-size: 11px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase;
+            cursor: pointer; background: transparent;
+            transition: background 0.2s, color 0.2s;
+            font-family: 'Outfit', sans-serif;
         }
-        .text-gradient {
-            background: linear-gradient(135deg, #020617 0%, #475569 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        @keyframes subtle-float {
-            0%, 100% { transform: translateY(0) rotateX(0deg); }
-            50% { transform: translateY(-12px) rotateX(1deg); }
-        }
-        .animate-subtle-float {
-            animation: subtle-float 8s ease-in-out infinite;
-        }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
-        
-        /* Boot Animation */
-        [x-cloak] { display: none !important; }
-        .reveal-up {
-            animation: revealUp 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
-        }
-        @keyframes revealUp {
-            from { opacity: 0; transform: translateY(40px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
+        #skip-btn:hover { background: #6200EE; color: #fff; }
+
+        /* ─── Scene Base ─── */
+        .scene { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 40px; }
+
+        /* ─── Keyframes ─── */
+        @keyframes fadeSlideUp   { from { opacity:0; transform:translateY(40px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes fadeSlideDown { from { opacity:0; transform:translateY(-30px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes fadeIn        { from { opacity:0; } to { opacity:1; } }
+        @keyframes scaleIn       { from { opacity:0; transform:scale(0.7); } to { opacity:1; transform:scale(1); } }
+        @keyframes scaleInBig   { from { opacity:0; transform:scale(0.3); } to { opacity:1; transform:scale(1); } }
+        @keyframes slideInLeft  { from { opacity:0; transform:translateX(-60px); } to { opacity:1; transform:translateX(0); } }
+        @keyframes slideInRight { from { opacity:0; transform:translateX(60px); } to { opacity:1; transform:translateX(0); } }
+        @keyframes pulse-brand { 0%,100% { box-shadow:0 0 0 0 rgba(98,0,238,0.3); } 50% { box-shadow:0 0 0 18px rgba(98,0,238,0); } }
+        @keyframes barGrow { from { height:0; } to { height:var(--h); } }
+        @keyframes drawLine { from { stroke-dashoffset: 300; } to { stroke-dashoffset: 0; } }
+        @keyframes countUp   { from { opacity:0; transform:scale(0.5); } to { opacity:1; transform:scale(1); } }
+
+        .anim-fadeSlideUp   { animation: fadeSlideUp   0.7s cubic-bezier(0.19,1,0.22,1) both; }
+        .anim-fadeSlideDown { animation: fadeSlideDown 0.7s cubic-bezier(0.19,1,0.22,1) both; }
+        .anim-fadeIn        { animation: fadeIn        0.6s ease both; }
+        .anim-scaleIn       { animation: scaleIn       0.7s cubic-bezier(0.19,1,0.22,1) both; }
+        .anim-scaleInBig    { animation: scaleInBig    0.9s cubic-bezier(0.19,1,0.22,1) both; }
+        .anim-slideInLeft   { animation: slideInLeft   0.7s cubic-bezier(0.19,1,0.22,1) both; }
+        .anim-slideInRight  { animation: slideInRight  0.7s cubic-bezier(0.19,1,0.22,1) both; }
+
+        .delay-100 { animation-delay:0.1s; }
+        .delay-200 { animation-delay:0.2s; }
+        .delay-300 { animation-delay:0.3s; }
+        .delay-500 { animation-delay:0.5s; }
+        .delay-700 { animation-delay:0.7s; }
+
+        /* ─── Typewriter ─── */
+        .typewriter { overflow:hidden; border-right:3px solid #6200EE; white-space:nowrap; animation: typing 1.8s steps(16,end) both, blink 0.6s step-end infinite alternate; }
+        @keyframes typing { from { max-width:0; } to { max-width:100%; } }
+        @keyframes blink  { 50% { border-color:transparent; } }
+
+        /* ─── Bar chart ─── */
+        .bar { width:28px; border-radius:6px 6px 0 0; background:#6200EE; animation: barGrow 0.8s cubic-bezier(0.19,1,0.22,1) both; align-self:flex-end; }
+
+        /* ─── Network line ─── */
+        .net-line { stroke-dasharray:300; animation: drawLine 1.5s ease both; }
+
+        /* ─── Main page reveal ─── */
+        #main-page { opacity:0; transition: opacity 0.8s ease; }
+        #main-page.visible { opacity:1; }
+
+        /* ─── Dot pattern ─── */
+        .dot-bg { background-image:radial-gradient(#E2E8F0 1px, transparent 1px); background-size:28px 28px; }
+
+        /* ─── Floating terminal ─── */
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+        .floating { animation: float 6s ease-in-out infinite; }
+
+        /* ─── Feature card hover ─── */
+        .feature-card { transition:transform 0.3s,box-shadow 0.3s; }
+        .feature-card:hover { transform:translateY(-6px); box-shadow:0 24px 48px -12px rgba(98,0,238,0.12); }
     </style>
 </head>
-<body class="text-slate-600 font-sans selection:bg-brand-500/10 selection:text-brand-600" x-data="{ booted: false }" x-init="setTimeout(() => booted = true, 500)">
+<body x-data="posIntro()" x-init="start()">
+
+<!-- ════════════════════════════════════
+     INTRO OVERLAY
+════════════════════════════════════ -->
+<div id="intro-overlay" :class="{ 'hidden-overlay': done }">
+
+    <!-- Progress bar -->
+    <div id="intro-progress" :style="'width:' + progress + '%'"></div>
+
+    <!-- Skip button -->
+    <button id="skip-btn" @click="skip()">Tanıtımı Geç &rarr;</button>
+
+    <!-- ── Scene 0: Logo Reveal ── -->
+    <div class="scene" x-show="scene === 0" x-cloak>
+        <div class="anim-scaleInBig flex flex-col items-center gap-6">
+            <div class="w-32 h-32 bg-brand-500 rounded-[2rem] flex items-center justify-center shadow-2xl shadow-brand-500/30" style="animation: pulse-brand 2s infinite 0.9s;">
+                <span class="text-white font-black text-6xl font-display">R</span>
+            </div>
+            <p class="text-slate-400 text-sm font-semibold tracking-[0.4em] uppercase anim-fadeIn delay-500">Rezervist Systems</p>
+        </div>
+    </div>
+
+    <!-- ── Scene 1: Name Typewriter ── -->
+    <div class="scene" x-show="scene === 1" x-cloak>
+        <div class="text-center">
+            <div class="flex items-center justify-center gap-3 mb-4 anim-fadeSlideDown">
+                <div class="w-10 h-10 bg-brand-500 rounded-xl flex items-center justify-center">
+                    <span class="text-white font-black text-xl font-display">R</span>
+                </div>
+            </div>
+            <h1 class="typewriter text-5xl lg:text-7xl font-black text-slate-950 font-display tracking-tighter">RezerVistA POS</h1>
+            <p class="text-slate-400 text-base font-medium mt-6 anim-fadeIn delay-700 tracking-widest uppercase">Satış Noktası Çözümü</p>
+            <div class="flex items-center justify-center gap-2 mt-8 anim-fadeIn delay-700">
+                <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
+                <span class="text-xs font-bold text-slate-400 tracking-widest uppercase">v4.5 — Hazır</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Scene 2: Speed ── -->
+    <div class="scene" x-show="scene === 2" x-cloak>
+        <div class="max-w-2xl w-full flex flex-col lg:flex-row items-center gap-16">
+            <div class="anim-slideInLeft flex-1">
+                <div class="w-20 h-20 bg-brand-50 rounded-3xl flex items-center justify-center mb-6 border border-brand-100">
+                    <i class="fas fa-bolt text-brand-500 text-3xl"></i>
+                </div>
+                <h2 class="text-5xl lg:text-7xl font-black text-slate-950 font-display tracking-tighter leading-none mb-4">15<span class="text-brand-500">ms</span></h2>
+                <p class="text-slate-500 text-lg font-medium leading-relaxed">Maksimum yanıt süresi. İnternet olmadan bile yerel ağda tam hızda çalışır.</p>
+            </div>
+            <div class="anim-slideInRight flex-shrink-0">
+                <div class="w-48 h-48 rounded-full border-8 border-brand-100 flex items-center justify-center relative" style="animation: pulse-brand 2s infinite;">
+                    <div class="text-center">
+                        <div class="text-4xl font-black text-brand-500 font-display">~15</div>
+                        <div class="text-xs font-black text-slate-400 uppercase tracking-widest">ms avg</div>
+                    </div>
+                    <svg class="absolute inset-0" viewBox="0 0 192 192">
+                        <circle cx="96" cy="96" r="86" fill="none" stroke="#EDE9FE" stroke-width="8"/>
+                        <circle cx="96" cy="96" r="86" fill="none" stroke="#6200EE" stroke-width="8"
+                            stroke-dasharray="540" stroke-dashoffset="54"
+                            stroke-linecap="round" transform="rotate(-90 96 96)"
+                            class="net-line"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Scene 3: Table Management ── -->
+    <div class="scene" x-show="scene === 3" x-cloak>
+        <div class="max-w-2xl w-full">
+            <div class="anim-fadeSlideDown text-center mb-10">
+                <div class="inline-flex items-center gap-3 px-4 py-2 bg-brand-50 border border-brand-100 rounded-xl mb-4">
+                    <i class="fas fa-th text-brand-500 text-sm"></i>
+                    <span class="text-xs font-black text-brand-500 uppercase tracking-widest">Masa Yönetimi</span>
+                </div>
+                <h2 class="text-4xl lg:text-6xl font-black text-slate-950 font-display tracking-tighter">Tüm Masaları <span class="text-brand-500">Tek Ekranda</span></h2>
+            </div>
+            <div class="grid grid-cols-6 gap-2 anim-scaleIn delay-300">
+                <template x-for="n in 18">
+                    <div class="aspect-square rounded-xl flex flex-col items-center justify-center text-xs font-black border"
+                         :class="[2,5,9,14].includes(n) ? 'bg-brand-500 text-white border-brand-500 shadow-lg shadow-brand-500/30 scale-105' : (n % 3 === 0 ? 'bg-rose-50 text-rose-500 border-rose-100' : 'bg-white text-slate-400 border-slate-100')">
+                        <span class="text-[8px] uppercase tracking-widest" x-text="[2,5,9,14].includes(n) ? 'Dolu' : (n%3===0 ? 'Meşgul' : 'Boş')"></span>
+                        <span class="text-base font-black font-display" :class="[2,5,9,14].includes(n) ? 'text-white' : ''" x-text="n < 10 ? '0'+n : n"></span>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Scene 4: Reporting ── -->
+    <div class="scene" x-show="scene === 4" x-cloak>
+        <div class="max-w-2xl w-full flex flex-col lg:flex-row items-center gap-16">
+            <div class="anim-slideInLeft flex-1">
+                <div class="w-20 h-20 bg-brand-50 rounded-3xl flex items-center justify-center mb-6 border border-brand-100">
+                    <i class="fas fa-chart-bar text-brand-500 text-3xl"></i>
+                </div>
+                <h2 class="text-4xl lg:text-6xl font-black text-slate-950 font-display tracking-tighter leading-none mb-4">Anlık<br><span class="text-brand-500">Raporlama</span></h2>
+                <p class="text-slate-500 text-lg font-medium leading-relaxed">Günlük, haftalık, aylık satış grafikleri. Personel performansı. PDF ihracat.</p>
+                <div class="flex gap-4 mt-6">
+                    <div class="px-4 py-2 bg-brand-50 rounded-xl border border-brand-100">
+                        <div class="text-xl font-black text-brand-500 font-display">₺124K</div>
+                        <div class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Bu Ay</div>
+                    </div>
+                    <div class="px-4 py-2 bg-emerald-50 rounded-xl border border-emerald-100">
+                        <div class="text-xl font-black text-emerald-500 font-display">+32%</div>
+                        <div class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Büyüme</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Bar chart -->
+            <div class="anim-slideInRight flex-shrink-0 flex items-end gap-3 h-40">
+                <div class="bar delay-100" style="--h:50%;  height:50%;  animation-delay:0.1s"></div>
+                <div class="bar delay-200" style="--h:75%;  height:75%;  animation-delay:0.2s"></div>
+                <div class="bar delay-300" style="--h:40%;  height:40%;  animation-delay:0.3s"></div>
+                <div class="bar" style="--h:90%;  height:90%;  animation-delay:0.4s; background:#a78bfa;"></div>
+                <div class="bar" style="--h:60%;  height:60%;  animation-delay:0.5s"></div>
+                <div class="bar" style="--h:100%; height:100%; animation-delay:0.6s"></div>
+                <div class="bar" style="--h:70%;  height:70%;  animation-delay:0.7s; background:#a78bfa;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Scene 5: Cloud + Local Network ── -->
+    <div class="scene" x-show="scene === 5" x-cloak>
+        <div class="max-w-2xl w-full text-center">
+            <div class="anim-fadeSlideDown mb-8">
+                <div class="inline-flex items-center gap-3 px-4 py-2 bg-brand-50 border border-brand-100 rounded-xl mb-4">
+                    <i class="fas fa-cloud text-brand-500 text-sm"></i>
+                    <span class="text-xs font-black text-brand-500 uppercase tracking-widest">Hibrit Altyapı</span>
+                </div>
+                <h2 class="text-4xl lg:text-6xl font-black text-slate-950 font-display tracking-tighter">Bulut <span class="text-brand-500">&amp;</span> Yerel Ağ</h2>
+                <p class="text-slate-500 text-lg font-medium mt-4">Internet kesilse de veriler kaybolmaz. Tüm terminaller birbirini görür.</p>
+            </div>
+            <!-- Network diagram -->
+            <div class="anim-scaleIn delay-300 relative flex items-center justify-center gap-0">
+                <svg width="520" height="140" viewBox="0 0 520 140" fill="none" class="max-w-full">
+                    <!-- Cloud node -->
+                    <circle cx="80" cy="70" r="40" fill="#EDE9FE" stroke="#6200EE" stroke-width="2"/>
+                    <text x="80" y="67" text-anchor="middle" fill="#6200EE" font-size="18" font-family="Font Awesome 6 Free" font-weight="900">&#xf0c2;</text>
+                    <text x="80" y="86" text-anchor="middle" fill="#6200EE" font-size="9" font-family="Plus Jakarta Sans" font-weight="800" letter-spacing="1">CLOUD</text>
+                    <!-- Line -->
+                    <line x1="120" y1="70" x2="400" y2="70" stroke="#6200EE" stroke-width="2.5" stroke-dasharray="8 6" class="net-line"/>
+                    <!-- Pulse dot -->
+                    <circle cx="260" cy="70" r="7" fill="#6200EE" opacity="0.3" style="animation:pulse-brand 1.5s infinite"/>
+                    <circle cx="260" cy="70" r="4" fill="#6200EE"/>
+                    <!-- Terminal node -->
+                    <circle cx="440" cy="70" r="40" fill="#F5F3FF" stroke="#6200EE" stroke-width="2"/>
+                    <text x="440" y="67" text-anchor="middle" fill="#6200EE" font-size="18" font-family="Font Awesome 6 Free" font-weight="900">&#xf108;</text>
+                    <text x="440" y="86" text-anchor="middle" fill="#6200EE" font-size="9" font-family="Plus Jakarta Sans" font-weight="800" letter-spacing="1">LOCAL</text>
+                </svg>
+            </div>
+            <div class="flex justify-center gap-6 mt-6 anim-fadeIn delay-700">
+                <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-emerald-500"></div><span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Senkron: %100</span></div>
+                <div class="flex items-center gap-2"><div class="w-2 h-2 rounded-full bg-brand-500"></div><span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Bağlı</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Scene 6: Feature Burst ── -->
+    <div class="scene" x-show="scene === 6" x-cloak>
+        <div class="text-center mb-10 anim-fadeSlideDown">
+            <h2 class="text-4xl lg:text-6xl font-black text-slate-950 font-display tracking-tighter">Her Şey <span class="text-brand-500">Hazır.</span></h2>
+            <p class="text-slate-400 text-lg font-medium mt-3">Saniyeler içinde kurulum. Yıllarca kararlı çalışma.</p>
+        </div>
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-3xl w-full">
+            <div class="anim-scaleIn delay-100 bg-brand-50 border border-brand-100 rounded-2xl p-5 text-center">
+                <i class="fas fa-bolt text-brand-500 text-2xl mb-3"></i>
+                <div class="text-sm font-black text-slate-950">Ultra Hız</div>
+                <div class="text-xs text-slate-400 mt-1">15ms latency</div>
+            </div>
+            <div class="anim-scaleIn delay-200 bg-brand-50 border border-brand-100 rounded-2xl p-5 text-center">
+                <i class="fas fa-th text-brand-500 text-2xl mb-3"></i>
+                <div class="text-sm font-black text-slate-950">Masa Grid</div>
+                <div class="text-xs text-slate-400 mt-1">Sürükle & bırak</div>
+            </div>
+            <div class="anim-scaleIn delay-300 bg-brand-50 border border-brand-100 rounded-2xl p-5 text-center">
+                <i class="fas fa-chart-bar text-brand-500 text-2xl mb-3"></i>
+                <div class="text-sm font-black text-slate-950">Raporlama</div>
+                <div class="text-xs text-slate-400 mt-1">PDF & Excel</div>
+            </div>
+            <div class="anim-scaleIn" style="animation-delay:0.4s" class="bg-brand-50 border border-brand-100 rounded-2xl p-5 text-center">
+                <i class="fas fa-cloud text-brand-500 text-2xl mb-3"></i>
+                <div class="text-sm font-black text-slate-950">Hibrit Ağ</div>
+                <div class="text-xs text-slate-400 mt-1">%99.9 uptime</div>
+            </div>
+        </div>
+        <div class="anim-fadeIn delay-700 mt-10">
+            <button @click="skip()" class="px-10 py-4 bg-brand-500 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-brand-600 transition-all shadow-2xl shadow-brand-500/30">
+                POS Sistemini İncele &rarr;
+            </button>
+        </div>
+    </div>
+
+</div><!-- /intro-overlay -->
+
+
+<!-- ════════════════════════════════════
+     MAIN PAGE
+════════════════════════════════════ -->
+<div id="main-page" :class="{ 'visible': done }">
 
     <!-- Navbar -->
-    <nav class="fixed top-0 w-full z-50 border-b border-slate-100 bg-white/90 backdrop-blur-xl">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-4 group">
-                <div class="w-10 h-10 bg-brand-500 rounded-xl flex items-center justify-center text-white shadow-xl shadow-brand-500/30">
-                    <i class="fas fa-bolt"></i>
+    <nav class="fixed top-0 w-full z-50 border-b border-slate-100 bg-white/95 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-6 h-18 flex items-center justify-between h-16">
+            <a href="/" class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-brand-500 rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand-500/30">
+                    <i class="fas fa-bolt text-sm"></i>
                 </div>
-                <span class="text-xl font-black text-slate-900 tracking-tighter">RezerVist<span class="text-brand-500">A</span></span>
+                <span class="text-lg font-black text-slate-900 tracking-tighter font-display">RezerVist<span class="text-brand-500">A</span></span>
             </a>
-            <div class="flex items-center gap-10">
-                <a href="/" class="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-brand-500 transition-colors">Ana Sayfa</a>
-                <a href="/login" class="px-8 py-3 bg-slate-950 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-brand-500 transition-all shadow-lg shadow-slate-950/20">Giriş Yap</a>
+            <div class="flex items-center gap-8">
+                <a href="{{ route('pages.pos.versions') }}" class="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-brand-500 transition-colors hidden md:block">İndir</a>
+                <a href="/business-partner" class="text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-brand-500 transition-colors hidden md:block">Demo</a>
+                <a href="/login" class="px-6 py-2.5 bg-slate-950 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-brand-500 transition-all shadow-lg">Giriş Yap</a>
             </div>
         </div>
     </nav>
 
     <main>
-        <!-- Immersive Hero Section -->
-        <section class="relative pt-28 pb-24 dot-pattern overflow-hidden flex flex-col items-center">
-            <div class="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-white via-white/80 to-transparent"></div>
+        <!-- Hero -->
+        <section class="relative pt-32 pb-24 dot-bg overflow-hidden">
+            <div class="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-white to-transparent"></div>
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16 relative z-10">
+                    <div class="inline-flex items-center gap-3 px-4 py-2 bg-brand-50 border border-brand-100 rounded-xl text-[10px] font-black tracking-[0.3em] text-brand-500 uppercase mb-6">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+                        </span>
+                        Profesyonel POS Çözümü
+                    </div>
+                    <h1 class="text-5xl lg:text-8xl font-black text-slate-950 tracking-tighter leading-[0.88] mb-6 font-display">
+                        Restoran Yönetiminde<br><span class="text-brand-500">Yeni Standart.</span>
+                    </h1>
+                    <p class="text-lg text-slate-500 font-medium max-w-xl mx-auto leading-relaxed mb-10">
+                        Hızlı, kararlı ve modern. Tek ekrandan masaları, siparişleri, raporları ve personeli yönetin.
+                    </p>
+                    <div class="flex flex-wrap gap-4 justify-center">
+                        <a href="{{ route('pages.pos.versions') }}" class="px-10 py-4 bg-slate-950 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-brand-500 transition-all shadow-2xl shadow-slate-950/20 flex items-center gap-3">
+                            <i class="fab fa-windows"></i> Terminali İndir
+                        </a>
+                        <a href="/business-partner" class="px-10 py-4 bg-white border border-slate-200 text-slate-900 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-50 transition-all">
+                            Demo Talep Et
+                        </a>
+                    </div>
+                </div>
 
-            <!-- Terminal Container -->
-            <div class="w-full max-w-[1400px] px-6 relative z-20" x-show="booted" x-transition:enter="reveal-up" x-transition:enter-start="opacity-0 translate-y-20 scale-95" x-transition:enter-end="opacity-100 translate-y-0 scale-100" style="transition-delay: 200ms;">
-                <div class="pos-window rounded-[2.5rem] p-3 shadow-pos-large animate-subtle-float">
-                    <!-- Main App Window -->
-                    <div class="bg-white rounded-[2.2rem] h-[600px] lg:h-[700px] overflow-hidden flex flex-col border border-slate-100 shadow-inner-subtle relative">
-                        
-                        <!-- Window Title Bar -->
-                        <div class="h-10 bg-slate-50/80 border-b border-slate-100 px-6 flex items-center justify-between">
-                            <div class="flex items-center gap-6">
+                <!-- Terminal Mockup -->
+                <div class="relative z-10 max-w-5xl mx-auto floating">
+                    <div class="bg-white border-8 border-slate-100 rounded-[2.5rem] shadow-[0_40px_100px_-20px_rgba(0,0,0,0.15)] overflow-hidden">
+                        <!-- Title bar -->
+                        <div class="h-10 bg-slate-50 border-b border-slate-100 px-5 flex items-center justify-between">
+                            <div class="flex items-center gap-5">
                                 <div class="flex gap-2">
-                                    <div class="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
-                                    <div class="w-2.5 h-2.5 rounded-full bg-slate-300"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-slate-200"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-slate-200"></div>
                                     <div class="w-2.5 h-2.5 rounded-full bg-slate-200"></div>
                                 </div>
-                                <div class="h-4 w-px bg-slate-200"></div>
                                 <div class="flex items-center gap-2 text-slate-400">
                                     <i class="fas fa-terminal text-[8px]"></i>
-                                    <span class="text-[9px] font-black uppercase tracking-[0.3em]">RezerVistA Terminal v4.5.12</span>
+                                    <span class="text-[9px] font-black uppercase tracking-widest">RezerVistA POS v4.5</span>
                                 </div>
                             </div>
-                            <div class="flex items-center gap-4">
-                                <div class="flex items-center gap-2 px-3 py-1 bg-emerald-50 border border-emerald-100 rounded-lg">
-                                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_6px_#10b981]"></div>
-                                    <span class="text-[8px] font-black text-emerald-600 tracking-widest uppercase">ONLINE</span>
-                                </div>
-                                <div class="flex items-center gap-2 text-slate-400">
-                                    <i class="fas fa-satellite-dish text-[9px]"></i>
-                                    <span class="text-[9px] font-bold">16:42:01</span>
-                                </div>
+                            <div class="flex items-center gap-2 px-3 py-1 bg-emerald-50 border border-emerald-100 rounded-lg">
+                                <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                                <span class="text-[8px] font-black text-emerald-600 uppercase tracking-widest">Canlı</span>
                             </div>
                         </div>
-                        
-                        <div class="flex-1 flex overflow-hidden">
+                        <!-- App body -->
+                        <div class="flex h-[480px] lg:h-[560px]">
                             <!-- Sidebar -->
-                            <div class="w-14 bg-white border-r border-slate-100 py-6 flex flex-col items-center gap-5">
-                                <div class="w-8 h-8 bg-brand-500 text-white rounded-xl flex items-center justify-center text-sm shadow-lg shadow-brand-500/30 relative">
-                                    <i class="fas fa-desktop"></i>
+                            <div class="w-14 bg-white border-r border-slate-100 py-5 flex flex-col items-center gap-4">
+                                <div class="w-8 h-8 bg-brand-500 text-white rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/30 relative">
+                                    <i class="fas fa-desktop text-xs"></i>
                                     <div class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-rose-500 border border-white rounded-full"></div>
                                 </div>
-                                <div class="w-8 h-8 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center hover:text-brand-500 transition-all">
-                                    <i class="fas fa-utensils text-xs"></i>
-                                </div>
-                                <div class="w-8 h-8 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center hover:text-brand-500 transition-all">
-                                    <i class="fas fa-file-invoice-dollar text-xs"></i>
-                                </div>
-                                <div class="w-8 h-8 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center hover:text-brand-500 transition-all">
-                                    <i class="fas fa-chart-pie text-xs"></i>
-                                </div>
-                                <div class="w-8 h-8 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center hover:text-brand-500 transition-all">
-                                    <i class="fas fa-box text-xs"></i>
-                                </div>
-                                <div class="mt-auto">
-                                    <div class="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-400">
-                                        <i class="fas fa-user-tie text-xs"></i>
-                                    </div>
-                                </div>
+                                <div class="w-8 h-8 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center hover:text-brand-500 transition-all cursor-pointer"><i class="fas fa-utensils text-xs"></i></div>
+                                <div class="w-8 h-8 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center hover:text-brand-500 transition-all cursor-pointer"><i class="fas fa-chart-bar text-xs"></i></div>
+                                <div class="w-8 h-8 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center hover:text-brand-500 transition-all cursor-pointer"><i class="fas fa-file-invoice text-xs"></i></div>
+                                <div class="w-8 h-8 bg-slate-50 text-slate-400 rounded-xl flex items-center justify-center hover:text-brand-500 transition-all cursor-pointer"><i class="fas fa-box text-xs"></i></div>
+                                <div class="mt-auto w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center text-slate-400"><i class="fas fa-user-tie text-xs"></i></div>
                             </div>
-                            
-                            <!-- Main Workspace: Massive Table Grid -->
+                            <!-- Main area -->
                             <div class="flex-1 flex flex-col bg-white">
-                                <!-- Top Bar -->
-                                <div class="px-5 py-3 border-b border-slate-50 flex items-center justify-between bg-slate-50/20">
+                                <!-- Tabs -->
+                                <div class="px-5 py-3 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
                                     <div class="flex gap-1.5">
                                         <button class="px-3 py-1.5 bg-slate-950 text-white rounded-lg text-[9px] font-black">ANA SALON</button>
-                                        <button class="px-3 py-1.5 bg-white text-slate-400 border border-slate-100 rounded-lg text-[9px] font-black hover:bg-slate-50 transition-colors">VIP ROOM</button>
-                                        <button class="px-3 py-1.5 bg-white text-slate-400 border border-slate-100 rounded-lg text-[9px] font-black hover:bg-slate-50 transition-colors">DIŞ ALAN</button>
-                                        <button class="px-3 py-1.5 bg-white text-slate-400 border border-slate-100 rounded-lg text-[9px] font-black hover:bg-slate-50 transition-colors">TERAS</button>
+                                        <button class="px-3 py-1.5 bg-white text-slate-400 border border-slate-100 rounded-lg text-[9px] font-black">VIP ROOM</button>
+                                        <button class="px-3 py-1.5 bg-white text-slate-400 border border-slate-100 rounded-lg text-[9px] font-black">TERAS</button>
                                     </div>
                                     <div class="flex items-center gap-2">
                                         <div class="relative">
-                                            <input type="text" placeholder="Masa ara..." class="bg-white border border-slate-200 rounded-lg px-7 py-1.5 text-[9px] w-40 focus:border-brand-500 focus:outline-none transition-colors">
+                                            <input type="text" placeholder="Masa ara..." class="bg-white border border-slate-200 rounded-lg px-7 py-1.5 text-[9px] w-36 focus:outline-none focus:border-brand-500 transition-colors">
                                             <i class="fas fa-search absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-[8px]"></i>
-                                        </div>
-                                        <div class="w-7 h-7 bg-white border border-slate-100 rounded-lg flex items-center justify-center text-slate-400 cursor-pointer">
-                                            <i class="fas fa-sync-alt text-[8px]"></i>
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <!-- Table Grid -->
-                                <div class="flex-1 p-4 overflow-y-auto custom-scrollbar bg-slate-50/10">
-                                    <div class="grid grid-cols-6 gap-2.5">
-                                        <!-- Active Tables with Real Data -->
-                                        <template x-for="i in 24">
-                                            <div class="aspect-square bg-white border rounded-2xl p-3 flex flex-col justify-between cursor-pointer transition-all duration-300 shadow-sm"
-                                                 :class="[1, 4, 7, 12, 18].includes(i) ? 'border-rose-100 bg-rose-50/20' : (i == 2 ? 'bg-brand-500 border-brand-500 shadow-lg shadow-brand-500/30 scale-[1.05] z-10' : 'border-slate-100 hover:border-brand-500/30')">
-                                                
-                                                <div class="flex justify-between items-start">
-                                                    <span class="text-[7px] font-black uppercase tracking-widest" :class="i == 2 ? 'text-white/60' : ([1,4,7,12,18].includes(i) ? 'text-rose-400' : 'text-emerald-500')" x-text="i == 2 ? 'SEL' : ([1,4,7,12,18].includes(i) ? 'OCC' : 'RDY')"></span>
-                                                    <span class="text-[7px] font-bold" :class="i == 2 ? 'text-white/40' : 'text-slate-300'" x-text="[1,4,7,12,18].includes(i) ? (i*3+'m') : ''"></span>
-                                                </div>
-                                                
+                                <!-- Table grid -->
+                                <div class="flex-1 p-4 overflow-hidden bg-slate-50/10">
+                                    <div class="grid grid-cols-6 gap-2 h-full">
+                                        <template x-for="n in 24">
+                                            <div class="aspect-square bg-white border rounded-xl p-2 flex flex-col justify-between cursor-pointer transition-all"
+                                                 :class="[2,7,11,16].includes(n) ? 'border-rose-100 bg-rose-50/30' : (n===3 ? 'bg-brand-500 border-brand-500 shadow-md shadow-brand-500/30 scale-105' : 'border-slate-100 hover:border-brand-200')">
+                                                <span class="text-[7px] font-black uppercase tracking-widest leading-none"
+                                                      :class="n===3 ? 'text-white/60' : ([2,7,11,16].includes(n) ? 'text-rose-400' : 'text-emerald-500')"
+                                                      x-text="n===3 ? 'SEL' : ([2,7,11,16].includes(n) ? 'OCC' : 'RDY')"></span>
                                                 <div class="text-center">
-                                                    <p class="text-[7px] font-black uppercase tracking-widest mb-0.5" :class="i == 2 ? 'text-white/30' : 'text-slate-300'">T</p>
-                                                    <p class="text-xl font-black font-display leading-none" :class="i == 2 ? 'text-white' : 'text-slate-950'" x-text="i < 10 ? '0'+i : i"></p>
+                                                    <span class="text-lg font-black font-display leading-none"
+                                                          :class="n===3 ? 'text-white' : 'text-slate-900'"
+                                                          x-text="n<10?'0'+n:n"></span>
                                                 </div>
-                                                
-                                                <div class="text-center">
-                                                    <span class="text-[8px] font-black tracking-tighter" :class="i == 2 ? 'text-white' : ([1,4,7,12,18].includes(i) ? 'text-slate-700' : 'text-transparent')" x-text="[1,4,7,12,18].includes(i) ? '₺'+(i*240) : '-'"></span>
-                                                </div>
+                                                <span class="text-[7px] font-black text-center block"
+                                                      :class="n===3?'text-white':([2,7,11,16].includes(n)?'text-slate-600':'text-transparent')"
+                                                      x-text="[2,7,11,16].includes(n) ? '₺'+(n*180) : '-'"></span>
                                             </div>
                                         </template>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <!-- Receipt Sidebar -->
-                            <div class="w-64 bg-white border-l border-slate-100 flex flex-col">
-                                <div class="px-5 py-4 border-b border-slate-50">
-                                    <div class="flex items-center justify-between mb-1">
-                                        <h4 class="text-[9px] font-black text-slate-950 uppercase tracking-[0.15em]">CURRENT ORDER</h4>
-                                        <span class="px-2 py-0.5 bg-brand-500 text-white rounded text-[7px] font-black">T-02</span>
+                            <!-- Receipt panel -->
+                            <div class="w-56 border-l border-slate-100 flex flex-col bg-white">
+                                <div class="px-4 py-3 border-b border-slate-50">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="text-[9px] font-black text-slate-900 uppercase tracking-wider">Sipariş</span>
+                                        <span class="px-2 py-0.5 bg-brand-500 text-white rounded text-[7px] font-black">M-03</span>
                                     </div>
-                                    <p class="text-[8px] font-bold text-slate-400">4 PERSONS • MEHMET CAN</p>
+                                    <p class="text-[8px] text-slate-400 font-semibold">4 Kişi • Ahmet B.</p>
                                 </div>
-                                
-                                <div class="flex-1 px-5 py-3 space-y-4 overflow-y-auto custom-scrollbar">
+                                <div class="flex-1 px-4 py-3 space-y-3 overflow-hidden">
                                     <div class="flex justify-between items-center">
-                                        <div class="flex gap-2 items-center">
-                                            <span class="text-[8px] font-black text-slate-400 w-5">x2</span>
-                                            <div>
-                                                <p class="text-[9px] font-black text-slate-950">Ribeye Steak</p>
-                                                <p class="text-[7px] text-brand-500 font-bold">Med. Rare</p>
-                                            </div>
-                                        </div>
-                                        <p class="text-[9px] font-black text-slate-950">₺1,840</p>
+                                        <div><p class="text-[9px] font-black text-slate-900">Ribeye Steak x2</p><p class="text-[7px] text-brand-500 font-bold">Med. Rare</p></div>
+                                        <span class="text-[9px] font-black text-slate-900">₺1,840</span>
                                     </div>
                                     <div class="flex justify-between items-center">
-                                        <div class="flex gap-2 items-center">
-                                            <span class="text-[8px] font-black text-slate-400 w-5">x1</span>
-                                            <div>
-                                                <p class="text-[9px] font-black text-slate-950">Caesar Salad</p>
-                                                <p class="text-[7px] text-slate-400 italic">No Anchovies</p>
-                                            </div>
-                                        </div>
-                                        <p class="text-[9px] font-black text-slate-950">₺220</p>
+                                        <div><p class="text-[9px] font-black text-slate-900">Caesar Salad x1</p><p class="text-[7px] text-slate-400 italic">No Anchovy</p></div>
+                                        <span class="text-[9px] font-black text-slate-900">₺220</span>
                                     </div>
                                     <div class="flex justify-between items-center">
-                                        <div class="flex gap-2 items-center">
-                                            <span class="text-[8px] font-black text-slate-400 w-5">x3</span>
-                                            <div>
-                                                <p class="text-[9px] font-black text-slate-950">Chardonnay</p>
-                                            </div>
-                                        </div>
-                                        <p class="text-[9px] font-black text-slate-950">₺3,450</p>
+                                        <div><p class="text-[9px] font-black text-slate-900">Chardonnay x3</p></div>
+                                        <span class="text-[9px] font-black text-slate-900">₺3,450</span>
                                     </div>
                                 </div>
-                                
-                                <!-- Checkout -->
-                                <div class="px-5 py-4 bg-slate-50/50 border-t border-slate-100">
-                                    <div class="space-y-2 mb-4">
-                                        <div class="flex justify-between text-[8px] font-bold text-slate-400">
-                                            <span>Subtotal</span><span>₺5,510</span>
-                                        </div>
-                                        <div class="flex justify-between text-[8px] font-bold text-slate-400">
-                                            <span>Tax 18%</span><span>₺991</span>
-                                        </div>
-                                        <div class="pt-2 border-t border-slate-200 flex justify-between items-baseline">
-                                            <span class="text-[8px] font-black text-slate-950 uppercase tracking-wide">Total</span>
-                                            <span class="text-lg font-black text-slate-950 tracking-tighter">₺6,501<span class="text-brand-500 text-xs font-normal">.80</span></span>
-                                        </div>
+                                <div class="px-4 py-3 bg-slate-50/60 border-t border-slate-100">
+                                    <div class="flex justify-between text-[8px] font-bold text-slate-400 mb-1"><span>Ara Toplam</span><span>₺5,510</span></div>
+                                    <div class="flex justify-between text-[8px] font-bold text-slate-400 mb-3"><span>KDV %18</span><span>₺991</span></div>
+                                    <div class="flex justify-between items-baseline mb-3">
+                                        <span class="text-[9px] font-black text-slate-900 uppercase">Toplam</span>
+                                        <span class="text-base font-black text-slate-900 font-display">₺6,501<span class="text-brand-500 text-xs">.80</span></span>
                                     </div>
-                                    <div class="grid grid-cols-2 gap-2">
-                                        <button class="py-2.5 bg-white border border-slate-200 text-slate-950 rounded-xl text-[8px] font-black uppercase hover:bg-slate-50 transition-all">Split</button>
-                                        <button class="py-2.5 bg-brand-500 text-white rounded-xl text-[8px] font-black uppercase shadow-lg shadow-brand-500/30 hover:bg-brand-600 transition-all flex items-center justify-center gap-1.5">
-                                            <i class="fas fa-credit-card text-[8px]"></i> Pay
+                                    <div class="grid grid-cols-2 gap-1.5">
+                                        <button class="py-2 bg-white border border-slate-200 text-slate-900 rounded-lg text-[8px] font-black hover:bg-slate-50 transition-all">Böl</button>
+                                        <button class="py-2 bg-brand-500 text-white rounded-lg text-[8px] font-black hover:bg-brand-600 transition-all flex items-center justify-center gap-1">
+                                            <i class="fas fa-credit-card text-[7px]"></i> Öde
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Console Bottom Bar -->
-                        <div class="h-10 bg-slate-950 px-10 flex items-center justify-between">
-                            <div class="flex items-center gap-10">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                                    <span class="text-[9px] font-black text-white/40 tracking-[0.3em] uppercase italic">Local Infrastructure: Ready</span>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <div class="w-1.5 h-1.5 rounded-full bg-brand-500 shadow-[0_0_5px_#6200EE]"></div>
-                                    <span class="text-[9px] font-black text-white/40 tracking-[0.3em] uppercase italic">Cloud Gateway: Connected</span>
-                                </div>
+                        <!-- Status bar -->
+                        <div class="h-7 bg-slate-950 px-5 flex items-center justify-between">
+                            <div class="flex items-center gap-5">
+                                <div class="flex items-center gap-1.5"><div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div><span class="text-[8px] text-white/40 font-black uppercase tracking-widest">Local: OK</span></div>
+                                <div class="flex items-center gap-1.5"><div class="w-1.5 h-1.5 rounded-full bg-brand-400"></div><span class="text-[8px] text-white/40 font-black uppercase tracking-widest">Cloud: OK</span></div>
                             </div>
-                            <div class="flex items-center gap-6">
-                                <span class="text-[9px] font-black text-white/20 uppercase tracking-[0.2em]">AES-256-GCM SECURE</span>
-                                <i class="fas fa-lock text-white/20 text-[10px]"></i>
-                            </div>
+                            <span class="text-[8px] text-white/20 font-black uppercase tracking-widest">AES-256 Şifreli</span>
                         </div>
+                    </div>
+                    <!-- Floating stat bubble -->
+                    <div class="absolute -bottom-6 -left-8 bg-white border border-slate-100 rounded-2xl px-6 py-4 shadow-xl flex items-center gap-4">
+                        <div class="w-10 h-10 bg-brand-50 rounded-xl flex items-center justify-center"><i class="fas fa-chart-line text-brand-500"></i></div>
+                        <div><p class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Günlük Ciro</p><p class="text-xl font-black text-slate-900 font-display">₺24,840<span class="text-emerald-500 text-xs ml-2 font-bold">+18%</span></p></div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <!-- Immense Floating Stat Badges -->
-                <div class="absolute -bottom-16 -left-16 bg-white p-10 rounded-[3.5rem] shadow-premium border border-slate-100 flex items-center gap-10 z-30 transform hover:-translate-y-4 transition-transform duration-700 cursor-default group">
-                    <div class="w-20 h-20 bg-slate-950 text-brand-500 rounded-[2rem] flex items-center justify-center text-4xl shadow-2xl transition-all group-hover:rotate-12 group-hover:scale-110">
-                        <i class="fas fa-vault"></i>
-                    </div>
-                    <div>
-                        <p class="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] mb-2">LIVE NET REVENUE</p>
-                        <div class="flex items-baseline gap-4">
-                            <p class="text-4xl font-black text-slate-950 tracking-tighter">₺124,842</p>
-                            <span class="text-sm font-black text-emerald-500">+32.4%</span>
+        <!-- Features -->
+        <section class="py-32 bg-white border-t border-slate-50">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl lg:text-6xl font-black text-slate-950 tracking-tighter font-display">Neden <span class="text-brand-500">RezerVistA?</span></h2>
+                    <p class="text-slate-400 text-lg mt-4 font-medium">İşletmenizin ihtiyaç duyduğu her şey tek bir sistemde.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="feature-card bg-white border border-slate-100 rounded-3xl p-8 shadow-sm">
+                        <div class="w-14 h-14 bg-brand-50 border border-brand-100 rounded-2xl flex items-center justify-center mb-6">
+                            <i class="fas fa-bolt text-brand-500 text-2xl"></i>
                         </div>
-                        <div class="mt-4 w-48 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                            <div class="h-full bg-brand-500 w-[92%]" style="box-shadow: 0 0 10px #6200EE;"></div>
+                        <h3 class="text-2xl font-black text-slate-950 mb-3">Ultra Hızlı</h3>
+                        <p class="text-slate-500 font-medium leading-relaxed">15ms maksimum yanıt süresi. İnternet bağlantısı kesilse bile yerel ağda tam hızda çalışmaya devam eder.</p>
+                        <div class="mt-6 px-4 py-2 bg-brand-50 rounded-xl inline-block">
+                            <span class="text-2xl font-black text-brand-500 font-display">15ms</span>
+                            <span class="text-xs text-slate-400 font-bold ml-2 uppercase tracking-widest">Latency</span>
+                        </div>
+                    </div>
+                    <div class="feature-card bg-white border border-slate-100 rounded-3xl p-8 shadow-sm">
+                        <div class="w-14 h-14 bg-brand-50 border border-brand-100 rounded-2xl flex items-center justify-center mb-6">
+                            <i class="fas fa-th text-brand-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-black text-slate-950 mb-3">Masa Yönetimi</h3>
+                        <p class="text-slate-500 font-medium leading-relaxed">Tüm masaları tek ekrandan görün. Masa birleştirme, transfer, bekleme listesi ve oturma planı — hepsi dahil.</p>
+                        <div class="grid grid-cols-4 gap-1.5 mt-6">
+                            <template x-for="n in 8">
+                                <div class="aspect-square rounded-lg border text-center flex items-center justify-center text-[9px] font-black"
+                                     :class="[2,5].includes(n) ? 'bg-brand-500 text-white border-brand-500' : 'bg-slate-50 text-slate-400 border-slate-100'"
+                                     x-text="n < 10 ? '0'+n : n"></div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="feature-card bg-white border border-slate-100 rounded-3xl p-8 shadow-sm">
+                        <div class="w-14 h-14 bg-brand-50 border border-brand-100 rounded-2xl flex items-center justify-center mb-6">
+                            <i class="fas fa-chart-bar text-brand-500 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-black text-slate-950 mb-3">Anlık Raporlama</h3>
+                        <p class="text-slate-500 font-medium leading-relaxed">Günlük, haftalık ve aylık satış raporları. Personel bazlı performans, en çok satan ürünler, PDF/Excel çıktısı.</p>
+                        <div class="flex items-end gap-1.5 mt-6 h-12">
+                            <div class="flex-1 bg-brand-100 rounded-sm" style="height:40%"></div>
+                            <div class="flex-1 bg-brand-200 rounded-sm" style="height:65%"></div>
+                            <div class="flex-1 bg-brand-300 rounded-sm" style="height:50%"></div>
+                            <div class="flex-1 bg-brand-500 rounded-sm" style="height:90%"></div>
+                            <div class="flex-1 bg-brand-400 rounded-sm" style="height:75%"></div>
+                            <div class="flex-1 bg-brand-500 rounded-sm" style="height:100%"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Product Philosophy: Scaled Details -->
-        <section class="py-48 bg-white border-t border-slate-50">
-            <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-32 items-center">
-                <div class="space-y-16">
-                    <div>
-                        <h2 class="text-7xl lg:text-9xl font-black text-slate-950 tracking-tighter leading-[0.85] uppercase italic mb-10">Mimarİ Değİl, <br> <span class="text-brand-500 underline decoration-slate-100 underline-offset-8">Standart.</span></h2>
-                        <p class="text-xl text-slate-500 font-medium leading-relaxed">
-                            Yalnızca bir arayüz tasarlamadık; en yoğun restoran operasyonlarının yükünü saniyeler içinde eritecek teknik bir ekosistem inşa ettik.
-                        </p>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-16">
-                        <div class="space-y-3">
-                            <div class="text-6xl font-black text-slate-950 tracking-tighter">15ms</div>
-                            <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] leading-loose">Max Latency</div>
-                        </div>
-                        <div class="space-y-3">
-                            <div class="text-6xl font-black text-brand-500 tracking-tighter italic">99<span class="text-slate-950 font-normal">.9%</span></div>
-                            <div class="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em] leading-loose">SLA Uptime</div>
-                        </div>
-                    </div>
+        <!-- Stats row -->
+        <section class="py-20 bg-brand-500">
+            <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-4xl font-black text-white font-display">99.9%</div>
+                    <div class="text-brand-200 text-sm font-bold mt-1 uppercase tracking-widest">Uptime SLA</div>
                 </div>
-
-                <!-- High-End Data Logic Module -->
-                <div class="bg-slate-950 rounded-[4rem] p-20 text-white shadow-2xl relative overflow-hidden group">
-                    <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-brand-500 to-transparent opacity-50"></div>
-                    <div class="relative z-10">
-                        <div class="w-16 h-16 bg-white/5 border border-white/10 rounded-3xl mb-16 flex items-center justify-center text-3xl text-brand-500">
-                            <i class="fas fa-project-diagram"></i>
-                        </div>
-                        <h3 class="text-4xl font-black uppercase tracking-tight italic mb-8">Hİbrİt Ağ <br> Kararlılığı.</h3>
-                        <p class="text-slate-400 font-medium leading-relaxed mb-16 max-w-sm text-lg">
-                            İnternet kopsa da, elektrik gitse de veriniz asla kaybolmaz. Yerel ağınızdaki her terminal, buluta çıkamasa da birbirini tanır.
-                        </p>
-                        
-                        <!-- Realistic Technical Visualization -->
-                        <div class="flex items-center gap-12">
-                            <div class="relative w-32 h-32">
-                                <svg class="w-full h-full rotate-[-90deg]">
-                                    <circle cx="64" cy="64" r="58" fill="transparent" stroke="rgba(255,255,255,0.05)" stroke-width="12"></circle>
-                                    <circle cx="64" cy="64" r="58" fill="transparent" stroke="#6200EE" stroke-width="12" stroke-dasharray="364.2" stroke-dashoffset="40" class="transition-all duration-1000 group-hover:stroke-dashoffset-20"></circle>
-                                </svg>
-                                <div class="absolute inset-0 flex flex-col items-center justify-center">
-                                    <span class="text-2xl font-black italic">92%</span>
-                                    <span class="text-[7px] font-black text-slate-500 uppercase tracking-[0.3em]">LOAD</span>
-                                </div>
-                            </div>
-                            <div class="space-y-2">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-2 h-2 rounded-full bg-emerald-500"></div>
-                                    <span class="text-[9px] font-black uppercase tracking-widest text-slate-400">Node Sync: 100%</span>
-                                </div>
-                                <div class="flex items-center gap-3">
-                                    <div class="w-2 h-2 rounded-full bg-brand-500"></div>
-                                    <span class="text-[9px] font-black uppercase tracking-widest text-slate-400">Buffer: Active</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div>
+                    <div class="text-4xl font-black text-white font-display">15ms</div>
+                    <div class="text-brand-200 text-sm font-bold mt-1 uppercase tracking-widest">Maks. Gecikme</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-black text-white font-display">500+</div>
+                    <div class="text-brand-200 text-sm font-bold mt-1 uppercase tracking-widest">İşletme</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-black text-white font-display">7/24</div>
+                    <div class="text-brand-200 text-sm font-bold mt-1 uppercase tracking-widest">Destek</div>
                 </div>
             </div>
         </section>
 
-        <!-- Final Immersive Call to Action -->
-        <section class="py-64 bg-slate-950 text-center relative overflow-hidden">
-            <div class="absolute inset-0 dot-pattern opacity-10"></div>
-            <div class="max-w-6xl mx-auto px-6 relative z-10">
-                <h2 class="text-7xl lg:text-[12rem] font-black text-white tracking-tighter uppercase italic leading-[0.8] mb-24">Sahne <br> <span class="text-brand-500">Sİzİn.</span></h2>
-                <p class="text-2xl text-white/40 font-medium mb-24 max-w-2xl mx-auto">Saniyeler içinde kurulum yapın, yıllarca kararlı kalın. Profesyonel dünyanın merkezine hoş geldiniz.</p>
-                <div class="flex flex-col sm:flex-row justify-center gap-10">
-                    <a href="{{ route('pages.pos.versions') }}" class="px-16 py-8 bg-brand-500 text-white rounded-[2.5rem] font-black text-sm uppercase tracking-[0.3em] hover:bg-white hover:text-slate-950 hover:-translate-y-4 transition-all duration-700 shadow-2xl shadow-brand-500/40 flex items-center justify-center gap-6 group">
-                        <i class="fab fa-windows text-3xl transition-transform group-hover:scale-125"></i> TERMİNALİ İNDİR
+        <!-- CTA -->
+        <section class="py-40 bg-white text-center border-t border-slate-50">
+            <div class="max-w-4xl mx-auto px-6">
+                <h2 class="text-5xl lg:text-8xl font-black text-slate-950 tracking-tighter font-display mb-8">Hemen <span class="text-brand-500">Başlayın.</span></h2>
+                <p class="text-xl text-slate-400 font-medium mb-12">Dakikalar içinde kurulum. İlk ay ücretsiz deneyin.</p>
+                <div class="flex flex-wrap gap-5 justify-center">
+                    <a href="{{ route('pages.pos.versions') }}" class="px-14 py-5 bg-brand-500 text-white rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-brand-600 transition-all shadow-2xl shadow-brand-500/30 flex items-center gap-4">
+                        <i class="fab fa-windows text-lg"></i> Terminali İndir
                     </a>
-                    <a href="/register" class="px-16 py-8 bg-white text-slate-950 rounded-[2.5rem] font-black text-sm uppercase tracking-[0.3em] hover:bg-slate-100 transition-all duration-500 shadow-2xl shadow-slate-950/20 flex items-center justify-center gap-6">
-                        YENİ HESAP AÇ
+                    <a href="/register" class="px-14 py-5 bg-white border border-slate-200 text-slate-900 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-slate-50 transition-all">
+                        Ücretsiz Hesap Aç
                     </a>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-white border-t border-slate-100 py-20">
-        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
-            <div class="flex items-center gap-5 text-slate-950">
-                <div class="w-16 h-16 rounded-[1.5rem] bg-slate-950 text-white flex items-center justify-center font-black text-xl shadow-2xl">R</div>
-                <div>
-                    <span class="font-black text-2xl tracking-tighter block leading-none">RezerVist</span>
-                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.5em]">SYSTEMS ENGINEERING</span>
-                </div>
+    <!-- Footer -->
+    <footer class="border-t border-slate-100 py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-brand-500 rounded-lg flex items-center justify-center text-white"><i class="fas fa-bolt text-xs"></i></div>
+                <span class="font-black text-slate-900 tracking-tighter font-display">RezerVistA POS</span>
             </div>
-            <p class="md:text-right text-slate-400 text-[11px] font-black uppercase tracking-[0.8em]">© {{ date('Y') }} REZERVIST. SECURED. DISTRIBUTED. RELIABLE.</p>
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">© {{ date('Y') }} RezerVist. Tüm Hakları Saklıdır.</p>
         </div>
     </footer>
+</div>
 
+
+<script>
+function posIntro() {
+    return {
+        scene: 0,
+        done: false,
+        progress: 0,
+        totalScenes: 7,
+        timer: null,
+        progressTimer: null,
+
+        // Scene durations in ms
+        durations: [2000, 2200, 2500, 2800, 2800, 2800, 3500],
+
+        start() {
+            this.runScene(0);
+        },
+
+        runScene(index) {
+            if (index >= this.totalScenes) { this.finish(); return; }
+            this.scene = index;
+            const duration = this.durations[index];
+            const startProgress = (index / this.totalScenes) * 100;
+            const endProgress = ((index + 1) / this.totalScenes) * 100;
+
+            // Animate progress bar smoothly
+            clearInterval(this.progressTimer);
+            const steps = 60;
+            const stepTime = duration / steps;
+            const stepSize = (endProgress - startProgress) / steps;
+            let step = 0;
+            this.progress = startProgress;
+            this.progressTimer = setInterval(() => {
+                step++;
+                this.progress = startProgress + (stepSize * step);
+                if (step >= steps) clearInterval(this.progressTimer);
+            }, stepTime);
+
+            // Advance to next scene
+            clearTimeout(this.timer);
+            this.timer = setTimeout(() => this.runScene(index + 1), duration);
+        },
+
+        skip() {
+            clearTimeout(this.timer);
+            clearInterval(this.progressTimer);
+            this.progress = 100;
+            setTimeout(() => this.finish(), 300);
+        },
+
+        finish() {
+            clearTimeout(this.timer);
+            clearInterval(this.progressTimer);
+            this.done = true;
+            document.body.style.overflow = '';
+            window.scrollTo(0,0);
+        }
+    }
+}
+</script>
 </body>
 </html>
