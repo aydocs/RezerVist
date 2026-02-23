@@ -471,7 +471,7 @@
     <div>
       <div class="hero-badge">
         <div class="badge-ping"><div class="badge-dot"></div></div>
-        Yeni Nesil Donanım · v4.2
+        Yeni Nesil Donanım · v1
       </div>
       <h1 class="hero-title">
         İşletmenizin<br>
@@ -508,13 +508,13 @@
             <div class="t-dot t-dot-o"></div>
             <div class="t-dot t-dot-g"></div>
           </div>
-          <span class="t-label">RezerVist OS v4.2</span>
+          <span class="t-label">RezerVistA Pos v1</span>
           <div style="width:36px;"></div>
         </div>
         <div class="t-body">
           <div class="t-topbar">
             <div>
-              <div class="t-greet">Merhaba, Ahmet 👋</div>
+              <div class="t-greet">Merhaba, Ayberk 👋</div>
               <div class="t-name">Günlük Özet</div>
             </div>
             <div class="t-time" id="live-time">--:--</div>
