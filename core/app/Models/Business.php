@@ -35,7 +35,11 @@ class Business extends Model
         });
 
         static::created(function ($business) {
-            // Package assignment logic removed due to missing 'packages' table
+            // Automatically assign free plan when a business is created
+            $package = Package::where('slug', 'free')->first();
+            if ($package) {
+                app(\App\Services\SubscriptionService::class)->assignPlan($business, $package, 120, 'system');
+            }
         });
     }
 
