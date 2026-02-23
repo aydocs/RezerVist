@@ -1,152 +1,142 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-gray-50 py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Breadcrumbs -->
-        <nav class="flex mb-8" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                <li class="inline-flex items-center">
-                    <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary transition-colors">
-                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
-                        Yönetim Paneli
-                    </a>
-                </li>
-                <li>
-                    <div class="flex items-center">
-                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">Kuponlar</span>
-                    </div>
-                </li>
-            </ol>
-        </nav>
-
-        <div class="flex items-center justify-between mb-8">
+<div class="min-h-screen bg-[#F8FAFC] py-8 px-4 sm:px-6 lg:px-12">
+    <div class="max-w-[1700px] mx-auto space-y-8">
+        
+        <!-- Header & Top Nav -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between border-b pb-8 border-slate-200">
             <div>
-                <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">Kupon Yönetimi</h1>
-                <p class="mt-2 text-sm text-gray-600">Platform genelindeki kampanya kuponlarını yönetin ve oluşturun.</p>
+                <nav class="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-slate-400 mb-2">
+                    <a href="{{ route('admin.dashboard') }}" class="hover:text-purple-600 transition-colors">Yönetim</a>
+                    <svg class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7"></path></svg>
+                    <span>Kampanya Operasyonları</span>
+                    <svg class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7"></path></svg>
+                    <span>Kupon Yönetimi</span>
+                </nav>
+                <h1 class="text-3xl font-black text-slate-900 tracking-tight">Promosyon <span class="text-purple-600">Dizini</span></h1>
             </div>
-            <a href="{{ route('admin.coupons.create') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-bold rounded-2xl shadow-lg shadow-primary/20 text-white bg-gradient-to-r from-primary to-purple-700 hover:from-primary/90 hover:to-purple-800 transition-all transform hover:-translate-y-0.5 active:translate-y-0">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                Yeni Kupon Oluştur
-            </a>
+
+            <div class="flex items-center gap-3 mt-4 md:mt-0">
+                <a href="{{ route('admin.coupons.create') }}" class="px-6 py-3 bg-slate-900 text-white text-[10px] font-black rounded-2xl hover:bg-purple-600 transition-all uppercase tracking-widest flex items-center gap-2 shadow-lg shadow-slate-900/10 active:scale-95">
+                    <i class="fa-solid fa-plus-circle text-xs opacity-50"></i>
+                    Yeni Kupon Tanımla
+                </a>
+            </div>
         </div>
 
         @if(session('success'))
-            <div class="mb-6 p-4 bg-green-50 border-l-4 border-green-500 rounded-r-xl flex items-center">
-                <svg class="w-5 h-5 text-green-500 mr-3" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
-                <p class="text-sm font-bold text-green-800">{{ session('success') }}</p>
+            <div class="flex items-center gap-3 px-6 py-3 bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase tracking-widest rounded-2xl border border-emerald-100 w-fit animate-in fade-in slide-in-from-top-4">
+                <i class="fa-solid fa-circle-check text-xs"></i>
+                {{ session('success') }}
             </div>
         @endif
 
-        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead>
-                        <tr class="bg-gray-50/50">
-                            <th class="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest">Kupon Kodu</th>
-                            <th class="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest">Tip / Değer</th>
-                            <th class="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest">Min. Tutar</th>
-                            <th class="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest">Kullanım</th>
-                            <th class="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest">Geçerlilik</th>
-                            <th class="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest text-center">Durum</th>
-                            <th class="px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest text-right">İşlemler</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-50">
-                        @forelse($coupons as $coupon)
-                            <tr class="hover:bg-gray-50/80 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary font-bold text-xs ring-4 ring-primary/5 mr-3">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
-                                        </div>
-                                        <div>
-                                            <div class="text-sm font-black text-gray-900 font-mono">{{ $coupon->code }}</div>
-                                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-tighter">Eklenme: {{ $coupon->created_at->format('d.m.Y') }}</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    @if($coupon->type === 'percentage')
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
-                                            %{{ number_format($coupon->value, 0) }} İndirim
-                                        </span>
-                                    @else
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800">
-                                            ₺{{ number_format($coupon->value, 2) }} İndirim
-                                        </span>
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-bold text-gray-700">₺{{ number_format($coupon->min_amount, 2) }}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="flex-1 h-2 w-16 bg-gray-100 rounded-full mr-2 overflow-hidden">
-                                            @php
-                                                $percentage = $coupon->max_uses ? ($coupon->used_count / $coupon->max_uses) * 100 : 0;
-                                            @endphp
-                                            <div class="h-full bg-primary rounded-full" style="width: {{ min(100, $percentage) }}%"></div>
-                                        </div>
-                                        <span class="text-xs font-bold text-gray-600">
-                                            {{ $coupon->used_count }}{{ $coupon->max_uses ? '/' . $coupon->max_uses : ' (Sınırsız)' }}
-                                        </span>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    @if($coupon->expires_at)
-                                        <div class="text-sm font-medium {{ $coupon->expires_at->isPast() ? 'text-red-500' : 'text-gray-900' }}">
-                                            {{ $coupon->expires_at->format('d.m.Y H:i') }}
-                                        </div>
-                                        <div class="text-[10px] text-gray-400">
-                                            {{ $coupon->expires_at->diffForHumans() }}
-                                        </div>
-                                    @else
-                                        <span class="text-xs font-bold text-gray-400 italic">Süre Sınırı Yok</span>
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <form action="{{ route('admin.coupons.toggle-status', $coupon) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none ring-2 ring-primary/20 {{ $coupon->is_active ? 'bg-primary' : 'bg-gray-200' }}">
-                                            <span class="translate-x-0 pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow transform ring-0 transition ease-in-out duration-200 {{ $coupon->is_active ? 'translate-x-5' : 'translate-x-0' }}"></span>
-                                        </button>
-                                    </form>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                                    <a href="{{ route('admin.coupons.edit', $coupon) }}" class="inline-flex items-center p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all shadow-sm">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                    </a>
-                                    <form action="{{ route('admin.coupons.destroy', $coupon) }}" method="POST" class="inline-block" onsubmit="return confirm('Bu kuponu silmek istediğinize emin misiniz?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="inline-flex items-center p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all shadow-sm">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="px-6 py-12 text-center text-gray-500">
-                                    <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white shadow-inner">
-                                        <svg class="w-10 h-10 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
-                                    </div>
-                                    <p class="text-base font-bold text-gray-400">Henüz bir kupon oluşturulmamış.</p>
-                                    <a href="{{ route('admin.coupons.create') }}" class="mt-4 inline-flex items-center text-primary font-bold hover:underline">İlk kuponu şuradan ekleyebilirsin</a>
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-            @if($coupons->hasPages())
-                <div class="px-6 py-4 bg-gray-50/50 border-t border-gray-100">
-                    {{ $coupons->links() }}
-                </div>
-            @endif
+        <!-- Data Optimization Grid -->
+        <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <table class="w-full text-left border-separate border-spacing-0">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200">
+                        <th class="px-8 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest">Kupon & Segment</th>
+                        <th class="px-8 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest">Finansal Model</th>
+                        <th class="px-8 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest text-center">Kullanım Verisi</th>
+                        <th class="px-8 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest">Vade Durumu</th>
+                        <th class="px-8 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest text-center">Statü</th>
+                        <th class="px-8 py-4 text-[9px] font-black text-slate-400 uppercase tracking-widest text-right">Düzenleme</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    @forelse($coupons as $coupon)
+                    <tr class="hover:bg-slate-50/30 transition-colors group">
+                        <td class="px-8 py-4 whitespace-nowrap">
+                            <div class="flex items-center gap-4">
+                                <div class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-slate-900 group-hover:text-white group-hover:border-slate-900 transition-all duration-300">
+                                    <i class="fa-solid fa-ticket text-[11px]"></i>
+                                </div>
+                                <div>
+                                    <div class="text-[11px] font-black text-slate-900 tracking-tight font-mono uppercase">{{ $coupon->code }}</div>
+                                    <div class="text-[8px] font-black text-slate-400 uppercase tracking-widest mt-0.5">Oluşturuldu: {{ $coupon->created_at->format('d/m/Y') }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-4 whitespace-nowrap">
+                            @if($coupon->type === 'percentage')
+                                <div class="inline-flex items-center px-2 py-0.5 bg-purple-50 text-purple-600 rounded text-[9px] font-black border border-purple-100 uppercase tracking-widest">%{{ number_format($coupon->value, 0) }} İNDİRİM</div>
+                            @else
+                                <div class="inline-flex items-center px-2 py-0.5 bg-emerald-50 text-emerald-600 rounded text-[9px] font-black border border-emerald-100 uppercase tracking-widest">{{ number_format($coupon->value, 2) }} ₺ SABİT</div>
+                            @endif
+                            <div class="text-[8px] font-bold text-slate-400 mt-1 uppercase tracking-widest">MİN SEPET: {{ number_format($coupon->min_amount, 2) }} ₺</div>
+                        </td>
+                        <td class="px-8 py-4">
+                            <div class="flex flex-col items-center">
+                                @php
+                                    $percentage = $coupon->max_uses ? ($coupon->used_count / $coupon->max_uses) * 100 : 0;
+                                @endphp
+                                <div class="text-[10px] font-black text-slate-700 mb-1.5 whitespace-nowrap">{{ $coupon->used_count }}{{ $coupon->max_uses ? ' / ' . $coupon->max_uses : ' (SINIRSIZ)' }}</div>
+                                <div class="w-20 h-1 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+                                    <div class="h-full {{ $percentage > 90 ? 'bg-rose-500' : 'bg-purple-600' }} transition-all duration-700" style="width: {{ min(100, $percentage) }}%"></div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-4 whitespace-nowrap">
+                            @if($coupon->expires_at)
+                                <div class="text-[10px] font-black {{ $coupon->expires_at->isPast() ? 'text-rose-500' : 'text-slate-900' }} uppercase tracking-widest">{{ $coupon->expires_at->format('d/m/Y') }}</div>
+                                <div class="text-[8px] font-bold text-slate-400 uppercase tracking-widest">{{ $coupon->expires_at->diffForHumans() }}</div>
+                            @else
+                                <span class="text-[9px] font-black text-slate-300 italic uppercase tracking-[0.2em] select-none">ÖMÜRLÜK</span>
+                            @endif
+                        </td>
+                        <td class="px-8 py-4 text-center">
+                            <form action="{{ route('admin.coupons.toggle-status', $coupon) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="group/toggle relative inline-flex h-4 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none {{ $coupon->is_active ? 'bg-purple-600 shadow-sm shadow-purple-600/20' : 'bg-slate-200' }}">
+                                    <span class="pointer-events-none inline-block h-3 w-3 transform rounded-full bg-white shadow-sm ring-0 transition duration-200 ease-in-out {{ $coupon->is_active ? 'translate-x-5' : 'translate-x-0' }}"></span>
+                                </button>
+                            </form>
+                        </td>
+                        <td class="px-8 py-4 whitespace-nowrap">
+                            <div class="flex items-center justify-end gap-1">
+                                <a href="{{ route('admin.coupons.edit', $coupon) }}" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all" title="Konfigürasyon">
+                                    <i class="fa-solid fa-sliders text-[11px]"></i>
+                                </a>
+                                <form action="{{ route('admin.coupons.destroy', $coupon) }}" method="POST" class="inline" onsubmit="return confirm('Promosyon kuponu sistemden kaldırılacaktır. Onaylıyor musunuz?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition-all rounded-lg" title="Kuponu Sil">
+                                        <i class="fa-solid fa-trash-arrow-up text-[11px]"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6" class="px-8 py-32 text-center opacity-20">
+                            <i class="fa-solid fa-ticket-slash text-5xl mb-4"></i>
+                            <p class="text-[9px] font-black uppercase tracking-[0.2em]">Aktif kampanya bulunmuyor</p>
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
+
+        @if($coupons->hasPages())
+        <div class="flex justify-center mt-6">
+            {{ $coupons->links() }}
+        </div>
+        @endif
     </div>
 </div>
+
+<style>
+.pagination { @apply flex items-center justify-center gap-2; }
+.page-item .page-link { 
+    @apply w-10 h-10 flex items-center justify-center bg-white border border-slate-200 rounded-xl text-slate-400 text-[10px] font-black transition-all hover:bg-slate-50 hover:text-slate-900 shadow-sm;
+}
+.page-item.active .page-link {
+    @apply bg-purple-600 border-purple-600 text-white shadow-lg shadow-purple-600/20;
+}
+.page-item.disabled .page-link { @apply opacity-50 cursor-not-allowed bg-slate-50; }
+</style>
 @endsection

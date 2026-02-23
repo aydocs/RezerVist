@@ -1,350 +1,269 @@
 @extends('layouts.app')
 
+@section('title', 'Sistem Komuta Merkezi - Operasyon Paneli')
+
 @section('content')
-<style>
-    :root {
-        --minimal-bg: #F8FAFC;
-        --card-bg: #FFFFFF;
-        --card-border: #E2E8F0;
-        --text-main: #0F172A;
-        --text-muted: #64748B;
-        --accent: 262, 83%, 58%;
-        --emerald: 161, 94%, 30%;
-        --blue: 217, 91%, 60%;
-        --amber: 38, 92%, 50%;
-        --rose: 350, 89%, 60%;
-    }
-
-    .compact-card {
-        background: var(--card-bg);
-        border: 1px solid var(--card-border);
-        border-radius: 1rem;
-        padding: 1.25rem;
-        transition: all 0.2s ease;
-    }
-
-    .compact-card:hover {
-        border-color: hsl(var(--accent));
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-    }
-
-    .dense-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 1rem;
-    }
-
-    .sparkline-box {
-        height: 30px;
-        width: 60px;
-        opacity: 0.6;
-    }
-
-    .mini-badge {
-        font-size: 0.65rem;
-        padding: 0.125rem 0.375rem;
-        border-radius: 9999px;
-        font-weight: 800;
-        text-transform: uppercase;
-    }
-
-    .activity-row {
-        padding: 0.75rem 0;
-        border-bottom: 1px solid #F1F5F9;
-    }
-
-    .activity-row:last-child { border-bottom: none; }
-
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-
-    .animate-fadeIn { animation: fadeIn 0.4s ease forwards; }
-
-    /* Custom Scrollbar for Dense Feeds */
-    .custom-scroll::-webkit-scrollbar { width: 4px; }
-    .custom-scroll::-webkit-scrollbar-track { background: transparent; }
-    .custom-scroll::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; }
-</style>
-
-<div class="min-h-screen bg-[#F8FAFC] py-8 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-7xl mx-auto space-y-8 animate-fadeIn">
+<div class="min-h-screen bg-[#F8FAFC] py-8 px-4 sm:px-6 lg:px-12">
+    <div class="max-w-[1400px] mx-auto space-y-10 animate-fadeIn">
         
-        <!-- Top Compact Header -->
-        <div class="flex items-center justify-between border-b pb-6 border-slate-200">
+        <!-- Premium Command Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between pb-8 border-b border-slate-200 gap-6">
             <div>
-                <h1 class="text-3xl font-black text-slate-900 tracking-tight">
-                    Admin <span class="text-purple-600">Console</span>
-                    <span class="ml-2 text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded-md uppercase tracking-widest font-bold">Veri Yoğunluklu Mod</span>
-                </h1>
+                <nav class="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">
+                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-bolt-lightning text-purple-600"></i> SİSTEM</span>
+                    <svg class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7"></path></svg>
+                    <span>KOMUTA MERKEZİ</span>
+                </nav>
+                <h1 class="text-3xl font-black text-slate-900 tracking-tight">Canlı <span class="text-purple-600">Performans</span></h1>
             </div>
-            <div class="flex items-center gap-6">
+            
+            <div class="flex items-center gap-8">
                 <div class="text-right">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Sistem Durumu</p>
-                    <div class="flex items-center gap-1.5 justify-end">
-                        <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
-                        <span class="text-sm font-bold text-slate-700">Aktif</span>
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1.5 font-mono">NETWORK STATUS</p>
+                    <div class="flex items-center gap-2 justify-end">
+                        <div class="relative flex">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </div>
+                        <span class="text-[11px] font-black text-slate-700 uppercase">ONLINE</span>
                     </div>
                 </div>
-                <div class="h-8 w-px bg-slate-200"></div>
+                <div class="h-10 w-px bg-slate-200"></div>
                 <div class="text-right">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Bugünkü Gelir</p>
-                    <p class="text-sm font-black text-emerald-600">₺{{ number_format($stats['today_revenue'], 2) }}</p>
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 font-mono">DAILY VOLUME</p>
+                    <p class="text-lg font-black text-slate-900 tracking-tighter">₺{{ number_format($stats['today_revenue'], 0, ',', '.') }}</p>
                 </div>
             </div>
         </div>
 
-        <!-- Dense Stats Grid -->
-        <div class="dense-grid">
+        <!-- High-Density Intelligence Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             
             <!-- Revenue -->
-            <div class="compact-card group relative">
-                <div class="flex justify-between items-start mb-2">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Kümülatif Gelir</p>
-                    <div class="w-8 h-8 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center font-bold text-xs">₺</div>
+            <div class="bg-white border border-slate-200 rounded-[2rem] p-6 hover:border-purple-200 hover:shadow-xl hover:shadow-slate-200/40 transition-all group overflow-hidden relative">
+                <div class="absolute -right-4 -bottom-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                    <i class="fa-solid fa-chart-line text-7xl"></i>
                 </div>
-                <h3 class="text-xl font-black text-slate-900">₺{{ number_format($stats['total_revenue'], 0) }}</h3>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3 font-mono">TOTAL REVENUE</p>
+                <div class="flex flex-col">
+                    <h3 class="text-xl font-black text-slate-900 tracking-tighter group-hover:text-purple-600 transition-colors">₺{{ number_format($stats['total_revenue'], 0, ',', '.') }}</h3>
+                    <div class="flex items-center gap-2 mt-2">
+                        <span class="px-1.5 py-0.5 {{ $growth['revenue'] >= 0 ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-rose-50 text-rose-600 border-rose-100' }} border text-[8px] font-black rounded uppercase tracking-widest">
+                            {{ $growth['revenue'] >= 0 ? '▲' : '▼' }} {{ abs($growth['revenue']) }}%
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Businesses -->
+            <div class="bg-white border border-slate-200 rounded-[2rem] p-6 hover:border-purple-200 hover:shadow-xl hover:shadow-slate-200/40 transition-all group overflow-hidden relative">
+                <div class="absolute -right-4 -bottom-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                    <i class="fa-solid fa-store text-7xl"></i>
+                </div>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3 font-mono">BUSINESSES</p>
+                <h3 class="text-xl font-black text-slate-900 tracking-tighter">{{ $stats['active_businesses'] + $stats['inactive_businesses'] }}</h3>
+                <div class="flex items-center gap-2 mt-2 text-[9px] font-bold text-slate-400 uppercase whitespace-nowrap">
+                    <span class="flex items-center gap-1"><div class="w-1 h-1 rounded-full bg-emerald-500"></div> {{ $stats['active_businesses'] }} OK</span>
+                    <span class="flex items-center gap-1"><div class="w-1 h-1 rounded-full bg-slate-200"></div> {{ $stats['inactive_businesses'] }} OFF</span>
+                </div>
+            </div>
+
+            <!-- Total Users -->
+            <div class="bg-white border border-slate-200 rounded-[2rem] p-6 hover:border-purple-200 hover:shadow-xl hover:shadow-slate-200/40 transition-all group overflow-hidden relative">
+                <div class="absolute -right-4 -bottom-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                    <i class="fa-solid fa-users text-7xl"></i>
+                </div>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3 font-mono">IDENTITIES</p>
+                <h3 class="text-xl font-black text-slate-900 tracking-tighter">{{ number_format($stats['total_users'], 0, ',', '.') }}</h3>
                 <div class="flex items-center gap-2 mt-2">
-                    <span class="mini-badge {{ $growth['revenue'] >= 0 ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700' }}">
-                        {{ $growth['revenue'] >= 0 ? '↑' : '↓' }} {{ abs($growth['revenue']) }}%
-                    </span>
-                    <span class="text-[10px] font-bold text-slate-400">7G Değişim</span>
-                </div>
-            </div>
-
-            <!-- Businesses -->
-            <div class="compact-card group relative">
-                <div class="flex justify-between items-start mb-2">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">İşletmeler</p>
-                    <div class="w-8 h-8 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-10V4m0 10V4m-4 6h4m-4 4h4m-4 4h4"></path></svg>
-                    </div>
-                </div>
-                <h3 class="text-xl font-black text-slate-900">{{ $stats['active_businesses'] + $stats['inactive_businesses'] }}</h3>
-                <div class="flex items-center gap-3 mt-2">
-                    <div class="flex items-center gap-1">
-                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                        <span class="text-[10px] font-bold text-slate-500">{{ $stats['active_businesses'] }} Aktif</span>
-                    </div>
-                    <div class="flex items-center gap-1">
-                        <div class="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
-                        <span class="text-[10px] font-bold text-slate-500">{{ $stats['inactive_businesses'] }} Pasif</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Users -->
-            <div class="compact-card group relative">
-                <div class="flex justify-between items-start mb-2">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Kullanıcılar</p>
-                    <div class="w-8 h-8 bg-purple-50 text-purple-600 rounded-lg flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                    </div>
-                </div>
-                <h3 class="text-xl font-black text-slate-900">{{ number_format($stats['total_users']) }}</h3>
-                <div class="flex items-center gap-3 mt-2">
-                    <div class="flex items-center gap-1">
-                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                        <span class="text-[10px] font-bold text-slate-500">{{ $stats['verified_users'] }} Onaylı</span>
-                    </div>
-                    <div class="flex items-center gap-1">
-                        <span class="mini-badge bg-purple-100 text-purple-700">+{{ $growth['users'] }}%</span>
-                    </div>
+                    <span class="px-1.5 py-0.5 bg-purple-50 text-purple-600 border border-purple-100 text-[8px] font-black rounded uppercase tracking-widest">+{{ $growth['users'] }}% GROWTH</span>
                 </div>
             </div>
 
             <!-- Reservations -->
-            <div class="compact-card group relative">
-                <div class="flex justify-between items-start mb-2">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Rezervasyonlar</p>
-                    <div class="w-8 h-8 bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    </div>
+            <div class="bg-white border border-slate-200 rounded-[2rem] p-6 hover:border-purple-200 hover:shadow-xl hover:shadow-slate-200/40 transition-all group overflow-hidden relative">
+                <div class="absolute -right-4 -bottom-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                    <i class="fa-solid fa-calendar-check text-7xl"></i>
                 </div>
-                <h3 class="text-xl font-black text-slate-900">{{ number_format($stats['total_reservations']) }}</h3>
-                <div class="flex items-center gap-2 mt-2">
-                    <span class="mini-badge bg-amber-100 text-amber-700">{{ $growth['reservations'] >= 0 ? '+' : '' }}{{ $growth['reservations'] }}%</span>
-                    <span class="text-[10px] font-bold text-slate-400">Trend</span>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3 font-mono">OPERATIONS</p>
+                <h3 class="text-xl font-black text-slate-900 tracking-tighter">{{ number_format($stats['total_reservations'], 0, ',', '.') }}</h3>
+                <div class="flex items-center gap-2 mt-2 font-black text-[9px] text-slate-400">
+                    <i class="fa-solid fa-arrow-trend-up text-emerald-500"></i>
+                    <span class="uppercase tracking-widest">PERFORMING</span>
                 </div>
             </div>
 
-            <!-- Reviews -->
-            <div class="compact-card group relative border-rose-100">
-                <div class="flex justify-between items-start mb-2">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Mod. Bekleyen</p>
-                    <div class="w-8 h-8 bg-rose-50 text-rose-600 rounded-lg flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
-                    </div>
+            <!-- Mod Queue -->
+            <div class="bg-white border {{ $stats['pending_reviews'] > 0 ? 'border-rose-200' : 'border-slate-200' }} rounded-[2rem] p-6 hover:shadow-xl transition-all group overflow-hidden relative">
+                <div class="absolute -right-4 -bottom-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                    <i class="fa-solid fa-comment-dots text-7xl"></i>
                 </div>
-                <h3 class="text-xl font-black {{ $stats['pending_reviews'] > 0 ? 'text-rose-600' : 'text-slate-900' }}">{{ $stats['pending_reviews'] }}</h3>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3 font-mono">MOD QUEUE</p>
+                <h3 class="text-xl font-black {{ $stats['pending_reviews'] > 0 ? 'text-rose-600' : 'text-slate-900' }} tracking-tighter">{{ $stats['pending_reviews'] }}</h3>
                 <div class="flex items-center gap-2 mt-2">
                     @if($stats['pending_reviews'] > 0)
-                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"></span>
-                        <span class="text-[10px] font-black text-rose-600 uppercase">Eylem Gerekli</span>
+                        <span class="flex items-center gap-1.5 text-[8px] font-black text-rose-500 uppercase tracking-[0.2em] animate-pulse">ACTION REQUIRED</span>
                     @else
-                        <span class="text-[10px] font-bold text-slate-400">Temiz</span>
+                        <span class="text-[8px] font-bold text-slate-400 uppercase tracking-widest">CLEAN STATE</span>
                     @endif
                 </div>
             </div>
 
-            <!-- Applications -->
-            <div class="compact-card group relative">
-                <div class="flex justify-between items-start mb-2">
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Yen Başvurular</p>
-                    <div class="w-8 h-8 bg-slate-50 text-slate-600 rounded-lg flex items-center justify-center">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    </div>
+            <!-- Application Queue -->
+            <div class="bg-white border border-slate-200 rounded-[2rem] p-6 hover:border-purple-200 hover:shadow-xl hover:shadow-slate-200/40 transition-all group overflow-hidden relative">
+                <div class="absolute -right-4 -bottom-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+                    <i class="fa-solid fa-address-card text-7xl"></i>
                 </div>
-                <h3 class="text-xl font-black text-slate-900">{{ $stats['pending_applications'] }}</h3>
-                <div class="mt-2">
-                    <span class="mini-badge bg-slate-100 text-slate-600">+{{ $growth['new_apps'] }} Bu Hafta</span>
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-3 font-mono">APPS WAITING</p>
+                <h3 class="text-xl font-black text-slate-900 tracking-tighter">{{ $stats['pending_applications'] }}</h3>
+                <div class="mt-2 text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                    <span class="text-purple-600 font-black">+{{ $growth['new_apps'] }}</span> WEEKLY
                 </div>
             </div>
         </div>
 
-        <!-- Middle Multi-Column Content -->
+        <!-- Analytical Insights Center -->
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
             
-            <!-- Dual Analytics Chart (Compact style) -->
-            <div class="xl:col-span-2 compact-card overflow-hidden">
-                <div class="flex items-center justify-between mb-4">
+            <!-- Core Analytics -->
+            <div class="xl:col-span-2 bg-white border border-slate-200 rounded-[2.5rem] p-8 shadow-xl shadow-slate-200/20">
+                <div class="flex items-center justify-between mb-10">
                     <div>
-                        <h4 class="text-sm font-black text-slate-900 uppercase tracking-wider">Haftalık Performans</h4>
+                        <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-[0.25em]">SİSTEMSEL PERFORMANS GRAFİĞİ</h4>
+                        <p class="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">Son 7 günlük veri akışı analizi</p>
                     </div>
-                    <div class="flex gap-4">
-                        <div class="flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-purple-600"></span>
-                            <span class="text-[10px] font-bold text-slate-400 uppercase">Gelir</span>
+                    <div class="flex gap-6">
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full bg-purple-600"></div>
+                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">GELİR KAPASİTESİ</span>
                         </div>
-                        <div class="flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                            <span class="text-[10px] font-bold text-slate-400 uppercase">İşlem</span>
+                        <div class="flex items-center gap-2">
+                            <div class="w-2 h-2 rounded-full border border-slate-300"></div>
+                            <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">İŞLEM ADEDİ</span>
                         </div>
                     </div>
                 </div>
-                <div style="height: 220px; width: 100%;">
+                <div style="height: 300px;">
                     <canvas id="growthChart"></canvas>
                 </div>
             </div>
 
-            <!-- Category Mix (Compact style) -->
-            <div class="compact-card flex flex-col">
-                <h4 class="text-sm font-black text-slate-900 uppercase tracking-wider mb-4">Kategori Dağılımı</h4>
-                <div class="flex-1 flex flex-col justify-center">
-                    <div style="height: 140px; width: 100%;">
+            <!-- Distribution & Intelligence -->
+            <div class="bg-slate-900 rounded-[2.5rem] p-8 text-white shadow-2xl shadow-slate-900/40 flex flex-col relative overflow-hidden">
+                <div class="absolute -right-20 -top-20 opacity-5">
+                    <i class="fa-solid fa-chart-pie text-[15rem]"></i>
+                </div>
+                
+                <h4 class="text-[11px] font-black uppercase tracking-[0.25em] mb-8 relative z-10 text-white/60">KATEGORİSEL DAĞILIM</h4>
+                
+                <div class="flex-1 flex flex-col justify-center relative z-10">
+                    <div style="height: 160px;">
                         <canvas id="categoryChart"></canvas>
                     </div>
                 </div>
-                <div class="mt-4 grid grid-cols-2 gap-2">
+
+                <div class="mt-10 space-y-3 relative z-10">
                     @foreach($categoryStats->take(4) as $cat)
-                        <div class="flex items-center justify-between px-2 py-1.5 bg-slate-50 rounded-lg">
-                            <span class="text-[10px] font-bold text-slate-600 truncate mr-2">{{ $cat->name }}</span>
-                            <span class="text-[10px] font-black text-slate-400">{{ $cat->reservations_count }}</span>
+                        <div class="flex items-center justify-between p-3 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 transition-colors group cursor-default">
+                            <div class="flex items-center gap-3">
+                                <div class="w-1.5 h-1.5 rounded-full bg-purple-500 group-hover:scale-150 transition-transform"></div>
+                                <span class="text-[10px] font-black uppercase tracking-widest text-white/70">{{ $cat->name }}</span>
+                            </div>
+                            <span class="text-xs font-black text-purple-400">{{ $cat->reservations_count }}</span>
                         </div>
                     @endforeach
                 </div>
             </div>
         </div>
 
-        <!-- Bottom Detail Grid -->
+        <!-- Realtime Events & High Performers -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             
-            <!-- Dense Activity Heartbeat -->
-            <div class="compact-card">
-                <div class="flex items-center justify-between mb-4 border-b pb-4 border-slate-100">
-                    <h4 class="text-sm font-black text-slate-900 uppercase tracking-wider italic">Sistem Nabzı</h4>
-                    <span class="text-[10px] font-black text-slate-400 px-2 py-0.5 bg-slate-100 rounded">Canlı Akış</span>
+            <!-- Events Feed -->
+            <div class="bg-white border border-slate-200 rounded-[2.5rem] p-8 shadow-xl shadow-slate-200/20">
+                <div class="flex items-center justify-between mb-8 pb-6 border-b border-slate-50">
+                    <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-[0.25em]">AKTİVİTE GÜNCESİ</h4>
+                    <span class="text-[10px] font-black text-purple-600 px-3 py-1 bg-purple-50 rounded-lg uppercase tracking-widest border border-purple-100 italic">REALTIME FEED</span>
                 </div>
-                <div class="max-h-[350px] overflow-y-auto custom-scroll pr-2">
+                <div class="space-y-6 max-h-[400px] overflow-y-auto custom-scroll pr-4">
                     @forelse($recentActivities as $activity)
-                        <div class="activity-row group">
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-3">
-                                    <div class="w-1.5 h-6 bg-{{ $activity['color'] }}-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                    <div>
-                                        <p class="text-xs font-bold text-slate-700 leading-tight">{{ $activity['message'] }}</p>
-                                        <p class="text-[9px] font-black text-{{ $activity['color'] }}-600 uppercase mt-0.5">{{ $activity['type'] }} • {{ $activity['details'] }}</p>
-                                    </div>
+                        <div class="flex items-start gap-4 p-4 hover:bg-slate-50 rounded-2xl transition-all group border border-transparent hover:border-slate-100">
+                            <div class="w-1.5 h-10 bg-{{ $activity['color'] }}-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shrink-0 mt-1"></div>
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <span class="text-[9px] font-black text-{{ $activity['color'] }}-600 uppercase tracking-widest">{{ $activity['type'] }}</span>
+                                    <span class="text-[9px] font-bold text-slate-400 uppercase">{{ $activity['time'] }}</span>
                                 </div>
-                                <span class="text-[9px] font-bold text-slate-400 whitespace-nowrap">{{ $activity['time'] }}</span>
+                                <p class="text-xs font-bold text-slate-700 leading-relaxed">{{ $activity['message'] }}</p>
+                                <p class="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-tight">{{ $activity['details'] }}</p>
                             </div>
                         </div>
                     @empty
-                        <p class="text-center py-10 text-xs text-slate-400">Veri bekleniyor...</p>
+                        <div class="text-center py-20 text-[10px] font-black text-slate-300 uppercase tracking-widest italic">VERI AKISI BEKLENIYOR...</div>
                     @endforelse
                 </div>
             </div>
 
-            <!-- Leaderboard (Simplified Table) -->
-            <div class="compact-card">
-                <div class="flex items-center justify-between mb-4 border-b pb-4 border-slate-100">
-                    <h4 class="text-sm font-black text-slate-900 uppercase tracking-wider font-serif">Yıldız İşletmeler</h4>
-                    <a href="#" class="text-[10px] font-black text-purple-600 hover:underline">TÜMÜ</a>
+            <!-- Top Performers -->
+            <div class="bg-white border border-slate-200 rounded-[2.5rem] p-8 shadow-xl shadow-slate-200/20">
+                <div class="flex items-center justify-between mb-8 pb-6 border-b border-slate-50">
+                    <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-[0.25em]">TOP PERFORMERS</h4>
+                    <a href="#" class="text-[10px] font-black text-slate-300 hover:text-purple-600 transition-colors uppercase tracking-[0.3em]">ANALİZLERE GİT</a>
                 </div>
-                <div class="space-y-1">
+                <div class="space-y-2">
                     @forelse($topBusinesses as $index => $business)
-                        <div class="flex items-center justify-between p-2.5 rounded-xl hover:bg-slate-50 transition-colors">
-                            <div class="flex items-center gap-4">
-                                <span class="text-[10px] font-black text-slate-300 w-4">0{{ $index + 1 }}</span>
+                        <div class="flex items-center justify-between p-4 rounded-[1.5rem] hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all flex group cursor-default">
+                            <div class="flex items-center gap-5">
+                                <span class="text-xs font-black text-slate-300 w-6">#{{ $index + 1 }}</span>
+                                <div class="w-10 h-10 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-all group-hover:rotate-3">
+                                    <i class="fa-solid fa-store text-xs"></i>
+                                </div>
                                 <div>
-                                    <p class="text-xs font-black text-slate-800">{{ $business->name }}</p>
-                                    <div class="flex items-center gap-2 mt-0.5">
-                                        <div class="flex">
+                                    <p class="text-sm font-black text-slate-900 group-hover:text-purple-600 transition-colors">{{ $business->name }}</p>
+                                    <div class="flex items-center gap-3 mt-1">
+                                        <div class="flex gap-0.5">
                                             @for($i=1; $i<=5; $i++)
-                                                <svg class="w-2.5 h-2.5 {{ $i <= $business->rating ? 'text-amber-400' : 'text-slate-200' }} fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
+                                                <i class="fa-solid fa-star text-[8px] {{ $i <= $business->rating ? 'text-amber-400 shadow-sm' : 'text-slate-100' }}"></i>
                                             @endfor
                                         </div>
-                                        <span class="text-[9px] font-bold text-slate-400 uppercase">{{ $business->reservations_count }} İşlem</span>
+                                        <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">{{ $business->reservations_count }} İŞLEM</span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="text-right">
-                                <span class="text-[10px] font-black {{ $index == 0 ? 'text-emerald-600' : 'text-slate-400' }}">
-                                    {{ $index == 0 ? 'PLATINUM' : 'AKTİF' }}
-                                </span>
-                            </div>
+                            @if($index == 0)
+                                <span class="px-2 py-0.5 bg-purple-50 text-purple-600 border border-purple-100 text-[8px] font-black rounded uppercase tracking-widest shadow-sm">PLATINUM</span>
+                            @else
+                                <span class="text-[9px] font-black text-slate-300 uppercase tracking-widest">AKTİF</span>
+                            @endif
                         </div>
                     @empty
-                        <p class="text-center py-10 text-xs text-slate-400 font-bold italic">Rekabet bekleniyor...</p>
+                        <div class="text-center py-20 text-[10px] font-black text-slate-300 uppercase tracking-widest italic">REKABET BEKLENIYOR...</div>
                     @endforelse
                 </div>
             </div>
         </div>
 
-        <!-- Utility Access Grid (Minimal Icon-Only) -->
-        <div class="border-t pt-8 border-slate-100">
-            <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 text-center">Yönetim Araçları</h4>
+        <!-- System Navigation Grid -->
+        <div class="border-t border-slate-100 pt-10">
+            <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.4em] mb-10 text-center">CORE MODULES NAVIGATION</p>
             <div class="flex flex-wrap justify-center gap-4">
                 @php
                     $utilities = [
-                        ['route' => 'admin.applications.index', 'icon' => 'document-duplicate', 'label' => 'Başvurular', 'color' => 'amber'],
-                        ['route' => 'admin.users.index', 'icon' => 'user-group', 'label' => 'Kullanıcılar', 'color' => 'blue'],
-                        ['route' => 'admin.reports.index', 'icon' => 'chart-bar', 'label' => 'Raporlar', 'color' => 'emerald'],
-                        ['route' => 'admin.settings.index', 'icon' => 'cog-6-tooth', 'label' => 'Ayarlar', 'color' => 'slate'],
-                        ['route' => 'admin.coupons.index', 'icon' => 'ticket', 'label' => 'Kuponlar', 'color' => 'indigo'],
-                        ['route' => 'admin.reviews.index', 'icon' => 'chat-bubble-left-right', 'label' => 'Yorumlar', 'color' => 'rose'],
+                        ['route' => 'admin.applications.index', 'icon' => 'fa-clipboard-list', 'label' => 'BAŞVURULAR'],
+                        ['route' => 'admin.users.index', 'icon' => 'fa-users-gear', 'label' => 'KULLANICILAR'],
+                        ['route' => 'admin.reports.index', 'icon' => 'fa-chart-pie', 'label' => 'RAPORLAR'],
+                        ['route' => 'admin.settings.index', 'icon' => 'fa-gears', 'label' => 'AYARLAR'],
+                        ['route' => 'admin.coupons.index', 'icon' => 'fa-ticket-simple', 'label' => 'KUPONLAR'],
+                        ['route' => 'admin.reviews.index', 'icon' => 'fa-comments', 'label' => 'YORUMLAR'],
                     ];
                 @endphp
 
                 @foreach($utilities as $util)
-                    <a href="{{ route($util['route']) }}" title="{{ $util['label'] }}" class="flex flex-col items-center gap-2 group">
-                        <div class="w-12 h-12 bg-white border border-slate-200 rounded-2xl flex items-center justify-center group-hover:bg-slate-900 group-hover:border-slate-900 transition-all group-hover:-translate-y-1">
-                            @if($util['icon'] == 'document-duplicate')
-                                <svg class="w-6 h-6 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                            @elseif($util['icon'] == 'user-group')
-                                <svg class="w-6 h-6 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                            @elseif($util['icon'] == 'chart-bar')
-                                <svg class="w-6 h-6 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-                            @elseif($util['icon'] == 'cog-6-tooth')
-                                <svg class="w-6 h-6 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
-                            @elseif($util['icon'] == 'ticket')
-                                <svg class="w-6 h-6 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
-                            @elseif($util['icon'] == 'chat-bubble-left-right')
-                                <svg class="w-6 h-6 text-slate-400 group-hover:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
-                            @endif
+                    <a href="{{ route($util['route']) }}" class="flex flex-col items-center gap-4 group">
+                        <div class="w-16 h-16 bg-white border border-slate-200 rounded-[1.5rem] flex items-center justify-center group-hover:bg-slate-900 group-hover:border-slate-900 transition-all duration-300 shadow-sm group-hover:shadow-xl group-hover:shadow-slate-200 group-hover:-translate-y-2">
+                            <i class="fa-solid {{ $util['icon'] }} text-slate-400 group-hover:text-white text-lg transition-colors"></i>
                         </div>
-                        <span class="text-[9px] font-black text-slate-400 group-hover:text-slate-900 transition-colors">{{ $util['label'] }}</span>
+                        <span class="text-[9px] font-black text-slate-400 group-hover:text-slate-900 uppercase tracking-widest transition-colors">{{ $util['label'] }}</span>
                     </a>
                 @endforeach
             </div>
@@ -358,35 +277,43 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     $(document).ready(function() {
-        // Minimal Chart Defaults
+        // Console Chart Defaults
         Chart.defaults.font.family = "'Inter', sans-serif";
         Chart.defaults.font.weight = 'bold';
-        Chart.defaults.font.size = 10;
+        Chart.defaults.font.size = 9;
         Chart.defaults.color = '#94a3b8';
 
-        // Performans Line Chart
+        // Performance Intelligence Chart
         const growthCtx = document.getElementById('growthChart').getContext('2d');
+        const gradient = growthCtx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(139, 92, 246, 0.1)');
+        gradient.addColorStop(1, 'rgba(139, 92, 246, 0)');
+
         new Chart(growthCtx, {
             type: 'line',
             data: {
                 labels: {!! json_encode($dates) !!},
                 datasets: [
                     {
-                        label: 'Gelir',
+                        label: 'GELİR',
                         data: {!! json_encode($revenueData) !!},
-                        borderColor: '#9333ea',
-                        borderWidth: 2,
-                        pointRadius: 0,
-                        tension: 0.3,
-                        fill: false
+                        borderColor: '#8B5CF6',
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#8B5CF6',
+                        pointBorderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: gradient
                     },
                     {
-                        label: 'İşlem',
+                        label: 'İŞLEM',
                         data: {!! json_encode($reservationData) !!},
-                        borderColor: '#3b82f6',
+                        borderColor: '#E2E8F0',
                         borderWidth: 2,
                         pointRadius: 0,
-                        tension: 0.3,
+                        tension: 0.4,
                         fill: false,
                         borderDash: [5, 5]
                     }
@@ -395,15 +322,31 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
+                plugins: { 
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#0f172a',
+                        titleFont: { size: 10, weight: 'bold' },
+                        bodyFont: { size: 10 },
+                        padding: 12,
+                        cornerRadius: 12,
+                        displayColors: false
+                    }
+                },
                 scales: {
-                    x: { grid: { display: false } },
-                    y: { grid: { color: '#f1f5f9' }, ticks: { display: false } }
+                    x: { 
+                        grid: { display: false },
+                        ticks: { padding: 10 }
+                    },
+                    y: { 
+                        grid: { color: '#f8fafc' },
+                        ticks: { display: false }
+                    }
                 }
             }
         });
 
-        // Category Doughnut (Compact)
+        // Mix Intelligence
         const catCtx = document.getElementById('categoryChart').getContext('2d');
         new Chart(catCtx, {
             type: 'doughnut',
@@ -411,16 +354,20 @@
                 labels: {!! json_encode($categoryStats->pluck('name')) !!},
                 datasets: [{
                     data: {!! json_encode($categoryStats->pluck('reservations_count')) !!},
-                    backgroundColor: ['#9333ea', '#a855f7', '#c084fc', '#d8b4fe'],
-                    borderWidth: 2,
-                    borderColor: '#fff'
+                    backgroundColor: ['#8B5CF6', '#7C3AED', '#6D28D9', '#5B21B6', '#4C1D95'],
+                    borderWidth: 0,
+                    hoverOffset: 20
                 }]
             },
             options: {
                 plugins: { legend: { display: false } },
-                cutout: '85%',
+                cutout: '80%',
                 responsive: true,
-                maintainAspectRatio: false
+                maintainAspectRatio: false,
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
             }
         });
     });

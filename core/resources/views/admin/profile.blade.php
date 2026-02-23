@@ -1,71 +1,100 @@
 @extends('layouts.app')
 
-@section('title', 'Yönetici Profili - ' . $globalSettings['site_name'])
+@section('title', 'Admin Profili - Sistem Güvenliği')
 
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 py-8">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Header -->
-        <div class="mb-8 flex items-center justify-between">
+<div class="min-h-screen bg-[#F8FAFC] py-8 px-4 sm:px-6 lg:px-12">
+    <div class="max-w-[1200px] mx-auto space-y-10 animate-fadeIn">
+        
+        <!-- Premium Command Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between pb-8 border-b border-slate-200 gap-6">
             <div>
-                <h1 class="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">
-                    Yönetici Profili
-                </h1>
-                <p class="text-gray-600 flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                    Kişisel bilgilerinizi ve hesap ayarlarınızı yönetin
-                </p>
+                <nav class="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">
+                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-1.5 hover:text-purple-600 transition-colors"><i class="fa-solid fa-bolt-lightning"></i> YÖNETİM</a>
+                    <svg class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7"></path></svg>
+                    <span>YÖNETİCİ PROFİLİ</span>
+                </nav>
+                <h1 class="text-3xl font-black text-slate-900 tracking-tight">Hesap <span class="text-purple-600">Ayarları</span></h1>
             </div>
-            <a href="{{ route('admin.dashboard') }}" class="group flex items-center gap-2 px-5 py-2.5 text-gray-600 hover:text-white bg-white hover:bg-gradient-to-r hover:from-purple-600 hover:to-purple-700 rounded-xl transition-all shadow-sm hover:shadow-lg border border-gray-200">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                <span class="font-semibold">Panele Dön</span>
-            </a>
+
+            <div class="flex items-center gap-4">
+                <div class="px-5 py-2.5 bg-white border border-slate-200 text-slate-400 text-[10px] font-black rounded-2xl uppercase tracking-[0.2em] flex items-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-shield-halved text-purple-600"></i>
+                    GÜVENLİ OTURUM AKTİF
+                </div>
+            </div>
         </div>
 
         @if(session('success'))
-            <div class="mb-6 bg-gradient-to-r from-emerald-50 to-green-50 border border-emerald-200 text-emerald-700 px-6 py-4 rounded-2xl flex items-center shadow-sm">
-                <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                <span class="font-semibold">{{ session('success') }}</span>
+            <div class="bg-slate-900 border border-slate-800 text-white px-8 py-5 rounded-[2rem] flex items-center justify-between shadow-2xl animate-fadeIn">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500">
+                        <i class="fa-solid fa-check-double"></i>
+                    </div>
+                    <div>
+                        <p class="text-[11px] font-black uppercase tracking-[0.2em]">SİSTEM GÜNCELLENDİ</p>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase">{{ session('success') }}</p>
+                    </div>
+                </div>
+                <button onclick="this.parentElement.remove()" class="text-slate-500 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
         @endif
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
             <!-- Sidebar / Profile Card -->
             <div class="lg:col-span-1">
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden sticky top-28">
-                    <div class="h-24 bg-gradient-to-r from-primary to-purple-800 relative"></div>
-                    <div class="px-6 pb-6 text-center -mt-12 relative">
-                        <div class="relative inline-block mb-4 group">
+                <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-200/20 overflow-hidden sticky top-8">
+                    <div class="h-32 bg-slate-900 relative">
+                        <div class="absolute inset-0 opacity-10">
+                            <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                <path d="M0 0 L100 100 M0 100 L100 0" stroke="white" stroke-width="0.5" />
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="px-8 pb-10 text-center -mt-12 relative">
+                        <div class="relative inline-block mb-6 group">
                             @if($user->profile_photo_path)
-                                <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="{{ $user->name }}" class="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md mx-auto">
+                                <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="{{ $user->name }}" class="w-24 h-24 rounded-[2rem] object-cover border-4 border-white shadow-2xl mx-auto ring-1 ring-slate-100">
                             @else
-                                <div class="w-24 h-24 rounded-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-white text-3xl font-bold border-4 border-white shadow-md mx-auto">
+                                <div class="w-24 h-24 rounded-[2rem] bg-purple-600 flex items-center justify-center text-white text-4xl font-black border-4 border-white shadow-2xl mx-auto ring-1 ring-slate-100">
                                     {{ substr($user->name, 0, 1) }}
                                 </div>
                             @endif
-                            <form action="{{ route('profile.photo.update') }}" method="POST" enctype="multipart/form-data" class="absolute bottom-0 right-0">
+                            <form action="{{ route('profile.photo.update') }}" method="POST" enctype="multipart/form-data" class="absolute -bottom-1 -right-1">
                                 @csrf
-                                <label for="photo" class="bg-primary text-white p-2 rounded-full cursor-pointer hover:bg-primary-dark transition shadow-lg block transform hover:scale-110">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                <label for="photo" class="bg-slate-900 text-white w-9 h-9 rounded-2xl cursor-pointer hover:bg-purple-600 transition-all shadow-xl flex items-center justify-center border-2 border-white group-hover:scale-110">
+                                    <i class="fa-solid fa-camera-retro text-[11px]"></i>
                                 </label>
                                 <input type="file" name="photo" id="photo" class="hidden" onchange="this.form.submit()">
                             </form>
                         </div>
                         
-                        <h2 class="text-xl font-bold text-gray-900">{{ $user->name }}</h2>
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-800 mt-2">
-                            <span class="w-2 h-2 rounded-full bg-purple-600 mr-2"></span>
-                            Sistem Yöneticisi
-                        </span>
+                        <h2 class="text-xl font-black text-slate-900 tracking-tight uppercase">{{ $user->name }}</h2>
+                        <div class="inline-flex items-center px-4 py-1.5 rounded-xl text-[9px] font-black bg-slate-900 text-white uppercase tracking-[0.3em] mt-3 border border-slate-800 shadow-lg">
+                             SİSTEM YÖNETİCİSİ
+                        </div>
                         
-                        <div class="mt-6 border-t border-gray-100 pt-6 text-left">
-                            <div class="flex items-center text-gray-600 text-sm mb-3">
-                                <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                                {{ $user->email }}
+                        <div class="mt-10 space-y-4 pt-10 border-t border-slate-100 text-left">
+                            <div class="group p-4 bg-slate-50 border border-slate-100 rounded-2xl hover:border-purple-200 hover:bg-white transition-all">
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1.5 font-mono">PRIMARY REACH</p>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-7 h-7 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-all">
+                                        <i class="fa-solid fa-paper-plane text-[9px]"></i>
+                                    </div>
+                                    <p class="text-[11px] font-black text-slate-700 truncate tracking-tight">{{ $user->email }}</p>
+                                </div>
                             </div>
-                            <div class="flex items-center text-gray-600 text-sm">
-                                <svg class="w-5 h-5 mr-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                Üyelik: {{ $user->created_at->translatedFormat('d F Y') }}
+
+                            <div class="group p-4 bg-slate-50 border border-slate-100 rounded-2xl hover:border-purple-200 hover:bg-white transition-all">
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1.5 font-mono">ACTIVATED ON</p>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-7 h-7 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-all">
+                                        <i class="fa-solid fa-calendar-check text-[9px]"></i>
+                                    </div>
+                                    <p class="text-[11px] font-black text-slate-700 tracking-tight uppercase">{{ $user->created_at->translatedFormat('d F Y') }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -73,60 +102,61 @@
             </div>
 
             <!-- Profile Form -->
-            <div class="lg:col-span-2">
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-                    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
-                        <h3 class="font-bold text-gray-900">Hesap Bilgileri</h3>
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Identity & Contact Intelligence -->
+                <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-200/20 overflow-hidden">
+                    <div class="px-10 py-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-id-card-clip text-slate-400"></i>
+                            <h3 class="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em]">HESAP BİLGİ MERKEZİ</h3>
+                        </div>
+                        <span class="text-[9px] font-black text-slate-300 tracking-widest font-mono">SEC-ID: {{ hash('xxh3', $user->id) }}</span>
                     </div>
-                    <div class="p-6">
-                        <form action="{{ route('profile.update') }}" method="POST">
+                    <div class="p-10">
+                        <form id="profileForm" action="{{ route('profile.update') }}" method="POST" class="space-y-10">
                             @csrf
                             @method('PUT')
                             
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                                <!-- Name -->
-                                <div class="relative">
-                                    <input type="text" id="name" name="name" value="{{ old('name', $user->name) }}" class="block px-4 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer" placeholder=" " />
-                                    <label for="name" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-primary">Ad Soyad</label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <div>
+                                    <label class="block text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2.5 ml-1 font-mono">FULL LEGAL NAME</label>
+                                    <div class="relative group">
+                                        <input type="text" name="name" value="{{ old('name', $user->name) }}" class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-[1.25rem] focus:bg-white focus:ring-8 focus:ring-purple-500/5 focus:border-purple-500 transition-all font-black text-slate-900 text-[11px] outline-none">
+                                        <i class="fa-solid fa-user absolute right-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-purple-600 transition-colors"></i>
+                                    </div>
                                 </div>
+                                <div>
+                                    <label class="block text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2.5 ml-1 font-mono">SECURE PHONE LINE</label>
+                                    <div class="relative group">
+                                        <input type="tel" name="phone" value="{{ old('phone', $user->phone) }}" class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-[1.25rem] focus:bg-white focus:ring-8 focus:ring-purple-500/5 focus:border-purple-500 transition-all font-black text-slate-900 text-[11px] outline-none">
+                                        <i class="fa-solid fa-phone-shield absolute right-5 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-purple-600 transition-colors"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-10 border-t border-slate-100 relative">
+                                <div class="absolute -top-3 left-0 px-4 bg-white text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] font-mono">CRYPTOGRAPHIC ACCESS CONTROL</div>
                                 
-                                <!-- Email (Read Only) -->
-                                <div class="relative">
-                                    <input type="email" value="{{ $user->email }}" disabled class="block px-4 pb-2.5 pt-5 w-full text-sm text-gray-500 bg-gray-100 rounded-lg border-1 border-gray-200 appearance-none cursor-not-allowed peer" placeholder=" " />
-                                    <label class="absolute text-sm text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-4">E-posta Adresi</label>
-                                </div>
-
-                                <!-- Phone -->
-                                <div class="relative">
-                                    <input type="tel" id="phone" name="phone" value="{{ old('phone', $user->phone) }}" class="block px-4 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer" placeholder=" " />
-                                    <label for="phone" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-primary">Telefon Numarası</label>
-                                </div>
-                            </div>
-                            
-                            <div class="border-t border-gray-100 pt-8 mb-6">
-                                <h4 class="text-sm font-bold text-gray-900 mb-6 flex items-center gap-2">
-                                    <svg class="w-4 h-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                                    Şifre Değiştir
-                                </h4>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div class="relative">
-                                        <input type="password" id="current_password" name="current_password" class="block px-4 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer" placeholder=" " />
-                                        <label for="current_password" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-primary">Mevcut Şifre</label>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div>
+                                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2.5 ml-1 font-mono">CURRENT PASS</label>
+                                        <input type="password" name="current_password" class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-[1.25rem] focus:bg-white focus:ring-8 focus:ring-purple-500/5 focus:border-purple-500 transition-all font-black text-slate-900 text-[11px] outline-none placeholder:text-slate-300" placeholder="••••••••">
                                     </div>
-                                    <div class="relative">
-                                        <input type="password" id="password" name="password" class="block px-4 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer" placeholder=" " />
-                                        <label for="password" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-primary">Yeni Şifre</label>
+                                    <div>
+                                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2.5 ml-1 font-mono">NEW CREDENTIAL</label>
+                                        <input type="password" name="password" class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-[1.25rem] focus:bg-white focus:ring-8 focus:ring-purple-500/5 focus:border-purple-500 transition-all font-black text-slate-900 text-[11px] outline-none placeholder:text-slate-300" placeholder="••••••••">
                                     </div>
-                                    <div class="relative">
-                                        <input type="password" id="password_confirmation" name="password_confirmation" class="block px-4 pb-2.5 pt-5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border-1 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-primary peer" placeholder=" " />
-                                        <label for="password_confirmation" class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-primary">Yeni Şifre (Tekrar)</label>
+                                    <div>
+                                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2.5 ml-1 font-mono">CONFIRM NEW</label>
+                                        <input type="password" name="password_confirmation" class="w-full px-5 py-3.5 bg-slate-50 border border-slate-200 rounded-[1.25rem] focus:bg-white focus:ring-8 focus:ring-purple-500/5 focus:border-purple-500 transition-all font-black text-slate-900 text-[11px] outline-none placeholder:text-slate-300" placeholder="••••••••">
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="flex justify-end pt-4">
-                                <button type="button" onclick="confirmSaveProfile()" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-sm font-bold rounded-xl text-white bg-gradient-to-r from-purple-600 to-purple-700 hover:shadow-lg hover:shadow-purple-500/50 transition-all">
-                                    Değişiklikleri Kaydet
+                            <div class="flex justify-end pt-8">
+                                <button type="button" onclick="confirmSave()" class="px-10 py-4 bg-slate-900 text-white text-[10px] font-black rounded-[1.5rem] hover:bg-purple-600 transition-all uppercase tracking-[0.3em] shadow-2xl shadow-slate-900/20 active:scale-[0.98] flex items-center gap-3 group">
+                                    <i class="fa-solid fa-lock-open opacity-50 group-hover:rotate-12 transition-transform"></i>
+                                    DEĞİŞİKLİKLERİ YAYINLA
                                 </button>
                             </div>
                         </form>
@@ -138,19 +168,29 @@
 </div>
 
 <script>
-function confirmSaveProfile() {
+function confirmSave() {
     Swal.fire({
-        title: 'Değişiklikleri Kaydet?',
-        text: "Profil bilgileriniz güncellenecek!",
-        icon: 'question',
+        title: 'GÜVENLİ ONAY',
+        text: "Profil bilgileriniz merkezi sistemde güncellenecektir. Devam edilsin mi?",
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#7C3AED',
-        cancelButtonColor: '#6B7280',
-        confirmButtonText: 'Evet, Kaydet',
-        cancelButtonText: 'İptal'
+        confirmButtonColor: '#0f172a',
+        cancelButtonColor: '#94a3b8',
+        confirmButtonText: 'ONAYLIYORUM',
+        cancelButtonText: 'İPTAL',
+        background: '#ffffff',
+        padding: '3rem',
+        customClass: {
+            container: 'backdrop-blur-sm',
+            popup: 'rounded-[3rem] border border-slate-100 shadow-2xl',
+            title: 'text-2xl font-black text-slate-900 tracking-tighter',
+            htmlContainer: 'text-[13px] font-bold text-slate-500 leading-relaxed uppercase tracking-tight',
+            confirmButton: 'rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] px-8 py-4 shadow-xl shadow-slate-900/10',
+            cancelButton: 'rounded-2xl font-black text-[10px] uppercase tracking-[0.3em] px-8 py-4'
+        }
     }).then((result) => {
         if (result.isConfirmed) {
-            document.querySelector('form').submit();
+            document.getElementById('profileForm').submit();
         }
     });
 }

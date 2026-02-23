@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
+@section('title', 'Platform Aktiviteleri - Canlı Yayın')
+
 @section('content')
-<div class="min-h-screen bg-slate-50 py-8" x-data="{ 
+<div class="min-h-screen bg-[#F8FAFC] py-8 px-4 sm:px-6 lg:px-12" x-data="{ 
     selectedActivity: null, 
     showModal: false,
     activeTab: 'all',
     filterActivity(type) {
-        // Simple client-side filtering logic or just visual state
         this.activeTab = type;
         const items = document.querySelectorAll('.activity-item');
         items.forEach(item => {
@@ -18,234 +19,195 @@
         });
     }
 }">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-[1400px] mx-auto space-y-8 animate-fadeIn">
         
-        <!-- Refined Premium Header -->
-        <div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-8">
-            <div class="space-y-4">
-                <nav class="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-                    <a href="{{ route('admin.dashboard') }}" class="hover:text-purple-600 transition-colors">Panel</a>
-                    <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"></path></svg>
-                    <span class="text-slate-300">Aktiviteler</span>
+        <!-- Premium Command Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between pb-8 border-b border-slate-200 gap-6">
+            <div>
+                <nav class="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">
+                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-1.5 hover:text-purple-600 transition-colors"><i class="fa-solid fa-bolt-lightning"></i> YÖNETİM</a>
+                    <svg class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7"></path></svg>
+                    <span>PLATFORM AKTİVİTELERİ</span>
                 </nav>
-                <div>
-                    <h1 class="text-5xl font-black text-slate-900 tracking-tight mb-4">
-                        Platform Aktiviteleri
-                    </h1>
-                    <div class="flex items-center gap-4">
-                        <span class="w-12 h-1 bg-purple-600 rounded-full"></span>
-                        <p class="text-slate-500 font-medium text-lg">Sistemdeki gerçek zamanlı hareketler ve işlem günlükleri</p>
-                    </div>
-                </div>
+                <h1 class="text-3xl font-black text-slate-900 tracking-tight">Canlı <span class="text-purple-600">Akış</span></h1>
             </div>
-            
-            <div class="flex items-center gap-4">
-                <a href="{{ route('admin.platform-activity.export') }}" class="group flex items-center gap-3 px-6 py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full transition-all duration-300 shadow-lg shadow-emerald-500/20 font-black text-[11px] uppercase tracking-widest active:scale-95">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    <span>Dışa Aktar (CSV)</span>
-                </a>
-                <a href="{{ route('admin.dashboard') }}" class="group flex items-center gap-5 px-6 py-3.5 bg-white hover:bg-slate-50 text-slate-700 rounded-full transition-all duration-300 shadow-sm border border-slate-100 font-black text-[11px] uppercase tracking-widest active:scale-95">
-                    <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-purple-600 transition-all duration-300">
-                        <svg class="w-4 h-4 text-slate-500 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                    </div>
-                    <span>Geri Dön</span>
+
+            <div class="flex items-center gap-3">
+                <a href="{{ route('admin.platform-activity.export') }}" class="px-5 py-2.5 bg-white border border-slate-200 text-slate-900 text-[10px] font-black rounded-xl hover:bg-slate-900 hover:text-white transition-all uppercase tracking-widest flex items-center gap-2 shadow-sm group">
+                    <i class="fa-solid fa-file-export text-slate-400 group-hover:text-white transition-colors"></i>
+                    DIŞA AKTAR (CSV)
                 </a>
             </div>
         </div>
 
-        <!-- Refined Tabs -->
-        <div class="mb-8 overflow-x-auto no-scrollbar pb-4">
-            <div class="bg-slate-100/50 p-1.5 rounded-full border border-slate-200 inline-flex items-center gap-1">
-                <button @click="filterActivity('all')" 
-                        :class="activeTab === 'all' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'"
-                        class="px-5 py-2 rounded-full text-[11px] font-black uppercase tracking-wider transition-all flex items-center gap-2.5">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                    Tümü
-                </button>
-                <button @click="filterActivity('reservation')" 
-                        :class="{ 'bg-purple-600 text-white shadow-md': activeTab === 'reservation', 'text-slate-500 hover:text-slate-700 hover:bg-slate-50': activeTab !== 'reservation' }"
-                        class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2.5">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                    Rezervasyonlar
-                </button>
-                <button @click="filterActivity('payment')" 
-                        :class="{ 'bg-purple-600 text-white shadow-md': activeTab === 'payment', 'text-slate-500 hover:text-slate-700 hover:bg-slate-50': activeTab !== 'payment' }"
-                        class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2.5">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
-                    Ödemeler
-                </button>
-                <button @click="filterActivity('system')" 
-                        :class="{ 'bg-purple-600 text-white shadow-md': activeTab === 'system', 'text-slate-500 hover:text-slate-700 hover:bg-slate-50': activeTab !== 'system' }"
-                        class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all flex items-center gap-2.5">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    Sistem
-                </button>
-            </div>
+        <!-- High-Density Intelligence Tabs -->
+        <div class="flex flex-wrap items-center bg-white p-1 border border-slate-200 rounded-2xl shadow-sm w-fit max-w-full overflow-x-auto no-scrollbar">
+            <button @click="filterActivity('all')" 
+                    :class="activeTab === 'all' ? 'bg-slate-900 text-white shadow-lg' : 'text-slate-400 hover:text-slate-600'"
+                    class="px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all outline-none whitespace-nowrap">
+                TÜMÜ
+            </button>
+            <button @click="filterActivity('reservation')" 
+                    :class="activeTab === 'reservation' ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/20' : 'text-slate-400 hover:text-slate-600'"
+                    class="px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all outline-none whitespace-nowrap">
+                REZERVASYONLAR
+            </button>
+            <button @click="filterActivity('payment')" 
+                    :class="activeTab === 'payment' ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/20' : 'text-slate-400 hover:text-slate-600'"
+                    class="px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all outline-none whitespace-nowrap">
+                ÖDEMELER
+            </button>
+            <button @click="filterActivity('system')" 
+                    :class="activeTab === 'system' ? 'bg-amber-500 text-white shadow-lg shadow-amber-500/20' : 'text-slate-400 hover:text-slate-600'"
+                    class="px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all outline-none whitespace-nowrap">
+                SİSTEM
+            </button>
         </div>
 
-        <!-- Activity Feed -->
-        <div class="space-y-4">
+        <!-- Modern High-Density Activity Feed -->
+        <div class="space-y-3">
             @forelse($paginatedActivities as $activity)
                 @php
-                    $color = $activity['color'] ?? 'indigo';
+                    $color = $activity['color'] ?? 'slate';
+                    $icon = $activity['icon'] ?? 'bolt';
                     
-                    // Map generic colors to specific Tailwind classes for bg and text
-                    // Using specific distinct colors as requested
-                    $bgClass = match($color) {
-                        'blue' => 'bg-blue-50 text-blue-600',
-                        'green', 'emerald' => 'bg-emerald-50 text-emerald-600',
-                        'red' => 'bg-red-50 text-red-600',
-                        'purple', 'indigo' => 'bg-indigo-50 text-indigo-600',
-                        'amber' => 'bg-amber-50 text-amber-600',
-                        default => 'bg-slate-50 text-slate-600'
+                    $badgeClass = match($color) {
+                        'blue' => 'bg-blue-50 text-blue-600 border-blue-100/50',
+                        'green', 'emerald' => 'bg-emerald-50 text-emerald-600 border-emerald-100/50',
+                        'red' => 'bg-rose-50 text-rose-600 border-rose-100/50',
+                        'purple', 'indigo' => 'bg-purple-50 text-purple-600 border-purple-100/50',
+                        'amber' => 'bg-amber-50 text-amber-600 border-amber-100/50',
+                        default => 'bg-slate-50 text-slate-500 border-slate-200/50'
                     };
 
-                    $badgeBgClass = match($color) {
-                        'blue' => 'bg-blue-100 text-blue-700',
-                        'green', 'emerald' => 'bg-emerald-100 text-emerald-700',
-                        'red' => 'bg-red-100 text-red-700',
-                        'purple', 'indigo' => 'bg-indigo-100 text-indigo-700',
-                        'amber' => 'bg-amber-100 text-amber-700',
-                        default => 'bg-slate-100 text-slate-700'
-                    };
-                    
-                    $icon = $activity['icon'] ?? 'clipboard-list';
-                    
                     $filterType = 'system';
                     if(str_contains($activity['type'], 'Rezervasyon')) $filterType = 'reservation';
                     if(str_contains($activity['type'], 'Ödeme') || str_contains($activity['message'], 'Cüzdan')) $filterType = 'payment';
                 @endphp
 
-                <div class="activity-item group block bg-white rounded-2xl p-5 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] hover:shadow-lg transition-all cursor-pointer border border-transparent hover:border-slate-100"
+                <div class="activity-item group bg-white border border-slate-200 rounded-[1.5rem] p-5 shadow-sm hover:shadow-xl hover:shadow-slate-200/40 hover:border-purple-200 transition-all cursor-pointer relative overflow-hidden"
                      data-type="{{ $filterType }}"
                      @click="selectedActivity = {{ json_encode($activity) }}; showModal = true">
                     
-                    <div class="flex items-start gap-5">
-                        <!-- Squircle Icon -->
-                        <div class="flex-shrink-0 pt-1">
-                            <div class="w-14 h-14 rounded-2xl {{ $bgClass }} flex items-center justify-center">
-                                @if($icon == 'calendar')
-                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                                @elseif($icon == 'user')
-                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                                @elseif($icon == 'credit-card')
-                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
-                                @elseif($icon == 'document-text')
-                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                @elseif($icon == 'exclamation')
-                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                                @else
-                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                @endif
-                            </div>
+                    <div class="absolute right-0 top-0 h-full w-1.5 bg-{{ $color }}-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    
+                    <div class="flex items-center gap-6 relative z-10">
+                        <div class="w-12 h-12 rounded-2xl {{ $badgeClass }} flex items-center justify-center border shadow-sm group-hover:bg-slate-900 group-hover:text-white group-hover:border-slate-900 transition-all duration-300">
+                            <i class="fa-solid fa-{{ $icon === 'calendar' ? 'calendar-days' : ($icon === 'user' ? 'user' : ($icon === 'credit-card' ? 'credit-card' : ($icon === 'document-text' ? 'file-lines' : ($icon === 'exclamation' ? 'triangle-exclamation' : 'bolt')))) }} text-sm transition-transform group-hover:scale-110"></i>
                         </div>
 
-                        <!-- Content -->
-                        <div class="flex-1 min-w-0 pt-1">
-                            <h3 class="text-lg font-bold text-slate-800 mb-1 group-hover:text-indigo-600 transition-colors">
-                                {{ $activity['message'] }}
-                            </h3>
-                            <p class="text-sm text-slate-500 font-medium mb-3">
-                                {{ $activity['details'] ?? '' }}
-                            </p>
-                            
-                            <div class="flex items-center gap-3">
-                                <span class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-wider {{ $badgeBgClass }}">
-                                    {{ $activity['type'] }}
-                                </span>
-                                <span class="text-sm text-slate-400 font-medium">
-                                    {{ \Carbon\Carbon::parse($activity['created_at'])->format('d M Y, H:i:s') }}
-                                </span>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-2">
+                                <h3 class="text-sm font-black text-slate-800 tracking-tight group-hover:text-purple-600 transition-colors uppercase">
+                                    {{ $activity['message'] }}
+                                </h3>
+                                <div class="flex items-center gap-4">
+                                    <span class="px-2.5 py-0.5 rounded-lg text-[8px] font-black uppercase tracking-[0.2em] border {{ $badgeClass }}">
+                                        {{ $activity['type'] }}
+                                    </span>
+                                    <div class="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest whitespace-nowrap">
+                                        <i class="fa-regular fa-clock text-[9px]"></i>
+                                        {{ \Carbon\Carbon::parse($activity['created_at'])->format('H:i:s') }}
+                                        <span class="opacity-30">•</span>
+                                        {{ \Carbon\Carbon::parse($activity['created_at'])->format('d.m.Y') }}
+                                    </div>
+                                </div>
                             </div>
+                            <p class="text-[11px] text-slate-400 font-bold mt-1.5 line-clamp-1 italic uppercase tracking-tight opacity-70 group-hover:opacity-100 transition-opacity">
+                                <i class="fa-solid fa-code-branch mr-1.5 text-[9px]"></i>
+                                {{ $activity['details'] ?? 'OPERASYON DETAYI MEVCUT DEĞİL' }}
+                            </p>
+                        </div>
+
+                        <div class="hidden sm:flex items-center justify-center w-8 h-8 rounded-full bg-slate-50 group-hover:bg-purple-50 transition-colors">
+                            <i class="fa-solid fa-chevron-right text-[10px] text-slate-300 group-hover:text-purple-600 transition-all group-hover:translate-x-0.5"></i>
                         </div>
                     </div>
                 </div>
             @empty
-                <div class="text-center py-20 bg-white rounded-2xl shadow-sm border border-slate-200">
-                    <div class="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-12 h-12 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div class="text-center py-32 bg-white rounded-[2rem] border border-dashed border-slate-200">
+                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-[2.5rem] bg-slate-50 mb-6">
+                        <i class="fa-solid fa-satellite-dish text-3xl text-slate-200"></i>
                     </div>
-                    <h3 class="text-lg font-bold text-slate-900">Henüz Aktivite Yok</h3>
-                    <p class="text-slate-500 mt-2 max-w-sm mx-auto">Sistemde henüz kaydedilmiş bir işlem veya aktivite bulunmuyor.</p>
+                    <p class="text-[11px] font-black text-slate-300 uppercase tracking-[0.4em]">SİSTEM AKIŞI BEKLENİYOR</p>
                 </div>
             @endforelse
         </div>
 
-        <!-- Pagination -->
-        <div class="mt-8">
-            {{ $paginatedActivities->links() }}
+        @if($paginatedActivities->hasPages())
+        <div class="pt-6">
+            {{ $paginatedActivities->links('vendor.pagination.console') }}
         </div>
+        @endif
     </div>
 
-    <!-- Activity Detail Modal -->
+    <!-- Premium Activity Insight Modal -->
     <div x-show="showModal" 
-         class="fixed inset-0 z-50 overflow-y-auto" 
+         class="fixed inset-0 z-[100] flex items-center justify-center p-4" 
          x-transition:enter="transition ease-out duration-300"
-         x-transition:enter-start="opacity-0"
-         x-transition:enter-end="opacity-100"
+         x-transition:enter-start="opacity-0 scale-95"
+         x-transition:enter-end="opacity-100 scale-100"
          x-transition:leave="transition ease-in duration-200"
-         x-transition:leave-start="opacity-100"
-         x-transition:leave-end="opacity-0"
+         x-transition:leave-start="opacity-100 scale-100"
+         x-transition:leave-end="opacity-0 scale-95"
+         x-cloak
          style="display: none;">
         
-        <!-- Backdrop -->
-        <div class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" @click="showModal = false"></div>
+        <div class="fixed inset-0 bg-slate-900/60 backdrop-blur-md" @click="showModal = false"></div>
 
-        <!-- Panel -->
-        <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="relative bg-white rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden transform transition-all"
-                 x-transition:enter="transition ease-out duration-300"
-                 x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                 x-transition:leave="transition ease-in duration-200"
-                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95">
-                
-                <!-- Modal Header -->
-                <div class="px-8 pt-8 pb-4 flex justify-between items-start">
-                    <div>
-                        <h3 class="text-2xl font-bold text-slate-900" x-text="selectedActivity?.type || 'Aktivite'"></h3>
-                        <p class="text-sm text-slate-400 mt-1" x-text="selectedActivity?.created_at"></p>
-                    </div>
-                    <button @click="showModal = false" class="text-slate-300 hover:text-slate-500 transition-colors p-1">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-                    </button>
+        <div class="relative bg-white rounded-[2.5rem] w-full max-w-2xl shadow-[0_35px_60px_-15px_rgba(0,0,0,0.3)] overflow-hidden border border-slate-200">
+            <!-- Modal Header -->
+            <div class="bg-slate-900 p-8 text-white relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10">
+                    <i class="fa-solid fa-shield-halved text-9xl"></i>
                 </div>
-
-                <!-- Modal Body -->
-                <div class="px-8 pb-8 space-y-6">
-                    <div>
-                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">İŞLEM AÇIKLAMASI</h4>
-                        <div class="text-lg font-semibold text-slate-800 leading-snug" x-text="selectedActivity?.message"></div>
-                        <div class="text-slate-500 mt-2" x-text="selectedActivity?.details"></div>
-                    </div>
-
-                    <!-- Technical Details Box -->
-                    <template x-if="selectedActivity?.metadata && Object.keys(selectedActivity.metadata).length > 0">
-                        <div class="mt-4">
-                             <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">TEKNİK DETAYLAR</h4>
-                             <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 overflow-x-auto">
-                                <pre class="text-xs font-mono text-slate-600 whitespace-pre-wrap" x-text="JSON.stringify(selectedActivity.metadata, null, 2)"></pre>
-                             </div>
-                        </div>
-                    </template>
-
-                    <!-- FULL RAW DATA DUMP (User Request: "Hepsini yaz") -->
-                    <div class="mt-6">
-                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">TÜM HAM VERİ (RAW DATA)</h4>
-                        <div class="bg-slate-50 border border-slate-100 rounded-xl p-4 overflow-x-auto">
-                            <pre class="text-[10px] font-mono text-slate-600 whitespace-pre-wrap leading-relaxed select-all" x-text="JSON.stringify(selectedActivity?.raw_data, null, 4)"></pre>
-                        </div>
-                    </div>
-
-                    <!-- Close Button Row -->
-                    <div class="pt-4 flex justify-end">
-                        <button @click="showModal = false" class="px-6 py-2 bg-white border border-slate-200 rounded-xl text-slate-600 font-semibold hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm">
-                            Kapat
+                
+                <div class="relative z-10">
+                    <div class="flex justify-between items-start mb-6">
+                        <div class="px-3 py-1 bg-white/10 rounded-lg text-[9px] font-black uppercase tracking-[0.3em] backdrop-blur-sm border border-white/10" x-text="selectedActivity?.type"></div>
+                        <button @click="showModal = false" class="text-white/40 hover:text-white transition-colors">
+                            <i class="fa-solid fa-circle-xmark text-2xl"></i>
                         </button>
                     </div>
+                    <h3 class="text-2xl font-black tracking-tight" x-text="selectedActivity?.message"></h3>
+                    <div class="mt-4 flex items-center gap-4 text-[10px] font-black text-white/40 uppercase tracking-widest font-mono">
+                         <span class="flex items-center gap-2 text-purple-400"><i class="fa-solid fa-terminal"></i> TRANSACTION ID: #SYS-{{ date('Ymd') }}-RT</span>
+                         <span class="flex items-center gap-2" x-text="selectedActivity?.created_at"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Content -->
+            <div class="p-8 space-y-8">
+                <div>
+                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-[0.25em] mb-3 block font-mono">ACTIVITY SUMMARY</label>
+                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 italic">
+                        <p class="text-[13px] font-bold text-slate-700 leading-relaxed" x-text="selectedActivity?.details || 'Daha fazla detay mevcut değil.'"></p>
+                    </div>
                 </div>
 
+                <div x-show="selectedActivity?.metadata && Object.keys(selectedActivity.metadata).length > 0">
+                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-[0.25em] mb-3 block font-mono">PROCESS METADATA</label>
+                    <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 overflow-hidden">
+                        <pre class="text-[10px] font-mono font-bold text-slate-500 whitespace-pre-wrap leading-relaxed" x-text="JSON.stringify(selectedActivity?.metadata, null, 2)"></pre>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <label class="text-[9px] font-black text-slate-400 uppercase tracking-[0.25em] font-mono">RAW DEBUG DATA</label>
+                        <span class="text-[8px] font-black text-emerald-500 uppercase tracking-widest">SİSTEM ÇIKTISI</span>
+                    </div>
+                    <div class="bg-slate-900 rounded-2xl p-6 overflow-x-auto max-h-[250px] custom-scroll border border-slate-800">
+                        <pre class="text-[10px] font-mono text-emerald-400 whitespace-pre-wrap opacity-80 leading-relaxed" x-text="JSON.stringify(selectedActivity?.raw_data, null, 2)"></pre>
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-slate-100 flex justify-end gap-4">
+                    <button @click="showModal = false" class="px-8 py-3.5 bg-slate-900 text-white text-[10px] font-black rounded-2xl hover:bg-purple-600 transition-all uppercase tracking-[0.2em] shadow-lg shadow-slate-900/10 active:scale-95">
+                        DOĞRULANDI VE KAPAT
+                    </button>
+                </div>
             </div>
         </div>
     </div>

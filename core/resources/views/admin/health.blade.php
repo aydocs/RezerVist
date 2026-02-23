@@ -1,177 +1,179 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="min-h-screen bg-gray-50 py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <!-- Breadcrumbs -->
-        <nav class="flex mb-8" aria-label="Breadcrumb">
-            <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                <li class="inline-flex items-center">
-                    <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary transition-colors">
-                        Yönetim Paneli
-                    </a>
-                </li>
-                <li>
-                    <div class="flex items-center">
-                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
-                        <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2">Sistem Sağlığı</span>
-                    </div>
-                </li>
-            </ol>
-        </nav>
+@section('title', 'Sistem Sağlığı - Mission Control')
 
-        <div class="flex items-center justify-between mb-8">
+@section('content')
+<div class="min-h-screen bg-[#F8FAFC] py-8 px-4 sm:px-6 lg:px-12">
+    <div class="max-w-[1400px] mx-auto space-y-10 animate-fadeIn">
+        
+        <!-- Premium Command Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between pb-8 border-b border-slate-200 gap-6">
             <div>
-                <h1 class="text-3xl font-black text-gray-900 tracking-tight">Sistem Sağlık İzleme</h1>
-                <p class="mt-2 text-sm text-gray-600">Sunucu, veritabanı ve uygulama metriklerini gerçek zamanlı izleyin.</p>
+                <nav class="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">
+                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-1.5 hover:text-purple-600 transition-colors"><i class="fa-solid fa-bolt-lightning"></i> YÖNETİM</a>
+                    <svg class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7"></path></svg>
+                    <span>SİSTEM SAĞLIĞI</span>
+                </nav>
+                <h1 class="text-3xl font-black text-slate-900 tracking-tight">Mission <span class="text-purple-600">Control</span></h1>
             </div>
-            <div class="flex gap-2">
-                <button onclick="window.location.reload()" class="inline-flex items-center px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-bold text-gray-700 hover:bg-gray-50 transition-all shadow-sm">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-                    Yenile
+
+            <div class="flex items-center gap-6">
+                <div class="text-right">
+                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 font-mono">CORE UPTIME</p>
+                    <div class="flex items-center gap-2 justify-end">
+                        <div class="relative flex">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                        </div>
+                        <span class="text-[10px] font-black text-slate-700 uppercase">99.9% OPERATIONAL</span>
+                    </div>
+                </div>
+                <div class="h-10 w-px bg-slate-200"></div>
+                <button onclick="window.location.reload()" class="px-5 py-2.5 bg-slate-900 text-white text-[10px] font-black rounded-xl hover:bg-purple-600 transition-all uppercase tracking-widest flex items-center gap-2 shadow-xl shadow-slate-900/10 active:scale-95 group">
+                    <i class="fa-solid fa-sync-alt group-hover:rotate-180 transition-transform duration-500"></i>
+                    POLL SYSTEM
                 </button>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <!-- Database Health -->
-            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 transition-all hover:scale-[1.02] duration-300">
-                <div class="p-6 border-b border-gray-50 bg-gradient-to-r from-blue-500 to-blue-600">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-lg font-black text-white">Veritabanı</h2>
-                        <span class="px-3 py-1 bg-white/20 rounded-full text-[10px] font-bold text-white uppercase tracking-widest">{{ $health['database']['status'] }}</span>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Database Intelligence -->
+            <div class="bg-white p-7 rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-200/20 space-y-6 group hover:border-purple-200 transition-all">
+                <div class="flex items-center justify-between">
+                    <div class="w-12 h-12 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-database text-sm"></i>
                     </div>
+                    <span class="px-3 py-1 bg-emerald-50 text-emerald-600 border border-emerald-100/50 rounded-lg text-[8px] font-black uppercase tracking-[0.2em]">{{ $health['database']['status'] }}</span>
                 </div>
-                <div class="p-6 space-y-4">
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Veritabanı Adı</span>
-                        <span class="font-black text-gray-900">{{ $health['database']['name'] ?? 'Bilinmiyor' }}</span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Boyut</span>
-                        <span class="font-black text-gray-900">{{ $health['database']['size'] ?? '0 MB' }}</span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Driver</span>
-                        <span class="font-black text-gray-900 uppercase">{{ $health['database']['connection'] ?? 'mysql' }}</span>
-                    </div>
+                <div>
+                    <h3 class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1.5 font-mono">DATABASE ENGINE</h3>
+                    <p class="text-lg font-black text-slate-900 tracking-tight uppercase">{{ $health['database']['name'] ?? 'SQL_CORE' }}</p>
                 </div>
-            </div>
-
-            <!-- Server Health -->
-            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 transition-all hover:scale-[1.02] duration-300">
-                <div class="p-6 border-b border-gray-50 bg-gradient-to-r from-indigo-500 to-indigo-600">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-lg font-black text-white">Sunucu</h2>
-                        <span class="px-3 py-1 bg-white/20 rounded-full text-[10px] font-bold text-white uppercase tracking-widest">ÇALIŞIYOR</span>
+                <div class="pt-6 border-t border-slate-50 grid grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">DATA SIZE</p>
+                        <p class="text-[11px] font-black text-slate-600 uppercase">{{ $health['database']['size'] ?? '0 MB' }}</p>
                     </div>
-                </div>
-                <div class="p-6 space-y-4">
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">PHP Sürümü</span>
-                        <span class="font-black text-gray-900">{{ $health['server']['php_version'] }}</span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Laravel Sürümü</span>
-                        <span class="font-black text-gray-900">{{ $health['server']['laravel_version'] }}</span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Memory Limit</span>
-                        <span class="font-black text-gray-900 uppercase">{{ $health['server']['memory_limit'] }}</span>
+                    <div>
+                        <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">CONNECTION</p>
+                        <p class="text-[11px] font-black text-slate-600 uppercase">{{ $health['database']['connection'] ?? 'MYSQL' }}</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Storage Health -->
-            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 transition-all hover:scale-[1.02] duration-300">
-                <div class="p-6 border-b border-gray-50 bg-gradient-to-r from-emerald-500 to-emerald-600">
-                    <div class="flex items-center justify-between">
-                        <h2 class="text-lg font-black text-white">Depolama</h2>
-                        <span class="px-3 py-1 bg-white/20 rounded-full text-[10px] font-bold text-white uppercase tracking-widest">DURUM: OK</span>
+            <!-- Server Core Insights -->
+            <div class="bg-white p-7 rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-200/20 space-y-6 group hover:border-blue-200 transition-all">
+                <div class="flex items-center justify-between">
+                    <div class="w-12 h-12 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-microchip text-sm"></i>
                     </div>
+                    <span class="px-3 py-1 bg-emerald-50 text-emerald-600 border border-emerald-100/50 rounded-lg text-[8px] font-black uppercase tracking-[0.2em]">HEALTHY</span>
                 </div>
-                <div class="p-6 space-y-4">
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Boş Alan</span>
-                        <span class="font-black text-gray-900">{{ $health['storage']['disk_free'] }}</span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Toplam Alan</span>
-                        <span class="font-black text-gray-900">{{ $health['storage']['disk_total'] }}</span>
-                    </div>
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Yazma İzni</span>
-                        <span class="font-black text-emerald-600">{{ $health['storage']['is_writable'] }}</span>
-                    </div>
+                <div>
+                    <h3 class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1.5 font-mono">PHP RUNTIME</h3>
+                    <p class="text-lg font-black text-slate-900 tracking-tight uppercase">VERSION {{ $health['server']['php_version'] }}</p>
                 </div>
-            </div>
-
-            <!-- Cache & Queue -->
-            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 lg:col-span-2 transition-all hover:scale-[1.01] duration-300">
-                <div class="p-6 border-b border-gray-50 bg-gradient-to-r from-slate-800 to-slate-900">
-                    <h2 class="text-lg font-black text-white">Performans ve Kuyruk</h2>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 divide-x divide-gray-100">
-                    <div class="p-8 space-y-6">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                            </div>
-                            <div>
-                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Cache Driver</p>
-                                <p class="text-xl font-black text-gray-900 uppercase">{{ $health['cache']['driver'] }}</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-green-600">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                            </div>
-                            <div>
-                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Cache Durumu</p>
-                                <p class="text-xl font-black text-gray-900">{{ $health['cache']['status'] }}</p>
-                            </div>
-                        </div>
+                <div class="pt-6 border-t border-slate-50 grid grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">FRAMEWORK</p>
+                        <p class="text-[11px] font-black text-slate-600 uppercase">LV {{ $health['server']['laravel_version'] }}</p>
                     </div>
-                    <div class="p-8 space-y-6">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                            </div>
-                            <div>
-                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Kuyruk Driver</p>
-                                <p class="text-xl font-black text-gray-900 uppercase">{{ $health['queue']['driver'] }}</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center text-red-600">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            </div>
-                            <div>
-                                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Hatalı İşler</p>
-                                <p class="text-xl font-black {{ $health['queue']['failed_jobs'] > 0 ? 'text-red-600' : 'text-gray-900' }}">{{ $health['queue']['failed_jobs'] }}</p>
-                            </div>
-                        </div>
+                    <div>
+                        <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">MEMORY LIMIT</p>
+                        <p class="text-[11px] font-black text-slate-600 uppercase">{{ $health['server']['memory_limit'] }}</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Environment -->
-            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100 transition-all hover:scale-[1.02] duration-300">
-                <div class="p-6 border-b border-gray-50 bg-gradient-to-r from-orange-500 to-orange-600">
-                    <h2 class="text-lg font-black text-white">Ortam</h2>
+            <!-- Storage Volume Status -->
+            <div class="bg-white p-7 rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-200/20 space-y-6 group hover:border-amber-200 transition-all">
+                <div class="flex items-center justify-between">
+                    <div class="w-12 h-12 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-hard-drive text-sm"></i>
+                    </div>
+                    <span class="px-3 py-1 {{ $health['storage']['is_writable'] == 'Writable' ? 'bg-emerald-50 text-emerald-600 border-emerald-100/50' : 'bg-rose-50 text-rose-600 border-rose-100/50' }} rounded-lg text-[8px] font-black uppercase tracking-[0.2em]">{{ $health['storage']['is_writable'] }}</span>
                 </div>
-                <div class="p-6 space-y-4">
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Environment</span>
-                        <span class="px-2 py-0.5 bg-orange-100 text-orange-700 rounded-lg font-black uppercase text-[10px]">{{ $health['environment']['env'] }}</span>
+                <div>
+                    <h3 class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1.5 font-mono">STORAGE VOLUME</h3>
+                    <p class="text-lg font-black text-slate-900 tracking-tight uppercase">{{ $health['storage']['disk_free'] }} AVAILABLE</p>
+                </div>
+                <div class="pt-6 border-t border-slate-50 grid grid-cols-2 gap-6">
+                    <div>
+                        <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">TOTAL SPACE</p>
+                        <p class="text-[11px] font-black text-slate-600 uppercase">{{ $health['storage']['disk_total'] }}</p>
                     </div>
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px]">Debug Mode</span>
-                        <span class="font-black {{ $health['environment']['debug'] == 'Enabled' ? 'text-red-500' : 'text-gray-900' }}">{{ $health['environment']['debug'] }}</span>
+                    <div>
+                        <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">DISK STATUS</p>
+                        <p class="text-[11px] font-black text-emerald-600 uppercase tracking-tighter">MOUNTED OK</p>
                     </div>
-                    <div class="text-sm">
-                        <span class="text-gray-500 font-bold uppercase tracking-widest text-[10px] block mb-1">APP_URL</span>
-                        <span class="font-black text-gray-900 text-xs">{{ $health['environment']['url'] }}</span>
+                </div>
+            </div>
+
+            <!-- Environment Deployment -->
+            <div class="bg-white p-7 rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-200/20 space-y-6 group hover:border-orange-200 transition-all">
+                <div class="flex items-center justify-between">
+                    <div class="w-12 h-12 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-all">
+                        <i class="fa-solid fa-code-branch text-sm"></i>
+                    </div>
+                    <span class="px-3 py-1 bg-orange-50 text-orange-600 rounded-lg text-[8px] font-black uppercase tracking-[0.2em] border border-orange-100/50">{{ $health['environment']['env'] }}</span>
+                </div>
+                <div>
+                    <h3 class="text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1.5 font-mono">DEPLOYMENT ENV</h3>
+                    <p class="text-lg font-black text-slate-900 tracking-tight uppercase">{{ $health['environment']['debug'] == 'Enabled' ? 'DEBUG ACTIVE' : 'PROD STAGE' }}</p>
+                </div>
+                <div class="pt-6 border-t border-slate-50">
+                    <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">SERVICE ENDPOINT</p>
+                    <p class="text-[10px] font-black text-slate-500 truncate font-mono">{{ str_replace(['http://', 'https://'], '', $health['environment']['url']) }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- High-Performance Cache & Queue Control -->
+        <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-200/20 overflow-hidden">
+            <div class="px-10 py-6 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                <h2 class="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em] flex items-center gap-3">
+                    <i class="fa-solid fa-bolt-lightning text-purple-600"></i>
+                    TRANSACTIONAL SPEED & QUEUE PIPELINE
+                </h2>
+                <span class="text-[9px] font-black text-slate-400 tracking-[0.3em] font-mono">BURST MODE: OFF</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-100">
+                <div class="p-10 space-y-8 group">
+                    <div class="flex items-start gap-8">
+                        <div class="w-16 h-16 bg-slate-50 border border-slate-100 rounded-[1.5rem] flex items-center justify-center text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-all duration-500">
+                            <i class="fa-solid fa-memory text-2xl group-hover:scale-110 transition-transform"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between mb-3">
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] font-mono">VOLATILE MEMORY (CACHE)</p>
+                                <span class="px-2.5 py-0.5 bg-emerald-50 text-emerald-600 rounded-lg text-[8px] font-black uppercase tracking-[0.2em] border border-emerald-100/50">{{ $health['cache']['status'] }}</span>
+                            </div>
+                            <div class="flex items-baseline gap-4">
+                                <p class="text-3xl font-black text-slate-900 uppercase tracking-tight">{{ $health['cache']['driver'] }}</p>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">GATEWAY ACTIVE</p>
+                            </div>
+                            <p class="text-[11px] text-slate-400 font-bold mt-3 uppercase tracking-tight opacity-50">High-speed data retrieval pipeline operational for application state.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-10 space-y-8 group">
+                    <div class="flex items-start gap-8">
+                        <div class="w-16 h-16 bg-slate-50 border border-slate-100 rounded-[1.5rem] flex items-center justify-center text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-all duration-500">
+                            <i class="fa-solid fa-layer-group text-2xl group-hover:scale-110 transition-transform"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center justify-between mb-3">
+                                <p class="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] font-mono">ASYNC PIPELINES (QUEUE)</p>
+                                <span class="px-2.5 py-0.5 {{ $health['queue']['failed_jobs'] > 0 ? 'bg-rose-50 text-rose-600 border-rose-100/50' : 'bg-emerald-50 text-emerald-600 border-emerald-100/50' }} rounded-lg text-[8px] font-black uppercase tracking-[0.2em] border">
+                                    {{ $health['queue']['failed_jobs'] }} ERRORS DETECTED
+                                </span>
+                            </div>
+                            <div class="flex items-baseline gap-4">
+                                <p class="text-3xl font-black text-slate-900 uppercase tracking-tight">{{ $health['queue']['driver'] }}</p>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">PIPELINE CLEAR</p>
+                            </div>
+                            <p class="text-[11px] text-slate-400 font-bold mt-3 uppercase tracking-tight opacity-50">Background job processing engine management and error tracking.</p>
+                        </div>
                     </div>
                 </div>
             </div>

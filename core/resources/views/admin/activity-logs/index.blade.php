@@ -1,212 +1,188 @@
 @extends('layouts.app')
 
+@section('title', 'Sistem Logları - Komuta Merkezi')
+
 @section('content')
-<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-[#F8FAFC] py-8 px-4 sm:px-6 lg:px-12">
+    <div class="max-w-[1700px] mx-auto space-y-8 animate-fadeIn">
         
-        <!-- Header -->
-        <div class="mb-8 flex items-center justify-between">
+        <!-- Premium Command Header -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between pb-8 border-b border-slate-200 gap-6">
             <div>
-                <h1 class="text-4xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent mb-2">
-                    Aktivite Logları
-                </h1>
-                <p class="text-gray-600 flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    Tüm sistem aktivitelerini ve güvenlik olaylarını görüntüleyin
-                </p>
-            </div>
-            <a href="{{ route('admin.dashboard') }}" class="group flex items-center gap-2 px-5 py-2.5 text-gray-600 hover:text-white bg-white hover:bg-gradient-to-r hover:from-purple-600 hover:to-purple-700 rounded-xl transition-all shadow-sm hover:shadow-lg border border-gray-200">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
-                <span class="font-semibold">Panele Dön</span>
-            </a>
-        </div>
-
-        <!-- Stats -->
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-500 mb-1">Toplam Log</p>
-                        <p class="text-3xl font-bold text-gray-900">{{ number_format($totalLogs) }}</p>
-                    </div>
-                    <div class="w-12 h-12 bg-gradient-to-br from-gray-500 to-gray-700 rounded-xl flex items-center justify-center shadow-lg shadow-gray-500/30">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    </div>
-                </div>
+                <nav class="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">
+                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-1.5 hover:text-purple-600 transition-colors"><i class="fa-solid fa-bolt-lightning"></i> YÖNETİM</a>
+                    <svg class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7"></path></svg>
+                    <span>SİSTEM LOGLARI</span>
+                </nav>
+                <h1 class="text-3xl font-black text-slate-900 tracking-tight">Olay <span class="text-purple-600">Güncesi</span></h1>
             </div>
 
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-500 mb-1">Başarılı Giriş</p>
-                        <p class="text-3xl font-bold text-green-600">{{ number_format($loginAttempts) }}</p>
+            <div class="flex items-center gap-4">
+                <div class="px-4 py-2 bg-white border border-slate-200 rounded-xl flex items-center gap-2 shadow-sm">
+                    <div class="relative flex">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
                     </div>
-                    <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-700 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/30">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-500 mb-1">Başarısız Giriş</p>
-                        <p class="text-3xl font-bold text-red-600">{{ number_format($failedLogins) }}</p>
-                    </div>
-                    <div class="w-12 h-12 bg-gradient-to-br from-red-500 to-red-700 rounded-xl flex items-center justify-center shadow-lg shadow-red-500/30">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-gray-500 mb-1">Çıkış</p>
-                        <p class="text-3xl font-bold text-blue-600">{{ number_format($logouts) }}</p>
-                    </div>
-                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                    </div>
+                    <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">LIVE STREAM</span>
                 </div>
             </div>
         </div>
 
-        <!-- Advanced Filters -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
-            <form method="GET" action="{{ route('admin.activity-logs.index') }}" class="space-y-6">
-                
-                <!-- Category Tabs -->
-                <div class="flex flex-wrap gap-2 border-b border-gray-100 pb-4">
+        <!-- High-Density Intelligence Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 hover:border-purple-200 transition-all group overflow-hidden relative">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 font-mono">TOTAL EVENTS</p>
+                <div class="flex items-center justify-between relative z-10">
+                    <h3 class="text-xl font-black text-slate-900">{{ number_format($totalLogs) }}</h3>
+                    <i class="fa-solid fa-database text-slate-100 text-xl group-hover:text-purple-100 transition-colors"></i>
+                </div>
+            </div>
+            
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 hover:border-emerald-200 transition-all group overflow-hidden relative">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 font-mono">LOGINS</p>
+                <div class="flex items-center justify-between relative z-10">
+                    <h3 class="text-xl font-black text-emerald-600">{{ number_format($loginAttempts) }}</h3>
+                    <i class="fa-solid fa-user-check text-emerald-50 text-xl group-hover:text-emerald-100 transition-colors"></i>
+                </div>
+            </div>
+
+            <div class="bg-white border border-rose-100 rounded-2xl p-5 hover:border-rose-300 transition-all group overflow-hidden relative">
+                <p class="text-[9px] font-black text-rose-400 uppercase tracking-widest mb-2 font-mono">ERRORS / FAILED</p>
+                <div class="flex items-center justify-between relative z-10">
+                    <h3 class="text-xl font-black text-rose-600">{{ number_format($failedLogins) }}</h3>
+                    <i class="fa-solid fa-shield-xmark text-rose-50 text-xl group-hover:text-rose-100 transition-colors"></i>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-5 hover:border-blue-200 transition-all group overflow-hidden relative">
+                <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 font-mono">SESSIONS CLOSED</p>
+                <div class="flex items-center justify-between relative z-10">
+                    <h3 class="text-xl font-black text-blue-600">{{ number_format($logouts) }}</h3>
+                    <i class="fa-solid fa-power-off text-blue-50 text-xl group-hover:text-blue-100 transition-colors"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Command Center Filters -->
+        <div class="bg-white rounded-[2rem] border border-slate-200 shadow-xl shadow-slate-200/20 p-8">
+            <form method="GET" action="{{ route('admin.activity-logs.index') }}" class="space-y-8">
+                <div class="flex flex-wrap gap-2 pb-6 border-b border-slate-100">
                     <a href="{{ route('admin.activity-logs.index') }}" 
-                       class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ !request('category') ? 'bg-purple-100 text-purple-700' : 'text-gray-600 hover:bg-gray-50' }}">
-                        Tümü
+                       class="px-5 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all {{ !request('category') ? 'bg-slate-900 text-white shadow-lg' : 'bg-slate-50 text-slate-400 hover:text-slate-600' }}">
+                        TÜMÜ
                     </a>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'auth']) }}" 
-                       class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ request('category') == 'auth' ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-50' }}">
-                        Kimlik Doğrulama
-                    </a>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'payment']) }}" 
-                       class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ request('category') == 'payment' ? 'bg-green-100 text-green-700' : 'text-gray-600 hover:bg-gray-50' }}">
-                        Ödemeler
-                    </a>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'reservation']) }}" 
-                       class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ request('category') == 'reservation' ? 'bg-orange-100 text-orange-700' : 'text-gray-600 hover:bg-gray-50' }}">
-                        Rezervasyonlar
-                    </a>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'business']) }}" 
-                       class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ request('category') == 'business' ? 'bg-amber-100 text-amber-700' : 'text-gray-600 hover:bg-gray-50' }}">
-                        İşletme İşlemleri
-                    </a>
-                    <a href="{{ request()->fullUrlWithQuery(['category' => 'system']) }}" 
-                       class="px-4 py-2 rounded-lg text-sm font-medium transition-colors {{ request('category') == 'system' ? 'bg-gray-100 text-gray-700' : 'text-gray-600 hover:bg-gray-50' }}">
-                        Sistem
-                    </a>
+                    @foreach(['auth' => 'KİMLİK', 'payment' => 'ÖDEMELER', 'reservation' => 'REZERVASYONLAR', 'business' => 'İŞLETME'] as $key => $label)
+                        <a href="{{ request()->fullUrlWithQuery(['category' => $key]) }}" 
+                           class="px-5 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all {{ request('category') == $key ? 'bg-purple-600 text-white shadow-lg shadow-purple-600/20' : 'bg-slate-50 text-slate-400 hover:text-slate-600' }}">
+                            {{ $label }}
+                        </a>
+                    @endforeach
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <input type="hidden" name="category" value="{{ request('category') }}">
                     
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Detaylı İşlem Tipi</label>
-                        <select name="type" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1 font-mono">PROCESS TYPE</label>
+                        <select name="type" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-4 focus:ring-purple-500/5 focus:border-purple-500 transition-all font-bold text-slate-900 text-[11px] outline-none appearance-none">
                             <option value="">Tümü</option>
                             <optgroup label="Ödemeler">
                                 <option value="payment_success" {{ request('type') == 'payment_success' ? 'selected' : '' }}>Başarılı Ödeme</option>
                                 <option value="payment_failed" {{ request('type') == 'payment_failed' ? 'selected' : '' }}>Başarısız Ödeme</option>
                                 <option value="payment_refunded" {{ request('type') == 'payment_refunded' ? 'selected' : '' }}>İade</option>
                             </optgroup>
-                            <optgroup label="Rezervasyonlar">
-                                <option value="reservation_created" {{ request('type') == 'reservation_created' ? 'selected' : '' }}>Oluşturuldu</option>
-                                <option value="reservation_cancelled" {{ request('type') == 'reservation_cancelled' ? 'selected' : '' }}>İptal Edildi</option>
-                                <option value="reservation_completed" {{ request('type') == 'reservation_completed' ? 'selected' : '' }}>Tamamlandı</option>
-                            </optgroup>
                             <optgroup label="Kimlik">
                                 <option value="login" {{ request('type') == 'login' ? 'selected' : '' }}>Giriş</option>
                                 <option value="logout" {{ request('type') == 'logout' ? 'selected' : '' }}>Çıkış</option>
                                 <option value="failed_login" {{ request('type') == 'failed_login' ? 'selected' : '' }}>Hatalı Giriş</option>
-                                <option value="user_created" {{ request('type') == 'user_created' ? 'selected' : '' }}>Yeni Üye</option>
                             </optgroup>
                         </select>
                     </div>
+
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Tarih</label>
-                        <input type="date" name="date_from" value="{{ request('date_from') }}" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1 font-mono">TIMEFRAME</label>
+                        <input type="date" name="date_from" value="{{ request('date_from') }}" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-4 focus:ring-purple-500/5 focus:border-purple-500 transition-all font-bold text-slate-900 text-[11px] outline-none">
                     </div>
+
                     <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">IP veya Kullanıcı</label>
-                        <input type="text" name="search" value="{{ request('search') }}" placeholder="IP, İsim veya Email..." class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2 ml-1 font-mono">QUERY SEARCH</label>
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="IP, İsim veya Email..." class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-4 focus:ring-purple-500/5 focus:border-purple-500 transition-all font-bold text-slate-900 placeholder:text-slate-300 text-[11px] outline-none">
                     </div>
+
                     <div class="flex items-end">
-                        <button type="submit" class="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl hover:shadow-lg hover:shadow-purple-500/50 transition-all font-semibold">
-                            Filtrele
+                        <button type="submit" class="w-full py-3.5 bg-slate-900 text-white font-black rounded-2xl hover:bg-purple-600 transition-all uppercase tracking-widest text-[10px] shadow-xl shadow-slate-900/20 active:scale-[0.98]">
+                            <i class="fa-solid fa-fingerprint mr-2 opacity-50"></i> TARAMAYI BAŞLAT
                         </button>
                     </div>
                 </div>
             </form>
         </div>
 
-        <!-- Logs Table -->
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        <!-- Terminal-Style Action Center -->
+        <div class="bg-white rounded-[2rem] border border-slate-200 shadow-xl shadow-slate-200/20 overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Tarih</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Kullanıcı</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Aktivite</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">IP Adresi</th>
-                            <th class="px-6 py-4 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">Detaylar</th>
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="bg-slate-50/50 border-b border-slate-100">
+                            <th class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] font-mono whitespace-nowrap">TIMESTAMP</th>
+                            <th class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] font-mono whitespace-nowrap">ACTOR / IDENTITY</th>
+                            <th class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] font-mono whitespace-nowrap">EVENT / ACTION</th>
+                            <th class="px-8 py-5 text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] font-mono whitespace-nowrap text-center">SOURCE IP</th>
+                            <th class="px-4 py-5 text-[9px] font-black text-slate-400 uppercase tracking-[0.2em] font-mono whitespace-nowrap">AGENT</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
+                    <tbody class="divide-y divide-slate-50">
                         @forelse($logs as $log)
-                        <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                <div>{{ $log->created_at->format('d.m.Y H:i:s') }}</div>
-                                <div class="text-xs text-gray-500">{{ $log->created_at->diffForHumans() }}</div>
+                        <tr class="hover:bg-slate-50/80 transition-all group">
+                            <td class="px-8 py-5">
+                                <div class="text-[11px] font-black text-slate-900 tracking-tighter">{{ $log->created_at->format('d.m.Y') }}</div>
+                                <div class="text-[10px] font-bold text-slate-400 uppercase mt-0.5">{{ $log->created_at->format('H:i:s') }}</div>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-8 py-5">
                                 @if($log->user)
-                                    <div class="flex items-center gap-2">
-                                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 flex items-center justify-center text-white text-xs font-bold">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 text-[10px] font-black group-hover:bg-slate-900 group-hover:text-white transition-all">
                                             {{ strtoupper(substr($log->user->name, 0, 1)) }}
                                         </div>
                                         <div>
-                                            <p class="text-sm font-medium text-gray-900">{{ $log->user->name }}</p>
-                                            <p class="text-xs text-gray-500">{{ $log->user->email }}</p>
+                                            <p class="text-[11px] font-black text-slate-800 group-hover:text-purple-600 transition-colors uppercase tracking-tight">{{ $log->user->name }}</p>
+                                            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">{{ $log->user->email }}</p>
                                         </div>
                                     </div>
                                 @else
-                                    <span class="text-sm text-gray-400">Bilinmeyen</span>
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-slate-300"></div>
+                                        <span class="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] italic">SYSTEM PROCESS</span>
+                                    </div>
                                 @endif
                             </td>
-                            <td class="px-6 py-4">
-                                <div class="flex items-center gap-2">
-                                    <span class="px-3 py-1 text-xs font-bold rounded-full 
-                                        {{ $log->action_type == 'login' ? 'bg-green-100 text-green-800' : '' }}
-                                        {{ $log->action_type == 'logout' ? 'bg-blue-100 text-blue-800' : '' }}
-                                        {{ $log->action_type == 'failed_login' ? 'bg-red-100 text-red-800' : '' }}
-                                        {{ !in_array($log->action_type, ['login', 'logout', 'failed_login']) ? 'bg-gray-100 text-gray-800' : '' }}
-                                    ">
-                                        {{ ucfirst(str_replace('_', ' ', $log->action_type)) }}
-                                    </span>
+                            <td class="px-8 py-5">
+                                <span class="inline-flex px-2 py-0.5 rounded-lg text-[8px] font-black border uppercase tracking-[0.15em] mb-2
+                                    {{ $log->action_type == 'login' ? 'bg-emerald-50 text-emerald-600 border-emerald-100/50' : '' }}
+                                    {{ $log->action_type == 'logout' ? 'bg-blue-50 text-blue-600 border-blue-100/50' : '' }}
+                                    {{ $log->action_type == 'failed_login' ? 'bg-rose-50 text-rose-600 border-rose-100/50' : '' }}
+                                    {{ !in_array($log->action_type, ['login', 'logout', 'failed_login']) ? 'bg-slate-50 text-slate-500 border-slate-200/50' : '' }}
+                                ">
+                                    {{ str_replace('_', ' ', $log->action_type) }}
+                                </span>
+                                <div class="text-[11px] font-bold text-slate-600 leading-relaxed uppercase tracking-tight">{{ $log->description }}</div>
+                            </td>
+                            <td class="px-8 py-5 text-center">
+                                <code class="px-2.5 py-1 bg-slate-900 text-white rounded-lg text-[9px] font-mono font-black opacity-80 group-hover:opacity-100 transition-opacity">{{ $log->ip_address ?? '0.0.0.0' }}</code>
+                            </td>
+                            <td class="px-4 py-5 max-w-[200px]">
+                                <div class="text-[9px] text-slate-400 font-bold truncate opacity-50 group-hover:opacity-100 transition-opacity uppercase tracking-widest" title="{{ $log->user_agent }}">
+                                    {{ $log->user_agent }}
                                 </div>
-                                <p class="text-sm text-gray-600 mt-1">{{ $log->description }}</p>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <code class="px-2 py-1 bg-gray-100 rounded text-xs font-mono">{{ $log->ip_address ?? 'N/A' }}</code>
-                            </td>
-                            <td class="px-6 py-4">
-                                @if($log->user_agent)
-                                    <p class="text-xs text-gray-500 truncate max-w-xs" title="{{ $log->user_agent }}">{{ $log->user_agent }}</p>
-                                @endif
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-12 text-center text-gray-500">
-                                Henüz log kaydı bulunmamaktadır
+                            <td colspan="5" class="px-8 py-32 text-center">
+                                <div class="inline-flex items-center justify-center w-20 h-20 rounded-[2rem] bg-slate-50 border border-slate-100 mb-6">
+                                    <i class="fa-solid fa-fingerprint text-3xl text-slate-200"></i>
+                                </div>
+                                <p class="text-[11px] font-black text-slate-300 uppercase tracking-[0.4em]">LOG DATA NOT FOUND</p>
                             </td>
                         </tr>
                         @endforelse
@@ -215,11 +191,10 @@
             </div>
         </div>
 
-        <!-- Pagination -->
         @if($logs->hasPages())
-            <div class="mt-6">
-                {{ $logs->links() }}
-            </div>
+        <div class="pt-4">
+            {{ $logs->links('vendor.pagination.console') }}
+        </div>
         @endif
 
     </div>

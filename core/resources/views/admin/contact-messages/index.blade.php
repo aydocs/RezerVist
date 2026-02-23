@@ -1,520 +1,393 @@
 @extends('layouts.app')
 
-@section('title', 'Support Intelligence Dashboard - Yönetim Paneli')
+@section('title', 'CRM & Destek - Operasyon Paneli')
 
 @section('content')
-<div class="max-w-[1700px] mx-auto px-4 sm:px-6 lg:px-12 py-10 font-outfit">
-    <div class="bg-white/80 backdrop-blur-3xl rounded-[48px] border border-white/40 shadow-[0_40px_100px_-20px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col h-[850px] relative" x-data="{ sidePanel: true }">
-
-    <!-- Top Intelligence Bar: Premium Command Center -->
-    <div class="bg-white/90 backdrop-blur-md border-b border-gray-200 px-8 py-5 shrink-0 shadow-sm z-20">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-12">
-                <div>
-                    <h1 class="text-2xl font-black text-gray-900 tracking-tighter flex items-center gap-4">
-                        <div class="relative">
-                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-600 to-indigo-900 flex items-center justify-center text-white shadow-2xl shadow-indigo-100 border border-indigo-400/20">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
-                            </div>
-                            <div class="absolute -top-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full shadow-sm"></div>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-indigo-700 leading-none">Destek Merkezi</span>
-                            <span class="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mt-1">Müşterİ İlişkİlerİ</span>
-                        </div>
-                    </h1>
-                </div>
-                
-                <div class="h-10 w-px bg-gray-100 mx-2"></div>
-                
-                <!-- Command Center Metrics -->
-                <div class="flex items-center gap-6">
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-500 shadow-[inset_0_0_20px_rgba(245,158,11,0.1)] border border-amber-100">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="text-[9px] font-black text-amber-500/60 uppercase tracking-widest leading-none mb-1">Bekleyen Görev</span>
-                            <div class="flex items-center gap-2">
-                                <span class="text-2xl font-black text-amber-600 tracking-tighter leading-none">{{ $stats['pending'] }}</span>
-                                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse shadow-[0_0_8px_rgba(245,158,11,0.5)]"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="h-8 w-px bg-gray-100"></div>
-
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-500 shadow-[inset_0_0_20px_rgba(79,70,229,0.1)] border border-indigo-100">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="text-[9px] font-black text-indigo-500/60 uppercase tracking-widest leading-none mb-1">Bugünkü Akış</span>
-                            <span class="text-2xl font-black text-indigo-700 tracking-tighter leading-none">{{ $stats['today'] }}</span>
-                        </div>
-                    </div>
-
-                    <div class="h-8 w-px bg-gray-100"></div>
-
-                    <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center text-green-500 shadow-[inset_0_0_20px_rgba(34,197,94,0.1)] border border-green-100">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="text-[9px] font-black text-green-500/60 uppercase tracking-widest leading-none mb-1">Kapatılan</span>
-                            <span class="text-2xl font-black text-green-600 tracking-tighter leading-none">{{ $stats['closed'] }}</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="flex items-center gap-4">
-                <div class="flex items-center bg-gray-100 rounded-xl p-1.5 border border-gray-200 shadow-inner">
-                    <a href="{{ route('admin.contact-messages.index', ['status' => 'all']) }}" 
-                        class="px-6 py-2.5 text-[10px] font-black rounded-lg transition-all {{ request('status', 'all') == 'all' ? 'bg-white text-indigo-600 shadow-md ring-1 ring-black/5' : 'text-gray-500 hover:text-gray-700' }}">TÜMÜ</a>
-                    <a href="{{ route('admin.contact-messages.index', ['status' => 'pending']) }}" 
-                        class="px-6 py-2.5 text-[10px] font-black rounded-lg transition-all {{ request('status') == 'pending' ? 'bg-white text-amber-600 shadow-md ring-1 ring-black/5' : 'text-gray-500 hover:text-gray-700' }}">BEKLEYEN</a>
-                    <a href="{{ route('admin.contact-messages.index', ['status' => 'closed']) }}" 
-                        class="px-6 py-2.5 text-[10px] font-black rounded-lg transition-all {{ request('status') == 'closed' ? 'bg-white text-green-600 shadow-md ring-1 ring-black/5' : 'text-gray-500 hover:text-gray-700' }}">ARŞİV</a>
-                </div>
-                <button @click="sidePanel = !sidePanel" class="p-3 rounded-xl bg-white border border-gray-200 text-gray-400 hover:text-indigo-600 hover:shadow-xl transition-all active:scale-95 group relative">
-                    <svg class="w-6 h-6 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-                </button>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- Main Workspace -->
-    <div class="flex-1 flex overflow-hidden">
-        <!-- Sidebar: Intelligent Inbox -->
-        <div class="w-80 lg:w-[400px] bg-white border-r border-gray-200 flex flex-col shrink-0">
-            <div class="p-6 border-b border-gray-100 bg-white">
-                <form action="{{ route('admin.contact-messages.index') }}" method="GET" class="relative group">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Müşteri ara..." 
-                        class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-gray-100 rounded-2xl text-sm focus:bg-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-400 transition-all outline-none font-medium">
-                    <svg class="w-5 h-5 text-gray-400 absolute left-4 top-3.5 group-focus-within:text-indigo-500 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                </form>
-            </div>
-
-            <div class="flex-1 overflow-y-auto custom-scrollbar bg-gray-50/20">
-                @if($messages->isEmpty())
-                    <div class="flex flex-col items-center justify-center p-12 text-center opacity-40">
-                        <svg class="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path></svg>
-                        <p class="text-sm font-bold uppercase tracking-widest">Kayıt Bulunamadı</p>
-                    </div>
-                @else
-                    @foreach($messages as $msg)
-                        <a href="{{ route('admin.contact-messages.index', array_merge(request()->query(), ['id' => $msg->id])) }}" 
-                           class="group block p-6 hover:bg-white border-b border-gray-100 transition-all relative {{ $selectedMessage && $selectedMessage->id == $msg->id ? 'bg-white shadow-[inset_4px_0_0_#4f46e5]' : '' }}">
-                            
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="text-sm font-black text-gray-900 group-hover:text-indigo-600 transition truncate pr-4">{{ $msg->name }}</span>
-                                <span class="text-[10px] font-bold text-gray-400 shrink-0">{{ $msg->created_at->diffForHumans(null, true) }}</span>
-                            </div>
-                            
-                            <div class="flex items-center gap-2 mb-2">
-                                <h4 class="text-[11px] font-bold text-indigo-600/80 truncate max-w-full">{{ $msg->subject }}</h4>
-                            </div>
-
-                            <p class="text-[11px] text-gray-500 line-clamp-2 leading-relaxed mb-4 min-h-[32px]">{{ $msg->message }}</p>
-                            
-                            <div class="flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    @if($msg->status == 'closed')
-                                        <span class="px-2 py-0.5 rounded-md bg-gray-100 text-gray-400 text-[9px] font-black uppercase tracking-wider">ARŞİV</span>
-                                    @elseif($msg->replied_at)
-                                        <span class="px-2 py-0.5 rounded-md bg-green-50 text-green-600 text-[9px] font-black uppercase tracking-wider border border-green-100">YANITLANDI</span>
-                                    @else
-                                        <span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-600 text-[9px] font-black uppercase tracking-wider border border-amber-100">BEKLEMEDE</span>
-                                    @endif
-                                </div>
-                                <div class="flex items-center">
-                                    @if($msg->priority == 'urgent' || $msg->priority == 'high')
-                                        <div class="w-5 h-5 rounded-full bg-red-50 border-2 border-white flex items-center justify-center -mr-1 z-10 shadow-sm">
-                                            <svg class="w-3 h-3 text-red-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
-                                        </div>
-                                    @endif
-                                    <div class="w-7 h-7 rounded-full bg-indigo-50 border-2 border-white flex items-center justify-center text-[10px] text-indigo-600 font-black shadow-sm uppercase">
-                                        {{ substr($msg->name, 0, 1) }}
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    @endforeach
-                    <div class="p-6">
-                        {{ $messages->appends(request()->query())->links() }}
-                    </div>
-                @endif
-            </div>
-        </div>
-
-        <!-- Detail Area: The Chat Engine -->
-        <div class="flex-1 flex flex-col bg-white overflow-hidden relative shadow-2xl">
-            @if($selectedMessage)
-                <!-- Detailed Chat Header -->
-                <div class="px-10 py-6 border-b border-gray-100 flex items-center justify-between bg-white z-10">
-                    <div class="flex items-center gap-5">
-                        <div class="relative">
-                            <div class="w-14 h-14 rounded-2xl bg-indigo-600 flex items-center justify-center text-white font-black text-2xl shadow-lg shadow-indigo-100 transition-all duration-300">
-                                {{ substr($selectedMessage->name, 0, 1) }}
-                            </div>
-                            @if($selectedMessage->user_id)
-                                <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 border-2 border-white rounded-full flex items-center justify-center shadow-sm" title="Üye Müşteri">
-                                    <svg class="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"></path></svg>
-                                </div>
-                            @endif
-                        </div>
+<div class="min-h-screen bg-[#F8FAFC] py-8 px-4 sm:px-6 lg:px-12">
+    <div class="max-w-[1700px] mx-auto">
+        <div class="bg-white rounded-[2.5rem] border border-slate-200 shadow-xl shadow-slate-200/50 overflow-hidden flex flex-col h-[850px] animate-in fade-in slide-in-from-bottom-8 duration-700" x-data="{ sidePanel: true }">
+            
+            <!-- Header -->
+            <div class="border-b border-slate-200 px-10 py-6 shrink-0 bg-white relative z-10">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div class="flex items-center gap-12">
                         <div>
-                            <div class="flex items-center gap-3 mb-1">
-                                <h2 class="text-lg font-black text-gray-900 leading-none">{{ $selectedMessage->name }}</h2>
-                                <span class="px-2 py-0.5 rounded text-[9px] font-black {{ $selectedMessage->priority == 'urgent' ? 'bg-red-50 text-red-500 border border-red-100' : ($selectedMessage->priority == 'high' ? 'bg-orange-50 text-orange-500 border border-orange-100' : 'bg-gray-50 text-gray-400 border border-gray-100') }} uppercase tracking-tighter">
-                                    {{ strtoupper($selectedMessage->priority) }}
-                                </span>
+                            <nav class="flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 mb-2">
+                                <a href="{{ route('admin.dashboard') }}" class="hover:text-purple-600 transition-colors">YÖNETİM</a>
+                                <svg class="w-2 h-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M9 5l7 7-7 7"></path></svg>
+                                <span>MÜŞTERİ DENEYİMİ (CRM)</span>
+                            </nav>
+                            <h1 class="text-3xl font-black text-slate-900 tracking-tight">İletişim <span class="text-purple-600">Merkezi</span></h1>
+                        </div>
+
+                        <div class="hidden lg:flex items-center gap-10 border-l border-slate-100 pl-10">
+                            <div class="group cursor-default">
+                                <span class="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1.5 group-hover:text-amber-500 transition-colors">AKTİF TALEPLER</span>
+                                <div class="flex items-center gap-2.5">
+                                    <span class="text-2xl font-black text-slate-900 leading-none tracking-tighter">{{ $stats['pending'] }}</span>
+                                    <span class="flex h-2 w-2">
+                                        <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-amber-400 opacity-75"></span>
+                                        <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                                    </span>
+                                </div>
                             </div>
-                            <div class="flex items-center gap-4 text-sm text-gray-400">
-                                <a href="mailto:{{ $selectedMessage->email }}" class="hover:text-indigo-600 transition flex items-center gap-1">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                                    {{ $selectedMessage->email }}
-                                </a>
-                                <span class="w-1 h-1 rounded-full bg-gray-200"></span>
-                                <span class="flex items-center gap-1 font-bold text-gray-300">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path></svg>
-                                    ID: #{{ str_pad($selectedMessage->id, 5, '0', STR_PAD_LEFT) }}
-                                </span>
+                            <div class="group cursor-default">
+                                <span class="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1.5 group-hover:text-purple-500 transition-colors">BUGÜN GELEN</span>
+                                <span class="text-2xl font-black text-purple-600 leading-none tracking-tighter">{{ $stats['today'] }}</span>
+                            </div>
+                            <div class="group cursor-default">
+                                <span class="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1.5 group-hover:text-slate-600 transition-colors">ARŞİVLENMİŞ</span>
+                                <span class="text-2xl font-black text-slate-400 leading-none tracking-tighter">{{ $stats['closed'] }}</span>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="flex items-center gap-3">
-                        @if($selectedMessage->status != 'closed')
-                            <form id="close-ticket-form" action="{{ route('admin.contact-messages.close', $selectedMessage->id) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="px-6 py-2.5 bg-gray-900 text-white font-black text-[10px] rounded-xl hover:bg-black transition shadow-lg shadow-gray-200 uppercase tracking-widest flex items-center gap-2">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
-                                    Talebİ Kapat
-                                </button>
-                            </form>
 
-                        @else
-                            <div class="px-6 py-2.5 bg-green-50 text-green-600 font-bold text-[10px] rounded-xl border border-green-100 uppercase tracking-widest flex items-center gap-2">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                                ARŞİVLENMİŞ
-                            </div>
-                        @endif
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center bg-slate-50 p-1 rounded-2xl border border-slate-200 shadow-inner">
+                            <a href="{{ route('admin.contact-messages.index', ['status' => 'all']) }}" 
+                                class="px-6 py-2.5 text-[9px] font-black rounded-xl transition-all uppercase tracking-widest {{ request('status', 'all') == 'all' ? 'bg-white text-slate-900 shadow-md ring-1 ring-slate-200' : 'text-slate-400 hover:text-slate-600' }}">İNDEKS</a>
+                            <a href="{{ route('admin.contact-messages.index', ['status' => 'pending']) }}" 
+                                class="px-6 py-2.5 text-[9px] font-black rounded-xl transition-all uppercase tracking-widest {{ request('status') == 'pending' ? 'bg-white text-amber-600 shadow-md ring-1 ring-slate-200' : 'text-slate-400 hover:text-slate-600' }}">BEKLEYEN</a>
+                            <a href="{{ route('admin.contact-messages.index', ['status' => 'closed']) }}" 
+                                class="px-6 py-2.5 text-[9px] font-black rounded-xl transition-all uppercase tracking-widest {{ request('status') == 'closed' ? 'bg-white text-emerald-600 shadow-md ring-1 ring-slate-200' : 'text-slate-400 hover:text-slate-600' }}">ARŞİV</a>
+                        </div>
+                        <button @click="sidePanel = !sidePanel" class="w-12 h-12 flex items-center justify-center rounded-2xl bg-white border border-slate-200 text-slate-400 hover:text-purple-600 hover:border-purple-200 transition-all shadow-sm active:scale-95 group">
+                            <i class="fa-solid fa-sidebar text-lg group-hover:rotate-12 transition-transform"></i>
+                        </button>
                     </div>
                 </div>
+            </div>
 
-                <!-- Chat Feed -->
-                <div id="chat-feed" class="flex-1 overflow-y-auto p-12 space-y-12 bg-gray-50/20 custom-scrollbar scroll-smooth">
-
-                    <!-- Date Separator -->
-                    <div class="flex items-center justify-center gap-4 opacity-30">
-                        <div class="h-px bg-gray-300 flex-1"></div>
-                        <span class="text-[10px] font-black uppercase tracking-[0.2em] whitespace-nowrap">{{ $selectedMessage->created_at->format('d F Y') }}</span>
-                        <div class="h-px bg-gray-300 flex-1"></div>
+            <div class="flex-1 flex overflow-hidden">
+                <!-- Message List -->
+                <div class="w-80 lg:w-[420px] bg-white border-r border-slate-200 flex flex-col shrink-0 relative z-0">
+                    <div class="p-6 border-b border-slate-100 bg-slate-50/20">
+                        <form action="{{ route('admin.contact-messages.index') }}" method="GET" class="relative group">
+                            <input type="text" name="search" value="{{ request('search') }}" placeholder="Müşteri veya konu ara..." 
+                                class="w-full pl-12 pr-4 py-3.5 bg-white border border-slate-200 rounded-[1.25rem] text-[11px] font-black text-slate-900 placeholder:text-slate-300 focus:ring-4 focus:ring-purple-500/5 focus:border-purple-200 transition-all outline-none">
+                            <i class="fa-solid fa-magnifying-glass absolute left-5 top-4.5 text-slate-400 text-xs group-focus-within:text-purple-600 transition-colors"></i>
+                        </form>
                     </div>
 
-                    <!-- Initial Client Message Bubble -->
-                    <div class="flex items-start gap-6 group">
-                        <div class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center shrink-0 border border-indigo-100">
-                            <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                        </div>
-                        <div class="flex-1 max-w-2xl">
-                            <div class="flex items-center gap-3 mb-2">
-                                <span class="text-[10px] font-black text-gray-900 tracking-wider uppercase underline decoration-indigo-200 decoration-2 underline-offset-4">{{ $selectedMessage->name }}</span>
-                                <span class="text-[10px] text-gray-300">{{ $selectedMessage->created_at->format('H:i') }}</span>
-                            </div>
-                            <div class="bg-white p-7 rounded-[32px] rounded-tl-none shadow-[20px_20px_40px_rgba(0,0,0,0.02)] border border-indigo-50 ring-8 ring-transparent group-hover:ring-indigo-50/30 transition-all duration-500">
-                                <div class="text-indigo-600 font-black text-sm mb-4 pb-2 border-b border-indigo-50 uppercase tracking-tight">{{ $selectedMessage->subject }}</div>
-                                <div class="text-[15px] text-gray-700 leading-[1.8] whitespace-pre-wrap font-medium">{{ $selectedMessage->message }}</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Threaded Replies -->
-                    @foreach($selectedMessage->replies as $reply)
-                        @if($reply->is_admin)
-                            <!-- Admin Expert Bubble -->
-                            <div class="flex items-start gap-6 flex-row-reverse group">
-                                <div class="w-10 h-10 rounded-full bg-gray-900 flex items-center justify-center shrink-0 shadow-xl shadow-gray-200 border-4 border-white">
-                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                                </div>
-                                <div class="flex-1 flex flex-col items-end max-w-2xl">
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <span class="text-[10px] text-gray-300">{{ $reply->created_at->format('H:i') }}</span>
-                                        <span class="text-[10px] font-black text-indigo-600 tracking-wider uppercase">DESTEK UZMANI</span>
+                    <div class="flex-1 overflow-y-auto custom-scrollbar bg-white">
+                        @forelse($messages as $msg)
+                            <a href="{{ route('admin.contact-messages.index', array_merge(request()->query(), ['id' => $msg->id])) }}" 
+                               class="group block p-7 border-b border-slate-50 transition-all relative overflow-hidden {{ $selectedMessage && $selectedMessage->id == $msg->id ? 'bg-slate-50 shadow-[inset_4px_0_0_0_#8B5CF6,inset_0_2px_15px_rgba(0,0,0,0.02)]' : 'hover:bg-slate-50/50' }}">
+                                
+                                <div class="flex justify-between items-start mb-2">
+                                    <div class="flex items-center gap-2.5">
+                                        <div class="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center text-[10px] text-slate-500 font-black uppercase group-hover:bg-slate-900 group-hover:text-white transition-all duration-300">
+                                            {{ substr($msg->name, 0, 1) }}
+                                        </div>
+                                        <span class="text-[11px] font-black text-slate-900 tracking-tight truncate max-w-[180px]">{{ $msg->name }}</span>
                                     </div>
-                                    <div class="bg-indigo-600 p-7 rounded-[32px] rounded-tr-none shadow-[20px_20px_40px_rgba(79,70,229,0.1)] group-hover:bg-indigo-700 transition-all duration-500">
-                                        <div class="text-[15px] text-white leading-[1.8] whitespace-pre-wrap font-medium">{{ $reply->message }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        @else
-                            <!-- User Reply Bubble (Customer) -->
-                            <div class="flex items-start gap-6 group">
-                                <div class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center shrink-0 border border-indigo-100">
-                                    @if($selectedMessage->user)
-                                         <div class="text-xs font-black text-indigo-600">{{ $selectedMessage->user->initials }}</div>
-                                    @else
-                                        <svg class="w-5 h-5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                                    @endif
-                                </div>
-                                <div class="flex-1 max-w-2xl">
-                                    <div class="flex items-center gap-3 mb-2">
-                                        <span class="text-[10px] font-black text-gray-900 tracking-wider uppercase">{{ $selectedMessage->name }}</span>
-                                        <span class="text-[10px] text-gray-300">{{ $reply->created_at->format('H:i') }}</span>
-                                    </div>
-                                    <div class="bg-white p-7 rounded-[32px] rounded-tl-none shadow-[20px_20px_40px_rgba(0,0,0,0.02)] border border-indigo-50 ring-8 ring-transparent group-hover:ring-indigo-50/30 transition-all duration-500">
-                                        <div class="text-[15px] text-gray-700 leading-[1.8] whitespace-pre-wrap font-medium">{{ $reply->message }}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                    @endforeach
-                </div>
-
-                <!-- Reply Composer Terminal -->
-                @if($selectedMessage->status != 'closed')
-                    <div id="reply-composer" class="p-10 border-t border-gray-100 bg-white">
-                        <form id="reply-form" action="{{ route('admin.contact-messages.reply', $selectedMessage->id) }}" method="POST" class="space-y-6">
-
-                            @csrf
-                            <div class="space-y-4">
-                                <!-- Fast Actions Toggle -->
-                                <div class="flex items-center gap-4">
-                                    <div class="flex-1 flex items-center gap-2">
-                                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Yanıt Öncelİğİ:</label>
-                                        <select name="priority" class="px-3 py-1 bg-gray-50 border-gray-200 rounded-lg text-[10px] font-bold outline-none focus:border-indigo-400 transition cursor-pointer">
-                                            <option value="low" {{ $selectedMessage->priority == 'low' ? 'selected' : '' }}>DÜŞÜK</option>
-                                            <option value="normal" {{ $selectedMessage->priority == 'normal' ? 'selected' : '' }}>NORMAL</option>
-                                            <option value="high" {{ $selectedMessage->priority == 'high' ? 'selected' : '' }}>YÜKSEK</option>
-                                            <option value="urgent" {{ $selectedMessage->priority == 'urgent' ? 'selected' : '' }}>ACİL 🚨</option>
-                                        </select>
-                                    </div>
-                                    <div class="h-4 w-px bg-gray-100"></div>
-                                    <button type="button" class="text-[10px] font-black text-indigo-500 hover:text-indigo-700 transition uppercase tracking-widest">Hazır Yanıtlar ⚡</button>
+                                    <span class="text-[8px] font-black text-slate-300 group-hover:text-slate-400 uppercase tracking-widest shrink-0 mt-1">{{ $msg->created_at->diffForHumans(null, true) }}</span>
                                 </div>
                                 
-                                <div class="relative group">
-                                    <textarea name="reply" id="reply_area" rows="6" 
-                                        class="w-full p-8 bg-gray-50 border-2 {{ $errors->has('reply') ? 'border-red-300 ring-4 ring-red-500/5' : 'border-gray-100' }} rounded-[32px] focus:bg-white focus:ring-8 focus:ring-indigo-500/5 focus:border-indigo-500 transition-all resize-none text-[15px] text-gray-800 leading-relaxed font-medium outline-none" 
-                                        placeholder="Kullanıcıya özel çözüm önerinizi yazın..." required minlength="10">{{ old('reply') }}</textarea>
-                                    @error('reply')
-                                        <div class="px-6 py-2 mt-2">
-                                            <p class="text-[10px] font-black text-red-500 uppercase flex items-center gap-2">
-                                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                                                {{ $message }}
-                                            </p>
-                                        </div>
-                                    @enderror
-                                    
-                                    <div class="absolute right-6 bottom-6 flex items-center gap-4">
-                                        <div class="text-[10px] font-bold text-gray-400 mr-2 opacity-0 group-focus-within:opacity-100 transition">Enter + Ctrl ile gönder</div>
-                                        <button type="submit" class="px-10 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-black rounded-2xl transition shadow-2xl shadow-indigo-600/40 flex items-center gap-3 active:scale-[0.97]">
-                                            <span>YANITLA & BİLDİR</span>
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                @elseif($selectedMessage->status == 'closed')
-                    <div class="p-10 border-t border-gray-100 bg-gray-50/50 flex flex-col items-center justify-center text-center">
-                        <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 mb-4 scale-125">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                        </div>
-                        <h4 class="text-sm font-black text-gray-900 uppercase tracking-widest">TALEP KAPATILDI</h4>
-                        <p class="text-xs text-gray-400 mt-2 max-w-xs leading-relaxed">Bu görüşme sonuçlandırılmış ve arşive kaldırılmıştır. Yeni bir yanıt gönderilemez.</p>
-                    </div>
-                @endif
-            @else
-                <!-- Zen Mode Selection -->
-                <div class="flex-1 flex flex-col items-center justify-center p-20 text-center bg-white">
-                    <div class="relative mb-12">
-                        <div class="w-48 h-48 bg-indigo-50/50 rounded-full flex items-center justify-center animate-pulse duration-[3000ms]">
-                            <svg class="w-24 h-24 text-indigo-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                        </div>
-                    </div>
-                    <h2 class="text-3xl font-black text-gray-900 mb-4 tracking-tighter">İletişime Başla</h2>
-                    <p class="text-gray-400 max-w-md mx-auto leading-loose text-sm font-medium">
-                        Bekleyen destek taleplerini çözüme kavuşturmak için sol taraftan bir müşteri seçin. Kullanıcı geçmişi ve tüm detaylar otomatik yüklenecektir.
-                    </p>
-                </div>
-            @endif
-        </div>
-
-        <!-- Right Side: Intelligence & History Panel -->
-        <div class="w-80 lg:w-[350px] bg-gray-50 border-l border-gray-200 overflow-y-auto shrink-0 transition-all duration-700" 
-             x-show="sidePanel" x-transition:enter="translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="translate-x-0" x-transition:leave-end="translate-x-full">
-            @if($selectedMessage)
-                <div class="p-8 space-y-12">
-                    <!-- Internal Context Panel -->
-                    <section>
-                        <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6 flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
-                            Admin Notları
-                        </h3>
-                        <form id="notes-form" action="{{ route('admin.contact-messages.notes', $selectedMessage->id) }}" method="POST">
-                            @csrf
-
-                            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-[0_10px_30px_rgba(0,0,0,0.03)] space-y-4">
-                                <textarea name="admin_notes" rows="4" 
-                                    class="w-full text-xs font-bold text-gray-600 bg-gray-50 p-4 rounded-xl border-dashed border-2 border-gray-100 outline-none focus:border-indigo-400 transition" 
-                                    placeholder="Buraya kendin için notlar alabilirsin... (Kullanıcı görmez)">{{ $selectedMessage->admin_notes }}</textarea>
-                                <div class="flex items-center justify-between gap-3 pt-2">
-                                    <select name="priority" class="bg-gray-50 border-none text-[10px] font-black rounded-lg px-2 py-1 outline-none text-gray-500 cursor-pointer">
-                                        <option value="low" {{ $selectedMessage->priority == 'low' ? 'selected' : '' }}>DÜŞÜK</option>
-                                        <option value="normal" {{ $selectedMessage->priority == 'normal' ? 'selected' : '' }}>NORMAL</option>
-                                        <option value="high" {{ $selectedMessage->priority == 'high' ? 'selected' : '' }}>YÜKSEK</option>
-                                        <option value="urgent" {{ $selectedMessage->priority == 'urgent' ? 'selected' : '' }}>ACİL</option>
-                                    </select>
-                                    <button type="submit" class="px-4 py-1.5 bg-gray-900 text-white text-[10px] font-black rounded-lg hover:bg-indigo-600 transition shadow-lg shadow-gray-200">KAYDET</button>
-                                </div>
-                            </div>
-                        </form>
-                    </section>
-
-                    <!-- Profile Intelligence -->
-                    <section>
-                        <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6 flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
-                            Müşterİ Profİlİ
-                        </h3>
-                        @if($selectedMessage->user)
-                            <div class="bg-indigo-600 rounded-[32px] p-7 text-white shadow-2xl shadow-indigo-100 relative overflow-hidden group">
-                                <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-[1.5] transition-transform duration-1000"></div>
-                                <div class="relative z-10 flex items-center gap-4 mb-8">
-                                    <div class="relative">
-                                        <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-xl font-black">{{ $selectedMessage->user->initials }}</div>
-                                        <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-white rounded-full flex items-center justify-center shadow-lg">
-                                            <svg class="w-2.5 h-2.5 text-indigo-600" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z"></path></svg>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="text-base font-black leading-tight">{{ $selectedMessage->user->name }}</div>
-                                        <div class="text-[9px] font-black text-indigo-200 uppercase tracking-[0.2em] mt-0.5">{{ $selectedMessage->user->role }}</div>
-                                    </div>
-                                </div>
-                                <div class="grid grid-cols-2 gap-6 relative z-10 pt-6 border-t border-white/10">
-                                    <div>
-                                        <div class="text-[9px] font-black text-indigo-100 uppercase mb-1 opacity-60">Rezervasyon</div>
-                                        <div class="text-xl font-black">{{ $selectedMessage->user->reservations_count }}</div>
-                                    </div>
-                                    <div>
-                                        <div class="text-[9px] font-black text-indigo-100 uppercase mb-1 opacity-60">Bakiye</div>
-                                        <div class="text-xl font-black">{{ number_format($selectedMessage->user->balance, 2) }}₺</div>
-                                    </div>
-                                </div>
-                                <a href="{{ route('admin.users.edit', $selectedMessage->user_id) }}" class="mt-8 block w-full py-3 bg-white text-indigo-600 text-center text-[10px] font-black rounded-2xl hover:bg-gray-50 transition shadow-xl active:scale-[0.98]">ÜYEYİ YÖNET</a>
-                            </div>
-                        @else
-                            <div class="p-6 rounded-3xl bg-gray-100/50 border-2 border-dashed border-gray-200 text-center">
-                                <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 mx-auto mb-3">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                                </div>
-                                <div class="text-[10px] font-black text-gray-500 uppercase">Misafir Kullanıcı</div>
-                                <div class="text-[9px] text-gray-400 mt-1">Platformda kayıtlı bir üyeliği bulunamadı.</div>
-                            </div>
-                        @endif
-                    </section>
-
-                    <!-- Legacy History: AI Insights -->
-                    <section>
-                        <h3 class="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6 flex items-center gap-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-indigo-500"></span>
-                            Geçmİş Talepler
-                        </h3>
-                        <div class="space-y-4">
-                            @forelse($history as $h)
-                                <a href="{{ route('admin.contact-messages.index', ['id' => $h->id]) }}" class="block bg-white p-4 rounded-2xl border border-gray-100 hover:border-indigo-200 hover:shadow-lg transition">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="text-[9px] font-black text-gray-400 uppercase">{{ $h->created_at->format('d M Y') }}</span>
-                                        @if($h->status == 'closed')
-                                            <span class="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                                <div class="text-[10px] font-black text-slate-600 tracking-tight truncate mb-2 group-hover:text-purple-600 transition-colors">{{ $msg->subject }}</div>
+                                <p class="text-[10px] text-slate-400 line-clamp-2 leading-relaxed mb-4 font-medium opacity-80">{{ $msg->message }}</p>
+                                
+                                <div class="flex items-center justify-between pointer-events-none">
+                                    <div class="flex gap-1.5">
+                                        @if($msg->status == 'closed')
+                                            <span class="px-2 py-0.5 rounded bg-slate-100 text-slate-400 text-[7px] font-black uppercase tracking-widest border border-slate-200/50">ARŞİV</span>
+                                        @elseif($msg->replied_at)
+                                            <span class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-600 text-[7px] font-black uppercase tracking-widest border border-emerald-100">YANITLANDI</span>
                                         @else
-                                            <span class="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_5px_rgba(34,197,94,0.5)]"></span>
+                                            <span class="px-2 py-0.5 rounded bg-amber-50 text-amber-600 text-[7px] font-black uppercase tracking-widest border border-amber-100 animate-pulse">BEKLİYOR</span>
+                                        @endif
+                                        
+                                        @if($msg->priority == 'urgent' || $msg->priority == 'high')
+                                            <span class="px-2 py-0.5 rounded bg-rose-50 text-rose-500 text-[7px] font-black uppercase tracking-widest border border-rose-100">KRİTİK</span>
                                         @endif
                                     </div>
-                                    <div class="text-[11px] font-black text-gray-800 leading-tight line-clamp-1 mb-1">{{ $h->subject }}</div>
-                                    <div class="text-[9px] text-gray-400 line-clamp-1 italic">"{{ Str::limit($h->message, 40) }}"</div>
-                                </a>
-                            @empty
-                                <div class="text-[10px] text-gray-400 italic text-center py-4 bg-white/50 rounded-2xl border border-dashed border-gray-200">Daha önce bir talebi bulunmamaktadır.</div>
-                            @endforelse
+                                    @if(!$msg->replied_at && $msg->status != 'closed')
+                                        <div class="w-1.5 h-1.5 rounded-full bg-purple-600 shadow-sm shadow-purple-600/50"></div>
+                                    @endif
+                                </div>
+                            </a>
+                        @empty
+                            <div class="p-20 text-center opacity-10">
+                                <i class="fa-solid fa-inbox text-6xl mb-4"></i>
+                                <div class="text-[9px] font-black uppercase tracking-[0.3em]">MESAJ KUTUSU BOŞ</div>
+                            </div>
+                        @endforelse
+                        
+                        <div class="p-6">
+                            {{ $messages->appends(request()->query())->links('vendor.pagination.simple-tailwind') }}
                         </div>
-                    </section>
+                    </div>
                 </div>
-            @endif
+
+                <!-- Chat Area -->
+                <div class="flex-1 flex flex-col bg-white overflow-hidden relative">
+                    @if($selectedMessage)
+                        <div class="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-white relative z-10 shadow-sm">
+                            <div class="flex items-center gap-6">
+                                <div class="w-14 h-14 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-white font-black text-2xl shadow-lg ring-4 ring-slate-50">
+                                    {{ substr($selectedMessage->name, 0, 1) }}
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-3 mb-1.5">
+                                        <h2 class="text-xl font-black text-slate-900 leading-none tracking-tight">{{ $selectedMessage->name }}</h2>
+                                        <span class="px-2 py-0.5 bg-slate-100 text-slate-400 text-[8px] font-black rounded-md tracking-widest">ID #{{ $selectedMessage->id }}</span>
+                                    </div>
+                                    <div class="flex items-center gap-4 text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+                                        <a href="mailto:{{ $selectedMessage->email }}" class="flex items-center gap-1.5 hover:text-purple-600 transition-colors">
+                                            <i class="fa-solid fa-envelope-open text-[9px] opacity-50"></i>
+                                            {{ $selectedMessage->email }}
+                                        </a>
+                                        <div class="w-1 h-1 rounded-full bg-slate-200"></div>
+                                        <span class="flex items-center gap-1.5">
+                                            <i class="fa-solid fa-clock-rotate-left text-[9px] opacity-50"></i>
+                                            {{ $selectedMessage->created_at->format('H:i') }} GELİŞ
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center gap-3">
+                                @if($selectedMessage->status != 'closed')
+                                    <form action="{{ route('admin.contact-messages.close', $selectedMessage->id) }}" method="POST">
+                                        @csrf
+                                        <button class="px-8 py-3.5 bg-slate-900 hover:bg-purple-600 text-white font-black text-[10px] rounded-2xl transition-all uppercase tracking-[0.15em] flex items-center gap-2.5 shadow-xl shadow-slate-900/10 active:scale-95">
+                                            <i class="fa-solid fa-check-double text-xs opacity-50"></i>
+                                            TALEBİ ARŞİVLE
+                                        </button>
+                                    </form>
+                                @else
+                                    <div class="px-8 py-3.5 bg-emerald-50 text-emerald-600 font-black text-[10px] rounded-2xl border border-emerald-100 uppercase tracking-[0.15em] flex items-center gap-2.5">
+                                        <i class="fa-solid fa-box-archive text-xs"></i>
+                                        ARŞİVLENMİŞ GÖRÜŞME
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div id="chat-feed" class="flex-1 overflow-y-auto p-12 space-y-10 bg-[#F9FBFF]/30 custom-scrollbar scroll-smooth">
+                            <div class="flex items-center justify-center gap-6 opacity-20">
+                                <div class="h-px bg-slate-900 flex-1"></div>
+                                <span class="text-[9px] font-black uppercase tracking-[0.4em] text-slate-900">{{ $selectedMessage->created_at->format('d F Y') }}</span>
+                                <div class="h-px bg-slate-900 flex-1"></div>
+                            </div>
+
+                            <!-- Initial Message -->
+                            <div class="flex items-start gap-5 animate-in slide-in-from-left-4 duration-500">
+                                <div class="w-12 h-12 rounded-2xl bg-white border border-slate-200 flex items-center justify-center shrink-0 shadow-sm relative group overflow-hidden">
+                                    <div class="absolute inset-0 bg-slate-900 scale-0 group-hover:scale-110 transition-transform duration-500 opacity-0 group-hover:opacity-100"></div>
+                                    <i class="fa-solid fa-user-tie text-slate-300 group-hover:text-white transition-colors relative z-10"></i>
+                                </div>
+                                <div class="max-w-3xl bg-white p-8 rounded-[2rem] rounded-tl-none border border-slate-100 shadow-xl shadow-slate-200/20 relative group">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="text-[12px] font-black text-purple-600 uppercase tracking-widest leading-none">{{ $selectedMessage->subject }}</div>
+                                        <div class="text-[9px] font-black text-slate-300 uppercase tracking-widest">{{ $selectedMessage->created_at->format('H:i') }}</div>
+                                    </div>
+                                    <div class="text-[13px] text-slate-600 leading-relaxed whitespace-pre-wrap font-medium">{{ $selectedMessage->message }}</div>
+                                </div>
+                            </div>
+
+                            @foreach($selectedMessage->replies as $reply)
+                                <div class="flex items-start gap-5 {{ $reply->is_admin ? 'flex-row-reverse animate-in slide-in-from-right-4' : 'animate-in slide-in-from-left-4' }} duration-500">
+                                    <div class="w-12 h-12 rounded-2xl {{ $reply->is_admin ? 'bg-purple-600 shadow-purple-600/20' : 'bg-white border border-slate-200' }} border flex items-center justify-center shrink-0 shadow-lg {{ $reply->is_admin ? 'border-purple-500' : 'border-slate-100' }}">
+                                        <i class="fa-solid {{ $reply->is_admin ? 'fa-shield-halved text-white' : 'fa-user text-slate-300' }} text-lg"></i>
+                                    </div>
+                                    <div class="max-w-3xl {{ $reply->is_admin ? 'bg-purple-600 text-white border-purple-500 rounded-tr-none shadow-purple-600/10' : 'bg-white text-slate-600 border-slate-100 rounded-tl-none shadow-slate-200/20' }} p-8 rounded-[2rem] border shadow-xl flex flex-col group">
+                                        <div class="flex items-center justify-between mb-3 {{ $reply->is_admin ? 'text-white/60' : 'text-slate-400' }}">
+                                            <div class="text-[11px] font-black uppercase tracking-widest leading-none">{{ $reply->is_admin ? 'DESTEK DİREKTÖRLÜĞÜ' : $selectedMessage->name }}</div>
+                                            <div class="text-[9px] font-black uppercase tracking-widest">{{ $reply->created_at->format('H:i') }}</div>
+                                        </div>
+                                        <div class="text-[13px] leading-relaxed whitespace-pre-wrap font-medium overflow-hidden">{{ $reply->message }}</div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+
+                        @if($selectedMessage->status != 'closed')
+                            <div class="px-10 py-10 border-t border-slate-100 bg-white relative z-10 shadow-[0_-10px_30px_rgba(0,0,0,0.02)]">
+                                <form action="{{ route('admin.contact-messages.reply', $selectedMessage->id) }}" method="POST" x-data="{ sending: false }" @submit="sending = true">
+                                    @csrf
+                                    <div class="space-y-6">
+                                        <div class="flex items-center justify-between">
+                                            <div class="flex items-center gap-3">
+                                                <i class="fa-solid fa-flag text-[10px] text-purple-600"></i>
+                                                <select name="priority" class="bg-transparent text-[10px] font-black uppercase tracking-[0.15em] outline-none focus:text-purple-600 transition-colors cursor-pointer border-none p-0 ring-0">
+                                                    <option value="low" {{ $selectedMessage->priority == 'low' ? 'selected' : '' }}>Düşük Öncelik</option>
+                                                    <option value="normal" {{ $selectedMessage->priority == 'normal' || !$selectedMessage->priority ? 'selected' : '' }}>Standart Prosedür</option>
+                                                    <option value="high" {{ $selectedMessage->priority == 'high' ? 'selected' : '' }}>Yüksek Öncelik</option>
+                                                    <option value="urgent" {{ $selectedMessage->priority == 'urgent' ? 'selected' : '' }}>KRİTİK / ACİL</option>
+                                                </select>
+                                            </div>
+                                            <div class="text-[9px] font-black text-slate-300 uppercase tracking-widest">Shift + Enter ile hızlı gönderim</div>
+                                        </div>
+                                        <div class="relative">
+                                            <textarea name="reply" rows="5" 
+                                                class="w-full p-8 bg-slate-50 border border-slate-200 rounded-[2rem] focus:bg-white focus:border-purple-500 focus:ring-8 focus:ring-purple-500/5 transition-all resize-none text-[13px] text-slate-800 font-medium outline-none placeholder:text-slate-300 shadow-inner" 
+                                                placeholder="Resmi ve çözüm odaklı bir yanıt oluşturun..." required></textarea>
+                                            <div class="absolute right-6 bottom-6 flex items-center gap-4">
+                                                <button type="submit" :disabled="sending" class="px-10 py-4 bg-slate-900 hover:bg-purple-600 disabled:bg-slate-400 text-white font-black rounded-2xl transition-all shadow-2xl shadow-slate-900/20 active:scale-95 text-[11px] uppercase tracking-[0.2em] flex items-center gap-3">
+                                                    <span x-text="sending ? 'İletiliyor...' : 'Gönder'">Yanıtla (Gönder)</span>
+                                                    <i class="fa-solid fa-paper-plane text-xs opacity-50" :class="sending ? 'animate-ping' : ''"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        @else
+                            <div class="p-16 border-t border-slate-100 bg-slate-50/40 text-center flex flex-col items-center justify-center animate-in fade-in duration-500">
+                                <div class="w-16 h-16 rounded-full bg-white shadow-xl flex items-center justify-center text-slate-200 mb-6 border border-slate-100">
+                                    <i class="fa-solid fa-lock text-2xl"></i>
+                                </div>
+                                <h3 class="text-sm font-black text-slate-400 uppercase tracking-[0.3em] mb-2">OTURUM SONLANDIRILDI</h3>
+                                <p class="text-[10px] text-slate-300 font-bold uppercase tracking-widest italic leading-relaxed">Bu görüşme arşive kaldırılmıştır. Yeni bir mesaj gelene kadar yanıt verilemez.</p>
+                            </div>
+                        @endif
+                    @else
+                        <div class="flex-1 flex flex-col items-center justify-center p-20 text-center bg-[#F9FBFF]/30">
+                            <div class="relative mb-10">
+                                <div class="absolute -inset-10 bg-purple-600/5 rounded-full blur-3xl animate-pulse"></div>
+                                <i class="fa-solid fa-tower-broadcast text-7xl text-slate-100 relative"></i>
+                            </div>
+                            <h2 class="text-2xl font-black text-slate-900 mb-3 tracking-tight">İletişim Paneli</h2>
+                            <p class="text-[11px] font-black text-slate-400 uppercase tracking-[0.3em] max-w-[280px] leading-relaxed">Sol listeden bir müşteri talebi seçerek operasyona başlayın.</p>
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Right Panel -->
+                <div class="w-80 lg:w-[360px] bg-[#FDFEFE] border-l border-slate-200 overflow-y-auto shrink-0 custom-scrollbar relative z-20" x-show="sidePanel" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full">
+                    @if($selectedMessage)
+                        <div class="p-8 space-y-12">
+                            <section>
+                                <div class="flex items-center justify-between mb-5">
+                                    <h3 class="text-[9px] font-black text-slate-400 uppercase tracking-[0.25em]">OPERASYONEL NOTLAR</h3>
+                                    <i class="fa-solid fa-note-sticky text-[10px] text-purple-600/30"></i>
+                                </div>
+                                <form action="{{ route('admin.contact-messages.notes', $selectedMessage->id) }}" method="POST">
+                                    @csrf
+                                    <div class="bg-white p-5 rounded-[1.5rem] border border-slate-100 shadow-xl shadow-slate-200/20">
+                                        <textarea name="admin_notes" rows="4" 
+                                            class="w-full text-[11px] font-bold text-slate-600 bg-slate-50 p-4 rounded-xl border-none outline-none focus:ring-2 focus:ring-purple-500/10 placeholder:text-slate-200 mb-4 transition-all resize-none" 
+                                            placeholder="Diğer moderatörler için notlar...">{{ $selectedMessage->admin_notes }}</textarea>
+                                        <button class="w-full py-3 bg-slate-900 text-white text-[10px] font-black rounded-2xl hover:bg-purple-600 transition-all uppercase tracking-[0.2em] shadow-lg shadow-slate-900/10">NOTU GÜNCELLE</button>
+                                    </div>
+                                </form>
+                            </section>
+
+                            <section>
+                                <div class="flex items-center justify-between mb-5">
+                                    <h3 class="text-[9px] font-black text-slate-400 uppercase tracking-[0.25em]">CİHAZ & ÜYE PROFİLİ</h3>
+                                    <i class="fa-solid fa-fingerprint text-[10px] text-purple-600/30"></i>
+                                </div>
+                                @if($selectedMessage->user)
+                                    <div class="bg-slate-900 rounded-[2rem] p-7 text-white shadow-2xl shadow-slate-900/30 relative overflow-hidden group">
+                                        <div class="absolute -right-10 -bottom-10 opacity-10 group-hover:scale-110 transition-transform duration-700">
+                                            <i class="fa-solid fa-id-card-clip text-9xl"></i>
+                                        </div>
+                                        <div class="flex items-center gap-4 mb-8">
+                                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white flex items-center justify-center font-black text-lg shadow-xl shadow-purple-500/20">
+                                                {{ $selectedMessage->user->initials }}
+                                            </div>
+                                            <div>
+                                                <div class="text-[13px] font-black text-white leading-tight mb-1">{{ $selectedMessage->user->name }}</div>
+                                                <div class="inline-flex items-center px-2 py-0.5 bg-purple-500/20 text-purple-400 text-[8px] font-black rounded uppercase tracking-widest border border-purple-500/30">{{ $selectedMessage->user->role }}</div>
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-2 gap-6 relative z-10">
+                                            <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+                                                <div class="text-[8px] font-black text-white/40 uppercase tracking-widest mb-1.5 font-mono">REZERVASYON</div>
+                                                <div class="text-base font-black text-white tracking-tighter">{{ $selectedMessage->user->reservations_count }}</div>
+                                            </div>
+                                            <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+                                                <div class="text-[8px] font-black text-white/40 uppercase tracking-widest mb-1.5 font-mono">CÜZDAN</div>
+                                                <div class="text-base font-black text-white tracking-tighter">₺{{ number_format($selectedMessage->user->balance, 0) }}</div>
+                                            </div>
+                                        </div>
+                                        <a href="{{ route('admin.users.edit', $selectedMessage->user_id) }}" class="mt-8 block w-full py-3.5 bg-white text-slate-900 text-center text-[10px] font-black rounded-2xl hover:bg-purple-600 hover:text-white transition-all uppercase tracking-[0.2em] shadow-lg relative z-10">PROFİLİ YÖNET</a>
+                                    </div>
+                                @else
+                                    <div class="p-10 rounded-[2rem] bg-white border border-slate-100 text-center shadow-xl shadow-slate-200/10 group">
+                                        <div class="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center mx-auto mb-4 border border-slate-100 group-hover:scale-110 transition-transform">
+                                            <i class="fa-solid fa-user-secret text-slate-200 text-3xl"></i>
+                                        </div>
+                                        <div class="text-[11px] font-black text-slate-500 uppercase tracking-[0.2em] mb-1">KAYITSIZ MÜŞTERİ</div>
+                                        <div class="text-[9px] text-slate-400 font-bold uppercase tracking-widest opacity-60">Misafir oturumu ile ulaşıldı.</div>
+                                    </div>
+                                @endif
+                            </section>
+
+                            <section>
+                                <div class="flex items-center justify-between mb-5">
+                                    <h3 class="text-[9px] font-black text-slate-400 uppercase tracking-[0.25em]">İLETİŞİM GEÇMİŞİ</h3>
+                                    <i class="fa-solid fa-history text-[10px] text-purple-600/30"></i>
+                                </div>
+                                <div class="space-y-4">
+                                    @forelse($history as $h)
+                                        <a href="{{ route('admin.contact-messages.index', ['id' => $h->id]) }}" class="block group relative">
+                                            <div class="bg-white p-4 rounded-2xl border border-slate-100 hover:border-purple-200 transition-all shadow-sm hover:shadow-lg hover:shadow-purple-600/5">
+                                                <div class="flex justify-between items-center mb-2">
+                                                    <span class="text-[8px] font-black text-slate-400 group-hover:text-purple-600 uppercase tracking-widest transition-colors">{{ $h->created_at->format('d M Y') }}</span>
+                                                    <div class="flex h-1.5 w-1.5">
+                                                        <div class="relative inline-flex rounded-full h-1.5 w-1.5 {{ $h->status == 'closed' ? 'bg-slate-300' : 'bg-emerald-500' }}"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="text-[10px] font-black text-slate-700 truncate tracking-tight">{{ $h->subject }}</div>
+                                            </div>
+                                        </a>
+                                    @empty
+                                        <div class="text-[9px] text-slate-300 font-bold uppercase tracking-[0.2em] text-center p-8 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200 italic">Kayıt Bulunamadı</div>
+                                    @endforelse
+                                </div>
+                            </section>
+                        </div>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+    .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #E2E8F0; border-radius: 10px; transition: all 0.3s; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #8B5CF6; }
     
-    .font-outfit { font-family: 'Outfit', sans-serif; }
+    .pagination { @apply flex items-center justify-center gap-1.5; }
+    .page-item .page-link { 
+        @apply w-8 h-8 flex items-center justify-center bg-white border border-slate-200 rounded-lg text-slate-400 text-[9px] font-black transition-all hover:bg-slate-50 hover:text-slate-900;
+    }
+    .page-item.active .page-link {
+        @apply bg-purple-600 border-purple-600 text-white shadow-lg shadow-purple-600/20;
+    }
+    .page-item.disabled .page-link { @apply opacity-30 cursor-not-allowed; }
 
-    .glass-stats { background: rgba(255, 255, 255, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
-    .stat-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -10px rgba(79, 70, 229, 0.1); }
-    
-    @keyframes pulse-slow {
-        0%, 100% { opacity: 1; filter: drop-shadow(0 0 5px rgba(255,255,255,0.4)); }
-        50% { opacity: 0.8; filter: drop-shadow(0 0 15px rgba(255,255,255,0.7)); }
-    }
-    .animate-pulse-slow { animation: pulse-slow 3s infinite ease-in-out; }
-
-
-    .custom-scrollbar::-webkit-scrollbar {
-        width: 5px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-        background: #e2e8f0;
-        border-radius: 20px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: #cbd5e1;
-    }
-    
-    .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;  
-        overflow: hidden;
-    }
-    .line-clamp-1 {
-        display: -webkit-box;
-        -webkit-line-clamp: 1;
-        -webkit-box-orient: vertical;  
-        overflow: hidden;
-    }
-    
-    /* Animation for chat list */
-    [x-show="sidePanel"] {
-        width: 350px !important;
-    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .animate-fade-in { animation: fadeIn 0.5s ease-out; }
 </style>
 
 <script>
-    // Shortcut for sending reply: Ctrl + Enter
-    document.addEventListener('keydown', function(e) {
-        if (e.ctrlKey && e.key === 'Enter') {
-            const replyForm = document.querySelector('form[action*="reply"]');
-            if (replyForm) replyForm.submit();
+    document.addEventListener('DOMContentLoaded', function() {
+        const feed = document.getElementById('chat-feed');
+        if (feed) {
+            feed.scrollTop = feed.scrollHeight;
+            const images = feed.getElementsByTagName('img');
+            if (images.length > 0) {
+                let loaded = 0;
+                Array.from(images).forEach(img => {
+                    img.addEventListener('load', () => {
+                        loaded++;
+                        if (loaded === images.length) feed.scrollTop = feed.scrollHeight;
+                    });
+                });
+            }
         }
     });
 
-    // Auto scroll bottom for chat feed
-    window.onload = function() {
-        const feed = document.querySelector('.overflow-y-auto.p-12');
+    // Handle smooth transitions between messages
+    document.body.addEventListener('htmx:afterOnLoad', function() {
+        const feed = document.getElementById('chat-feed');
         if (feed) feed.scrollTop = feed.scrollHeight;
-    };
+    });
 </script>
 @endsection
