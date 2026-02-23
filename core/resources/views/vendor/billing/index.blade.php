@@ -184,7 +184,7 @@
                                         {{ ($subscription && $subscription->package_id == $package->id) ? 'disabled' : '' }}>
                                     @if($subscription && $subscription->package_id == $package->id)
                                         <i class="fa-solid fa-check-circle"></i>
-                                        @if($subscription->status === 'trial' || $package->slug === 'free')
+                                        @if($subscription->status === 'trial')
                                             DENEME SÜRÜMÜ AKTİF
                                         @else
                                             AKTİF PAKET

@@ -44,9 +44,21 @@ class BillingController extends Controller
 
         // Instant free plan assignment
         if ($package->price_monthly == 0) {
-            $this->subscriptionService->assignPlan($business, $package, 120, 'system');
+            \App\Models\Subscription::create([
+                'business_id' => $business->id,
+                'package_id' => $package->id,
+                'starts_at' => now(),
+                'ends_at' => now()->addDays(14),
+                'status' => 'trial',
+                'payment_method' => 'system'
+            ]);
+            
+            $business->update([
+                'subscription_status' => 'trial',
+                'subscription_ends_at' => now()->addDays(14)
+            ]);
 
-            return redirect()->route('vendor.billing.index')->with('success', 'Ücretsiz paketiniz başarıyla tanımlandı.');
+            return redirect()->route('vendor.billing.index')->with('success', '14 Günlük Ücretsiz Deneme Serüveniniz başlatıldı!');
         }
 
         // Calculate Price and apply discounts
