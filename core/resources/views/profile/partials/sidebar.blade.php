@@ -39,7 +39,7 @@
 
     <a href="{{ route('profile.favorites') }}" class="flex items-center px-4 py-3.5 {{ request()->routeIs('profile.favorites') ? 'bg-primary/5 text-primary font-bold' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900 font-medium' }} rounded-2xl transition-all group">
         <div class="w-8 h-8 rounded-full {{ request()->routeIs('profile.favorites') ? 'bg-primary/10 text-primary' : 'bg-gray-50 text-gray-400 group-hover:bg-gray-100 group-hover:text-gray-600' }} flex items-center justify-center mr-3 transition">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+            <i class="fa-solid fa-heart text-[12px]"></i>
         </div>
         Favorilerim
     </a>
