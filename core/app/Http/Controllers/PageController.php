@@ -6,7 +6,45 @@ class PageController extends Controller
 {
     public function rezervistaPos()
     {
-        return view('pages.rezervista-pos');
+        // Real dynamic data calculation for POS landing page
+        $activeBusinessesCount = \App\Models\Business::where('is_active', true)->count();
+        $cityCount = \App\Models\Location::whereNotNull('city')->distinct('city')->count('city');
+        $transactionVolume = \App\Models\Order::where('payment_status', 'paid')->sum('total_amount');
+
+        // Formats
+        $formattedBusinessesCount = $activeBusinessesCount;
+        $businessSuffix = '';
+        if ($activeBusinessesCount >= 1000) {
+            $formattedBusinessesCount = number_format($activeBusinessesCount / 1000, 1, '.', '');
+            $businessSuffix = 'K+';
+        }
+
+        $formattedVolume = number_format($transactionVolume, 0, ',', '.');
+        $volumeSuffix = '';
+        if ($transactionVolume >= 1000000000) {
+            $formattedVolume = number_format($transactionVolume / 1000000000, 1, '.', '');
+            $volumeSuffix = 'B';
+        } elseif ($transactionVolume >= 1000000) {
+            $formattedVolume = number_format($transactionVolume / 1000000, 1, '.', '');
+            $volumeSuffix = 'M';
+        } elseif ($transactionVolume >= 1000) {
+            $formattedVolume = number_format($transactionVolume / 1000, 1, '.', '');
+            $volumeSuffix = 'K';
+        }
+
+        $uptime = '99.9'; // Service Level Agreement guarantee
+        $latency = '0.2'; // Targeted internal sync latency
+
+        return view('pages.rezervista-pos', compact(
+            'activeBusinessesCount',
+            'formattedBusinessesCount',
+            'businessSuffix',
+            'cityCount',
+            'formattedVolume',
+            'volumeSuffix',
+            'uptime',
+            'latency'
+        ));
     }
 
     public function business()

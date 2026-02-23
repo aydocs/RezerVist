@@ -926,8 +926,8 @@ pre.api-code{
       <div class="a-f d9" style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:28px;">
         <div class="i-statcard" style="text-align:center;"><div class="i-sv" style="color:var(--p);">v1.0</div><div class="i-sl">Sürüm</div></div>
         <div class="i-statcard" style="text-align:center;"><div class="i-sv" style="color:var(--grn);">Aktif</div><div class="i-sl">Durum</div></div>
-        <div class="i-statcard" style="text-align:center;"><div class="i-sv">3.200+</div><div class="i-sl">İşletme</div></div>
-        <div class="i-statcard" style="text-align:center;"><div class="i-sv">43</div><div class="i-sl">İl</div></div>
+        <div class="i-statcard" style="text-align:center;"><div class="i-sv">{{ number_format($activeBusinessesCount, 0, ',', '.') }}{{ $activeBusinessesCount >= 1000 ? '+' : '' }}</div><div class="i-sl">İşletme</div></div>
+        <div class="i-statcard" style="text-align:center;"><div class="i-sv">{{ max(1, $cityCount) }}</div><div class="i-sl">İl</div></div>
       </div>
     </div>
   </div>
@@ -1123,10 +1123,10 @@ pre.api-code{
         <div class="hero-trust-item"><i class="fa-solid fa-check"></i> Kart gerekmez</div>
       </div>
       <div class="hero-stats">
-        <div><div class="hs-num">3.2<span>K+</span></div><div class="hs-lbl">Aktif İşletme</div></div>
-        <div><div class="hs-num">0.2<span>ms</span></div><div class="hs-lbl">Senkronizasyon</div></div>
-        <div><div class="hs-num">99.9<span>%</span></div><div class="hs-lbl">Uptime SLA</div></div>
-        <div><div class="hs-num">₺2.4<span>B</span></div><div class="hs-lbl">Toplam Hacim</div></div>
+        <div><div class="hs-num">{{ $formattedBusinessesCount }}<span>{{ $businessSuffix }}</span></div><div class="hs-lbl">Aktif İşletme</div></div>
+        <div><div class="hs-num">{{ $latency }}<span>ms</span></div><div class="hs-lbl">Senkronizasyon</div></div>
+        <div><div class="hs-num">{{ $uptime }}<span>%</span></div><div class="hs-lbl">Uptime SLA</div></div>
+        <div><div class="hs-num">₺{{ $formattedVolume }}<span>{{ $volumeSuffix }}</span></div><div class="hs-lbl">Toplam Hacim</div></div>
       </div>
     </div>
     <div class="terminal-wrap">
@@ -1220,23 +1220,57 @@ pre.api-code{
 
 <!-- =====================
      TRUST BAR
-===================== -->
+===================== Düzenlenecek
 <div class="trust-bar">
   <div class="trust-track">
-    @php $brands=[['fa-file-invoice','e-Fatura GİB'],['fa-store','Getir Yemek'],['fa-motorcycle','Trendyol Yemek'],['fa-credit-card','İyzico Ödeme'],['fa-building-columns','Garanti BBVA'],['fa-qrcode','QR Menü Pro'],['fa-cash-register','Parasut ERP'],['fa-truck','Mikro ERP'],['fa-cloud','Microsoft Azure'],['fa-database','PostgreSQL'],['fa-brands fa-whatsapp','WhatsApp Business'],['fa-chart-bar','Power BI'],['fa-file-invoice','e-Fatura GİB'],['fa-store','Getir Yemek'],['fa-motorcycle','Trendyol Yemek'],['fa-credit-card','İyzico Ödeme'],['fa-building-columns','Garanti BBVA'],['fa-qrcode','QR Menü Pro'],['fa-cash-register','Parasut ERP'],['fa-truck','Mikro ERP'],['fa-cloud','Microsoft Azure'],['fa-database','PostgreSQL'],['fa-brands fa-whatsapp','WhatsApp Business'],['fa-chart-bar','Power BI']]; @endphp
-    @foreach($brands as $b)<div class="trust-item"><i class="{{ $b[0] }}"></i> {{ $b[1] }}</div><div class="trust-dot"></div>@endforeach
+    @php
+      $brands = [
+        ['fa-file-invoice','e-Fatura GİB'],
+        ['fa-store','Getir Yemek'],
+        ['fa-motorcycle','Trendyol Yemek'],
+        ['fa-credit-card','İyzico Ödeme'],
+        ['fa-building-columns','Garanti BBVA'],
+        ['fa-qrcode','QR Menü Pro'],
+        ['fa-cash-register','Parasut ERP'],
+        ['fa-truck','Mikro ERP'],
+        ['fa-cloud','Microsoft Azure'],
+        ['fa-database','PostgreSQL'],
+        ['fa-brands fa-whatsapp','WhatsApp Business'],
+        ['fa-chart-bar','Power BI'],
+        ['fa-file-invoice','e-Fatura GİB'],
+        ['fa-store','Getir Yemek'],
+        ['fa-motorcycle','Trendyol Yemek'],
+        ['fa-credit-card','İyzico Ödeme'],
+        ['fa-building-columns','Garanti BBVA'],
+        ['fa-qrcode','QR Menü Pro'],
+        ['fa-cash-register','Parasut ERP'],
+        ['fa-truck','Mikro ERP'],
+        ['fa-cloud','Microsoft Azure'],
+        ['fa-database','PostgreSQL'],
+        ['fa-brands fa-whatsapp','WhatsApp Business'],
+        ['fa-chart-bar','Power BI']
+      ];
+    @endphp
+
+    @foreach($brands as $b)
+      <div class="trust-item">
+        <i class="{{ $b[0] }}"></i> {{ $b[1] }}
+      </div>
+      <div class="trust-dot"></div>
+    @endforeach
   </div>
 </div>
+-->
 
 <!-- =====================
      STATS
 ===================== -->
 <div class="stats-wrap">
   <div class="stats-grid">
-    <div class="sblock reveal"><div class="sblock-num">3.2<span class="c">K+</span></div><div class="sblock-lbl">Aktif İşletme</div><div class="sblock-sub">43 ilde Türkiye genelinde hizmet</div><i class="fa-solid fa-store sblock-icon"></i></div>
-    <div class="sblock reveal" style="transition-delay:.08s;"><div class="sblock-num">99.9<span class="c">%</span></div><div class="sblock-lbl">Uptime Garantisi</div><div class="sblock-sub">Son 12 ayda yalnızca 52 dk kesinti</div><i class="fa-solid fa-server sblock-icon"></i></div>
-    <div class="sblock reveal" style="transition-delay:.16s;"><div class="sblock-num">0.2<span class="c">ms</span></div><div class="sblock-lbl">Ortalama Gecikme</div><div class="sblock-sub">Yerel ağda anlık senkronizasyon</div><i class="fa-solid fa-bolt sblock-icon"></i></div>
-    <div class="sblock reveal" style="transition-delay:.24s;"><div class="sblock-num">₺2.4<span class="c">B</span></div><div class="sblock-lbl">İşlem Hacmi</div><div class="sblock-sub">2024 yılında işlenen toplam ciro</div><i class="fa-solid fa-chart-line sblock-icon"></i></div>
+    <div class="sblock reveal"><div class="sblock-num">{{ $formattedBusinessesCount }}<span class="c">{{ $businessSuffix }}</span></div><div class="sblock-lbl">Aktif İşletme</div><div class="sblock-sub">{{ max(1, $cityCount) }} ilde Türkiye genelinde hizmet</div><i class="fa-solid fa-store sblock-icon"></i></div>
+    <div class="sblock reveal" style="transition-delay:.08s;"><div class="sblock-num">{{ $uptime }}<span class="c">%</span></div><div class="sblock-lbl">Uptime Garantisi</div><div class="sblock-sub">Son 12 ayda yalnızca 52 dk kesinti</div><i class="fa-solid fa-server sblock-icon"></i></div>
+    <div class="sblock reveal" style="transition-delay:.16s;"><div class="sblock-num">{{ $latency }}<span class="c">ms</span></div><div class="sblock-lbl">Ortalama Gecikme</div><div class="sblock-sub">Yerel ağda anlık senkronizasyon</div><i class="fa-solid fa-bolt sblock-icon"></i></div>
+    <div class="sblock reveal" style="transition-delay:.24s;"><div class="sblock-num">₺{{ $formattedVolume }}<span class="c">{{ $volumeSuffix }}</span></div><div class="sblock-lbl">İşlem Hacmi</div><div class="sblock-sub">{{ date('Y') }} yılında işlenen toplam ciro</div><i class="fa-solid fa-chart-line sblock-icon"></i></div>
   </div>
 </div>
 
@@ -1843,80 +1877,67 @@ pre.api-code{
     </div>
   </div>
 </section>
-
-<!-- =====================
-     COMPARISON
-===================== -->
-<section class="sec cmp-sec" id="comparison">
-  <div class="sec-in">
-    <div class="reveal" style="text-align:center;">
-      <span class="sec-tag">Karşılaştırma</span>
-      <h2 class="sec-h">RezerVist vs<br><em>Geleneksel POS</em></h2>
-      <p class="sec-sub" style="margin:0 auto;text-align:center;">Neden RezerVist? Yan yana bakıldığında cevap açık.</p>
-    </div>
-    <div class="cmp-table-wrap reveal" style="transition-delay:.1s;">
-      <div class="cmp-table">
-        <div class="cmp-head">
-          <div class="cmp-th feat">Özellik</div>
-          <div class="cmp-th hero">RezerVist POS</div>
-          <div class="cmp-th">Geleneksel POS</div>
-          <div class="cmp-th">Manuel Sistem</div>
-        </div>
-        <div>
-          @php $rows=[
-            ['Senkronizasyon Hızı','<strong>15ms</strong> (Anlık)','5 - 10 Saniye','<i class="fa-solid fa-times cn"></i> Yok'],
-            ['Mutfak Ekranı (KDS)','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-minus cp"></i> Ek Ücret','<i class="fa-solid fa-times cn"></i> Yok'],
-            ['Çok Şube Yönetimi','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-minus cp"></i> Ücretli / Limitli','<i class="fa-solid fa-times cn"></i> Yok'],
-            ['Offline Mod','<i class="fa-solid fa-check cy"></i> Dahil (Anlık)','<i class="fa-solid fa-times cn"></i> Bağlantı Gerekli','<i class="fa-solid fa-check cy"></i> Manuel'],
-            ['AI Destekli Analitik','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-times cn"></i> Temel Rapor','<i class="fa-solid fa-times cn"></i> Yok'],
-            ['QR Dijital Menü','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-minus cp"></i> Ek Ücret','<i class="fa-solid fa-times cn"></i> Yok'],
-            ['Müşteri Sadakat Sistemi','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-minus cp"></i> Ek Ücret','<i class="fa-solid fa-times cn"></i> Yok'],
-            ['Mobil Uygulama','<i class="fa-solid fa-check cy"></i> Dahil (Native)','<i class="fa-solid fa-minus cp"></i> Kısıtlı Web','<i class="fa-solid fa-times cn"></i> Yok'],
-            ['Biyometrik Giriş','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-times cn"></i> Yok','<i class="fa-solid fa-times cn"></i> Yok'],
-            ['Kurulum Süresi','<strong>~8 Dakika</strong>','2 - 3 Hafta','—'],
-            ['Güncellemeler','<i class="fa-solid fa-check cy"></i> Sınırsız / Ücretsiz','<i class="fa-solid fa-minus cp"></i> Ücretli / Servis','—'],
-            ['Teknik Destek','<i class="fa-solid fa-check cy"></i> 7/24 Öncelikli','<i class="fa-solid fa-minus cp"></i> Mesai Saatleri','<i class="fa-solid fa-times cn"></i> Yok'],
-            ['Aylık Maliyet','<strong>₺990\'dan Başlar</strong>','₺1.800 - ₺4.500','Yüksek İş Gücü Kaybı']
-          ]; @endphp
-          @foreach($rows as $r)
-          <div class="cmp-row">
-            <div class="cmp-cell feat">{{ $r[0] }}</div>
-            <div class="cmp-cell hero">{!! $r[1] !!}</div>
-            <div class="cmp-cell">{!! $r[2] !!}</div>
-            <div class="cmp-cell">{!! $r[3] !!}</div>
-          </div>
-          @endforeach
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- =====================
      INTEGRATIONS
 ===================== -->
+<!-- Düzenlenecek
 <section class="sec" id="integrations" style="background:var(--bg2);">
   <div class="sec-in">
     <div class="reveal" style="text-align:center;">
       <span class="sec-tag">Entegrasyonlar</span>
       <h2 class="sec-h">Sınırsız<br><em>Ekosistem.</em></h2>
-      <p class="sec-sub" style="margin:0 auto;text-align:center;">Tüm araçlarınızla konuşur. Hepsini tek noktadan yönetirsiniz. 40+ hazır entegrasyon.</p>
+      <p class="sec-sub" style="margin:0 auto;text-align:center;">
+        Tüm araçlarınızla konuşur. Hepsini tek noktadan yönetirsiniz. 40+ hazır entegrasyon.
+      </p>
     </div>
+
     <div class="int-grid reveal" style="transition-delay:.08s;">
-      @foreach([['fa-file-invoice-dollar','e-Fatura (GİB)'],['fa-motorcycle','Trendyol Yemek'],['fa-store','Getir Yemek'],['fa-truck','Yemeksepeti'],['fa-credit-card','İyzico'],['fa-credit-card','PayTR'],['fa-building-columns','Garanti BBVA'],['fa-building-columns','Ziraat Bankası'],['fa-qrcode','QR Menü Pro'],['fa-wifi','NFC / Temassız'],['fa-boxes-stacked','Mikro ERP'],['fa-cash-register','Parasut'],['fa-brands fa-whatsapp','WhatsApp Business'],['fa-envelope','E-posta SMTP'],['fa-chart-bar','Power BI'],['fa-brands fa-google','Google Analytics'],['fa-truck-fast','Kurye API'],['fa-barcode','Barkod / QR Okuyucu'],['fa-print','Fişyazıcı / Termal'],['fa-scale-balanced','Kasa Çekmecesi']] as $p)
-      <div class="int-pill"><i class="{{ $p[0] }}"></i> {{ $p[1] }}</div>
+      @foreach([
+        ['fa-file-invoice-dollar','e-Fatura (GİB)'],
+        ['fa-motorcycle','Trendyol Yemek'],
+        ['fa-store','Getir Yemek'],
+        ['fa-truck','Yemeksepeti'],
+        ['fa-credit-card','İyzico'],
+        ['fa-credit-card','PayTR'],
+        ['fa-building-columns','Garanti BBVA'],
+        ['fa-building-columns','Ziraat Bankası'],
+        ['fa-qrcode','QR Menü Pro'],
+        ['fa-wifi','NFC / Temassız'],
+        ['fa-boxes-stacked','Mikro ERP'],
+        ['fa-cash-register','Parasut'],
+        ['fa-brands fa-whatsapp','WhatsApp Business'],
+        ['fa-envelope','E-posta SMTP'],
+        ['fa-chart-bar','Power BI'],
+        ['fa-brands fa-google','Google Analytics'],
+        ['fa-truck-fast','Kurye API'],
+        ['fa-barcode','Barkod / QR Okuyucu'],
+        ['fa-print','Fişyazıcı / Termal'],
+        ['fa-scale-balanced','Kasa Çekmecesi']
+      ] as $p)
+        <div class="int-pill">
+          <i class="{{ $p[0] }}"></i> {{ $p[1] }}
+        </div>
       @endforeach
     </div>
+
     <div class="api-block reveal" style="transition-delay:.16s;">
       <div class="api-l">
         <div class="sec-tag" style="margin-bottom:10px;">Geliştirici API'si</div>
         <div class="api-title">Kendi Yazılımınızı<br>Bağlayın.</div>
-        <p class="api-sub">RESTful API ve WebSocket desteğiyle mevcut sistemlerinizi dakikalar içinde entegre edin. 200+ endpoint, tam Swagger dokümantasyonu.</p>
+        <p class="api-sub">
+          RESTful API ve WebSocket desteğiyle mevcut sistemlerinizi dakikalar içinde entegre edin.
+          200+ endpoint, tam Swagger dokümantasyonu.
+        </p>
         <div style="display:flex;gap:10px;flex-wrap:wrap;">
-          <a href="/docs" class="btn-p"><i class="fa-solid fa-book" style="font-size:.72rem;"></i> API Dökümanları</a>
-          <a href="#" class="btn-o"><i class="fa-brands fa-github" style="font-size:.72rem;"></i> GitHub SDK</a>
+          <a href="/docs" class="btn-p">
+            <i class="fa-solid fa-book" style="font-size:.72rem;"></i> API Dökümanları
+          </a>
+          <a href="#" class="btn-o">
+            <i class="fa-brands fa-github" style="font-size:.72rem;"></i> GitHub SDK
+          </a>
         </div>
       </div>
+
       <pre class="api-code"><span class="cm">POST</span> /api/v1/orders
 <span class="ck">Authorization:</span> <span class="cs">Bearer {api_key}</span>
 <span class="ck">Content-Type:</span> application/json
@@ -1934,7 +1955,7 @@ pre.api-code{
     </div>
   </div>
 </section>
-
+-->
 <!-- =====================
      TESTIMONIALS
 ===================== -->
