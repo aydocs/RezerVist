@@ -44,6 +44,16 @@ class TagSeeder extends Seeder
             ['name' => 'Manzaralı', 'slug' => 'manzarali', 'category' => 'Ortam'],
             ['name' => 'İş Yemeği', 'slug' => 'is-yemegi', 'category' => 'Ortam'],
             ['name' => 'Grup Yemeği', 'slug' => 'grup-yemegi', 'category' => 'Ortam'],
+            ['name' => 'Modern & Şık', 'slug' => 'modern-sik', 'category' => 'Ortam'],
+            ['name' => 'Otantik', 'slug' => 'otantik', 'category' => 'Ortam'],
+            ['name' => 'Hareketli', 'slug' => 'hareketli', 'category' => 'Ortam'],
+            ['name' => 'Aileye Uygun', 'slug' => 'aileye-uygun', 'category' => 'Ortam'],
+            ['name' => 'Lüks / Premium', 'slug' => 'luks-premium', 'category' => 'Ortam'],
+            ['name' => 'Geleneksel', 'slug' => 'geleneksel', 'category' => 'Ortam'],
+            ['name' => 'Loş Işık', 'slug' => 'los-isik', 'category' => 'Ortam'],
+            ['name' => 'Eğlenceli', 'slug' => 'eglenceli', 'category' => 'Ortam'],
+            ['name' => 'Huzurlu', 'slug' => 'huzurlu', 'category' => 'Ortam'],
+            ['name' => 'Bahçe Keyfi', 'slug' => 'bahce-keyfi', 'category' => 'Ortam'],
         ];
 
         foreach ($tags as $tag) {

@@ -5,568 +5,1143 @@
 @section('content')
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-  :root {
-    --primary: #6200EE;
-    --primary-dark: #4A00B4;
-    --primary-light: #8B3FFF;
-    --accent: #03DAC6;
-    --bg: #FFFFFF;
-    --surface: #F8F7FF;
-    --surface-2: #F0EDF9;
-    --border: #EAE6F5;
-    --border-strong: #D6CEF0;
-    --text: #0D0920;
-    --text-muted: #9189AC;
-    --text-subtle: #5C5270;
-    --shadow: rgba(98,0,238,0.08);
-  }
+:root{
+  --p:#5B21B6;--pd:#3B0F8C;--pl:#7C3AED;--pl2:#A78BFA;
+  --acc:#0EA5E9;--acc2:#06B6D4;--grn:#10B981;--ylw:#F59E0B;--red:#EF4444;
+  --bg:#FAFAFA;--bg2:#FFFFFF;--sf:#F5F3FF;--sf2:#EDE9FE;--sf3:#F0FDF4;
+  --br:#E5E1F8;--brh:#C4B8F0;--brx:#A78BFA;
+  --tx:#0C0820;--txm:#7C6FA0;--txs:#4C4369;
+  --sh:rgba(91,33,182,0.09);--shd:rgba(91,33,182,0.18);
+  --r:20px;--r2:28px;--r3:36px;
+  --ff-h:'Syne',sans-serif;
+  --ff-b:'Space Grotesk',sans-serif;
+  --ff-c:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+.pos-page{font-family:var(--ff-b);color:var(--tx);background:var(--bg);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+.pos-page a{text-decoration:none;color:inherit;}
+.pos-page img{max-width:100%;display:block;}
 
-  /* HERO */
-  .hero{min-height:100vh;display:flex;align-items:center;padding:100px 60px 80px;position:relative;overflow:hidden;background:var(--bg);}
-  .hero-orb{position:absolute;border-radius:50%;pointer-events:none;}
-  .hero-orb-1{width:880px;height:880px;background:radial-gradient(circle,rgba(98,0,238,0.055) 0%,transparent 65%);top:-280px;left:-180px;animation:orbf 10s ease-in-out infinite;}
-  .hero-orb-2{width:580px;height:580px;background:radial-gradient(circle,rgba(3,218,198,0.07) 0%,transparent 65%);bottom:-130px;right:-80px;animation:orbf 13s ease-in-out infinite reverse;}
-  @keyframes orbf{0%,100%{transform:translate(0,0);}50%{transform:translate(22px,-22px);}}
-  .hero-grid{
-    position:absolute;inset:0;
-    background-image:linear-gradient(rgba(98,0,238,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(98,0,238,0.04) 1px,transparent 1px);
-    background-size:72px 72px;
-    mask-image:radial-gradient(ellipse 70% 70% at 50% 50%,black 25%,transparent 80%);
-  }
-  .hero-inner{max-width:1360px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;position:relative;z-index:1;}
+/* ============================
+   ANIMATIONS
+============================ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.82);}to{opacity:1;transform:scale(1);}}
+@keyframes scaleBig{from{opacity:0;transform:scale(0.4);}to{opacity:1;transform:scale(1);}}
+@keyframes slideL{from{opacity:0;transform:translateX(-44px);}to{opacity:1;transform:translateX(0);}}
+@keyframes slideR{from{opacity:0;transform:translateX(44px);}to{opacity:1;transform:translateX(0);}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(91,33,182,0.35);}50%{box-shadow:0 0 0 18px rgba(91,33,182,0);}}
+@keyframes pulseGrn{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.4);}50%{box-shadow:0 0 0 14px rgba(16,185,129,0);}}
+@keyframes barGrow{from{height:0;opacity:0;}}
+@keyframes lineAnim{from{stroke-dashoffset:500;}to{stroke-dashoffset:0;}}
+@keyframes typeAnim{from{max-width:0;}to{max-width:100%;}}
+@keyframes blink{50%{border-color:transparent;}}
+@keyframes rotate{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+@keyframes orb{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(14px,-14px) scale(1.05);}}
+@keyframes shine{from{left:-100%;}to{left:160%;}}
+@keyframes trustScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+@keyframes heroFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+@keyframes gradMove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+@keyframes dotFly{0%{transform:translate(0,0) scale(1);opacity:1;}100%{transform:translate(var(--dx,20px),var(--dy,-30px)) scale(0);opacity:0;}}
+@keyframes countUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+@keyframes notifSlide{from{opacity:0;transform:translateX(120px);}to{opacity:1;transform:translateX(0);}}
+@keyframes progress{from{width:0;}to{width:100%;}}
+@keyframes waveAnim{0%,100%{transform:scaleY(0.5);}50%{transform:scaleY(1.5);}}
+@keyframes bgShift{0%,100%{background-position:0 0;}100%{background-position:40px 40px;}}
 
-  .hero-badge{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:5px 14px 5px 5px;
-    border:1.5px solid rgba(98,0,238,0.15);border-radius:100px;
-    background:rgba(98,0,238,0.04);
-    font-size:0.71rem;font-weight:700;color:var(--primary);
-    letter-spacing:0.07em;text-transform:uppercase;margin-bottom:26px;
-  }
-  .badge-ping{width:22px;height:22px;border-radius:50%;background:rgba(98,0,238,0.08);display:flex;align-items:center;justify-content:center;}
-  .badge-dot{width:7px;height:7px;border-radius:50%;background:var(--primary);animation:ping 2s infinite;}
-  @keyframes ping{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(0.75);}}
+.a-fu{animation:fadeUp 0.65s cubic-bezier(0.19,1,0.22,1) both;}
+.a-fd{animation:fadeDown 0.65s cubic-bezier(0.19,1,0.22,1) both;}
+.a-f{animation:fadeIn 0.5s ease both;}
+.a-sc{animation:scaleIn 0.65s cubic-bezier(0.19,1,0.22,1) both;}
+.a-scb{animation:scaleBig 0.8s cubic-bezier(0.19,1,0.22,1) both;}
+.a-sl{animation:slideL 0.65s cubic-bezier(0.19,1,0.22,1) both;}
+.a-sr{animation:slideR 0.65s cubic-bezier(0.19,1,0.22,1) both;}
+.d1{animation-delay:.1s;}.d2{animation-delay:.2s;}.d3{animation-delay:.3s;}
+.d4{animation-delay:.4s;}.d5{animation-delay:.5s;}.d6{animation-delay:.6s;}
+.d7{animation-delay:.7s;}.d8{animation-delay:.8s;}.d9{animation-delay:.9s;}
 
-  .hero-title{
-    font-family:'Inter',sans-serif;
-    font-size:clamp(3rem,5.5vw,5.5rem);font-weight:800;line-height:0.93;letter-spacing:-0.045em;
-    color:var(--text);margin-bottom:22px;
-  }
-  .hero-title .grad{
-    background:linear-gradient(135deg,var(--primary) 0%,#A855F7 50%,#06B6D4 100%);
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  }
-  .hero-sub{font-size:1.075rem;font-weight:300;line-height:1.75;color:var(--text-subtle);max-width:490px;margin-bottom:38px;}
-  .hero-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+/* ============================
+   INTRO OVERLAY
+============================ */
+#intro-overlay{
+  position:fixed;inset:0;z-index:99999;background:#fff;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity 0.85s cubic-bezier(0.4,0,0.2,1),visibility 0.85s;
+}
+#intro-overlay.done{opacity:0;visibility:hidden;pointer-events:none;}
+#intro-progress-bar{position:absolute;top:0;left:0;right:0;height:3px;background:var(--sf);}
+#intro-progress-fill{height:100%;background:linear-gradient(90deg,var(--p),var(--acc));transition:width 0.12s linear;box-shadow:0 0 10px rgba(91,33,182,0.5);}
+#skip-intro{
+  position:absolute;bottom:32px;right:32px;
+  padding:9px 20px;border-radius:50px;border:1.5px solid var(--br);
+  color:var(--txm);font-family:var(--ff-b);font-size:0.72rem;font-weight:700;
+  letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;
+  background:transparent;transition:all 0.2s;display:flex;align-items:center;gap:7px;
+}
+#skip-intro:hover{background:var(--p);color:white;border-color:var(--p);}
+.intro-dots{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;gap:6px;}
+.i-dot{width:5px;height:5px;border-radius:50%;background:var(--br);transition:all 0.3s;}
+.i-dot.on{background:var(--p);transform:scale(1.5);}
+[x-cloak]{display:none!important;}
 
-  .btn-primary{
-    display:inline-flex;align-items:center;gap:9px;padding:14px 26px;
-    background:var(--primary);color:white;font-weight:700;font-size:0.9375rem;
-    border-radius:13px;text-decoration:none;transition:all 0.3s;border:none;cursor:pointer;
-    letter-spacing:-0.01em;box-shadow:0 4px 16px rgba(98,0,238,0.2);
-  }
-  .btn-primary:hover{background:var(--primary-dark);transform:translateY(-2px);box-shadow:0 12px 32px rgba(98,0,238,0.3);}
-  .btn-outline{
-    display:inline-flex;align-items:center;gap:9px;padding:14px 26px;
-    border:1.5px solid var(--border-strong);color:var(--text-subtle);font-weight:600;font-size:0.9375rem;
-    border-radius:13px;text-decoration:none;transition:all 0.25s;cursor:pointer;background:white;letter-spacing:-0.01em;
-  }
-  .btn-outline:hover{border-color:var(--primary);color:var(--primary);background:rgba(98,0,238,0.03);}
+.iscene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:64px 40px;}
 
-  .hero-stats{display:flex;gap:34px;margin-top:46px;padding-top:46px;border-top:1.5px solid var(--border);}
-  .stat-num{font-family:'Inter',sans-serif;font-size:1.7rem;font-weight:800;color:var(--text);letter-spacing:-0.04em;line-height:1;}
-  .stat-num span{color:var(--primary);}
-  .stat-label{font-size:0.76rem;color:var(--text-muted);font-weight:500;margin-top:5px;}
+.i-chip{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:5px 13px;background:var(--sf);border:1.5px solid var(--br);
+  border-radius:10px;font-size:0.67rem;font-weight:700;color:var(--p);
+  text-transform:uppercase;letter-spacing:0.13em;font-family:var(--ff-b);
+}
+.i-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 12px;border-radius:100px;font-size:0.68rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;font-family:var(--ff-b);
+}
+.i-statcard{background:var(--sf);border:1.5px solid var(--br);border-radius:13px;padding:12px 16px;}
+.i-sv{font-family:var(--ff-h);font-size:1.3rem;font-weight:700;color:var(--tx);letter-spacing:-0.03em;}
+.i-sl{font-size:0.6rem;color:var(--txm);font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin-top:3px;}
+.i-type{overflow:hidden;border-right:3px solid var(--p);white-space:nowrap;display:block;animation:typeAnim 1.5s steps(14,end) both,blink 0.5s step-end infinite alternate;}
 
-  /* TERMINAL */
-  .terminal-wrap{position:relative;display:flex;align-items:center;justify-content:center;}
-  .term-glow{position:absolute;width:460px;height:460px;background:radial-gradient(circle,rgba(98,0,238,0.11) 0%,transparent 70%);border-radius:50%;animation:orbf 7s ease-in-out infinite;}
-  .terminal{
-    position:relative;z-index:1;width:390px;
-    background:white;border-radius:22px;border:1.5px solid var(--border);overflow:hidden;
-    box-shadow:0 28px 72px rgba(98,0,238,0.1),0 6px 20px rgba(0,0,0,0.05);
-    transform:perspective(1100px) rotateY(-6deg) rotateX(2deg);
-    transition:transform 0.8s ease;animation:tEntry 1s ease both;
-  }
-  .terminal:hover{transform:perspective(1100px) rotateY(-1deg) rotateX(0deg);}
-  @keyframes tEntry{from{opacity:0;transform:perspective(1100px) rotateY(-18deg) rotateX(8deg) translateY(40px);}to{opacity:1;transform:perspective(1100px) rotateY(-6deg) rotateX(2deg);}}
-  .t-header{height:44px;background:var(--surface);border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;}
-  .t-dots{display:flex;gap:5px;}
-  .t-dot{width:10px;height:10px;border-radius:50%;}
-  .t-dot-r{background:#FF5F57;} .t-dot-o{background:#FFBD2E;} .t-dot-g{background:#28C840;}
-  .t-label{font-size:0.67rem;color:var(--text-muted);font-weight:600;letter-spacing:0.1em;}
-  .t-body{padding:20px;}
-  .t-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
-  .t-greet{font-size:0.68rem;color:var(--text-muted);font-weight:500;}
-  .t-name{font-family:'Inter',sans-serif;font-size:0.95rem;font-weight:700;color:var(--text);}
-  .t-time{font-size:0.78rem;color:var(--primary);font-weight:700;background:rgba(98,0,238,0.06);padding:5px 11px;border-radius:100px;border:1px solid rgba(98,0,238,0.12);}
-  .t-kpis{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px;}
-  .t-kpi{background:var(--surface);border:1.5px solid var(--border);border-radius:13px;padding:13px;}
-  .t-kpi.f{background:rgba(98,0,238,0.05);border-color:rgba(98,0,238,0.18);}
-  .t-kpi-l{font-size:0.6rem;color:var(--text-muted);font-weight:600;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:4px;}
-  .t-kpi-v{font-family:'Inter',sans-serif;font-size:1.35rem;font-weight:800;color:var(--text);letter-spacing:-0.03em;}
-  .t-kpi.f .t-kpi-v{color:var(--primary);}
-  .t-kpi-t{font-size:0.6rem;font-weight:700;margin-top:3px;}
-  .t-kpi-t.g{color:#10B981;} .t-kpi-t.m{color:var(--text-muted);}
-  .t-chart-l{font-size:0.6rem;color:var(--text-muted);font-weight:600;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:7px;}
-  .t-chart{display:flex;align-items:flex-end;gap:4px;height:48px;margin-bottom:16px;}
-  .t-b{flex:1;border-radius:4px 4px 0 0;background:rgba(98,0,238,0.1);}
-  .t-b.hi{background:var(--primary);}
-  .t-b.ac{background:linear-gradient(180deg,var(--accent) 0%,rgba(3,218,198,0.2) 100%);}
-  .t-orders{display:flex;flex-direction:column;gap:6px;}
-  .t-order{display:flex;align-items:center;justify-content:space-between;padding:8px 11px;background:var(--surface);border-radius:10px;border:1.5px solid var(--border);}
-  .t-ol{display:flex;align-items:center;gap:8px;}
-  .t-ic{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:0.62rem;}
-  .ic-p{background:rgba(98,0,238,0.08);color:var(--primary);}
-  .ic-t{background:rgba(3,218,198,0.1);color:#0ABBA3;}
-  .t-ot{font-size:0.7rem;font-weight:600;color:var(--text);}
-  .t-os{font-size:0.6rem;color:var(--text-muted);}
-  .bdg{font-size:0.56rem;font-weight:700;padding:3px 7px;border-radius:100px;letter-spacing:0.05em;}
-  .bdg-ok{background:rgba(16,185,129,0.08);color:#10B981;}
-  .bdg-go{background:rgba(245,158,11,0.1);color:#F59E0B;}
+/* ============================
+   LAYOUT BASE
+============================ */
+#main-page{opacity:0;transition:opacity 0.85s ease;}
+#main-page.on{opacity:1;}
+.sec{padding:120px 64px;}
+.sec-sm{padding:80px 64px;}
+.sec-in{max-width:1380px;margin:0 auto;width:100%;}
+.sec-tag{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:0.7rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--p);margin-bottom:14px;font-family:var(--ff-b);
+}
+.sec-tag::before{content:'';width:18px;height:1.5px;background:var(--p);}
+.sec-h{font-family:var(--ff-h);font-size:clamp(2.2rem,4vw,3.6rem);font-weight:900;letter-spacing:-0.04em;color:var(--tx);line-height:1.0;margin-bottom:18px;}
+.sec-h em{font-style:normal;color:var(--p);}
+.sec-sub{font-size:1rem;color:var(--txs);font-weight:400;line-height:1.75;max-width:520px;}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity 0.6s cubic-bezier(0.19,1,0.22,1),transform 0.6s cubic-bezier(0.19,1,0.22,1);}
+.reveal.on{opacity:1;transform:translateY(0);}
 
-  /* SECTIONS */
-  .section{padding:112px 60px;}
-  .section-inner{max-width:1360px;margin:0 auto;}
-  .section-tag{display:inline-block;font-size:0.7rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:var(--primary);margin-bottom:16px;}
-  .section-title{font-family:'Inter',sans-serif;font-size:clamp(2rem,3.8vw,3.2rem);font-weight:800;letter-spacing:-0.04em;color:var(--text);line-height:1.05;margin-bottom:18px;}
-  .section-title em{font-style:normal;color:var(--primary);}
-  .section-sub{font-size:1rem;color:var(--text-subtle);font-weight:300;line-height:1.7;max-width:520px;}
+/* ============================
+   BUTTONS
+============================ */
+.btn-p{
+  display:inline-flex;align-items:center;gap:9px;padding:14px 26px;
+  background:var(--p);color:white;font-weight:700;font-size:0.9375rem;
+  border-radius:13px;transition:all 0.25s;border:none;cursor:pointer;
+  letter-spacing:-0.01em;box-shadow:0 4px 18px rgba(91,33,182,0.25);
+  position:relative;overflow:hidden;font-family:var(--ff-b);
+}
+.btn-p::after{content:'';position:absolute;top:0;left:-100%;width:55%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.14),transparent);animation:shine 3.5s ease infinite 2s;}
+.btn-p:hover{background:var(--pd);transform:translateY(-2px);box-shadow:0 12px 32px rgba(91,33,182,0.32);}
+.btn-o{
+  display:inline-flex;align-items:center;gap:9px;padding:14px 26px;
+  border:1.5px solid var(--brh);color:var(--txs);font-weight:600;font-size:0.9375rem;
+  border-radius:13px;transition:all 0.2s;cursor:pointer;background:white;
+  letter-spacing:-0.01em;font-family:var(--ff-b);
+}
+.btn-o:hover{border-color:var(--p);color:var(--p);background:var(--sf);}
+.btn-w{
+  display:inline-flex;align-items:center;gap:9px;padding:14px 28px;
+  background:white;color:var(--p);font-weight:700;font-size:0.9375rem;
+  border-radius:13px;transition:all 0.25s;letter-spacing:-0.01em;
+  box-shadow:0 8px 24px rgba(0,0,0,0.14);font-family:var(--ff-b);
+}
+.btn-w:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(0,0,0,0.18);}
+.btn-gl{
+  display:inline-flex;align-items:center;gap:9px;padding:14px 28px;
+  border:1.5px solid rgba(255,255,255,0.28);color:white;font-weight:600;
+  font-size:0.9375rem;border-radius:13px;transition:all 0.2s;
+  background:rgba(255,255,255,0.07);font-family:var(--ff-b);
+}
+.btn-gl:hover{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.5);}
+.btn-acc{
+  display:inline-flex;align-items:center;gap:9px;padding:14px 26px;
+  background:linear-gradient(135deg,var(--acc),var(--acc2));color:white;font-weight:700;
+  font-size:0.9375rem;border-radius:13px;transition:all 0.25s;border:none;cursor:pointer;
+  box-shadow:0 4px 16px rgba(14,165,233,0.3);font-family:var(--ff-b);
+}
+.btn-acc:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(14,165,233,0.4);}
 
-  /* FEATURES */
-  .feat-bg{background:var(--surface);}
-  .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:68px;}
-  .feat-card{
-    background:white;border:1.5px solid var(--border);border-radius:22px;padding:34px;
-    transition:all 0.35s;position:relative;overflow:hidden;
-  }
-  .feat-card:hover{border-color:rgba(98,0,238,0.25);transform:translateY(-5px);box-shadow:0 18px 44px var(--shadow);}
-  .feat-card.span2{grid-column:1/3;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;}
-  .feat-card.dark{background:var(--primary);border-color:var(--primary);}
-  .feat-card.dark:hover{box-shadow:0 18px 44px rgba(98,0,238,0.35);}
-  .feat-icon{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:22px;}
-  .fi-p{background:rgba(98,0,238,0.08);color:var(--primary);}
-  .fi-t{background:rgba(3,218,198,0.1);color:#0ABBA3;}
-  .fi-w{background:rgba(255,255,255,0.15);color:white;}
-  .fi-s{background:var(--surface-2);color:var(--text-subtle);}
-  .feat-title{font-family:'Inter',sans-serif;font-size:1.15rem;font-weight:700;color:var(--text);margin-bottom:11px;letter-spacing:-0.02em;}
-  .feat-card.dark .feat-title{color:white;}
-  .feat-desc{font-size:0.875rem;color:var(--text-subtle);line-height:1.65;font-weight:400;}
-  .feat-card.dark .feat-desc{color:rgba(255,255,255,0.7);}
-  .feat-chks{margin-top:16px;display:flex;flex-direction:column;gap:8px;}
-  .feat-chk{display:flex;align-items:center;gap:8px;font-size:0.78rem;font-weight:600;color:var(--text-muted);}
-  .chk-dot{width:16px;height:16px;border-radius:5px;flex-shrink:0;background:rgba(98,0,238,0.07);display:flex;align-items:center;justify-content:center;}
-  .chk-dot i{font-size:0.5rem;color:var(--primary);}
-  .feat-card.dark .feat-chk{color:rgba(255,255,255,0.6);}
-  .feat-card.dark .chk-dot{background:rgba(255,255,255,0.12);}
-  .feat-card.dark .chk-dot i{color:white;}
+/* ============================
+   HERO
+============================ */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:96px 64px 80px;position:relative;overflow:hidden;background:var(--bg2);
+}
+.hero-noise{position:absolute;inset:0;opacity:0.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(91,33,182,0.035) 1px,transparent 1px),linear-gradient(90deg,rgba(91,33,182,0.035) 1px,transparent 1px);background-size:64px 64px;mask-image:radial-gradient(ellipse 80% 80% at 50% 40%,black 10%,transparent 75%);}
+.hero-orb{position:absolute;border-radius:50%;pointer-events:none;}
+.hero-orb-1{width:960px;height:960px;background:radial-gradient(circle,rgba(91,33,182,0.055) 0%,transparent 60%);top:-320px;left:-220px;animation:orb 11s ease-in-out infinite;}
+.hero-orb-2{width:640px;height:640px;background:radial-gradient(circle,rgba(14,165,233,0.06) 0%,transparent 60%);bottom:-180px;right:-120px;animation:orb 14s ease-in-out infinite reverse;}
+.hero-orb-3{width:280px;height:280px;background:radial-gradient(circle,rgba(167,139,250,0.08) 0%,transparent 70%);top:38%;left:42%;animation:orb 8s ease-in-out infinite 2s;}
+.hero-in{max-width:1380px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;position:relative;z-index:1;}
 
-  /* mini viz */
-  .mini-viz{background:var(--surface);border:1.5px solid var(--border);border-radius:17px;padding:20px;}
-  .mv-l{font-size:0.6rem;color:var(--text-muted);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;}
-  .mv-bars{display:flex;align-items:flex-end;gap:5px;height:66px;}
-  .mv-b{flex:1;border-radius:4px 4px 0 0;}
-  .mv-nums{display:flex;gap:12px;margin-top:12px;}
-  .mv-n{flex:1;}
-  .mv-nv{font-family:'Inter',sans-serif;font-size:1.1rem;font-weight:800;color:var(--text);letter-spacing:-0.03em;}
-  .mv-nl{font-size:0.6rem;color:var(--text-muted);font-weight:500;margin-top:1px;}
+/* Badge */
+.hero-badge{display:inline-flex;align-items:center;gap:9px;padding:5px 14px 5px 5px;border:1.5px solid rgba(91,33,182,0.15);border-radius:100px;background:rgba(91,33,182,0.04);font-size:0.71rem;font-weight:700;color:var(--p);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:24px;font-family:var(--ff-b);}
+.badge-ring{width:22px;height:22px;border-radius:50%;background:rgba(91,33,182,0.08);display:flex;align-items:center;justify-content:center;}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--p);animation:pulse 2.2s infinite;}
+.hero-h{font-family:var(--ff-h);font-size:clamp(3.2rem,5.8vw,6rem);font-weight:900;line-height:0.9;letter-spacing:-0.05em;color:var(--tx);margin-bottom:22px;}
+.hero-h .g{background:linear-gradient(135deg,var(--p) 0%,#A78BFA 50%,var(--acc) 100%);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:gradMove 4s ease infinite;}
+.hero-sub{font-size:1.05rem;font-weight:400;line-height:1.78;color:var(--txs);max-width:500px;margin-bottom:36px;}
+.hero-acts{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:48px;}
+.hero-trust{display:flex;align-items:center;gap:20px;font-size:0.78rem;color:var(--txm);font-weight:600;}
+.hero-trust-item{display:flex;align-items:center;gap:6px;}
+.hero-trust-item i{color:var(--grn);font-size:0.75rem;}
+.hero-stats{display:flex;gap:40px;padding-top:48px;border-top:1.5px solid var(--br);}
+.hs-num{font-family:var(--ff-h);font-size:1.9rem;font-weight:800;color:var(--tx);letter-spacing:-0.04em;line-height:1;}
+.hs-num span{color:var(--p);}
+.hs-lbl{font-size:0.73rem;color:var(--txm);font-weight:500;margin-top:5px;}
 
+/* Terminal */
+.terminal-wrap{position:relative;display:flex;align-items:center;justify-content:center;}
+.term-glow{position:absolute;width:460px;height:460px;background:radial-gradient(circle,rgba(91,33,182,0.1) 0%,transparent 70%);border-radius:50%;animation:orb 8s ease-in-out infinite;}
+.terminal{
+  position:relative;z-index:1;width:400px;background:white;border-radius:24px;
+  border:1.5px solid var(--br);overflow:hidden;
+  box-shadow:0 32px 80px rgba(91,33,182,0.12),0 6px 20px rgba(0,0,0,0.06),inset 0 0 0 1px rgba(255,255,255,0.9);
+  transform:perspective(1100px) rotateY(-6deg) rotateX(2deg);
+  transition:transform 0.8s cubic-bezier(0.19,1,0.22,1);
+  animation:fadeUp 0.9s cubic-bezier(0.19,1,0.22,1) 0.3s both;
+}
+.terminal:hover{transform:perspective(1100px) rotateY(-1deg) rotateX(0.5deg);}
+.t-hdr{height:42px;background:var(--sf);border-bottom:1.5px solid var(--br);display:flex;align-items:center;justify-content:space-between;padding:0 14px;}
+.t-dots{display:flex;gap:5px;}
+.t-dot{width:10px;height:10px;border-radius:50%;}
+.td-r{background:#FF5F57;}.td-o{background:#FFBD2E;}.td-g{background:#28C840;}
+.t-lbl{font-size:0.65rem;color:var(--txm);font-weight:600;letter-spacing:0.1em;font-family:var(--ff-c);}
+.t-body{padding:18px;}
+.t-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.t-greet{font-size:0.66rem;color:var(--txm);font-weight:500;}
+.t-name{font-family:var(--ff-h);font-size:0.95rem;font-weight:700;color:var(--tx);}
+.t-time{font-size:0.75rem;color:var(--p);font-weight:700;background:var(--sf);padding:5px 10px;border-radius:100px;border:1px solid var(--br);font-family:var(--ff-c);}
+.t-kpis{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.t-kpi{background:var(--sf);border:1.5px solid var(--br);border-radius:12px;padding:12px;}
+.t-kpi.hi{background:var(--sf2);border-color:var(--br);}
+.t-kl{font-size:0.58rem;color:var(--txm);font-weight:600;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:3px;}
+.t-kv{font-family:var(--ff-h);font-size:1.3rem;font-weight:700;color:var(--tx);letter-spacing:-0.03em;}
+.t-kpi.hi .t-kv{color:var(--p);}
+.t-kt{font-size:0.58rem;font-weight:700;margin-top:2px;}
+.kt-g{color:var(--grn);}.kt-m{color:var(--txm);}
+.t-chart-l{font-size:0.58rem;color:var(--txm);font-weight:600;letter-spacing:0.07em;text-transform:uppercase;margin-bottom:6px;}
+.t-chart{display:flex;align-items:flex-end;gap:3px;height:44px;margin-bottom:14px;}
+.t-b{flex:1;border-radius:3px 3px 0 0;background:rgba(91,33,182,0.1);}
+.t-b.hi{background:var(--p);}.t-b.ac{background:linear-gradient(180deg,var(--acc) 0%,rgba(14,165,233,0.15) 100%);}
+.t-orders{display:flex;flex-direction:column;gap:5px;}
+.t-order{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--sf);border-radius:9px;border:1.5px solid var(--br);}
+.t-ol{display:flex;align-items:center;gap:7px;}
+.t-ic{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;}
+.ic-p{background:rgba(91,33,182,0.08);color:var(--p);}
+.ic-t{background:rgba(14,165,233,0.1);color:var(--acc);}
+.ic-y{background:rgba(245,158,11,0.1);color:var(--ylw);}
+.t-ot{font-size:0.68rem;font-weight:600;color:var(--tx);}
+.t-os{font-size:0.58rem;color:var(--txm);}
+.bdg{font-size:0.55rem;font-weight:700;padding:3px 7px;border-radius:100px;letter-spacing:0.05em;}
+.bdg-ok{background:rgba(16,185,129,0.09);color:var(--grn);}
+.bdg-go{background:rgba(245,158,11,0.1);color:var(--ylw);}
+.bdg-rd{background:rgba(239,68,68,0.08);color:var(--red);}
 
-  /* TESTIMONIALS */
-  .testi-bg{background:var(--surface);}
-  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:60px;}
-  .testi-card{
-    background:white;border:1.5px solid var(--border);border-radius:22px;padding:32px;
-    transition:all 0.3s;box-shadow:0 2px 10px rgba(0,0,0,0.04);
-  }
-  .testi-card:hover{border-color:rgba(98,0,238,0.2);transform:translateY(-4px);box-shadow:0 14px 36px var(--shadow);}
-  .testi-stars{font-size:0.68rem;letter-spacing:2px;margin-bottom:16px;color:#F59E0B;}
-  .testi-q{font-size:0.9rem;color:var(--text-subtle);font-weight:400;line-height:1.7;margin-bottom:22px;font-style:italic;}
-  .testi-author{display:flex;align-items:center;gap:11px;}
-  .testi-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#A855F7);display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-weight:800;font-size:0.9rem;color:white;flex-shrink:0;}
-  .testi-name{font-weight:700;font-size:0.85rem;color:var(--text);}
-  .testi-role{font-size:0.73rem;color:var(--text-muted);font-weight:500;margin-top:1px;}
+/* Hero floats */
+.hfloat{position:absolute;z-index:2;background:white;border:1.5px solid var(--br);border-radius:16px;padding:13px 17px;box-shadow:0 12px 32px rgba(91,33,182,0.1);animation:heroFloat 4s ease-in-out infinite;}
+.hf1{top:-20px;left:-44px;animation-delay:0s;}
+.hf2{bottom:18px;right:-36px;animation-delay:1.8s;}
+.hf3{top:50%;left:-52px;transform:translateY(-50%);animation-delay:0.9s;}
+.hfl{font-size:0.58rem;font-weight:700;color:var(--txm);text-transform:uppercase;letter-spacing:0.1em;}
+.hfv{font-family:var(--ff-h);font-size:1.1rem;font-weight:700;color:var(--tx);margin-top:3px;}
+.hft{font-size:0.63rem;font-weight:700;margin-top:2px;}
+.hft-g{color:var(--grn);}.hft-a{color:var(--acc);}
 
-  /* CTA */
-  .cta-section{background:var(--primary);position:relative;overflow:hidden;text-align:center;}
-  .cta-section::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.05) 1px,transparent 1px);background-size:60px 60px;}
-  .cta-section::after{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(255,255,255,0.07) 0%,transparent 60%);border-radius:50%;}
-  .cta-inner{position:relative;z-index:1;}
-  .cta-title{font-family:'Inter',sans-serif;font-size:clamp(2.4rem,5vw,4.5rem);font-weight:800;letter-spacing:-0.045em;color:white;line-height:1.0;margin-bottom:18px;}
-  .cta-sub{font-size:1rem;color:rgba(255,255,255,0.7);font-weight:300;line-height:1.65;margin-bottom:42px;}
-  .cta-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
-  .btn-white{display:inline-flex;align-items:center;gap:9px;padding:15px 30px;background:white;color:var(--primary);font-weight:700;font-size:0.9375rem;border-radius:13px;text-decoration:none;transition:all 0.3s;letter-spacing:-0.01em;box-shadow:0 8px 22px rgba(0,0,0,0.15);}
-  .btn-white:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 14px 36px rgba(0,0,0,0.2);}
-  .btn-ghost-w{display:inline-flex;align-items:center;gap:9px;padding:15px 30px;border:1.5px solid rgba(255,255,255,0.3);color:white;font-weight:600;font-size:0.9375rem;border-radius:13px;text-decoration:none;transition:all 0.25s;letter-spacing:-0.01em;background:rgba(255,255,255,0.08);}
-  .btn-ghost-w:hover{background:rgba(255,255,255,0.16);border-color:rgba(255,255,255,0.5);}
+/* Video modal trigger */
+.video-trigger{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:0.85rem;font-weight:700;color:var(--p);cursor:pointer;
+  padding:0;background:none;border:none;font-family:var(--ff-b);
+  transition:all 0.2s;
+}
+.video-trigger:hover{color:var(--pd);}
+.play-ring{
+  width:38px;height:38px;border-radius:50%;border:2px solid var(--p);
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.25s;flex-shrink:0;background:rgba(91,33,182,0.05);
+}
+.play-ring i{font-size:0.75rem;color:var(--p);margin-left:2px;}
+.video-trigger:hover .play-ring{background:var(--p);}
+.video-trigger:hover .play-ring i{color:white;}
 
-  /* REVEAL */
-  .reveal{opacity:0;transform:translateY(26px);transition:opacity 0.6s ease,transform 0.6s ease;}
-  .reveal.visible{opacity:1;transform:translateY(0);}
+/* Video Modal */
+#video-modal{position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,0.85);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all 0.35s;backdrop-filter:blur(8px);}
+#video-modal.open{opacity:1;visibility:visible;}
+.vmod-box{background:white;border-radius:24px;overflow:hidden;width:min(860px,94vw);box-shadow:0 40px 100px rgba(0,0,0,0.4);}
+.vmod-header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1.5px solid var(--br);}
+.vmod-title{font-family:var(--ff-h);font-size:1rem;font-weight:700;color:var(--tx);}
+.vmod-close{width:34px;height:34px;border-radius:8px;border:1.5px solid var(--br);display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--sf);transition:all 0.2s;font-size:0.85rem;color:var(--txm);}
+.vmod-close:hover{background:var(--red);border-color:var(--red);color:white;}
+.vmod-body{padding:24px;background:var(--sf);display:flex;flex-direction:column;gap:14px;}
+.vmod-demo{background:white;border:1.5px solid var(--br);border-radius:18px;padding:24px;text-align:center;min-height:280px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;}
+.vmod-play-btn{width:72px;height:72px;border-radius:50%;background:var(--p);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 32px rgba(91,33,182,0.35);animation:pulse 2s infinite;cursor:pointer;transition:transform 0.2s;}
+.vmod-play-btn:hover{transform:scale(1.08);}
+.vmod-play-btn i{font-size:1.6rem;color:white;margin-left:4px;}
 
-  /* ─── INTRO OVERLAY ─── */
-  #intro-overlay{
-    position:fixed;inset:0;z-index:99999;
-    background:#fff;
-    display:flex;align-items:center;justify-content:center;
-    transition:opacity 0.8s ease,visibility 0.8s ease;
-  }
-  #intro-overlay.hidden-overlay{opacity:0;visibility:hidden;pointer-events:none;}
-  #intro-progress{position:absolute;top:0;left:0;height:3px;background:var(--primary);transition:width 0.15s linear;}
-  #skip-btn{
-    position:absolute;top:24px;right:28px;
-    padding:10px 22px;border-radius:50px;
-    border:1.5px solid var(--primary);color:var(--primary);
-    font-size:11px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;
-    cursor:pointer;background:transparent;
-    transition:background 0.2s,color 0.2s;
-    font-family:'Inter',sans-serif;
-  }
-  #skip-btn:hover{background:var(--primary);color:#fff;}
-  .intro-scene{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;padding:40px;}
-  [x-cloak]{display:none!important;}
+/* ============================
+   TRUST BAR
+============================ */
+.trust-bar{border-top:1.5px solid var(--br);border-bottom:1.5px solid var(--br);background:var(--sf);padding:24px 0;overflow:hidden;position:relative;}
+.trust-bar::before,.trust-bar::after{content:'';position:absolute;top:0;bottom:0;width:140px;z-index:2;}
+.trust-bar::before{left:0;background:linear-gradient(90deg,var(--sf),transparent);}
+.trust-bar::after{right:0;background:linear-gradient(270deg,var(--sf),transparent);}
+.trust-track{display:flex;gap:0;animation:trustScroll 30s linear infinite;width:max-content;}
+.trust-track:hover{animation-play-state:paused;}
+.trust-item{display:flex;align-items:center;gap:8px;padding:0 28px;white-space:nowrap;font-size:0.8rem;font-weight:600;color:var(--txm);transition:color 0.2s;font-family:var(--ff-b);}
+.trust-item:hover{color:var(--p);}
+.trust-item i{color:var(--p);opacity:0.4;}
+.trust-item:hover i{opacity:1;}
+.trust-dot{width:3px;height:3px;border-radius:50%;background:var(--brh);flex-shrink:0;}
 
-  @keyframes introFadeSlideUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
-  @keyframes introFadeSlideDown{from{opacity:0;transform:translateY(-30px);}to{opacity:1;transform:translateY(0);}}
-  @keyframes introFadeIn{from{opacity:0;}to{opacity:1;}}
-  @keyframes introScaleIn{from{opacity:0;transform:scale(0.7);}to{opacity:1;transform:scale(1);}}
-  @keyframes introScaleInBig{from{opacity:0;transform:scale(0.3);}to{opacity:1;transform:scale(1);}}
-  @keyframes introSlideInLeft{from{opacity:0;transform:translateX(-60px);}to{opacity:1;transform:translateX(0);}}
-  @keyframes introSlideInRight{from{opacity:0;transform:translateX(60px);}to{opacity:1;transform:translateX(0);}}
-  @keyframes introPulseBrand{0%,100%{box-shadow:0 0 0 0 rgba(98,0,238,0.3);}50%{box-shadow:0 0 0 18px rgba(98,0,238,0);}}
-  @keyframes introBarGrow{from{height:0;}}
-  @keyframes introDrawLine{from{stroke-dashoffset:300;}to{stroke-dashoffset:0;}}
-  @keyframes introTyping{from{max-width:0;}to{max-width:100%;}}
-  @keyframes introBlink{50%{border-color:transparent;}}
+/* ============================
+   STATS BAR
+============================ */
+.stats-wrap{background:var(--bg2);padding:72px 64px;}
+.stats-grid{max-width:1380px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--br);border:1.5px solid var(--br);border-radius:var(--r2);overflow:hidden;}
+.sblock{background:white;padding:42px 38px;position:relative;overflow:hidden;transition:background 0.25s;}
+.sblock:hover{background:var(--sf);}
+.sblock::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:linear-gradient(90deg,var(--p),var(--acc));opacity:0;transition:opacity 0.25s;}
+.sblock:hover::before{opacity:1;}
+.sblock-num{font-family:var(--ff-h);font-size:3rem;font-weight:900;letter-spacing:-0.05em;color:var(--tx);line-height:1;margin-bottom:7px;}
+.sblock-num .c{color:var(--p);}
+.sblock-lbl{font-size:0.875rem;font-weight:600;color:var(--txm);}
+.sblock-sub{font-size:0.73rem;color:var(--txm);margin-top:5px;font-weight:400;}
+.sblock-icon{position:absolute;bottom:20px;right:20px;font-size:2rem;color:var(--p);opacity:0.06;}
 
-  .ia-fadeSlideUp{animation:introFadeSlideUp 0.7s cubic-bezier(0.19,1,0.22,1) both;}
-  .ia-fadeSlideDown{animation:introFadeSlideDown 0.7s cubic-bezier(0.19,1,0.22,1) both;}
-  .ia-fadeIn{animation:introFadeIn 0.6s ease both;}
-  .ia-scaleIn{animation:introScaleIn 0.7s cubic-bezier(0.19,1,0.22,1) both;}
-  .ia-scaleInBig{animation:introScaleInBig 0.9s cubic-bezier(0.19,1,0.22,1) both;}
-  .ia-slideInLeft{animation:introSlideInLeft 0.7s cubic-bezier(0.19,1,0.22,1) both;}
-  .ia-slideInRight{animation:introSlideInRight 0.7s cubic-bezier(0.19,1,0.22,1) both;}
-  .ia-d100{animation-delay:0.1s;}.ia-d200{animation-delay:0.2s;}.ia-d300{animation-delay:0.3s;}.ia-d500{animation-delay:0.5s;}.ia-d700{animation-delay:0.7s;}
-  .intro-typewriter{overflow:hidden;border-right:3px solid var(--primary);white-space:nowrap;animation:introTyping 1.8s steps(16,end) both,introBlink 0.6s step-end infinite alternate;}
-  .intro-bar{width:28px;border-radius:6px 6px 0 0;background:var(--primary);align-self:flex-end;}
-  .intro-net-line{stroke-dasharray:300;animation:introDrawLine 1.5s ease both;}
-  #main-page{opacity:0;transition:opacity 0.8s ease;}
-  #main-page.visible{opacity:1;}
+/* ============================
+   FEATURES
+============================ */
+.feat-sec{background:var(--sf);}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:68px;}
+.fc{background:white;border:1.5px solid var(--br);border-radius:var(--r2);padding:34px;transition:all 0.3s;position:relative;overflow:hidden;}
+.fc::before{content:'';position:absolute;inset:0;border-radius:var(--r2);background:linear-gradient(135deg,rgba(91,33,182,0.025),transparent 55%);opacity:0;transition:opacity 0.3s;}
+.fc:hover{border-color:rgba(91,33,182,0.25);transform:translateY(-5px);box-shadow:0 20px 48px var(--sh);}
+.fc:hover::before{opacity:1;}
+.fc.span2{grid-column:1/3;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;}
+.fc.dark{background:var(--p);border-color:var(--p);}
+.fc.dark::before{display:none;}
+.fc.dark:hover{box-shadow:0 20px 48px rgba(91,33,182,0.38);}
+.fc.acc{background:linear-gradient(135deg,var(--acc),var(--acc2));border-color:var(--acc);}
+.fc.acc::before{display:none;}
+.fc.acc:hover{box-shadow:0 20px 48px rgba(14,165,233,0.32);}
+.feat-icon{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:22px;}
+.fi-p{background:rgba(91,33,182,0.08);color:var(--p);}
+.fi-t{background:rgba(14,165,233,0.1);color:var(--acc);}
+.fi-g{background:rgba(16,185,129,0.1);color:var(--grn);}
+.fi-w{background:rgba(255,255,255,0.15);color:white;}
+.fi-s{background:var(--sf2);color:var(--txs);}
+.fi-y{background:rgba(245,158,11,0.1);color:var(--ylw);}
+.fi-r{background:rgba(239,68,68,0.08);color:var(--red);}
+.feat-title{font-family:var(--ff-h);font-size:1.15rem;font-weight:700;color:var(--tx);margin-bottom:10px;letter-spacing:-0.02em;}
+.fc.dark .feat-title,.fc.acc .feat-title{color:white;}
+.feat-desc{font-size:0.875rem;color:var(--txs);line-height:1.7;}
+.fc.dark .feat-desc,.fc.acc .feat-desc{color:rgba(255,255,255,0.68);}
+.feat-chks{margin-top:16px;display:flex;flex-direction:column;gap:8px;}
+.feat-chk{display:flex;align-items:center;gap:9px;font-size:0.78rem;font-weight:600;color:var(--txm);}
+.chkd{width:16px;height:16px;border-radius:5px;flex-shrink:0;background:rgba(91,33,182,0.07);display:flex;align-items:center;justify-content:center;}
+.chkd i{font-size:0.48rem;color:var(--p);}
+.fc.dark .feat-chk{color:rgba(255,255,255,0.6);}
+.fc.dark .chkd{background:rgba(255,255,255,0.12);}
+.fc.dark .chkd i{color:white;}
+.fc.acc .feat-chk{color:rgba(255,255,255,0.65);}
+.fc.acc .chkd{background:rgba(255,255,255,0.15);}
+.fc.acc .chkd i{color:white;}
 
-  /* RESPONSIVE */
-  @media(max-width:1024px){
-    .hero{padding:96px 22px 68px;}
-    .hero-inner{grid-template-columns:1fr;gap:52px;text-align:center;}
-    .hero-stats{justify-content:center;}
-    .hero-sub{margin:0 auto 38px;}
-    .hero-actions{justify-content:center;}
-    .terminal{width:310px;transform:none!important;}
-    .section{padding:76px 22px;}
-    .features-grid{grid-template-columns:1fr;}
-    .feat-card.span2{grid-column:1;display:block;}
-    .feat-card.span2 .mini-viz{margin-top:24px;}
-    .testi-grid{grid-template-columns:1fr;}
-  }
+.mini-viz{background:var(--sf);border:1.5px solid var(--br);border-radius:16px;padding:20px;}
+.mv-l{font-size:0.58rem;color:var(--txm);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;}
+.mv-bars{display:flex;align-items:flex-end;gap:5px;height:68px;}
+.mv-b{flex:1;border-radius:4px 4px 0 0;}
+.mv-nums{display:flex;gap:12px;margin-top:12px;}
+.mv-nv{font-family:var(--ff-h);font-size:1.1rem;font-weight:700;color:var(--tx);letter-spacing:-0.03em;}
+.mv-nl{font-size:0.58rem;color:var(--txm);font-weight:500;margin-top:2px;}
+
+/* Feature Pulse badge */
+.feat-new{position:absolute;top:16px;right:16px;font-size:0.55rem;font-weight:800;padding:3px 8px;border-radius:100px;background:var(--grn);color:white;letter-spacing:0.1em;text-transform:uppercase;}
+
+/* ============================
+   HOW IT WORKS
+============================ */
+.how-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:72px;position:relative;}
+.how-grid::before{content:'';position:absolute;top:24px;left:calc(100%/8);right:calc(100%/8);height:1.5px;background:linear-gradient(90deg,transparent,var(--br),var(--p),var(--br),transparent);pointer-events:none;}
+.how-step{padding:36px 28px;position:relative;text-align:center;}
+.how-num{
+  width:48px;height:48px;border-radius:50%;background:white;
+  border:2px solid var(--p);display:flex;align-items:center;justify-content:center;
+  margin:0 auto 20px;font-family:var(--ff-h);font-size:0.95rem;font-weight:900;color:var(--p);
+  position:relative;z-index:1;transition:all 0.3s;
+}
+.how-step:hover .how-num{background:var(--p);color:white;transform:scale(1.1);box-shadow:0 8px 22px rgba(91,33,182,0.3);}
+.how-icon-wrap{width:60px;height:60px;border-radius:16px;background:var(--sf);border:1.5px solid var(--br);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:1.3rem;color:var(--p);transition:all 0.3s;}
+.how-step:hover .how-icon-wrap{background:rgba(91,33,182,0.07);border-color:rgba(91,33,182,0.2);}
+.how-title{font-family:var(--ff-h);font-size:1rem;font-weight:700;color:var(--tx);margin-bottom:8px;}
+.how-desc{font-size:0.855rem;color:var(--txs);line-height:1.68;}
+.how-eta{display:inline-flex;align-items:center;gap:5px;margin-top:10px;font-size:0.68rem;font-weight:700;color:var(--grn);background:rgba(16,185,129,0.08);padding:4px 10px;border-radius:100px;}
+
+/* ============================
+   MOBILE APP SECTION
+============================ */
+.app-sec{background:var(--bg2);overflow:hidden;}
+.app-wrap{display:grid;grid-template-columns:1fr 1.1fr;gap:80px;align-items:center;}
+.app-phone{position:relative;display:flex;justify-content:center;}
+.app-phone-glow{position:absolute;inset:-30px;background:radial-gradient(circle,rgba(91,33,182,0.1) 0%,transparent 65%);border-radius:50%;}
+.phone-frame{
+  width:240px;background:white;border-radius:36px;
+  border:8px solid var(--tx);box-shadow:0 28px 72px rgba(0,0,0,0.2),inset 0 0 0 1px rgba(255,255,255,0.1);
+  overflow:hidden;position:relative;z-index:1;
+}
+.phone-notch{height:30px;background:var(--tx);display:flex;align-items:center;justify-content:center;}
+.phone-notch-pill{width:90px;height:10px;background:#1a1a1a;border-radius:100px;}
+.phone-screen{padding:14px;background:var(--bg);}
+.ph-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.ph-title{font-family:var(--ff-h);font-size:0.8rem;font-weight:700;color:var(--tx);}
+.ph-notif{width:22px;height:22px;border-radius:6px;background:var(--p);display:flex;align-items:center;justify-content:center;}
+.ph-notif i{font-size:0.55rem;color:white;}
+.ph-stat-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px;}
+.ph-stat{background:white;border:1.5px solid var(--br);border-radius:10px;padding:9px 10px;}
+.ph-sv{font-family:var(--ff-h);font-size:0.95rem;font-weight:700;color:var(--tx);}
+.ph-sl{font-size:0.5rem;color:var(--txm);font-weight:600;text-transform:uppercase;letter-spacing:0.07em;}
+.ph-chart{background:white;border:1.5px solid var(--br);border-radius:10px;padding:10px;margin-bottom:8px;}
+.ph-cl{font-size:0.5rem;color:var(--txm);font-weight:600;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:6px;}
+.ph-bars{display:flex;align-items:flex-end;gap:3px;height:36px;}
+.ph-b{flex:1;border-radius:2px 2px 0 0;}
+.ph-orders{display:flex;flex-direction:column;gap:4px;}
+.ph-order{display:flex;align-items:center;justify-content:space-between;background:white;border:1.5px solid var(--br);border-radius:8px;padding:7px 9px;}
+.ph-ot{font-size:0.6rem;font-weight:700;color:var(--tx);}
+.ph-os{font-size:0.52rem;color:var(--txm);}
+.ph-bdg{font-size:0.48rem;font-weight:700;padding:2px 6px;border-radius:100px;}
+.ph-bdg-ok{background:rgba(16,185,129,0.1);color:var(--grn);}
+.ph-bdg-go{background:rgba(245,158,11,0.1);color:var(--ylw);}
+/* App floating badges */
+.app-float{position:absolute;background:white;border:1.5px solid var(--br);border-radius:14px;padding:10px 14px;box-shadow:0 10px 28px rgba(91,33,182,0.1);animation:heroFloat 4.5s ease-in-out infinite;z-index:2;}
+.af1{top:20px;right:-48px;animation-delay:0s;}
+.af2{bottom:40px;right:-48px;animation-delay:1.5s;}
+.af3{bottom:120px;left:-48px;animation-delay:0.8s;}
+.afl{font-size:0.56rem;font-weight:700;color:var(--txm);text-transform:uppercase;letter-spacing:0.08em;}
+.afv{font-family:var(--ff-h);font-size:0.95rem;font-weight:700;color:var(--tx);margin-top:2px;}
+.app-stores{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
+.app-store-btn{
+  display:flex;align-items:center;gap:9px;padding:10px 18px;
+  background:var(--tx);color:white;border-radius:11px;transition:all 0.2s;
+}
+.app-store-btn:hover{background:var(--p);}
+.asb-icon{font-size:1.3rem;opacity:0.85;}
+.asb-small{font-size:0.58rem;font-weight:500;opacity:0.7;}
+.asb-big{font-size:0.85rem;font-weight:700;line-height:1;}
+.app-features{display:flex;flex-direction:column;gap:14px;margin-top:28px;}
+.app-feat{display:flex;align-items:flex-start;gap:14px;}
+.app-feat-ic{width:42px;height:42px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.95rem;}
+.app-feat-title{font-family:var(--ff-h);font-size:0.95rem;font-weight:700;color:var(--tx);margin-bottom:3px;}
+.app-feat-desc{font-size:0.82rem;color:var(--txs);line-height:1.6;}
+
+/* ============================
+   LIVE DEMO
+============================ */
+.demo-sec{background:linear-gradient(180deg,var(--bg2) 0%,var(--sf) 100%);}
+.demo-wrap{display:grid;grid-template-columns:1fr 1.2fr;gap:72px;align-items:center;margin-top:64px;}
+.demo-badge{display:inline-flex;align-items:center;gap:7px;padding:5px 12px;background:rgba(16,185,129,0.07);border:1.5px solid rgba(16,185,129,0.2);border-radius:100px;font-size:0.68rem;font-weight:700;color:var(--grn);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:18px;font-family:var(--ff-b);}
+.demo-title{font-family:var(--ff-h);font-size:clamp(1.8rem,3vw,2.8rem);font-weight:900;letter-spacing:-0.042em;color:var(--tx);line-height:1.06;margin-bottom:14px;}
+.demo-title em{font-style:normal;color:var(--p);}
+.demo-sub{font-size:0.9375rem;color:var(--txs);line-height:1.72;margin-bottom:24px;}
+.demo-legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:22px;}
+.dl-item{display:flex;align-items:center;gap:6px;font-size:0.73rem;font-weight:700;color:var(--txm);}
+.dl-dot{width:9px;height:9px;border-radius:3px;}
+.demo-stats-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;}
+.demo-stat{background:white;border:1.5px solid var(--br);border-radius:12px;padding:12px 16px;flex:1;min-width:76px;transition:border-color 0.2s;}
+.demo-stat:hover{border-color:var(--brx);}
+.demo-sv{font-family:var(--ff-h);font-size:1.4rem;font-weight:900;letter-spacing:-0.04em;line-height:1;}
+.demo-sl{font-size:0.58rem;font-weight:700;color:var(--txm);text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;}
+.masa-grid-wrap{background:white;border:1.5px solid var(--br);border-radius:var(--r2);padding:24px;box-shadow:0 20px 56px var(--sh);}
+.mgw-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;padding-bottom:14px;border-bottom:1.5px solid var(--br);}
+.mgh-title{font-family:var(--ff-h);font-size:0.85rem;font-weight:700;color:var(--tx);}
+.mgh-badge{font-size:0.6rem;font-weight:700;padding:4px 9px;border-radius:100px;background:rgba(16,185,129,0.08);color:var(--grn);border:1px solid rgba(16,185,129,0.15);}
+.mgh-filter{display:flex;gap:6px;}
+.mgh-fb{padding:4px 10px;border-radius:100px;border:1.5px solid var(--br);font-size:0.6rem;font-weight:700;color:var(--txm);cursor:pointer;transition:all 0.2s;font-family:var(--ff-b);background:white;}
+.mgh-fb.active,.mgh-fb:hover{background:var(--p);color:white;border-color:var(--p);}
+.masa-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;}
+.masa-cell{
+  aspect-ratio:1;border-radius:10px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;cursor:pointer;
+  transition:all 0.2s;position:relative;overflow:hidden;
+  font-size:0.6rem;font-weight:700;font-family:var(--ff-b);
+}
+.masa-cell.empty{background:var(--sf);border:1.5px solid var(--br);color:var(--txm);}
+.masa-cell.full{background:var(--p);border:1.5px solid var(--p);color:white;box-shadow:0 4px 14px rgba(91,33,182,0.25);}
+.masa-cell.busy{background:rgba(239,68,68,0.05);border:1.5px solid rgba(239,68,68,0.2);color:var(--red);}
+.masa-cell.reserve{background:rgba(245,158,11,0.06);border:1.5px solid rgba(245,158,11,0.25);color:var(--ylw);}
+.masa-cell.cleaning{background:rgba(14,165,233,0.06);border:1.5px solid rgba(14,165,233,0.25);color:var(--acc);}
+.mc-num{font-family:var(--ff-h);font-size:0.95rem;font-weight:900;line-height:1;}
+.mc-lbl{font-size:0.4rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1px;opacity:0.8;}
+.masa-cell:hover{transform:scale(1.07);z-index:2;}
+.masa-cell.full:hover{box-shadow:0 8px 22px rgba(91,33,182,0.36);}
+.masa-cell.empty:hover{background:rgba(91,33,182,0.04);border-color:rgba(91,33,182,0.2);}
+.masa-cell::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--tx);color:white;font-size:0.57rem;font-weight:600;padding:4px 8px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity 0.18s;letter-spacing:0.03em;font-family:var(--ff-b);}
+.masa-cell:hover::after{opacity:1;}
+/* Notification */
+#demo-notif{position:fixed;bottom:28px;right:28px;z-index:9999;pointer-events:none;}
+.notif-card{
+  background:white;border:1.5px solid var(--br);border-radius:16px;
+  padding:14px 18px;box-shadow:0 12px 32px rgba(91,33,182,0.15);
+  display:flex;align-items:center;gap:12px;font-family:var(--ff-b);
+  animation:notifSlide 0.4s cubic-bezier(0.19,1,0.22,1);
+  margin-top:8px;
+}
+.notif-ic{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.8rem;}
+.notif-ic-p{background:rgba(91,33,182,0.08);color:var(--p);}
+.notif-ic-g{background:rgba(16,185,129,0.1);color:var(--grn);}
+.notif-ic-y{background:rgba(245,158,11,0.1);color:var(--ylw);}
+.notif-t{font-size:0.78rem;font-weight:700;color:var(--tx);}
+.notif-s{font-size:0.66rem;color:var(--txm);}
+.notif-prog{height:2px;background:var(--p);border-radius:100px;margin-top:8px;animation:progress 3s linear both;}
+
+/* ============================
+   PRICING
+============================ */
+.pricing-sec{background:var(--bg2);}
+.pricing-toggle{display:flex;align-items:center;gap:14px;justify-content:center;margin:40px 0 60px;}
+.pt-lbl{font-size:0.85rem;font-weight:700;color:var(--txm);}
+.pt-switch{width:52px;height:28px;border-radius:100px;background:var(--p);position:relative;cursor:pointer;transition:background 0.2s;}
+.pt-thumb{width:22px;height:22px;border-radius:50%;background:white;position:absolute;top:3px;left:3px;transition:left 0.25s;box-shadow:0 2px 6px rgba(0,0,0,0.15);}
+.pt-switch.yearly .pt-thumb{left:27px;}
+.pt-save{background:var(--grn);color:white;font-size:0.62rem;font-weight:800;padding:3px 8px;border-radius:100px;letter-spacing:0.08em;}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.pcard{background:white;border:1.5px solid var(--br);border-radius:var(--r2);padding:40px 32px;position:relative;transition:all 0.3s;overflow:hidden;}
+.pcard:hover{transform:translateY(-6px);box-shadow:0 24px 56px var(--sh);}
+.pcard.popular{border-color:var(--p);border-width:2px;background:linear-gradient(180deg,white,var(--sf));}
+.pcard.popular::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--p),var(--acc));}
+.pcard-popular-badge{position:absolute;top:20px;right:20px;background:var(--p);color:white;font-size:0.58rem;font-weight:800;padding:4px 10px;border-radius:100px;letter-spacing:0.1em;text-transform:uppercase;}
+.pcard-tier{font-size:0.72rem;font-weight:800;color:var(--txm);letter-spacing:0.14em;text-transform:uppercase;margin-bottom:14px;font-family:var(--ff-b);}
+.pcard.popular .pcard-tier{color:var(--p);}
+.pcard-price{margin-bottom:6px;}
+.price-amount{font-family:var(--ff-h);font-size:3rem;font-weight:900;color:var(--tx);letter-spacing:-0.05em;line-height:1;}
+.price-cur{font-size:1.4rem;vertical-align:top;margin-top:8px;display:inline-block;color:var(--txm);}
+.price-per{font-size:0.78rem;color:var(--txm);font-weight:500;margin-left:4px;}
+.pcard-desc{font-size:0.85rem;color:var(--txs);margin-bottom:26px;line-height:1.6;}
+.pcard-btn{width:100%;padding:13px;border-radius:12px;font-weight:700;font-size:0.875rem;cursor:pointer;transition:all 0.2s;font-family:var(--ff-b);border:none;display:block;text-align:center;margin-bottom:28px;}
+.pb-outline{background:white;border:1.5px solid var(--brh);color:var(--txs);}
+.pb-outline:hover{border-color:var(--p);color:var(--p);}
+.pb-solid{background:var(--p);color:white;box-shadow:0 4px 16px rgba(91,33,182,0.25);}
+.pb-solid:hover{background:var(--pd);transform:translateY(-1px);}
+.pcard-feats{display:flex;flex-direction:column;gap:10px;}
+.pf{display:flex;align-items:flex-start;gap:9px;font-size:0.82rem;color:var(--txs);}
+.pf-ic{width:18px;height:18px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.5rem;margin-top:0.5px;}
+.pf-ic-yes{background:rgba(16,185,129,0.1);color:var(--grn);}
+.pf-ic-no{background:var(--sf);color:var(--txm);}
+.pf-off{opacity:0.4;}
+.pcard-note{margin-top:20px;padding-top:18px;border-top:1.5px solid var(--br);font-size:0.72rem;color:var(--txm);text-align:center;}
+
+/* ============================
+   ROI CALCULATOR
+============================ */
+.roi-sec{background:var(--sf);}
+.roi-wrap{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;margin-top:64px;}
+.roi-card{background:white;border:1.5px solid var(--br);border-radius:var(--r2);padding:40px;box-shadow:0 8px 28px var(--sh);}
+.roi-label{font-size:0.8rem;font-weight:700;color:var(--txs);margin-bottom:8px;display:block;font-family:var(--ff-b);}
+.roi-input{
+  width:100%;padding:12px 16px;border:1.5px solid var(--br);border-radius:12px;
+  font-size:1rem;font-weight:700;color:var(--tx);background:var(--sf);
+  font-family:var(--ff-b);transition:border-color 0.2s;margin-bottom:18px;outline:none;
+}
+.roi-input:focus{border-color:var(--p);}
+.roi-slider{width:100%;margin-bottom:18px;accent-color:var(--p);height:4px;cursor:pointer;}
+.roi-slider-val{display:flex;justify-content:space-between;font-size:0.7rem;color:var(--txm);font-weight:600;margin-top:-14px;margin-bottom:18px;}
+.roi-result{background:linear-gradient(135deg,var(--p),var(--pl));border-radius:var(--r);padding:32px;color:white;margin-top:8px;}
+.roi-r-label{font-size:0.7rem;font-weight:700;opacity:0.7;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;}
+.roi-r-val{font-family:var(--ff-h);font-size:2.8rem;font-weight:900;letter-spacing:-0.05em;margin-bottom:4px;}
+.roi-r-sub{font-size:0.82rem;opacity:0.75;}
+.roi-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px;}
+.roi-mini{background:rgba(255,255,255,0.1);border-radius:12px;padding:16px;}
+.roi-mini-v{font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;}
+.roi-mini-l{font-size:0.65rem;font-weight:600;opacity:0.7;margin-top:3px;text-transform:uppercase;letter-spacing:0.08em;}
+.roi-disclaimer{font-size:0.72rem;color:var(--txm);margin-top:14px;text-align:center;}
+
+/* ============================
+   SECURITY SECTION
+============================ */
+.sec-security{background:var(--tx);position:relative;overflow:hidden;}
+.sec-security::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:52px 52px;}
+.sec-security::after{content:'';position:absolute;top:-200px;right:-150px;width:600px;height:600px;background:radial-gradient(circle,rgba(91,33,182,0.18) 0%,transparent 60%);border-radius:50%;}
+.sec-sec-in{position:relative;z-index:1;}
+.security-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:80px;align-items:center;margin-top:64px;}
+.sec-feats{display:flex;flex-direction:column;gap:22px;}
+.sec-feat{display:flex;gap:18px;align-items:flex-start;padding:22px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:16px;transition:all 0.3s;}
+.sec-feat:hover{background:rgba(255,255,255,0.07);border-color:rgba(91,33,182,0.4);}
+.sec-feat-ic{width:44px;height:44px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.sf-ic-p{background:rgba(91,33,182,0.3);color:var(--pl2);}
+.sf-ic-g{background:rgba(16,185,129,0.2);color:#6EE7B7;}
+.sf-ic-a{background:rgba(14,165,233,0.2);color:#7DD3FC;}
+.sec-feat-title{font-family:var(--ff-h);font-size:1rem;font-weight:700;color:white;margin-bottom:5px;}
+.sec-feat-desc{font-size:0.838rem;color:rgba(255,255,255,0.55);line-height:1.65;}
+.sec-badge-grid{display:flex;flex-direction:column;gap:16px;}
+.sec-badge-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.secbdg{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:20px;text-align:center;transition:all 0.25s;}
+.secbdg:hover{background:rgba(255,255,255,0.08);border-color:rgba(91,33,182,0.4);}
+.secbdg-ic{font-size:1.6rem;color:var(--pl2);margin-bottom:10px;}
+.secbdg-title{font-family:var(--ff-h);font-size:0.88rem;font-weight:700;color:white;margin-bottom:4px;}
+.secbdg-sub{font-size:0.68rem;color:rgba(255,255,255,0.45);}
+.uptime-display{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:22px;margin-top:16px;}
+.ud-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.ud-title{font-size:0.72rem;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.12em;}
+.ud-val{font-family:var(--ff-h);font-size:1.2rem;font-weight:900;color:var(--grn);}
+.ud-bars{display:flex;gap:2px;align-items:flex-end;height:32px;}
+.ud-b{flex:1;border-radius:2px;background:rgba(16,185,129,0.3);}
+.ud-b.ok{background:var(--grn);}
+.ud-b.warn{background:var(--ylw);}
+
+/* ============================
+   HARDWARE SECTION
+============================ */
+.hw-sec{background:var(--bg2);}
+.hw-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:68px;}
+.hwcard{background:white;border:1.5px solid var(--br);border-radius:var(--r2);padding:32px;transition:all 0.3s;position:relative;overflow:hidden;}
+.hwcard:hover{border-color:rgba(91,33,182,0.25);transform:translateY(-5px);box-shadow:0 20px 48px var(--sh);}
+.hwcard.featured{border-color:var(--p);background:linear-gradient(160deg,var(--sf) 0%,white 60%);}
+.hwcard.featured::before{content:'Önerilen';position:absolute;top:16px;right:16px;background:var(--p);color:white;font-size:0.56rem;font-weight:800;padding:3px 9px;border-radius:100px;letter-spacing:0.1em;text-transform:uppercase;}
+.hw-icon-wrap{width:100%;height:130px;background:var(--sf);border:1.5px solid var(--br);border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:22px;font-size:3.5rem;position:relative;overflow:hidden;}
+.hwcard.featured .hw-icon-wrap{background:rgba(91,33,182,0.06);border-color:rgba(91,33,182,0.15);}
+.hw-icon-wrap::after{content:'';position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);width:80%;height:30px;background:radial-gradient(ellipse,rgba(91,33,182,0.12),transparent);border-radius:50%;}
+.hw-name{font-family:var(--ff-h);font-size:1.15rem;font-weight:700;color:var(--tx);margin-bottom:6px;}
+.hw-desc{font-size:0.838rem;color:var(--txs);line-height:1.65;margin-bottom:18px;}
+.hw-specs{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+.hw-spec{display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;}
+.hw-spec-k{color:var(--txm);font-weight:500;}
+.hw-spec-v{font-weight:700;color:var(--tx);}
+.hw-price{display:flex;align-items:baseline;gap:6px;margin-bottom:14px;}
+.hwp-amount{font-family:var(--ff-h);font-size:1.8rem;font-weight:900;color:var(--p);}
+.hwp-per{font-size:0.72rem;color:var(--txm);}
+.hwp-old{font-size:0.85rem;color:var(--txm);text-decoration:line-through;}
+
+/* ============================
+   COMPARISON
+============================ */
+.cmp-sec{background:var(--sf);}
+.cmp-table{margin-top:64px;border:1.5px solid var(--br);border-radius:var(--r2);overflow:hidden;background:white;box-shadow:0 8px 32px var(--sh);}
+.cmp-head{display:grid;grid-template-columns:2fr 1fr 1.15fr 1fr;background:white;border-bottom:1.5px solid var(--br);}
+.cmp-th{padding:22px 24px;font-size:0.838rem;font-weight:700;color:var(--txm);font-family:var(--ff-b);}
+.cmp-th.hero{background:var(--p);color:white;position:relative;}
+.cmp-th.hero::after{content:'Önerilen';position:absolute;top:-1px;left:50%;transform:translateX(-50%);font-size:0.52rem;font-weight:800;background:var(--grn);color:white;padding:2px 8px;border-radius:0 0 7px 7px;letter-spacing:0.1em;text-transform:uppercase;}
+.cmp-row{display:grid;grid-template-columns:2fr 1fr 1.15fr 1fr;border-bottom:1px solid var(--br);transition:background 0.2s;}
+.cmp-row:last-child{border-bottom:none;}
+.cmp-row:hover{background:var(--sf);}
+.cmp-cell{padding:16px 24px;display:flex;align-items:center;font-size:0.838rem;color:var(--txs);}
+.cmp-cell.feat{font-weight:600;color:var(--tx);}
+.cmp-cell.hero{background:rgba(91,33,182,0.03);color:var(--p);font-weight:700;}
+.cy{color:var(--grn);}.cn{color:var(--txm);opacity:0.5;}.cp{color:var(--ylw);}
+
+/* ============================
+   INTEGRATIONS
+============================ */
+.int-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:52px 0 44px;}
+.int-pill{
+  display:flex;align-items:center;gap:8px;padding:10px 18px;
+  background:white;border:1.5px solid var(--br);border-radius:100px;
+  font-size:0.82rem;font-weight:600;color:var(--txs);transition:all 0.2s;
+  box-shadow:0 2px 6px rgba(0,0,0,0.04);font-family:var(--ff-b);
+}
+.int-pill:hover{border-color:var(--p);color:var(--p);background:var(--sf);transform:translateY(-3px);box-shadow:0 8px 18px rgba(91,33,182,0.1);}
+.int-pill i{font-size:0.88rem;color:var(--p);}
+.api-block{
+  background:white;border:1.5px solid var(--br);border-radius:var(--r2);
+  padding:48px;display:flex;align-items:center;justify-content:space-between;
+  gap:48px;box-shadow:0 8px 28px var(--sh);position:relative;overflow:hidden;
+}
+.api-block::before{content:'';position:absolute;top:-80px;right:-80px;width:320px;height:320px;background:radial-gradient(circle,rgba(14,165,233,0.07) 0%,transparent 70%);border-radius:50%;}
+.api-l{position:relative;z-index:1;flex:1;}
+.api-title{font-family:var(--ff-h);font-size:1.7rem;font-weight:900;color:var(--tx);letter-spacing:-0.04em;margin-bottom:10px;}
+.api-sub{font-size:0.9375rem;color:var(--txs);line-height:1.68;max-width:340px;margin-bottom:22px;}
+pre.api-code{
+  font-family:var(--ff-c);font-size:0.7rem;background:var(--sf);
+  border:1.5px solid var(--br);border-radius:14px;padding:18px 20px;
+  color:var(--txs);line-height:2;white-space:pre;flex-shrink:0;
+}
+.cm{color:var(--p);font-weight:700;}.cs{color:#0ABBA3;}.ck{color:#D6336C;}
+
+/* ============================
+   TESTIMONIALS
+============================ */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:64px;}
+.tcard{
+  background:white;border:1.5px solid var(--br);border-radius:var(--r2);padding:32px;
+  transition:all 0.3s;box-shadow:0 2px 12px rgba(0,0,0,0.04);position:relative;overflow:hidden;
+}
+.tcard::before{content:'\201C';position:absolute;top:18px;right:22px;font-size:5rem;color:var(--p);opacity:0.05;font-family:Georgia,serif;line-height:1;}
+.tcard::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--p),var(--acc));opacity:0;transition:opacity 0.3s;}
+.tcard:hover{border-color:rgba(91,33,182,0.2);transform:translateY(-4px);box-shadow:0 16px 40px var(--sh);}
+.tcard:hover::after{opacity:1;}
+.tcard.hl{border-color:rgba(91,33,182,0.2);background:linear-gradient(140deg,rgba(91,33,182,0.02),white);}
+.tstars{font-size:0.75rem;letter-spacing:1px;margin-bottom:16px;color:var(--ylw);}
+.tquote{font-size:0.9rem;color:var(--txs);line-height:1.72;margin-bottom:22px;font-style:italic;}
+.tauthor{display:flex;align-items:center;gap:11px;}
+.tav{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--ff-h);font-weight:800;font-size:0.95rem;color:white;flex-shrink:0;}
+.tname{font-family:var(--ff-h);font-weight:700;font-size:0.85rem;color:var(--tx);}
+.trole{font-size:0.7rem;color:var(--txm);font-weight:500;margin-top:2px;}
+.tmetric{margin-top:16px;padding-top:16px;border-top:1.5px solid var(--br);display:flex;align-items:center;gap:8px;}
+.tm-val{font-family:var(--ff-h);font-size:1.2rem;font-weight:800;color:var(--p);}
+.tm-lbl{font-size:0.7rem;color:var(--txm);font-weight:500;}
+
+/* ============================
+   FAQ
+============================ */
+.faq-wrap{display:grid;grid-template-columns:1fr 1.5fr;gap:80px;align-items:start;margin-top:64px;}
+.faq-aside-h{font-family:var(--ff-h);font-size:clamp(1.7rem,2.5vw,2.4rem);font-weight:900;letter-spacing:-0.04em;color:var(--tx);margin-bottom:12px;}
+.faq-aside-sub{font-size:0.9375rem;color:var(--txs);line-height:1.72;margin-bottom:26px;}
+.faq-cta{display:inline-flex;align-items:center;gap:8px;font-size:0.82rem;font-weight:700;color:var(--p);padding:10px 18px;border:1.5px solid rgba(91,33,182,0.2);border-radius:12px;transition:all 0.2s;background:rgba(91,33,182,0.03);font-family:var(--ff-b);}
+.faq-cta:hover{background:var(--p);color:white;border-color:var(--p);}
+.faq-contact-card{margin-top:28px;background:var(--sf);border:1.5px solid var(--br);border-radius:16px;padding:22px;}
+.fcc-title{font-family:var(--ff-h);font-size:0.95rem;font-weight:700;color:var(--tx);margin-bottom:8px;}
+.fcc-desc{font-size:0.8rem;color:var(--txs);margin-bottom:16px;line-height:1.6;}
+.fcc-contacts{display:flex;flex-direction:column;gap:8px;}
+.fcc-c{display:flex;align-items:center;gap:9px;font-size:0.78rem;font-weight:600;color:var(--txm);}
+.fcc-c i{color:var(--p);width:14px;}
+.faq-list{display:flex;flex-direction:column;}
+.faq-item{border-bottom:1.5px solid var(--br);}
+.faq-item:first-child{border-top:1.5px solid var(--br);}
+.faq-q{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:20px 0;cursor:pointer;font-size:0.9375rem;font-weight:600;color:var(--tx);transition:color 0.2s;user-select:none;font-family:var(--ff-b);}
+.faq-q:hover{color:var(--p);}
+.faq-icon{width:26px;height:26px;border-radius:7px;background:var(--sf);border:1.5px solid var(--br);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.3s;font-size:0.68rem;color:var(--txm);}
+.faq-item.open .faq-icon{background:var(--p);border-color:var(--p);color:white;transform:rotate(45deg);}
+.faq-a{font-size:0.875rem;color:var(--txs);line-height:1.72;max-height:0;overflow:hidden;transition:max-height 0.4s cubic-bezier(0.19,1,0.22,1),padding 0.4s;}
+.faq-item.open .faq-a{max-height:300px;padding-bottom:20px;}
+
+/* ============================
+   CTA
+============================ */
+.cta-sec{background:var(--p);position:relative;overflow:hidden;text-align:center;}
+.cta-sec::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:56px 56px;}
+.cta-sec::after{content:'';position:absolute;top:-240px;left:50%;transform:translateX(-50%);width:720px;height:720px;background:radial-gradient(circle,rgba(255,255,255,0.06) 0%,transparent 55%);border-radius:50%;}
+.cta-in{position:relative;z-index:1;}
+.cta-h{font-family:var(--ff-h);font-size:clamp(2.6rem,5.5vw,5rem);font-weight:900;letter-spacing:-0.05em;color:white;line-height:0.95;margin-bottom:18px;}
+.cta-sub{font-size:1rem;color:rgba(255,255,255,0.7);line-height:1.68;margin-bottom:44px;}
+.cta-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:48px;}
+.cta-trust{display:flex;align-items:center;justify-content:center;gap:32px;flex-wrap:wrap;margin-bottom:52px;}
+.cta-ti{display:flex;align-items:center;gap:7px;font-size:0.78rem;font-weight:600;color:rgba(255,255,255,0.6);}
+.cta-ti i{color:rgba(255,255,255,0.4);}
+/* Countdown timer in CTA */
+.trial-countdown{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:12px 24px;margin-bottom:32px;font-family:var(--ff-c);}
+.tc-block{text-align:center;min-width:48px;}
+.tc-num{font-size:1.6rem;font-weight:900;color:white;line-height:1;font-family:var(--ff-h);}
+.tc-lbl{font-size:0.55rem;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:0.12em;text-transform:uppercase;margin-top:2px;}
+.tc-sep{font-size:1.4rem;font-weight:900;color:rgba(255,255,255,0.3);padding-bottom:14px;}
+
+/* ============================
+   FOOTER
+============================ */
+.footer{background:var(--tx);padding:80px 64px 40px;position:relative;overflow:hidden;}
+.footer::before{content:'';position:absolute;top:-100px;right:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(91,33,182,0.1) 0%,transparent 65%);border-radius:50%;pointer-events:none;}
+.footer-grid{max-width:1380px;margin:0 auto;}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:64px;margin-bottom:72px;}
+.footer-brand-logo{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.fbl-mark{width:38px;height:38px;background:var(--p);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--ff-h);font-size:1.2rem;font-weight:900;color:white;}
+.fbl-name{font-family:var(--ff-h);font-size:1.15rem;font-weight:700;color:white;}
+.footer-brand-desc{font-size:0.855rem;color:rgba(255,255,255,0.45);line-height:1.72;max-width:280px;margin-bottom:26px;}
+.footer-socials{display:flex;gap:8px;}
+.fsoc{width:36px;height:36px;border-radius:9px;border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:rgba(255,255,255,0.5);transition:all 0.2s;cursor:pointer;}
+.fsoc:hover{background:var(--p);border-color:var(--p);color:white;}
+.footer-col-title{font-family:var(--ff-h);font-size:0.85rem;font-weight:700;color:white;margin-bottom:18px;letter-spacing:-0.01em;}
+.footer-links{display:flex;flex-direction:column;gap:10px;}
+.footer-link{font-size:0.825rem;color:rgba(255,255,255,0.45);transition:color 0.2s;font-weight:400;}
+.footer-link:hover{color:white;}
+.footer-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(91,33,182,0.25);border:1px solid rgba(91,33,182,0.4);border-radius:8px;padding:5px 10px;font-size:0.63rem;font-weight:700;color:var(--pl2);margin-bottom:10px;letter-spacing:0.08em;text-transform:uppercase;}
+.footer-mid{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:32px 0;border-top:1px solid rgba(255,255,255,0.06);border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:32px;}
+.footer-newsletter{display:flex;gap:10px;}
+.fn-input{flex:1;padding:11px 16px;border:1px solid rgba(255,255,255,0.12);border-radius:10px;background:rgba(255,255,255,0.05);color:white;font-family:var(--ff-b);font-size:0.838rem;outline:none;transition:border-color 0.2s;}
+.fn-input::placeholder{color:rgba(255,255,255,0.35);}
+.fn-input:focus{border-color:rgba(91,33,182,0.5);}
+.fn-btn{padding:11px 20px;background:var(--p);color:white;border:none;border-radius:10px;font-weight:700;font-size:0.838rem;cursor:pointer;font-family:var(--ff-b);transition:all 0.2s;white-space:nowrap;}
+.fn-btn:hover{background:var(--pd);}
+.footer-cert{display:flex;align-items:center;gap:16px;justify-content:flex-end;flex-wrap:wrap;}
+.fcert{display:flex;align-items:center;gap:7px;font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.4);}
+.fcert i{color:rgba(91,33,182,0.7);}
+.footer-bottom{max-width:1380px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.fb-copy{font-size:0.78rem;color:rgba(255,255,255,0.3);}
+.fb-links{display:flex;gap:20px;}
+.fb-link{font-size:0.78rem;color:rgba(255,255,255,0.3);transition:color 0.2s;}
+.fb-link:hover{color:rgba(255,255,255,0.7);}
+
+/* ============================
+   KVKK BANNER
+============================ */
+#kvkk-banner{
+  position:fixed;bottom:0;left:0;right:0;z-index:9997;
+  background:white;border-top:1.5px solid var(--br);
+  padding:18px 32px;display:flex;align-items:center;gap:20px;
+  box-shadow:0 -8px 32px rgba(0,0,0,0.08);
+  transform:translateY(100%);transition:transform 0.4s cubic-bezier(0.19,1,0.22,1);
+}
+#kvkk-banner.show{transform:translateY(0);}
+.kvkk-text{flex:1;font-size:0.8rem;color:var(--txs);line-height:1.6;}
+.kvkk-text a{color:var(--p);font-weight:700;}
+.kvkk-actions{display:flex;gap:8px;flex-shrink:0;}
+.kvkk-btn-ok{padding:9px 20px;background:var(--p);color:white;border:none;border-radius:10px;font-weight:700;font-size:0.78rem;cursor:pointer;font-family:var(--ff-b);}
+.kvkk-btn-ok:hover{background:var(--pd);}
+.kvkk-btn-no{padding:9px 14px;background:var(--sf);color:var(--txm);border:1.5px solid var(--br);border-radius:10px;font-weight:600;font-size:0.78rem;cursor:pointer;font-family:var(--ff-b);}
+
+/* ============================
+   LIVE CHAT BUBBLE
+============================ */
+#chat-bubble{
+  position:fixed;bottom:32px;left:32px;z-index:9996;
+  width:52px;height:52px;border-radius:50%;background:var(--grn);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  box-shadow:0 8px 24px rgba(16,185,129,0.4);transition:all 0.25s;
+  animation:pulseGrn 2.5s infinite;
+}
+#chat-bubble:hover{transform:scale(1.1);}
+#chat-bubble i{font-size:1.2rem;color:white;}
+#chat-bubble .cbadge{
+  position:absolute;top:-4px;right:-4px;width:18px;height:18px;
+  background:var(--red);border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:0.6rem;font-weight:800;color:white;border:2px solid white;
+}
+.chat-tooltip{
+  position:absolute;left:62px;bottom:0;
+  background:var(--tx);color:white;font-size:0.72rem;font-weight:700;
+  padding:8px 14px;border-radius:10px;white-space:nowrap;font-family:var(--ff-b);
+  opacity:0;pointer-events:none;transition:opacity 0.2s;
+}
+.chat-tooltip::before{content:'';position:absolute;right:100%;top:50%;transform:translateY(-50%);border:5px solid transparent;border-right-color:var(--tx);}
+#chat-bubble:hover .chat-tooltip{opacity:1;}
+
+/* ============================
+   RESPONSIVE
+============================ */
+@media(max-width:1100px){
+  .sec,.sec-sm,.footer{padding:80px 24px;}
+  .stats-wrap{padding:56px 24px;}
+  .hero{padding:88px 24px 64px;}
+  .hero-in{grid-template-columns:1fr;gap:52px;text-align:center;}
+  .hero-stats{justify-content:center;}
+  .hero-sub,.sec-sub{margin-left:auto;margin-right:auto;}
+  .hero-acts{justify-content:center;}
+  .terminal{width:320px;transform:none!important;}
+  .hfloat{display:none;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .feat-grid,.testi-grid{grid-template-columns:1fr;}
+  .fc.span2{grid-column:1;display:block;}
+  .fc.span2 .mini-viz{margin-top:22px;}
+  .how-grid{grid-template-columns:1fr 1fr;}
+  .how-grid::before{display:none;}
+  .app-wrap,.demo-wrap,.roi-wrap,.security-grid,.faq-wrap{grid-template-columns:1fr;}
+  .pricing-grid,.hw-grid{grid-template-columns:1fr;}
+  .cmp-head,.cmp-row{grid-template-columns:2fr 1.5fr;}
+  .cmp-cell:nth-child(n+3),.cmp-th:nth-child(n+3){display:none;}
+  .api-block{flex-direction:column;padding:28px 22px;}
+  .footer-top{grid-template-columns:1fr 1fr;}
+  .footer-mid{grid-template-columns:1fr;}
+  .footer-bottom{flex-direction:column;text-align:center;}
+  #kvkk-banner{flex-direction:column;align-items:flex-start;}
+  #chat-bubble{bottom:24px;left:24px;}
+}
+@media(max-width:640px){
+  .stats-grid{grid-template-columns:1fr;}
+  .masa-grid{grid-template-columns:repeat(4,1fr);}
+  .pricing-toggle{flex-wrap:wrap;justify-content:center;}
+  .roi-result-grid{grid-template-columns:1fr;}
+  .sec-badge-row{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr;}
+  .cta-trust{gap:16px;}
+  #skip-intro{bottom:18px;right:18px;}
+  .intro-dots{bottom:18px;}
+}
 </style>
 
-<!-- ════════════════ INTRO OVERLAY ════════════════ -->
-<div x-data="posIntro()" x-init="start()">
+<!-- =====================
+     INTRO OVERLAY
+===================== -->
+<div class="pos-page" x-data="posIntro()" x-init="init()">
 
-<div id="intro-overlay" :class="{ 'hidden-overlay': done }">
-  <div id="intro-progress" :style="'width:' + progress + '%'"></div>
-  <button id="skip-btn" @click="skip()">Tanıtımı Geç &rarr;</button>
+<div id="intro-overlay" :class="{ 'done': done }">
+  <div id="intro-progress-bar"><div id="intro-progress-fill" :style="'width:' + progress + '%'"></div></div>
+  <button id="skip-intro" @click="skip()">Geç <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  <div class="intro-dots"><template x-for="i in total" :key="i"><div class="i-dot" :class="{ 'on': scene===i-1 }"></div></template></div>
 
-  <!-- Scene 0: Logo Reveal -->
-  <div class="intro-scene" x-show="scene === 0" x-cloak>
-    <div class="ia-scaleInBig" style="display:flex;flex-direction:column;align-items:center;gap:24px;">
-      <div style="width:128px;height:128px;background:var(--primary);border-radius:2rem;display:flex;align-items:center;justify-content:center;box-shadow:0 25px 50px rgba(98,0,238,0.3);animation:introPulseBrand 2s infinite 0.9s;">
-        <span style="color:white;font-weight:900;font-size:3.5rem;font-family:'Inter',sans-serif;">R</span>
-      </div>
-      <p class="ia-fadeIn ia-d500" style="color:var(--text-muted);font-size:0.85rem;font-weight:600;letter-spacing:0.4em;text-transform:uppercase;">RezerVist Systems</p>
-    </div>
-  </div>
-
-  <!-- Scene 1: Name Typewriter -->
-  <div class="intro-scene" x-show="scene === 1" x-cloak>
-    <div style="text-align:center;">
-      <div class="ia-fadeSlideDown" style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:16px;">
-        <div style="width:40px;height:40px;background:var(--primary);border-radius:12px;display:flex;align-items:center;justify-content:center;">
-          <span style="color:white;font-weight:900;font-size:1.2rem;font-family:'Inter',sans-serif;">R</span>
+  <!-- SCENE 0 — Logo splash -->
+  <div class="iscene" x-show="scene===0" x-cloak>
+    <div class="a-scb" style="display:flex;flex-direction:column;align-items:center;gap:28px;">
+      <div style="position:relative;">
+        <div style="position:absolute;inset:-18px;border-radius:50%;border:1.5px solid rgba(91,33,182,0.15);animation:rotate 8s linear infinite;"></div>
+        <div style="position:absolute;inset:-34px;border-radius:50%;border:1.5px dashed rgba(91,33,182,0.07);animation:rotate 14s linear infinite reverse;"></div>
+        <div style="width:112px;height:112px;background:var(--p);border-radius:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 24px 64px rgba(91,33,182,0.4);animation:pulse 2.5s infinite 1s;position:relative;z-index:1;">
+          <span style="color:white;font-weight:900;font-size:3rem;font-family:var(--ff-h);">R</span>
         </div>
       </div>
-      <h1 class="intro-typewriter" style="font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;color:var(--text);font-family:'Inter',sans-serif;letter-spacing:-0.04em;">RezerVistA POS</h1>
-      <p class="ia-fadeIn ia-d700" style="color:var(--text-muted);font-size:1rem;font-weight:500;margin-top:20px;letter-spacing:0.2em;text-transform:uppercase;">Satış Noktası Çözümü</p>
-      <div class="ia-fadeIn ia-d700" style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:28px;">
-        <div style="width:8px;height:8px;border-radius:50%;background:#10B981;"></div>
-        <span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);letter-spacing:0.15em;text-transform:uppercase;">v1 — Hazır</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Scene 2: Speed -->
-  <div class="intro-scene" x-show="scene === 2" x-cloak>
-    <div style="max-width:640px;width:100%;display:flex;align-items:center;gap:60px;flex-wrap:wrap;justify-content:center;">
-      <div class="ia-slideInLeft" style="flex:1;min-width:260px;">
-        <div style="width:72px;height:72px;background:var(--surface);border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:22px;border:1.5px solid var(--border);">
-          <i class="fa-solid fa-bolt" style="color:var(--primary);font-size:1.8rem;"></i>
-        </div>
-        <div style="font-size:clamp(3rem,6vw,4.5rem);font-weight:900;color:var(--text);font-family:'Inter',sans-serif;letter-spacing:-0.04em;line-height:1;">15<span style="color:var(--primary);">ms</span></div>
-        <p style="color:var(--text-subtle);font-size:1.1rem;font-weight:400;margin-top:12px;line-height:1.6;">Maksimum yanıt süresi. İnternet olmadan bile yerel ağda tam hızda çalışır.</p>
-      </div>
-      <div class="ia-slideInRight" style="flex-shrink:0;">
-        <div style="width:180px;height:180px;border-radius:50%;border:6px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative;animation:introPulseBrand 2s infinite;">
-          <div style="text-align:center;"><div style="font-size:2.5rem;font-weight:900;color:var(--primary);font-family:'Inter',sans-serif;">~15</div><div style="font-size:0.65rem;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.15em;">ms avg</div></div>
-          <svg style="position:absolute;inset:0;" viewBox="0 0 192 192"><circle cx="96" cy="96" r="86" fill="none" stroke="var(--border)" stroke-width="6"/><circle cx="96" cy="96" r="86" fill="none" stroke="var(--primary)" stroke-width="6" stroke-dasharray="540" stroke-dashoffset="54" stroke-linecap="round" transform="rotate(-90 96 96)" class="intro-net-line"/></svg>
+      <div class="a-f d5" style="text-align:center;">
+        <p style="color:var(--txm);font-size:0.75rem;font-weight:700;letter-spacing:0.4em;text-transform:uppercase;font-family:var(--ff-b);">RezerVist Systems</p>
+        <div style="display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;">
+          <div style="width:5px;height:5px;border-radius:50%;background:var(--grn);animation:pulseGrn 1.8s infinite;"></div>
+          <span style="font-size:0.62rem;font-weight:700;color:var(--txm);letter-spacing:0.18em;text-transform:uppercase;font-family:var(--ff-b);">Tüm Sistemler Aktif</span>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Scene 3: Table Management -->
-  <div class="intro-scene" x-show="scene === 3" x-cloak>
-    <div style="max-width:580px;width:100%;">
-      <div class="ia-fadeSlideDown" style="text-align:center;margin-bottom:32px;">
-        <div style="display:inline-flex;align-items:center;gap:10px;padding:6px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;margin-bottom:12px;">
-          <i class="fa-solid fa-table-cells" style="color:var(--primary);font-size:0.8rem;"></i>
-          <span style="font-size:0.7rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:0.15em;">Masa Yönetimi</span>
-        </div>
-        <h2 style="font-size:clamp(2rem,4vw,3.5rem);font-weight:900;color:var(--text);font-family:'Inter',sans-serif;letter-spacing:-0.04em;">Tüm Masaları <span style="color:var(--primary);">Tek Ekranda</span></h2>
+  <!-- SCENE 1 — Product name + typewriter -->
+  <div class="iscene" x-show="scene===1" x-cloak>
+    <div style="text-align:center;max-width:620px;">
+      <div class="a-fd" style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:18px;">
+        <div style="width:36px;height:36px;background:var(--p);border-radius:10px;display:flex;align-items:center;justify-content:center;"><span style="color:white;font-family:var(--ff-h);font-weight:900;font-size:1.1rem;">R</span></div>
+        <span style="font-size:0.68rem;font-weight:800;color:var(--txm);letter-spacing:0.22em;text-transform:uppercase;font-family:var(--ff-b);">Satış Noktası Çözümü</span>
       </div>
-      <div class="ia-scaleIn ia-d300" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;">
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid var(--border);font-size:0.7rem;background:white;color:var(--text-muted);"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Boş</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">01</span></div>
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid var(--primary);font-size:0.7rem;background:var(--primary);color:white;box-shadow:0 4px 16px rgba(98,0,238,0.3);transform:scale(1.05);"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Dolu</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">02</span></div>
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid rgba(244,63,94,0.15);font-size:0.7rem;background:rgba(244,63,94,0.05);color:#F43F5E;"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Meşgul</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">03</span></div>
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid var(--border);font-size:0.7rem;background:white;color:var(--text-muted);"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Boş</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">04</span></div>
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid var(--primary);font-size:0.7rem;background:var(--primary);color:white;box-shadow:0 4px 16px rgba(98,0,238,0.3);transform:scale(1.05);"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Dolu</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">05</span></div>
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid rgba(244,63,94,0.15);font-size:0.7rem;background:rgba(244,63,94,0.05);color:#F43F5E;"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Meşgul</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">06</span></div>
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid var(--border);font-size:0.7rem;background:white;color:var(--text-muted);"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Boş</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">07</span></div>
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid var(--border);font-size:0.7rem;background:white;color:var(--text-muted);"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Boş</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">08</span></div>
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid var(--primary);font-size:0.7rem;background:var(--primary);color:white;box-shadow:0 4px 16px rgba(98,0,238,0.3);transform:scale(1.05);"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Dolu</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">09</span></div>
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid var(--border);font-size:0.7rem;background:white;color:var(--text-muted);"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Boş</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">10</span></div>
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid var(--border);font-size:0.7rem;background:white;color:var(--text-muted);"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Boş</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">11</span></div>
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid rgba(244,63,94,0.15);font-size:0.7rem;background:rgba(244,63,94,0.05);color:#F43F5E;"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Meşgul</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">12</span></div>
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid var(--border);font-size:0.7rem;background:white;color:var(--text-muted);"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Boş</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">13</span></div>
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid var(--primary);font-size:0.7rem;background:var(--primary);color:white;box-shadow:0 4px 16px rgba(98,0,238,0.3);transform:scale(1.05);"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Dolu</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">14</span></div>
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid rgba(244,63,94,0.15);font-size:0.7rem;background:rgba(244,63,94,0.05);color:#F43F5E;"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Meşgul</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">15</span></div>
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid var(--border);font-size:0.7rem;background:white;color:var(--text-muted);"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Boş</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">16</span></div>
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid var(--border);font-size:0.7rem;background:white;color:var(--text-muted);"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Boş</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">17</span></div>
-        <div style="aspect-ratio:1;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;border:1.5px solid rgba(244,63,94,0.15);font-size:0.7rem;background:rgba(244,63,94,0.05);color:#F43F5E;"><span style="font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;">Meşgul</span><span style="font-size:1rem;font-family:'Inter',sans-serif;">18</span></div>
+      <h1 class="i-type" style="font-family:var(--ff-h);font-size:clamp(2.4rem,6vw,4.5rem);font-weight:900;color:var(--tx);letter-spacing:-0.05em;margin:0 auto;">RezerVist POS</h1>
+      <div class="a-f d9" style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:28px;">
+        <div class="i-statcard" style="text-align:center;"><div class="i-sv" style="color:var(--p);">v1.0</div><div class="i-sl">Sürüm</div></div>
+        <div class="i-statcard" style="text-align:center;"><div class="i-sv" style="color:var(--grn);">Aktif</div><div class="i-sl">Durum</div></div>
+        <div class="i-statcard" style="text-align:center;"><div class="i-sv">3.200+</div><div class="i-sl">İşletme</div></div>
+        <div class="i-statcard" style="text-align:center;"><div class="i-sv">43</div><div class="i-sl">İl</div></div>
       </div>
     </div>
   </div>
 
-  <!-- Scene 4: Reporting -->
-  <div class="intro-scene" x-show="scene === 4" x-cloak>
-    <div style="max-width:640px;width:100%;display:flex;align-items:center;gap:60px;flex-wrap:wrap;justify-content:center;">
-      <div class="ia-slideInLeft" style="flex:1;min-width:260px;">
-        <div style="width:72px;height:72px;background:var(--surface);border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:22px;border:1.5px solid var(--border);">
-          <i class="fa-solid fa-chart-column" style="color:var(--primary);font-size:1.8rem;"></i>
+  <!-- SCENE 2 — Speed -->
+  <div class="iscene" x-show="scene===2" x-cloak>
+    <div style="max-width:620px;width:100%;display:flex;align-items:center;gap:60px;flex-wrap:wrap;justify-content:center;">
+      <div class="a-sl" style="flex:1;min-width:240px;">
+        <div style="width:56px;height:56px;background:var(--sf);border-radius:16px;border:1.5px solid var(--br);display:flex;align-items:center;justify-content:center;margin-bottom:18px;"><i class="fa-solid fa-bolt" style="color:var(--p);font-size:1.5rem;"></i></div>
+        <div style="font-family:var(--ff-h);font-size:clamp(2.8rem,7vw,4.5rem);font-weight:900;color:var(--tx);letter-spacing:-0.05em;line-height:1;">15<span style="color:var(--p);">ms</span></div>
+        <p style="color:var(--txs);font-size:0.95rem;margin-top:10px;line-height:1.68;max-width:280px;">Maksimum yanıt süresi. İnternet olmaksızın yerel ağda tam güçte çalışır.</p>
+        <div style="display:flex;gap:8px;margin-top:18px;">
+          <div class="i-chip"><i class="fa-solid fa-check" style="font-size:.55rem;"></i> Offline Mode</div>
+          <div class="i-chip"><i class="fa-solid fa-check" style="font-size:.55rem;"></i> LAN Sync</div>
         </div>
-        <div style="font-size:clamp(2rem,4vw,3.5rem);font-weight:900;color:var(--text);font-family:'Inter',sans-serif;letter-spacing:-0.04em;line-height:1.05;">Anlık<br><span style="color:var(--primary);">Raporlama</span></div>
-        <p style="color:var(--text-subtle);font-size:1rem;font-weight:400;margin-top:12px;line-height:1.6;">Günlük, haftalık, aylık satış grafikleri. Personel performansı. PDF ihracat.</p>
-        <div style="display:flex;gap:14px;margin-top:20px;">
-          <div style="padding:8px 16px;background:var(--surface);border-radius:12px;border:1.5px solid var(--border);">
-            <div style="font-size:1.2rem;font-weight:900;color:var(--primary);font-family:'Inter',sans-serif;">₺124K</div>
-            <div style="font-size:0.6rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;">Bu Ay</div>
+      </div>
+      <div class="a-sr" style="flex-shrink:0;">
+        <div style="width:150px;height:150px;border-radius:50%;position:relative;display:flex;align-items:center;justify-content:center;animation:pulse 2.2s infinite;">
+          <div style="text-align:center;position:relative;z-index:1;">
+            <div style="font-family:var(--ff-h);font-size:2rem;font-weight:900;color:var(--p);line-height:1;">~15</div>
+            <div style="font-size:0.58rem;font-weight:800;color:var(--txm);text-transform:uppercase;letter-spacing:0.15em;margin-top:2px;font-family:var(--ff-b);">ms avg</div>
           </div>
-          <div style="padding:8px 16px;background:rgba(16,185,129,0.05);border-radius:12px;border:1.5px solid rgba(16,185,129,0.15);">
-            <div style="font-size:1.2rem;font-weight:900;color:#10B981;font-family:'Inter',sans-serif;">+32%</div>
-            <div style="font-size:0.6rem;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;">Büyüme</div>
-          </div>
+          <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 150 150">
+            <circle cx="75" cy="75" r="68" fill="none" stroke="var(--br)" stroke-width="5"/>
+            <circle cx="75" cy="75" r="68" fill="none" stroke="var(--p)" stroke-width="5" stroke-dasharray="427" stroke-dashoffset="42" stroke-linecap="round" transform="rotate(-90 75 75)" style="animation:lineAnim 1.5s ease both;"/>
+          </svg>
         </div>
-      </div>
-      <div class="ia-slideInRight" style="flex-shrink:0;display:flex;align-items:flex-end;gap:10px;height:160px;">
-        <div class="intro-bar" style="height:50%;animation:introBarGrow 0.8s cubic-bezier(0.19,1,0.22,1) 0.1s both;"></div>
-        <div class="intro-bar" style="height:75%;animation:introBarGrow 0.8s cubic-bezier(0.19,1,0.22,1) 0.2s both;"></div>
-        <div class="intro-bar" style="height:40%;animation:introBarGrow 0.8s cubic-bezier(0.19,1,0.22,1) 0.3s both;"></div>
-        <div class="intro-bar" style="height:90%;animation:introBarGrow 0.8s cubic-bezier(0.19,1,0.22,1) 0.4s both;background:#A855F7;"></div>
-        <div class="intro-bar" style="height:60%;animation:introBarGrow 0.8s cubic-bezier(0.19,1,0.22,1) 0.5s both;"></div>
-        <div class="intro-bar" style="height:100%;animation:introBarGrow 0.8s cubic-bezier(0.19,1,0.22,1) 0.6s both;"></div>
-        <div class="intro-bar" style="height:70%;animation:introBarGrow 0.8s cubic-bezier(0.19,1,0.22,1) 0.7s both;background:#A855F7;"></div>
       </div>
     </div>
   </div>
 
-  <!-- Scene 5: Cloud + Local Network -->
-  <div class="intro-scene" x-show="scene === 5" x-cloak>
-    <div style="max-width:580px;width:100%;text-align:center;">
-      <div class="ia-fadeSlideDown" style="margin-bottom:28px;">
-        <div style="display:inline-flex;align-items:center;gap:10px;padding:6px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;margin-bottom:12px;">
-          <i class="fa-solid fa-cloud" style="color:var(--primary);font-size:0.8rem;"></i>
-          <span style="font-size:0.7rem;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:0.15em;">Hibrit Altyapı</span>
-        </div>
-        <h2 style="font-size:clamp(2rem,4vw,3.5rem);font-weight:900;color:var(--text);font-family:'Inter',sans-serif;letter-spacing:-0.04em;">Bulut <span style="color:var(--primary);">&</span> Yerel Ağ</h2>
-        <p style="color:var(--text-subtle);font-size:1rem;font-weight:400;margin-top:10px;">İnternet kesilse de veriler kaybolmaz. Tüm terminaller birbirini görür.</p>
+  <!-- SCENE 3 — Table grid -->
+  <div class="iscene" x-show="scene===3" x-cloak>
+    <div style="max-width:540px;width:100%;">
+      <div class="a-fd" style="text-align:center;margin-bottom:24px;">
+        <div class="i-chip" style="margin-bottom:12px;"><i class="fa-solid fa-table-cells" style="font-size:.58rem;"></i> Masa Yönetimi</div>
+        <h2 style="font-family:var(--ff-h);font-size:clamp(1.8rem,4.5vw,3.2rem);font-weight:900;color:var(--tx);letter-spacing:-0.045em;">Tüm Masalar <span style="color:var(--p);">Tek Ekranda</span></h2>
       </div>
-      <div class="ia-scaleIn ia-d300" style="display:flex;align-items:center;justify-content:center;">
-        <svg width="460" height="120" viewBox="0 0 460 120" fill="none" style="max-width:100%;">
-          <circle cx="70" cy="60" r="36" fill="var(--surface)" stroke="var(--primary)" stroke-width="2"/>
-          <text x="70" y="56" text-anchor="middle" fill="var(--primary)" font-size="16" font-family="Font Awesome 6 Free" font-weight="900">&#xf0c2;</text>
-          <text x="70" y="74" text-anchor="middle" fill="var(--primary)" font-size="8" font-family="Inter" font-weight="800" letter-spacing="1">CLOUD</text>
-          <line x1="106" y1="60" x2="354" y2="60" stroke="var(--primary)" stroke-width="2" stroke-dasharray="8 6" class="intro-net-line"/>
-          <circle cx="230" cy="60" r="6" fill="var(--primary)" opacity="0.3" style="animation:introPulseBrand 1.5s infinite"/>
-          <circle cx="230" cy="60" r="3" fill="var(--primary)"/>
-          <circle cx="390" cy="60" r="36" fill="var(--surface)" stroke="var(--primary)" stroke-width="2"/>
-          <text x="390" y="56" text-anchor="middle" fill="var(--primary)" font-size="16" font-family="Font Awesome 6 Free" font-weight="900">&#xf108;</text>
-          <text x="390" y="74" text-anchor="middle" fill="var(--primary)" font-size="8" font-family="Inter" font-weight="800" letter-spacing="1">LOCAL</text>
+      <div class="a-sc d2" style="display:grid;grid-template-columns:repeat(6,1fr);gap:6px;">
+        @php $tbs2=[['t'=>'empty','n'=>'01'],['t'=>'full','n'=>'02'],['t'=>'busy','n'=>'03'],['t'=>'empty','n'=>'04'],['t'=>'full','n'=>'05'],['t'=>'reserve','n'=>'06'],['t'=>'empty','n'=>'07'],['t'=>'full','n'=>'08'],['t'=>'busy','n'=>'09'],['t'=>'empty','n'=>'10'],['t'=>'cleaning','n'=>'11'],['t'=>'full','n'=>'12'],['t'=>'empty','n'=>'13'],['t'=>'busy','n'=>'14'],['t'=>'full','n'=>'15'],['t'=>'reserve','n'=>'16'],['t'=>'empty','n'=>'17'],['t'=>'full','n'=>'18']]; @endphp
+        @foreach($tbs2 as $t)
+          @php $lmap2=['empty'=>'Boş','full'=>'Dolu','busy'=>'Meşgul','reserve'=>'Rezerv','cleaning'=>'Temiz']; @endphp
+          <div style="aspect-ratio:1;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:var(--ff-b);font-weight:700;{{ $t['t']==='full'?'background:var(--p);color:white;box-shadow:0 4px 14px rgba(91,33,182,0.28);':($t['t']==='busy'?'background:rgba(239,68,68,0.06);border:1.5px solid rgba(239,68,68,0.2);color:var(--red);':($t['t']==='reserve'?'background:rgba(245,158,11,0.07);border:1.5px solid rgba(245,158,11,0.22);color:var(--ylw);':($t['t']==='cleaning'?'background:rgba(14,165,233,0.07);border:1.5px solid rgba(14,165,233,0.22);color:var(--acc);':'background:var(--sf);border:1.5px solid var(--br);color:var(--txm);'))) }}">
+            <div style="font-size:0.42rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1px;opacity:0.8;">{{ $lmap2[$t['t']] }}</div>
+            <div style="font-family:var(--ff-h);font-size:0.9rem;font-weight:900;">{{ $t['n'] }}</div>
+          </div>
+        @endforeach
+      </div>
+      <div class="a-f d7" style="display:flex;justify-content:center;gap:14px;margin-top:14px;flex-wrap:wrap;">
+        @foreach(['full'=>['var(--p)','Dolu'],'busy'=>['rgba(239,68,68,0.6)','Meşgul'],'reserve'=>['rgba(245,158,11,0.6)','Rezerv'],'cleaning'=>['rgba(14,165,233,0.6)','Temizleniyor'],'empty'=>['var(--br)','Boş']] as $s=>$info)
+        <div style="display:flex;align-items:center;gap:5px;"><div style="width:8px;height:8px;border-radius:3px;background:{{$info[0]}};"></div><span style="font-size:0.68rem;font-weight:700;color:var(--txm);font-family:var(--ff-b);">{{$info[1]}}</span></div>
+        @endforeach
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENE 4 — Analytics -->
+  <div class="iscene" x-show="scene===4" x-cloak>
+    <div style="max-width:620px;width:100%;display:flex;align-items:center;gap:56px;flex-wrap:wrap;justify-content:center;">
+      <div class="a-sl" style="flex:1;min-width:240px;">
+        <div style="width:56px;height:56px;background:var(--sf);border-radius:16px;border:1.5px solid var(--br);display:flex;align-items:center;justify-content:center;margin-bottom:18px;"><i class="fa-solid fa-chart-column" style="color:var(--p);font-size:1.5rem;"></i></div>
+        <div style="font-family:var(--ff-h);font-size:clamp(1.8rem,4vw,3.2rem);font-weight:900;color:var(--tx);letter-spacing:-0.045em;line-height:1.05;">Anlık<br><span style="color:var(--p);">Analitik</span></div>
+        <p style="color:var(--txs);font-size:0.9rem;margin-top:10px;line-height:1.68;">Günlük · Haftalık · Aylık satış trendleri. AI destekli öngörüler. PDF & Excel export.</p>
+        <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
+          <div class="i-statcard"><div class="i-sv" style="color:var(--p);">₺124K</div><div class="i-sl">Bu Ay</div></div>
+          <div class="i-statcard" style="background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.15);"><div class="i-sv" style="color:var(--grn);">+32%</div><div class="i-sl">Büyüme</div></div>
+        </div>
+      </div>
+      <div class="a-sr" style="flex-shrink:0;display:flex;align-items:flex-end;gap:7px;height:130px;">
+        @foreach([50,72,38,90,58,100,68,45,80] as $idx=>$h)
+          <div style="width:26px;border-radius:5px 5px 0 0;background:{{ $h>=90?'var(--grn)':($h>=70?'var(--p)':'rgba(91,33,182,0.2)') }};height:{{ $h }}%;animation:barGrow 0.8s cubic-bezier(0.19,1,0.22,1) {{ $idx*0.08 }}s both;align-self:flex-end;"></div>
+        @endforeach
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENE 5 — Pricing preview -->
+  <div class="iscene" x-show="scene===5" x-cloak>
+    <div style="max-width:700px;width:100%;text-align:center;">
+      <div class="a-fd" style="margin-bottom:24px;">
+        <div class="i-chip" style="margin-bottom:12px;"><i class="fa-solid fa-tag" style="font-size:.58rem;"></i> Fiyatlandırma</div>
+        <h2 style="font-family:var(--ff-h);font-size:clamp(1.8rem,4vw,3rem);font-weight:900;color:var(--tx);letter-spacing:-0.045em;">İşletmenize Uygun <span style="color:var(--p);">Plan</span></h2>
+      </div>
+      <div class="a-sc d3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+        @foreach([['Lite','₺990','1 Terminal','Küçük işletmeler için','sf'],['Pro','₺1.990','3 Terminal','Büyüyen işletmeler','p'],['Elite','₺3.490','Sınırsız','Zincir & Çok Şube','tx']] as $plan)
+        <div style="background:{{ $plan[4]==='p'?'var(--p)':($plan[4]==='tx'?'var(--tx)':'white') }};border:1.5px solid {{ $plan[4]==='p'?'var(--p)':($plan[4]==='tx'?'var(--tx)':'var(--br)') }};border-radius:16px;padding:22px 18px;text-align:center;">
+          <div style="font-size:0.68rem;font-weight:800;color:{{ $plan[4]==='p'||$plan[4]==='tx'?'rgba(255,255,255,0.6)':'var(--txm)' }};letter-spacing:0.14em;text-transform:uppercase;margin-bottom:10px;font-family:var(--ff-b);">{{ $plan[0] }}</div>
+          <div style="font-family:var(--ff-h);font-size:2rem;font-weight:900;color:{{ $plan[4]==='p'||$plan[4]==='tx'?'white':'var(--tx)' }};letter-spacing:-0.04em;margin-bottom:4px;">{{ $plan[1] }}<span style="font-size:0.75rem;font-weight:500;opacity:0.6;">/ay</span></div>
+          <div style="font-size:0.72rem;font-weight:600;color:{{ $plan[4]==='p'||$plan[4]==='tx'?'rgba(255,255,255,0.55)':'var(--txm)' }};">{{ $plan[2] }}</div>
+          <div style="font-size:0.68rem;color:{{ $plan[4]==='p'||$plan[4]==='tx'?'rgba(255,255,255,0.4)':'var(--txm)' }};margin-top:6px;">{{ $plan[3] }}</div>
+        </div>
+        @endforeach
+      </div>
+      <div class="a-f d7" style="margin-top:16px;font-size:0.75rem;color:var(--txm);">14 gün ücretsiz deneme · Kredi kartı gerekmez · Anında iptal</div>
+    </div>
+  </div>
+
+  <!-- SCENE 6 — Cloud hybrid -->
+  <div class="iscene" x-show="scene===6" x-cloak>
+    <div style="max-width:540px;width:100%;text-align:center;">
+      <div class="a-fd" style="margin-bottom:22px;">
+        <div class="i-chip" style="margin-bottom:12px;"><i class="fa-solid fa-cloud" style="font-size:.58rem;"></i> Hibrit Altyapı</div>
+        <h2 style="font-family:var(--ff-h);font-size:clamp(1.8rem,4.5vw,3rem);font-weight:900;color:var(--tx);letter-spacing:-0.045em;">Bulut <span style="color:var(--p);">&amp;</span> Yerel Ağ</h2>
+        <p style="color:var(--txs);font-size:0.9rem;margin-top:8px;">İnternet kesilse de veriler kaybolmaz. Her terminal birbirini görür.</p>
+      </div>
+      <div class="a-sc d3">
+        <svg width="440" height="120" viewBox="0 0 440 120" fill="none" style="max-width:100%;overflow:visible;">
+          <circle cx="65" cy="60" r="38" fill="var(--sf)" stroke="var(--br)" stroke-width="1.5"/>
+          <circle cx="65" cy="60" r="38" fill="none" stroke="var(--p)" stroke-width="1.5" stroke-dasharray="4 4"/>
+          <text x="65" y="58" text-anchor="middle" fill="var(--p)" font-size="17" font-family="Font Awesome 6 Free" font-weight="900">&#xf0c2;</text>
+          <text x="65" y="76" text-anchor="middle" fill="var(--p)" font-size="7" font-family="Space Grotesk" font-weight="800" letter-spacing="1.5">CLOUD</text>
+          <line x1="105" y1="60" x2="335" y2="60" stroke="var(--br)" stroke-width="2"/>
+          <line x1="105" y1="60" x2="335" y2="60" stroke="var(--p)" stroke-width="2" stroke-dasharray="10 8" style="animation:lineAnim 2s ease both;"/>
+          <circle cx="220" cy="60" r="9" fill="rgba(91,33,182,0.1)" style="animation:pulse 1.8s infinite;"/>
+          <circle cx="220" cy="60" r="3.5" fill="var(--p)"/>
+          <circle cx="375" cy="60" r="38" fill="var(--sf)" stroke="var(--br)" stroke-width="1.5"/>
+          <circle cx="375" cy="60" r="38" fill="none" stroke="var(--p)" stroke-width="1.5" stroke-dasharray="4 4" style="animation:rotate 10s linear infinite;"/>
+          <text x="375" y="58" text-anchor="middle" fill="var(--p)" font-size="17" font-family="Font Awesome 6 Free" font-weight="900">&#xf108;</text>
+          <text x="375" y="76" text-anchor="middle" fill="var(--p)" font-size="7" font-family="Space Grotesk" font-weight="800" letter-spacing="1.5">LOCAL</text>
         </svg>
       </div>
-      <div class="ia-fadeIn ia-d700" style="display:flex;justify-content:center;gap:20px;margin-top:20px;">
-        <div style="display:flex;align-items:center;gap:6px;"><div style="width:8px;height:8px;border-radius:50%;background:#10B981;"></div><span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;">Senkron: %100</span></div>
-        <div style="display:flex;align-items:center;gap:6px;"><div style="width:8px;height:8px;border-radius:50%;background:var(--primary);"></div><span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.1em;">Bağlı</span></div>
+      <div class="a-f d7" style="display:flex;justify-content:center;gap:20px;margin-top:14px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:6px;"><div style="width:7px;height:7px;border-radius:50%;background:var(--grn);"></div><span style="font-size:0.7rem;font-weight:700;color:var(--txm);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--ff-b);">%100 Senkron</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><div style="width:7px;height:7px;border-radius:50%;background:var(--p);"></div><span style="font-size:0.7rem;font-weight:700;color:var(--txm);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--ff-b);">Güvenli Bağlantı</span></div>
+        <div style="display:flex;align-items:center;gap:6px;"><div style="width:7px;height:7px;border-radius:50%;background:var(--acc);"></div><span style="font-size:0.7rem;font-weight:700;color:var(--txm);letter-spacing:0.08em;text-transform:uppercase;font-family:var(--ff-b);">Otomatik Yedek</span></div>
       </div>
     </div>
   </div>
 
-  <!-- Scene 6: Feature Burst -->
-  <div class="intro-scene" x-show="scene === 6" x-cloak>
-    <div style="text-align:center;margin-bottom:32px;" class="ia-fadeSlideDown">
-      <h2 style="font-size:clamp(2rem,4vw,3.5rem);font-weight:900;color:var(--text);font-family:'Inter',sans-serif;letter-spacing:-0.04em;">Her Şey <span style="color:var(--primary);">Hazır.</span></h2>
-      <p style="color:var(--text-muted);font-size:1rem;font-weight:400;margin-top:10px;">Saniyeler içinde kurulum. Yıllarca kararlı çalışma.</p>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;max-width:640px;width:100%;" class="ia-scaleIn ia-d200">
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px 14px;text-align:center;">
-        <i class="fa-solid fa-bolt" style="color:var(--primary);font-size:1.5rem;margin-bottom:10px;display:block;"></i>
-        <div style="font-size:0.85rem;font-weight:800;color:var(--text);">Ultra Hız</div>
-        <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">15ms latency</div>
+  <!-- SCENE 7 — All ready -->
+  <div class="iscene" x-show="scene===7" x-cloak>
+    <div style="text-align:center;max-width:700px;width:100%;">
+      <div class="a-fd">
+        <h2 style="font-family:var(--ff-h);font-size:clamp(2.2rem,5vw,4rem);font-weight:900;color:var(--tx);letter-spacing:-0.05em;margin-bottom:8px;">Her Şey <span style="background:linear-gradient(135deg,var(--p),#A78BFA,var(--acc));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Hazır.</span></h2>
+        <p style="color:var(--txm);font-size:0.9rem;">Saniyeler içinde kurulum. Yıllarca kesintisiz çalışma.</p>
       </div>
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px 14px;text-align:center;">
-        <i class="fa-solid fa-table-cells" style="color:var(--primary);font-size:1.5rem;margin-bottom:10px;display:block;"></i>
-        <div style="font-size:0.85rem;font-weight:800;color:var(--text);">Masa Grid</div>
-        <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">Sürükle & bırak</div>
+      <div class="a-sc d2" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:24px 0;">
+        @foreach([['fa-bolt','Ultra Hız','15ms'],['fa-table-cells','Masa Grid','Gerçek Zamanlı'],['fa-chart-column','Analitik','AI Destekli'],['fa-cloud','Hibrit Ağ','%99.9 Uptime'],['fa-shield-halved','Güvenlik','AES-256'],['fa-qrcode','QR Menü','Dijital'],['fa-boxes-stacked','Stok','Otomasyon'],['fa-mobile-screen','Mobil','iOS & Android']] as $f)
+        <div style="background:var(--sf);border:1.5px solid var(--br);border-radius:14px;padding:18px 12px;text-align:center;transition:all 0.3s;" onmouseover="this.style.borderColor='rgba(91,33,182,0.3)';this.style.transform='translateY(-3px)';" onmouseout="this.style.borderColor='var(--br)';this.style.transform='translateY(0)';">
+          <i class="fa-solid {{ $f[0] }}" style="color:var(--p);font-size:1.3rem;display:block;margin-bottom:8px;"></i>
+          <div style="font-family:var(--ff-h);font-size:0.8rem;font-weight:700;color:var(--tx);">{{ $f[1] }}</div>
+          <div style="font-size:0.62rem;color:var(--txm);margin-top:3px;font-family:var(--ff-b);">{{ $f[2] }}</div>
+        </div>
+        @endforeach
       </div>
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px 14px;text-align:center;">
-        <i class="fa-solid fa-chart-column" style="color:var(--primary);font-size:1.5rem;margin-bottom:10px;display:block;"></i>
-        <div style="font-size:0.85rem;font-weight:800;color:var(--text);">Raporlama</div>
-        <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">PDF & Excel</div>
+      <div class="a-f d7">
+        <button onclick="document.querySelector('[x-data]').__x.$data.skip()" style="padding:14px 36px;background:var(--p);color:white;border:none;border-radius:14px;font-weight:700;font-size:0.875rem;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;box-shadow:0 10px 30px rgba(91,33,182,0.3);font-family:var(--ff-b);display:inline-flex;align-items:center;gap:10px;transition:all 0.2s;" onmouseover="this.style.transform='translateY(-2px)';" onmouseout="this.style.transform='translateY(0)';">
+          POS Sistemini İncele <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       </div>
-      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:22px 14px;text-align:center;">
-        <i class="fa-solid fa-cloud" style="color:var(--primary);font-size:1.5rem;margin-bottom:10px;display:block;"></i>
-        <div style="font-size:0.85rem;font-weight:800;color:var(--text);">Hibrit Ağ</div>
-        <div style="font-size:0.7rem;color:var(--text-muted);margin-top:4px;">%99.9 uptime</div>
-      </div>
-    </div>
-    <div class="ia-fadeIn ia-d700" style="margin-top:36px;">
-      <button onclick="document.querySelector('[x-data]').__x.$data.skip()" style="padding:14px 32px;background:var(--primary);color:white;border:none;border-radius:14px;font-weight:800;font-size:0.875rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;box-shadow:0 8px 24px rgba(98,0,238,0.3);transition:all 0.3s;font-family:'Inter',sans-serif;">
-        POS Sistemini İncele &rarr;
-      </button>
     </div>
   </div>
 
 </div><!-- /intro-overlay -->
 
-<!-- ════════════════ MAIN PAGE ════════════════ -->
-<div id="main-page" :class="{ 'visible': done }">
+<!-- =====================
+     MAIN PAGE
+===================== -->
+<div id="main-page" :class="{ 'on': done }">
 
-<!-- ════════════════ HERO ════════════════ -->
+<!-- =====================
+     HERO
+===================== -->
 <section class="hero">
+  <div class="hero-noise"></div>
+  <div class="hero-grid"></div>
   <div class="hero-orb hero-orb-1"></div>
   <div class="hero-orb hero-orb-2"></div>
-  <div class="hero-grid"></div>
-
-  <div class="hero-inner">
+  <div class="hero-orb hero-orb-3"></div>
+  <div class="hero-in">
     <div>
-      <div class="hero-badge" style="gap:12px;">
-        <div style="display:flex;align-items:center;gap:8px;">
-          <div class="badge-ping"><div class="badge-dot"></div></div>
-          Yeni Nesil Donanım · v1
-        </div>
-        <div style="width:1px;height:12px;background:rgba(98,0,238,0.15);"></div>
-        <a href="{{ route('pages.pos.versions') }}" style="color:var(--primary);text-decoration:none;font-weight:800;font-size:0.65rem;hover:opacity:0.8;">SÜRÜM NOTLARI &rarr;</a>
+      <div class="hero-badge">
+        <div class="badge-ring"><div class="badge-dot"></div></div>
+        <span>Yeni Nesil POS · v1.0</span>
+        <div style="width:1px;height:12px;background:rgba(91,33,182,0.15);"></div>
+        <a href="{{ route('pages.pos.versions') }}" style="color:var(--p);font-size:0.63rem;font-weight:800;letter-spacing:0.07em;">SÜRÜM NOTLARI →</a>
       </div>
-      <h1 class="hero-title">
-        İşletmenizin<br>
-        <span class="grad">Sinir Sistemi.</span>
-      </h1>
-      <p class="hero-sub">
-        Sadece bir POS değil — rezervasyon, mutfak, stok ve analitik yönetimini
-        sıfır gecikmeyle tek bir ekosistemde buluşturan akıllı terminal.
-      </p>
-      <div class="hero-actions">
-        <a href="#features" class="btn-primary">
-          <i class="fa-solid fa-arrow-down" style="font-size:.75rem;"></i>
-          Özellikleri Keşfet
-        </a>
-        <a href="{{ route('pages.contact') }}" class="btn-outline">
-          Teklif Al
-          <i class="fa-solid fa-arrow-right" style="font-size:.72rem;"></i>
-        </a>
+      <h1 class="hero-h">İşletmenizin<br><span class="g">Sinir Sistemi.</span></h1>
+      <p class="hero-sub">Sadece bir POS değil — rezervasyon, mutfak, stok, analitik ve çok şube yönetimini sıfır gecikmeyle tek bir ekosistemde buluşturan akıllı terminal.</p>
+      <div class="hero-acts">
+        <a href="#features" class="btn-p"><i class="fa-solid fa-arrow-down" style="font-size:.72rem;"></i> Özellikleri Keşfet</a>
+        <button class="video-trigger" onclick="document.getElementById('video-modal').classList.add('open')">
+          <div class="play-ring"><i class="fa-solid fa-play"></i></div> Demo İzle
+        </button>
+        <a href="{{ route('pages.contact') }}" class="btn-o">Teklif Al <i class="fa-solid fa-arrow-right" style="font-size:.7rem;"></i></a>
+      </div>
+      <div class="hero-trust">
+        <div class="hero-trust-item"><i class="fa-solid fa-check"></i> Kurulum dahil</div>
+        <div class="hero-trust-item"><i class="fa-solid fa-check"></i> 14 gün ücretsiz</div>
+        <div class="hero-trust-item"><i class="fa-solid fa-check"></i> Kart gerekmez</div>
       </div>
       <div class="hero-stats">
-        <div><div class="stat-num">3<span>K+</span></div><div class="stat-label">Aktif İşletme</div></div>
-        <div><div class="stat-num">0.2<span>ms</span></div><div class="stat-label">Senkronizasyon</div></div>
-        <div><div class="stat-num">99.9<span>%</span></div><div class="stat-label">Uptime Garantisi</div></div>
+        <div><div class="hs-num">3.2<span>K+</span></div><div class="hs-lbl">Aktif İşletme</div></div>
+        <div><div class="hs-num">0.2<span>ms</span></div><div class="hs-lbl">Senkronizasyon</div></div>
+        <div><div class="hs-num">99.9<span>%</span></div><div class="hs-lbl">Uptime SLA</div></div>
+        <div><div class="hs-num">₺2.4<span>B</span></div><div class="hs-lbl">Toplam Hacim</div></div>
       </div>
     </div>
-
-    <!-- Terminal -->
     <div class="terminal-wrap">
       <div class="term-glow"></div>
+      <div class="hfloat hf1">
+        <div class="hfl">Günlük Ciro</div>
+        <div class="hfv">₺18.4K</div>
+        <div class="hft hft-g">↑ %23 bu hafta</div>
+      </div>
+      <div class="hfloat hf2">
+        <div class="hfl">Aktif Masa</div>
+        <div class="hfv">12 / 24</div>
+        <div class="hft hft-a">4 rezervasyon</div>
+      </div>
+      <div class="hfloat hf3">
+        <div class="hfl">Mutfak</div>
+        <div class="hfv">8 Sipariş</div>
+        <div class="hft hft-g">↓ avg 4dk</div>
+      </div>
       <div class="terminal">
-        <div class="t-header">
-          <div class="t-dots">
-            <div class="t-dot t-dot-r"></div>
-            <div class="t-dot t-dot-o"></div>
-            <div class="t-dot t-dot-g"></div>
-          </div>
-          <span class="t-label">RezerVistA Pos v1</span>
-          <div style="width:36px;"></div>
+        <div class="t-hdr">
+          <div class="t-dots"><div class="t-dot td-r"></div><div class="t-dot td-o"></div><div class="t-dot td-g"></div></div>
+          <span class="t-lbl">RezerVist POS v1.0</span>
+          <div style="width:32px;"></div>
         </div>
         <div class="t-body">
           <div class="t-topbar">
-            <div>
-              <div class="t-greet">Merhaba, Ayberk 👋</div>
-              <div class="t-name">Günlük Özet</div>
-            </div>
+            <div><div class="t-greet">Merhaba, Ayberk 👋</div><div class="t-name">Günlük Özet</div></div>
             <div class="t-time" id="live-time">--:--</div>
           </div>
           <div class="t-kpis">
-            <div class="t-kpi f">
-              <div class="t-kpi-l">Bugünkü Ciro</div>
-              <div class="t-kpi-v">₺18.4K</div>
-              <div class="t-kpi-t g">↑ %23 bu hafta</div>
-            </div>
-            <div class="t-kpi">
-              <div class="t-kpi-l">Siparişler</div>
-              <div class="t-kpi-v">142</div>
-              <div class="t-kpi-t m">12 aktif</div>
-            </div>
+            <div class="t-kpi hi"><div class="t-kl">Bugünkü Ciro</div><div class="t-kv">₺18.4K</div><div class="t-kt kt-g">↑ %23</div></div>
+            <div class="t-kpi"><div class="t-kl">Siparişler</div><div class="t-kv">142</div><div class="t-kt kt-m">12 aktif</div></div>
           </div>
-          <div class="t-chart-l">Saatlik Satış</div>
+          <div class="t-kpis" style="margin-top:-6px;">
+            <div class="t-kpi"><div class="t-kl">Ortalama Süre</div><div class="t-kv" style="font-size:1rem;">24 dk</div><div class="t-kt kt-g">↓ 3dk iyi</div></div>
+            <div class="t-kpi"><div class="t-kl">Masa Doluluk</div><div class="t-kv" style="font-size:1rem;">%79</div><div class="t-kt kt-g">↑ %12</div></div>
+          </div>
+          <div class="t-chart-l">Saatlik Satış Trendi</div>
           <div class="t-chart">
-            <div class="t-b" style="height:28%;"></div>
-            <div class="t-b" style="height:46%;"></div>
-            <div class="t-b" style="height:60%;"></div>
-            <div class="t-b" style="height:36%;"></div>
-            <div class="t-b hi" style="height:86%;"></div>
-            <div class="t-b ac" style="height:70%;"></div>
-            <div class="t-b" style="height:48%;"></div>
-            <div class="t-b" style="height:56%;"></div>
+            <div class="t-b" style="height:26%;"></div><div class="t-b" style="height:42%;"></div>
+            <div class="t-b" style="height:58%;"></div><div class="t-b" style="height:34%;"></div>
+            <div class="t-b hi" style="height:84%;"></div><div class="t-b ac" style="height:68%;"></div>
+            <div class="t-b" style="height:46%;"></div><div class="t-b" style="height:54%;"></div>
           </div>
           <div class="t-orders">
-            <div class="t-order">
-              <div class="t-ol">
-                <div class="t-ic ic-p"><i class="fa-solid fa-utensils"></i></div>
-                <div>
-                  <div class="t-ot">Masa 7 — 4 Kişi</div>
-                  <div class="t-os">Ana yemek · 3 içecek</div>
-                </div>
-              </div>
-              <span class="bdg bdg-ok">Hazır</span>
-            </div>
-            <div class="t-order">
-              <div class="t-ol">
-                <div class="t-ic ic-t"><i class="fa-solid fa-motorcycle"></i></div>
-                <div>
-                  <div class="t-ot">Kurye #KY-041</div>
-                  <div class="t-os">Yolda · ~12 dk</div>
-                </div>
-              </div>
-              <span class="bdg bdg-go">Yolda</span>
-            </div>
+            <div class="t-order"><div class="t-ol"><div class="t-ic ic-p"><i class="fa-solid fa-utensils"></i></div><div><div class="t-ot">Masa 7 — 4 Kişi</div><div class="t-os">Ana yemek · 3 içecek</div></div></div><span class="bdg bdg-ok">Hazır</span></div>
+            <div class="t-order"><div class="t-ol"><div class="t-ic ic-t"><i class="fa-solid fa-motorcycle"></i></div><div><div class="t-ot">Kurye #KY-041</div><div class="t-os">Yolda · ~12 dk</div></div></div><span class="bdg bdg-go">Yolda</span></div>
+            <div class="t-order"><div class="t-ol"><div class="t-ic ic-y"><i class="fa-solid fa-clock"></i></div><div><div class="t-ot">Masa 3 — Rezervasyon</div><div class="t-os">19:30 · 6 kişi</div></div></div><span class="bdg bdg-rd">Bekliyor</span></div>
           </div>
         </div>
       </div>
@@ -574,203 +1149,1137 @@
   </div>
 </section>
 
-<!-- ════════════════ FEATURES ════════════════ -->
-<section id="features" class="section feat-bg">
-  <div class="section-inner">
-    <div class="reveal">
-      <span class="section-tag">Temel Özellikler</span>
-      <h2 class="section-title">Mikro Detaylar,<br><em>Makro Performans.</em></h2>
-      <p class="section-sub">Donanım ve yazılımın mükemmel uyumuyla işletmenizi bir adım öteye taşıyın.</p>
+<!-- Video Modal -->
+<div id="video-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="vmod-box">
+    <div class="vmod-header">
+      <div class="vmod-title">🎬 RezerVist POS — Demo Videosu</div>
+      <div class="vmod-close" onclick="document.getElementById('video-modal').classList.remove('open')"><i class="fa-solid fa-xmark"></i></div>
     </div>
+    <div class="vmod-body">
+      <div class="vmod-demo">
+        <div class="vmod-play-btn" onclick="alert('Demo video yükleniyor...')">
+          <i class="fa-solid fa-play"></i>
+        </div>
+        <p style="font-family:var(--ff-h);font-size:1.1rem;font-weight:700;color:var(--tx);">3 Dakikada Tüm Özellikler</p>
+        <p style="font-size:0.82rem;color:var(--txs);">Kurulumdan ilk siparişe — RezerVist POS'u canlı görün.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:4px;">
+          <div class="i-chip"><i class="fa-solid fa-clock" style="font-size:.55rem;"></i> 3:24 dk</div>
+          <div class="i-chip"><i class="fa-solid fa-cc" style="font-size:.55rem;"></i> Türkçe Altyazı</div>
+          <div class="i-chip"><i class="fa-solid fa-4k" style="font-size:.55rem;"></i> HD Kalite</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+        @foreach(['Masa Yönetimi — 0:32','Sipariş Akışı — 1:14','Raporlama — 2:08'] as $ts)
+        <div style="background:white;border:1.5px solid var(--br);border-radius:12px;padding:14px;text-align:center;cursor:pointer;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--p)';" onmouseout="this.style.borderColor='var(--br)';">
+          <i class="fa-solid fa-circle-play" style="color:var(--p);font-size:1.3rem;display:block;margin-bottom:6px;"></i>
+          <div style="font-size:0.72rem;font-weight:700;color:var(--tx);font-family:var(--ff-b);">{{ $ts }}</div>
+        </div>
+        @endforeach
+      </div>
+    </div>
+  </div>
+</div>
 
-    <div class="features-grid">
-      <div class="feat-card span2 reveal">
+<!-- =====================
+     TRUST BAR
+===================== -->
+<div class="trust-bar">
+  <div class="trust-track">
+    @php $brands=[['fa-file-invoice','e-Fatura GİB'],['fa-store','Getir Yemek'],['fa-motorcycle','Trendyol Yemek'],['fa-credit-card','İyzico Ödeme'],['fa-building-columns','Garanti BBVA'],['fa-qrcode','QR Menü Pro'],['fa-cash-register','Parasut ERP'],['fa-truck','Mikro ERP'],['fa-cloud','Microsoft Azure'],['fa-database','PostgreSQL'],['fa-brands fa-whatsapp','WhatsApp Business'],['fa-chart-bar','Power BI'],['fa-file-invoice','e-Fatura GİB'],['fa-store','Getir Yemek'],['fa-motorcycle','Trendyol Yemek'],['fa-credit-card','İyzico Ödeme'],['fa-building-columns','Garanti BBVA'],['fa-qrcode','QR Menü Pro'],['fa-cash-register','Parasut ERP'],['fa-truck','Mikro ERP'],['fa-cloud','Microsoft Azure'],['fa-database','PostgreSQL'],['fa-brands fa-whatsapp','WhatsApp Business'],['fa-chart-bar','Power BI']]; @endphp
+    @foreach($brands as $b)<div class="trust-item"><i class="{{ $b[0] }}"></i> {{ $b[1] }}</div><div class="trust-dot"></div>@endforeach
+  </div>
+</div>
+
+<!-- =====================
+     STATS
+===================== -->
+<div class="stats-wrap">
+  <div class="stats-grid">
+    <div class="sblock reveal"><div class="sblock-num">3.2<span class="c">K+</span></div><div class="sblock-lbl">Aktif İşletme</div><div class="sblock-sub">43 ilde Türkiye genelinde hizmet</div><i class="fa-solid fa-store sblock-icon"></i></div>
+    <div class="sblock reveal" style="transition-delay:.08s;"><div class="sblock-num">99.9<span class="c">%</span></div><div class="sblock-lbl">Uptime Garantisi</div><div class="sblock-sub">Son 12 ayda yalnızca 52 dk kesinti</div><i class="fa-solid fa-server sblock-icon"></i></div>
+    <div class="sblock reveal" style="transition-delay:.16s;"><div class="sblock-num">0.2<span class="c">ms</span></div><div class="sblock-lbl">Ortalama Gecikme</div><div class="sblock-sub">Yerel ağda anlık senkronizasyon</div><i class="fa-solid fa-bolt sblock-icon"></i></div>
+    <div class="sblock reveal" style="transition-delay:.24s;"><div class="sblock-num">₺2.4<span class="c">B</span></div><div class="sblock-lbl">İşlem Hacmi</div><div class="sblock-sub">2024 yılında işlenen toplam ciro</div><i class="fa-solid fa-chart-line sblock-icon"></i></div>
+  </div>
+</div>
+
+<!-- =====================
+     FEATURES
+===================== -->
+<section id="features" class="sec feat-sec">
+  <div class="sec-in">
+    <div class="reveal"><span class="sec-tag">Temel Özellikler</span><h2 class="sec-h">Mikro Detaylar,<br><em>Makro Performans.</em></h2><p class="sec-sub">Donanım ve yazılımın mükemmel uyumuyla işletmenizi bir adım öteye taşıyın.</p></div>
+    <div class="feat-grid">
+
+      <!-- Span 2 — Sync -->
+      <div class="fc span2 reveal">
         <div>
           <div class="feat-icon fi-t"><i class="fa-solid fa-bolt"></i></div>
           <h3 class="feat-title">Anlık Senkronizasyon</h3>
-          <p class="feat-desc">Mutfak, kasa ve garson terminalleri arasında 0.2ms gecikmeyle veri aktarımı. Siparişler asla kaybolmaz, müşteriler asla beklemez.</p>
+          <p class="feat-desc">Mutfak, kasa ve garson terminalleri arasında 0.2ms gecikmeyle veri aktarımı. Siparişler asla kaybolmaz, müşteriler asla beklemez. WebSocket tabanlı çift yönlü bağlantı ile tüm cihazlar gerçek zamanlı senkronize kalır.</p>
           <div class="feat-chks">
-            <div class="feat-chk"><div class="chk-dot"><i class="fa-solid fa-check"></i></div> Real-time WebSocket DB Sync</div>
-            <div class="feat-chk"><div class="chk-dot"><i class="fa-solid fa-check"></i></div> Cloud + Yerel Anlık Yedek</div>
-            <div class="feat-chk"><div class="chk-dot"><i class="fa-solid fa-check"></i></div> Çoklu Terminal Desteği</div>
+            <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Real-time WebSocket DB Sync</div>
+            <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Cloud + Yerel Anlık Yedekleme</div>
+            <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Çoklu Terminal Desteği (Sınırsız)</div>
+            <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Otomatik Çakışma Çözümü</div>
           </div>
         </div>
         <div class="mini-viz">
-          <div class="mv-l">Ağ Gecikmesi Monitörü</div>
+          <div class="mv-l">Gerçek Zamanlı Ağ Monitörü</div>
           <div class="mv-bars">
-            <div class="mv-b" style="height:36%;background:rgba(98,0,238,0.12);border-radius:4px 4px 0 0;"></div>
-            <div class="mv-b" style="height:52%;background:rgba(98,0,238,0.18);border-radius:4px 4px 0 0;"></div>
-            <div class="mv-b" style="height:26%;background:rgba(98,0,238,0.12);border-radius:4px 4px 0 0;"></div>
-            <div class="mv-b" style="height:70%;background:var(--primary);border-radius:4px 4px 0 0;"></div>
-            <div class="mv-b" style="height:16%;background:rgba(3,218,198,0.5);border-radius:4px 4px 0 0;"></div>
-            <div class="mv-b" style="height:42%;background:rgba(98,0,238,0.14);border-radius:4px 4px 0 0;"></div>
-            <div class="mv-b" style="height:30%;background:rgba(98,0,238,0.10);border-radius:4px 4px 0 0;"></div>
+            @foreach([36,52,26,70,16,42,30,62,22,50,80,18] as $h)
+            <div class="mv-b" style="height:{{ $h }}%;background:{{ $h>=70?'var(--p)':($h<=20?'rgba(14,165,233,0.5)':'rgba(91,33,182,0.15)') }};border-radius:4px 4px 0 0;"></div>
+            @endforeach
           </div>
           <div class="mv-nums">
-            <div class="mv-n"><div class="mv-nv" style="color:var(--primary);">0.2ms</div><div class="mv-nl">Ort. Gecikme</div></div>
+            <div class="mv-n"><div class="mv-nv" style="color:var(--p);">0.2ms</div><div class="mv-nl">Ort. Gecikme</div></div>
             <div class="mv-n"><div class="mv-nv">99.9%</div><div class="mv-nl">Uptime</div></div>
-            <div class="mv-n"><div class="mv-nv" style="color:#0ABBA3;">3K+</div><div class="mv-nl">Aktif Cihaz</div></div>
+            <div class="mv-n"><div class="mv-nv" style="color:var(--acc);">3.2K+</div><div class="mv-nl">Aktif Cihaz</div></div>
+            <div class="mv-n"><div class="mv-nv" style="color:var(--grn);">0</div><div class="mv-nl">Veri Kaybı</div></div>
           </div>
         </div>
       </div>
 
-      <div class="feat-card dark reveal" style="transition-delay:.08s;">
+      <!-- Dark — Security -->
+      <div class="fc dark reveal" style="transition-delay:.08s;">
         <div class="feat-icon fi-w"><i class="fa-solid fa-shield-halved"></i></div>
         <h3 class="feat-title">Askeri Seviye Güvenlik</h3>
-        <p class="feat-desc">256-bit AES şifreleme ve PCI-DSS uyumlu altyapı. Biyometrik giriş ile yalnızca yetkili personel erişim sağlar.</p>
+        <p class="feat-desc">256-bit AES şifreleme ve PCI-DSS uyumlu altyapı. Biyometrik giriş ile yalnızca yetkili personel erişimi.</p>
         <div class="feat-chks">
-          <div class="feat-chk"><div class="chk-dot"><i class="fa-solid fa-check"></i></div> E2EE Uçtan Uca Şifreleme</div>
-          <div class="feat-chk"><div class="chk-dot"><i class="fa-solid fa-check"></i></div> Biyometrik Kimlik Doğrulama</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> E2EE Uçtan Uca Şifreleme</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Biyometrik Kimlik Doğrulama</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Rol Tabanlı Erişim Kontrolü</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Oturum Yönetimi & Audit Log</div>
         </div>
       </div>
 
-      <div class="feat-card reveal" style="transition-delay:.13s;">
-        <div class="feat-icon fi-p"><i class="fa-solid fa-chart-line"></i></div>
+      <!-- AI Analytics -->
+      <div class="fc reveal" style="transition-delay:.13s;">
+        <div class="feat-new">YENİ</div>
+        <div class="feat-icon fi-p"><i class="fa-solid fa-brain"></i></div>
         <h3 class="feat-title">AI Destekli Analitik</h3>
-        <p class="feat-desc">Yapay zeka ile satış trendlerini öngörün. En karlı masaları ve personel performansını anlık izleyin.</p>
+        <p class="feat-desc">Yapay zeka ile satış trendlerini öngörün. En karlı masaları, personel performansını ve menü optimizasyonunu anlık izleyin.</p>
         <div class="feat-chks">
-          <div class="feat-chk"><div class="chk-dot"><i class="fa-solid fa-check"></i></div> Tahminsel Satış Motoru</div>
-          <div class="feat-chk"><div class="chk-dot"><i class="fa-solid fa-check"></i></div> Isı Haritası Raporları</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Tahminsel Satış Motoru</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Isı Haritası Raporları</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Anomali Tespiti</div>
         </div>
       </div>
 
-      <div class="feat-card reveal" style="transition-delay:.18s;">
+      <!-- QR Menu -->
+      <div class="fc reveal" style="transition-delay:.18s;">
         <div class="feat-icon fi-t"><i class="fa-solid fa-qrcode"></i></div>
         <h3 class="feat-title">QR & Dijital Menü</h3>
-        <p class="feat-desc">Masadaki müşteriler kodu okutarak menüye anında ulaşır, sipariş verir. Güncellemeler saniyeler içinde yayınlanır.</p>
+        <p class="feat-desc">Masadaki müşteriler kodu okutarak menüye anında ulaşır. Güncellemeler saniyeler içinde tüm masalara yayınlanır.</p>
+        <div class="feat-chks">
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Dinamik Fiyat & Stok Güncellemesi</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> 15+ Dil Desteği</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Masadan Sipariş & Ödeme</div>
+        </div>
       </div>
 
-      <div class="feat-card reveal" style="transition-delay:.23s;">
+      <!-- Stock -->
+      <div class="fc reveal" style="transition-delay:.23s;">
         <div class="feat-icon fi-s"><i class="fa-solid fa-boxes-stacked"></i></div>
         <h3 class="feat-title">Akıllı Stok Yönetimi</h3>
-        <p class="feat-desc">Kritik eşiğin altına düşen malzemeleri tespit edin, tedarikçiye otomatik sipariş gönderin.</p>
+        <p class="feat-desc">Kritik eşiğin altına düşen malzemeleri tespit edin, tedarikçiye otomatik sipariş gönderin. FIFO/LIFO yöntemleri destekli.</p>
         <div class="feat-chks">
-          <div class="feat-chk"><div class="chk-dot"><i class="fa-solid fa-check"></i></div> Otomatik Sipariş Tetikleyici</div>
-          <div class="feat-chk"><div class="chk-dot"><i class="fa-solid fa-check"></i></div> Tedarikçi Entegrasyonu</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Otomatik Sipariş Tetikleyici</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Tedarikçi Entegrasyonu</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Barkod / QR Stok Sayımı</div>
+        </div>
+      </div>
+
+      <!-- KDS -->
+      <div class="fc reveal" style="transition-delay:.28s;">
+        <div class="feat-icon fi-y"><i class="fa-solid fa-kitchen-set"></i></div>
+        <h3 class="feat-title">Mutfak Ekranı (KDS)</h3>
+        <p class="feat-desc">Siparişler girer girmez mutfak ekranına düşer. Öncelik sıralaması, gecikme uyarıları ve hazırlık süresi takibi.</p>
+        <div class="feat-chks">
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Gerçek Zamanlı Sipariş Akışı</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Hazırlık Süresi Takibi</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Sesli & Görsel Uyarılar</div>
+        </div>
+      </div>
+
+      <!-- Reporting -->
+      <div class="fc reveal" style="transition-delay:.33s;">
+        <div class="feat-icon fi-r"><i class="fa-solid fa-file-chart-column"></i></div>
+        <h3 class="feat-title">Gelişmiş Raporlama</h3>
+        <p class="feat-desc">Günlük, haftalık, aylık ciro raporları. Personel performansı, masa devir hızı ve ürün bazlı karlılık analizleri.</p>
+        <div class="feat-chks">
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Otomatik Rapor Zamanlaması</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> WhatsApp & E-posta Gönderimi</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> PDF, Excel, CSV Export</div>
+        </div>
+      </div>
+
+      <!-- Multi branch -->
+      <div class="fc reveal" style="transition-delay:.38s;">
+        <div class="feat-icon fi-p"><i class="fa-solid fa-code-branch"></i></div>
+        <h3 class="feat-title">Çok Şube Yönetimi</h3>
+        <p class="feat-desc">Tüm şubelerinizi tek panelden yönetin. Şubeler arası stok transferi, merkezi menü güncellemesi ve toplu raporlama.</p>
+        <div class="feat-chks">
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Merkezi Dashboard</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Şube Karşılaştırma Raporu</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Hiyerarşik Yetki Sistemi</div>
+        </div>
+      </div>
+
+      <!-- Loyalty — Accent -->
+      <div class="fc acc reveal" style="transition-delay:.43s;">
+        <div class="feat-new" style="background:rgba(255,255,255,0.3);color:white;">YENİ</div>
+        <div class="feat-icon fi-w"><i class="fa-solid fa-star"></i></div>
+        <h3 class="feat-title">Müşteri Sadakat Sistemi</h3>
+        <p class="feat-desc">Puan bazlı ödül sistemi, doğum günü kampanyaları ve segmente özel indirimlerle müşteri bağlılığını artırın.</p>
+        <div class="feat-chks">
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> Puan Kazanma & Harcama</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> SMS & Push Kampanyaları</div>
+          <div class="feat-chk"><div class="chkd"><i class="fa-solid fa-check"></i></div> CRM Entegrasyonu</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =====================
+     HOW IT WORKS
+===================== -->
+<section class="sec" style="background:var(--bg2);">
+  <div class="sec-in">
+    <div class="reveal" style="text-align:center;">
+      <span class="sec-tag">Nasıl Çalışır?</span>
+      <h2 class="sec-h" style="max-width:540px;margin:0 auto 16px;">Dakikalar İçinde<br><em>Kurulum ve Yayın.</em></h2>
+      <p class="sec-sub" style="margin:0 auto;text-align:center;">Teknik bilgi gerekmez. Destek ekibimiz her adımda yanınızda.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-step reveal"><div class="how-num">1</div><div class="how-icon-wrap"><i class="fa-solid fa-box-open"></i></div><h3 class="how-title">Cihazı Bağlayın</h3><p class="how-desc">Terminali prize takın, Wi-Fi veya Ethernet'e bağlayın. Sistem otomatik yapılandırma sihirbazını başlatır.</p><div class="how-eta"><i class="fa-solid fa-clock" style="font-size:.65rem;"></i> ~3 dk</div></div>
+      <div class="how-step reveal" style="transition-delay:.1s;"><div class="how-num">2</div><div class="how-icon-wrap"><i class="fa-solid fa-sliders"></i></div><h3 class="how-title">Menünüzü Aktarın</h3><p class="how-desc">Ürünlerinizi girin veya Excel ile toplu import yapın. Masa planınızı sürükle-bırak ile oluşturun.</p><div class="how-eta"><i class="fa-solid fa-clock" style="font-size:.65rem;"></i> ~3 dk</div></div>
+      <div class="how-step reveal" style="transition-delay:.2s;"><div class="how-num">3</div><div class="how-icon-wrap"><i class="fa-solid fa-users"></i></div><h3 class="how-title">Ekibi Tanımlayın</h3><p class="how-desc">Personel rollerini ve yetkilerini atayın. Garson, kasiyer, mutfak, yönetici profillerini 2 dakikada oluşturun.</p><div class="how-eta"><i class="fa-solid fa-clock" style="font-size:.65rem;"></i> ~2 dk</div></div>
+      <div class="how-step reveal" style="transition-delay:.3s;"><div class="how-num">4</div><div class="how-icon-wrap"><i class="fa-solid fa-rocket"></i></div><h3 class="how-title">Hizmete Başlayın</h3><p class="how-desc">İlk siparişinizi alın. Mutfak ekranı, garson tableti ve kasa terminali anında senkronize olur.</p><div class="how-eta"><i class="fa-solid fa-check" style="font-size:.65rem;"></i> Hemen</div></div>
+    </div>
+    <!-- Timeline bar -->
+    <div class="reveal" style="transition-delay:.4s;margin-top:56px;background:var(--sf);border:1.5px solid var(--br);border-radius:var(--r);padding:32px 40px;display:flex;align-items:center;gap:28px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:200px;">
+        <div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:var(--tx);letter-spacing:-0.04em;">⏱ Ortalama <span style="color:var(--p);">8 dakika</span> kurulum</div>
+        <div style="font-size:0.85rem;color:var(--txs);margin-top:6px;">Teknik bilgi gerekmez. Herhangi bir noktada destek ekibimize ulaşabilirsiniz.</div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <a href="{{ route('register') }}" class="btn-p"><i class="fa-solid fa-rocket" style="font-size:.72rem;"></i> Hemen Başla</a>
+        <a href="{{ route('pages.contact') }}" class="btn-o">Kurulum Talep Et</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================
+     MOBILE APP
+===================== -->
+<section class="sec app-sec">
+  <div class="sec-in">
+    <div class="app-wrap">
+      <div class="reveal">
+        <span class="sec-tag">Mobil Uygulama</span>
+        <h2 class="sec-h">İşletmeniz<br><em>Cebinizde.</em></h2>
+        <p class="sec-sub" style="margin-bottom:28px;">iOS ve Android için yönetim uygulaması ile işletmenizi dilediğiniz yerden izleyin ve yönetin. Anlık satış bildirimleri, canlı masa görünümü ve personel takibi.</p>
+        <div class="app-features">
+          <div class="app-feat">
+            <div class="app-feat-ic fi-p" style="background:rgba(91,33,182,0.08);"><i class="fa-solid fa-bell" style="color:var(--p);"></i></div>
+            <div><div class="app-feat-title">Anlık Bildirimler</div><div class="app-feat-desc">Yeni sipariş, ödeme alındı, stok kritik uyarıları anında telefonunuza gelir.</div></div>
+          </div>
+          <div class="app-feat">
+            <div class="app-feat-ic" style="background:rgba(16,185,129,0.08);"><i class="fa-solid fa-chart-simple" style="color:var(--grn);"></i></div>
+            <div><div class="app-feat-title">Canlı Dashboard</div><div class="app-feat-desc">Günlük ciro, aktif masalar ve siparişleri gerçek zamanlı takip edin.</div></div>
+          </div>
+          <div class="app-feat">
+            <div class="app-feat-ic" style="background:rgba(14,165,233,0.08);"><i class="fa-solid fa-users" style="color:var(--acc);"></i></div>
+            <div><div class="app-feat-title">Personel Yönetimi</div><div class="app-feat-desc">Çalışan performanslarını görüntüleyin, vardiya planı oluşturun, prim hesaplayın.</div></div>
+          </div>
+          <div class="app-feat">
+            <div class="app-feat-ic" style="background:rgba(245,158,11,0.08);"><i class="fa-solid fa-file-invoice" style="color:var(--ylw);"></i></div>
+            <div><div class="app-feat-title">Rapor & Fatura</div><div class="app-feat-desc">Tüm raporlara erişin, fatura onaylayın, haftalık özeti WhatsApp ile paylaşın.</div></div>
+          </div>
+        </div>
+        <div class="app-stores">
+          <a href="#" class="app-store-btn">
+            <div class="asb-icon"><i class="fa-brands fa-apple"></i></div>
+            <div><div class="asb-small">App Store'dan İndir</div><div class="asb-big">App Store</div></div>
+          </a>
+          <a href="#" class="app-store-btn">
+            <div class="asb-icon"><i class="fa-brands fa-google-play"></i></div>
+            <div><div class="asb-small">Google Play'den İndir</div><div class="asb-big">Google Play</div></div>
+          </a>
+        </div>
+        <div style="margin-top:16px;font-size:0.78rem;color:var(--txm);">iOS 15+ · Android 8+ gerektirir · Ücretsiz</div>
+      </div>
+      <div class="app-phone reveal" style="transition-delay:.12s;">
+        <div class="app-phone-glow"></div>
+        <div class="app-float af1">
+          <div class="afl">Satış Artışı</div>
+          <div class="afv" style="color:var(--grn);">+%31</div>
+        </div>
+        <div class="app-float af2">
+          <div class="afl">Aktif Sipariş</div>
+          <div class="afv">14 Adet</div>
+        </div>
+        <div class="app-float af3">
+          <div class="afl">Bildirim</div>
+          <div class="afv">Stok Kritik</div>
+        </div>
+        <div class="phone-frame">
+          <div class="phone-notch"><div class="phone-notch-pill"></div></div>
+          <div class="phone-screen">
+            <div class="ph-hdr">
+              <div><div style="font-size:0.52rem;color:var(--txm);font-weight:500;">Merhaba, Ahmet 👋</div><div class="ph-title">Dashboard</div></div>
+              <div class="ph-notif"><i class="fa-solid fa-bell"></i></div>
+            </div>
+            <div class="ph-stat-row">
+              <div class="ph-stat" style="background:var(--sf2);border-color:var(--br);"><div class="ph-sv" style="color:var(--p);">₺18.4K</div><div class="ph-sl">Bugünkü Ciro</div></div>
+              <div class="ph-stat"><div class="ph-sv">142</div><div class="ph-sl">Sipariş</div></div>
+            </div>
+            <div class="ph-stat-row">
+              <div class="ph-stat"><div class="ph-sv" style="color:var(--grn);">%79</div><div class="ph-sl">Doluluk</div></div>
+              <div class="ph-stat"><div class="ph-sv" style="color:var(--ylw);">3</div><div class="ph-sl">Uyarı</div></div>
+            </div>
+            <div class="ph-chart">
+              <div class="ph-cl">Saatlik Satış</div>
+              <div class="ph-bars">
+                @foreach([30,55,42,70,28,85,62,45] as $h)
+                <div class="ph-b" style="height:{{ $h }}%;background:{{ $h>=70?'var(--p)':'rgba(91,33,182,0.15)' }};border-radius:2px 2px 0 0;"></div>
+                @endforeach
+              </div>
+            </div>
+            <div class="ph-orders">
+              <div class="ph-order"><div><div class="ph-ot">Masa 7 · 4 kişi</div><div class="ph-os">Ana yemek · 3 içecek</div></div><div class="ph-bdg ph-bdg-ok">Hazır</div></div>
+              <div class="ph-order"><div><div class="ph-ot">Kurye #KY-041</div><div class="ph-os">Yolda · ~12 dk</div></div><div class="ph-bdg ph-bdg-go">Yolda</div></div>
+              <div class="ph-order"><div><div class="ph-ot">Masa 3 · Rezerv</div><div class="ph-os">19:30 · 6 kişi</div></div><div class="ph-bdg" style="background:rgba(91,33,182,0.08);color:var(--p);">Bekleme</div></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════ TESTIMONIALS ════════════════ -->
-<section id="testimonials" class="section testi-bg">
-  <div class="section-inner">
+<!-- =====================
+     LIVE DEMO
+===================== -->
+<section class="sec demo-sec" id="demo">
+  <div class="sec-in">
+    <div class="demo-wrap">
+      <div class="demo-info reveal">
+        <div class="demo-badge"><i class="fa-solid fa-circle" style="font-size:.48rem;animation:pulseGrn 1.5s infinite;"></i> Etkileşimli Demo</div>
+        <h2 class="demo-title">Masa Yönetimi<br><em>Anlık Görünüm</em></h2>
+        <p class="demo-sub">Her masanın durumu gerçek zamanlı güncellenir. Masalara tıklayarak durumlarını döngüsel olarak değiştirebilirsiniz. 5 farklı durum desteklenmektedir.</p>
+        <div class="demo-legend">
+          <div class="dl-item"><div class="dl-dot" style="background:var(--p);"></div> Dolu</div>
+          <div class="dl-item"><div class="dl-dot" style="background:var(--red);opacity:0.5;"></div> Meşgul</div>
+          <div class="dl-item"><div class="dl-dot" style="background:var(--ylw);opacity:0.65;"></div> Rezervasyon</div>
+          <div class="dl-item"><div class="dl-dot" style="background:var(--acc);opacity:0.6;"></div> Temizleniyor</div>
+          <div class="dl-item"><div class="dl-dot" style="background:var(--br);"></div> Boş</div>
+        </div>
+        <div class="demo-stats-row">
+          <div class="demo-stat"><div class="demo-sv" style="color:var(--p);" id="full-count">9</div><div class="demo-sl">Dolu</div></div>
+          <div class="demo-stat"><div class="demo-sv" style="color:var(--red);" id="busy-count">4</div><div class="demo-sl">Meşgul</div></div>
+          <div class="demo-stat"><div class="demo-sv" style="color:var(--ylw);" id="res-count">3</div><div class="demo-sl">Rezerv</div></div>
+          <div class="demo-stat"><div class="demo-sv" style="color:var(--acc);" id="clean-count">2</div><div class="demo-sl">Temiz</div></div>
+          <div class="demo-stat"><div class="demo-sv" id="empty-count">6</div><div class="demo-sl">Boş</div></div>
+        </div>
+        <div style="margin-top:20px;padding:16px;background:rgba(91,33,182,0.05);border:1.5px solid rgba(91,33,182,0.12);border-radius:12px;">
+          <div style="font-size:0.75rem;font-weight:700;color:var(--p);margin-bottom:4px;"><i class="fa-solid fa-circle-info" style="font-size:.7rem;"></i> Nasıl Kullanılır?</div>
+          <div style="font-size:0.78rem;color:var(--txs);">Herhangi bir masaya tıklayın → Durum otomatik döner. Bildirimler sağ alt köşede görünür.</div>
+        </div>
+      </div>
+      <div class="reveal" style="transition-delay:.1s;">
+        <div class="masa-grid-wrap">
+          <div class="mgw-header">
+            <div class="mgh-title">🍽 Zemin Kat · 24 Masa</div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="mgh-badge"><i class="fa-solid fa-circle" style="font-size:.46rem;"></i> Canlı</div>
+            </div>
+          </div>
+          <div class="mgh-filter" style="margin-bottom:14px;display:flex;gap:6px;flex-wrap:wrap;">
+            <button class="mgh-fb active" onclick="filterMasa('all',this)">Tümü</button>
+            <button class="mgh-fb" onclick="filterMasa('full',this)">Dolu</button>
+            <button class="mgh-fb" onclick="filterMasa('empty',this)">Boş</button>
+            <button class="mgh-fb" onclick="filterMasa('reserve',this)">Rezerv</button>
+          </div>
+          <div class="masa-grid" id="masa-grid">
+            @php
+            $masalar=[
+              ['s'=>'full','t'=>'Masa 1 · 4 kişi · ₺280'],['s'=>'full','t'=>'Masa 2 · 2 kişi · ₺140'],
+              ['s'=>'busy','t'=>'Masa 3 · Sipariş bekleniyor'],['s'=>'empty','t'=>'Masa 4 · Boş'],
+              ['s'=>'full','t'=>'Masa 5 · 6 kişi · ₺520'],['s'=>'reserve','t'=>'Masa 6 · 19:30 Rezervasyon'],
+              ['s'=>'empty','t'=>'Masa 7 · Boş'],['s'=>'full','t'=>'Masa 8 · 3 kişi · ₺210'],
+              ['s'=>'busy','t'=>'Masa 9 · Hesap istedi'],['s'=>'full','t'=>'Masa 10 · 5 kişi · ₺410'],
+              ['s'=>'cleaning','t'=>'Masa 11 · Temizleniyor'],['s'=>'reserve','t'=>'Masa 12 · 20:00 Rezervasyon'],
+              ['s'=>'full','t'=>'Masa 13 · 2 kişi · ₺175'],['s'=>'empty','t'=>'Masa 14 · Boş'],
+              ['s'=>'busy','t'=>'Masa 15 · Mutfakta bekliyor'],['s'=>'full','t'=>'Masa 16 · 4 kişi · ₺340'],
+              ['s'=>'reserve','t'=>'Masa 17 · 20:30 Rezervasyon'],['s'=>'cleaning','t'=>'Masa 18 · Temizleniyor'],
+              ['s'=>'full','t'=>'Masa 19 · 8 kişi · ₺780'],['s'=>'empty','t'=>'Masa 20 · Boş'],
+              ['s'=>'busy','t'=>'Masa 21 · Sipariş bekleniyor'],['s'=>'full','t'=>'Masa 22 · 3 kişi · ₺260'],
+              ['s'=>'empty','t'=>'Masa 23 · Boş'],['s'=>'full','t'=>'Masa 24 · 4 kişi · ₺310']
+            ];
+            $slabels=['full'=>'Dolu','busy'=>'Meşgul','empty'=>'Boş','reserve'=>'Rezerv','cleaning'=>'Temiz'];
+            @endphp
+            @foreach($masalar as $i=>$m)
+              <div class="masa-cell {{ $m['s'] }}" data-tip="{{ $m['t'] }}" onclick="toggleMasa(this)" data-status="{{ $m['s'] }}">
+                <div class="mc-lbl">{{ $slabels[$m['s']] }}</div>
+                <div class="mc-num">{{ str_pad($i+1,2,'0',STR_PAD_LEFT) }}</div>
+              </div>
+            @endforeach
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Demo Notification container -->
+<div id="demo-notif"></div>
+
+<!-- =====================
+     PRICING
+===================== -->
+<section class="sec pricing-sec" id="pricing">
+  <div class="sec-in">
     <div class="reveal" style="text-align:center;">
-      <span class="section-tag">Müşteri Görüşleri</span>
-      <h2 class="section-title">İşletmeler<br><em>Konuşuyor.</em></h2>
+      <span class="sec-tag">Fiyatlandırma</span>
+      <h2 class="sec-h">Şeffaf,<br><em>Adil Fiyatlar.</em></h2>
+      <p class="sec-sub" style="margin:0 auto 10px;text-align:center;">İşletmenizin büyüklüğüne göre plan seçin. İstediğiniz zaman yükseltin veya iptal edin.</p>
+    </div>
+    <div class="pricing-toggle reveal" style="transition-delay:.08s;">
+      <span class="pt-lbl">Aylık</span>
+      <div class="pt-switch" id="billing-toggle" onclick="toggleBilling()">
+        <div class="pt-thumb"></div>
+      </div>
+      <span class="pt-lbl">Yıllık</span>
+      <span class="pt-save">%20 Tasarruf</span>
+    </div>
+    <div class="pricing-grid reveal" style="transition-delay:.16s;">
+
+      <!-- Lite -->
+      <div class="pcard">
+        <div class="pcard-tier">Lite</div>
+        <div class="pcard-price">
+          <span class="price-cur">₺</span><span class="price-amount" id="price-lite">990</span><span class="price-per">/ay</span>
+        </div>
+        <p class="pcard-desc">Tek şube, düşük ciro hacmine sahip küçük işletmeler için ideal başlangıç planı.</p>
+        <a href="{{ route('register') }}" class="pcard-btn pb-outline">Ücretsiz Dene</a>
+        <div class="pcard-feats">
+          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>1 POS Terminali</div>
+          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>24 Masaya kadar</div>
+          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>Temel Raporlama</div>
+          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>QR Dijital Menü</div>
+          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>Stok Yönetimi</div>
+          <div class="pf pf-off"><div class="pf-ic pf-ic-no"><i class="fa-solid fa-minus"></i></div>Mutfak Ekranı (KDS)</div>
+          <div class="pf pf-off"><div class="pf-ic pf-ic-no"><i class="fa-solid fa-minus"></i></div>AI Analitik</div>
+          <div class="pf pf-off"><div class="pf-ic pf-ic-no"><i class="fa-solid fa-minus"></i></div>Çok Şube</div>
+        </div>
+        <div class="pcard-note">14 gün ücretsiz · Kart gerekmez</div>
+      </div>
+
+      <!-- Pro -->
+      <div class="pcard popular">
+        <div class="pcard-popular-badge">En Popüler</div>
+        <div class="pcard-tier">Pro</div>
+        <div class="pcard-price">
+          <span class="price-cur">₺</span><span class="price-amount" id="price-pro">1.990</span><span class="price-per">/ay</span>
+        </div>
+        <p class="pcard-desc">Orta büyüklükteki işletmeler ve büyüyen kafeler için kapsamlı çözüm paketi.</p>
+        <a href="{{ route('register') }}" class="pcard-btn pb-solid">Ücretsiz Başla</a>
+        <div class="pcard-feats">
+          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>3 POS Terminali</div>
+          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>Sınırsız Masa</div>
+          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>Gelişmiş Raporlama + PDF</div>
+          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>Mutfak Ekranı (KDS)</div>
+          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>Müşteri Sadakat Sistemi</div>
+          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>Whatsapp Entegrasyonu</div>
+          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>AI Temel Analitik</div>
+          <div class="pf pf-off"><div class="pf-ic pf-ic-no"><i class="fa-solid fa-minus"></i></div>Çok Şube (max 2)</div>
+        </div>
+        <div class="pcard-note">14 gün ücretsiz · Her zaman iptal</div>
+      </div>
+
+      <!-- Elite -->
+      <div class="pcard" style="background:linear-gradient(160deg,var(--tx) 0%,#1a1040 100%);border-color:var(--tx);">
+        <div class="pcard-tier" style="color:rgba(255,255,255,0.5);">Elite</div>
+        <div class="pcard-price">
+          <span class="price-cur" style="color:rgba(255,255,255,0.6);">₺</span><span class="price-amount" id="price-elite" style="color:white;">3.490</span><span class="price-per" style="color:rgba(255,255,255,0.4);">/ay</span>
+        </div>
+        <p class="pcard-desc" style="color:rgba(255,255,255,0.55);">Zincir mağaza ve çok şubeli restoranlar için maksimum güç ve sınırsız özellikler.</p>
+        <a href="{{ route('pages.contact') }}" class="pcard-btn" style="background:white;color:var(--p);border:none;">Teklif Al</a>
+        <div class="pcard-feats">
+          @foreach(['Sınırsız POS Terminali','Sınırsız Masa','Sınırsız Şube Yönetimi','AI Gelişmiş Analitik & Tahmin','Özel Entegrasyon Desteği','Öncelikli 7/24 Destek','Özel Eğitim & Onboarding','SLA Güvencesi (%99.9)'] as $f)
+          <div class="pf" style="color:rgba(255,255,255,0.7);"><div class="pf-ic" style="background:rgba(167,139,250,0.2);"><i class="fa-solid fa-check" style="color:var(--pl2);font-size:.48rem;"></i></div>{{ $f }}</div>
+          @endforeach
+        </div>
+        <div class="pcard-note" style="border-top-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);">Özel fiyatlandırma mevcuttur</div>
+      </div>
+
+    </div>
+    <!-- Compare link -->
+    <div class="reveal" style="transition-delay:.24s;text-align:center;margin-top:32px;">
+      <a href="#comparison" style="font-size:0.82rem;font-weight:700;color:var(--p);display:inline-flex;align-items:center;gap:6px;font-family:var(--ff-b);">Tüm özellikleri karşılaştır <i class="fa-solid fa-arrow-down" style="font-size:.7rem;"></i></a>
+    </div>
+  </div>
+</section>
+
+<!-- =====================
+     ROI CALCULATOR
+===================== -->
+<section class="sec roi-sec" id="roi">
+  <div class="sec-in">
+    <div class="reveal" style="text-align:center;">
+      <span class="sec-tag">Yatırım Geri Dönüşü</span>
+      <h2 class="sec-h">RezerVist ile<br><em>Ne Kadar Kazanırsınız?</em></h2>
+      <p class="sec-sub" style="margin:0 auto;">Parametrelerinizi girin, tahmini gelir artışınızı hesaplayın.</p>
+    </div>
+    <div class="roi-wrap">
+      <div class="roi-card reveal" style="transition-delay:.1s;">
+        <div style="margin-bottom:24px;padding-bottom:20px;border-bottom:1.5px solid var(--br);">
+          <div style="font-family:var(--ff-h);font-size:1.1rem;font-weight:700;color:var(--tx);margin-bottom:4px;">İşletme Bilgileri</div>
+          <div style="font-size:0.78rem;color:var(--txm);">Slider'ları hareket ettirerek sonuçları güncelleyin.</div>
+        </div>
+        <label class="roi-label">Aylık Ortalama Ciro (₺)</label>
+        <input type="number" class="roi-input" id="roi-rev" value="150000" oninput="calcROI()">
+        <label class="roi-label">Günlük Masa Sayısı</label>
+        <input type="range" class="roi-slider" id="roi-tables" min="4" max="80" value="24" oninput="document.getElementById('tables-val').textContent=this.value;calcROI()">
+        <div class="roi-slider-val"><span>4 masa</span><span id="tables-val">24</span><span>80 masa</span></div>
+        <label class="roi-label">Ortalama Masa Devir Süresi (dk)</label>
+        <input type="range" class="roi-slider" id="roi-turn" min="20" max="120" value="55" oninput="document.getElementById('turn-val').textContent=this.value;calcROI()">
+        <div class="roi-slider-val"><span>20 dk</span><span id="turn-val">55</span><span>120 dk</span></div>
+        <label class="roi-label">Aylık Personel Sayısı</label>
+        <input type="range" class="roi-slider" id="roi-staff" min="2" max="50" value="8" oninput="document.getElementById('staff-val').textContent=this.value;calcROI()">
+        <div class="roi-slider-val"><span>2 kişi</span><span id="staff-val">8</span><span>50 kişi</span></div>
+      </div>
+
+      <div class="reveal" style="transition-delay:.2s;">
+        <div class="roi-result">
+          <div class="roi-r-label">Tahmini Ek Aylık Gelir</div>
+          <div class="roi-r-val" id="roi-income">₺42.000</div>
+          <div class="roi-r-sub" id="roi-sub">RezerVist'in optimize ettiği operasyon kazancı</div>
+          <div class="roi-result-grid">
+            <div class="roi-mini"><div class="roi-mini-v" id="roi-efficiency">+%18</div><div class="roi-mini-l">Verimlilik Artışı</div></div>
+            <div class="roi-mini"><div class="roi-mini-v" id="roi-waste">-₺8.200</div><div class="roi-mini-l">Azalan İsraf</div></div>
+            <div class="roi-mini"><div class="roi-mini-v" id="roi-payback">3.2 ay</div><div class="roi-mini-l">Geri Ödeme Süresi</div></div>
+            <div class="roi-mini"><div class="roi-mini-v" id="roi-annual">₺504K</div><div class="roi-mini-l">Yıllık Ek Gelir</div></div>
+          </div>
+        </div>
+        <div style="background:white;border:1.5px solid var(--br);border-radius:var(--r);padding:24px;margin-top:16px;">
+          <div style="font-family:var(--ff-h);font-size:1rem;font-weight:700;color:var(--tx);margin-bottom:14px;">Nasıl Hesaplandı?</div>
+          <div style="display:flex;flex-direction:column;gap:9px;">
+            @foreach(['Sipariş kayıplarında %12 azalma','Masa devir hızında %15 artış','Stok israfında %22 düşüş','Personel verimliliğinde %18 artış'] as $r)
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--txs);">
+              <div style="width:16px;height:16px;border-radius:5px;background:rgba(16,185,129,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fa-solid fa-check" style="font-size:.45rem;color:var(--grn);"></i></div>
+              {{ $r }}
+            </div>
+            @endforeach
+          </div>
+          <div class="roi-disclaimer">* Tahminler RezerVist müşteri verilerine dayanmaktadır. Gerçek sonuçlar farklılık gösterebilir.</div>
+        </div>
+        <a href="{{ route('register') }}" class="btn-p" style="width:100%;justify-content:center;margin-top:14px;">
+          <i class="fa-solid fa-rocket" style="font-size:.72rem;"></i> Hemen Başla — 14 Gün Ücretsiz
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================
+     SECURITY
+===================== -->
+<section class="sec sec-security" id="security">
+  <div class="sec-in sec-sec-in">
+    <div class="reveal" style="text-align:center;">
+      <span class="sec-tag" style="color:var(--pl2);">Güvenlik & Uyumluluk</span>
+      <h2 class="sec-h" style="color:white;">Bankacılık Düzeyinde<br><em style="color:var(--pl2);">Güvenlik.</em></h2>
+      <p class="sec-sub" style="color:rgba(255,255,255,0.5);margin:0 auto;">Müşteri verileriniz ve ödeme bilgileriniz her an korunma altında.</p>
+    </div>
+    <div class="security-grid">
+      <div class="sec-feats reveal" style="transition-delay:.08s;">
+        @php $secfeats=[['fa-lock','sf-ic-p','AES-256 Uçtan Uca Şifreleme','Tüm veriler, aktarım sırasında ve depolamada 256-bit AES ile şifrelenir. Kimse, Anthropic dahil, verilerinizi okuyamaz.'],['fa-fingerprint','sf-ic-g','Biyometrik Kimlik Doğrulama','Parmak izi veya yüz tanıma ile güvenli personel girişi. Her işlem bir kimlikle ilişkilendirilir ve loglanır.'],['fa-shield-check','sf-ic-a','PCI-DSS Level 1 Uyumu','Ödeme kartı endüstrisinin en üst güvenlik standardına uygun altyapı. Kart verileri asla sunucularımızda saklanmaz.'],['fa-eye-slash','sf-ic-p','KVKK & GDPR Uyumluluğu','Türkiye KVKK ve Avrupa GDPR standartlarına tam uyumluluk. Veri sahibi hakları otomatik yönetilir.']]; @endphp
+        @foreach($secfeats as $f)
+        <div class="sec-feat">
+          <div class="sec-feat-ic {{ $f[1] }}"><i class="fa-solid {{ $f[0] }}"></i></div>
+          <div><div class="sec-feat-title">{{ $f[2] }}</div><div class="sec-feat-desc">{{ $f[3] }}</div></div>
+        </div>
+        @endforeach
+      </div>
+      <div class="sec-badge-grid reveal" style="transition-delay:.16s;">
+        <div class="sec-badge-row">
+          @foreach([['fa-certificate','PCI-DSS','Level 1 Certified'],['fa-shield-halved','ISO 27001','Bilgi Güvenliği'],['fa-check-double','KVKK','Tam Uyumlu'],['fa-lock','SSL/TLS','256-bit Encrypted']] as $b)
+          <div class="secbdg"><div class="secbdg-ic"><i class="fa-solid {{ $b[0] }}"></i></div><div class="secbdg-title">{{ $b[1] }}</div><div class="secbdg-sub">{{ $b[2] }}</div></div>
+          @endforeach
+        </div>
+        <div class="uptime-display">
+          <div class="ud-header">
+            <div class="ud-title">Son 90 Gün Uptime</div>
+            <div class="ud-val">99.94%</div>
+          </div>
+          <div class="ud-bars">
+            @for($i=0;$i<60;$i++)
+            <div class="ud-b {{ $i===12||$i===37?'warn':'ok' }}" style="height:{{ $i===12||$i===37?'50':'100' }}%;"></div>
+            @endfor
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:0.6rem;color:rgba(255,255,255,0.35);font-family:var(--ff-b);">
+            <span>90 gün önce</span><span>Bugün</span>
+          </div>
+        </div>
+        <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:18px;display:flex;align-items:center;gap:14px;">
+          <div style="width:40px;height:40px;border-radius:50%;background:rgba(16,185,129,0.2);display:flex;align-items:center;justify-content:center;animation:pulseGrn 2s infinite;flex-shrink:0;"><i class="fa-solid fa-check" style="color:#6EE7B7;"></i></div>
+          <div><div style="font-size:0.85rem;font-weight:700;color:white;">Tüm Sistemler Çalışıyor</div><div style="font-size:0.72rem;color:rgba(255,255,255,0.45);margin-top:2px;">Son kontrol: {{ date('H:i') }} — status.rezervist.com</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================
+     HARDWARE
+===================== -->
+<section class="sec hw-sec" id="hardware">
+  <div class="sec-in">
+    <div class="reveal" style="text-align:center;">
+      <span class="sec-tag">Donanım</span>
+      <h2 class="sec-h">İşletmenize Özel<br><em>Terminal Seçenekleri.</em></h2>
+      <p class="sec-sub" style="margin:0 auto;text-align:center;">Kendi donanımınızı getirebilir ya da RezerVist sertifikalı cihazlarla eksiksiz başlangıç yapabilirsiniz.</p>
+    </div>
+    <div class="hw-grid reveal" style="transition-delay:.1s;">
+      <!-- Terminal Pro -->
+      <div class="hwcard">
+        <div class="hw-icon-wrap">🖥️</div>
+        <div class="hw-name">POS Terminal Lite</div>
+        <div class="hw-desc">Küçük ve orta ölçekli işletmeler için kompakt ve dayanıklı dokunmatik ekranlı terminal.</div>
+        <div class="hw-specs">
+          @foreach(['Ekran:10.1" Full HD IPS','İşlemci:Octa-core 1.8GHz','RAM:4GB DDR4','Depolama:64GB eMMC','Bağlantı:Wi-Fi + Ethernet','Pil:Yok (AC Güç)'] as $sp)
+          @php [$k,$v]=explode(':',$sp); @endphp
+          <div class="hw-spec"><div class="hw-spec-k">{{ $k }}</div><div class="hw-spec-v">{{ $v }}</div></div>
+          @endforeach
+        </div>
+        <div class="hw-price">
+          <div class="hwp-amount">₺8.990</div>
+          <div class="hwp-old">₺11.200</div>
+        </div>
+        <a href="{{ route('pages.contact') }}" class="btn-o" style="width:100%;justify-content:center;">Teklif Al</a>
+      </div>
+      <!-- Terminal Pro (Featured) -->
+      <div class="hwcard featured">
+        <div class="hw-icon-wrap">💻</div>
+        <div class="hw-name">POS Terminal Pro</div>
+        <div class="hw-desc">Yoğun kullanım için tasarlanmış yüksek performanslı, pil destekli mobil kasa terminali.</div>
+        <div class="hw-specs">
+          @foreach(['Ekran:15.6" Full HD IPS','İşlemci:Octa-core 2.4GHz','RAM:8GB DDR4','Depolama:128GB SSD','Bağlantı:Wi-Fi 6 + 4G LTE','Pil:8 Saat Kullanım'] as $sp)
+          @php [$k,$v]=explode(':',$sp); @endphp
+          <div class="hw-spec"><div class="hw-spec-k">{{ $k }}</div><div class="hw-spec-v">{{ $v }}</div></div>
+          @endforeach
+        </div>
+        <div class="hw-price">
+          <div class="hwp-amount">₺14.990</div>
+          <div class="hwp-old">₺18.500</div>
+        </div>
+        <a href="{{ route('pages.contact') }}" class="btn-p" style="width:100%;justify-content:center;">Teklif Al</a>
+      </div>
+      <!-- Tablet -->
+      <div class="hwcard">
+        <div class="hw-icon-wrap">📱</div>
+        <div class="hw-name">Garson Tableti</div>
+        <div class="hw-desc">Garsonlar için hafif ve dayanıklı Android tablet. Darbe korumalı kılıf ve el kayışı dahil.</div>
+        <div class="hw-specs">
+          @foreach(['Ekran:8" HD IPS','İşlemci:Hexa-core 1.6GHz','RAM:3GB','Depolama:32GB','Bağlantı:Wi-Fi + Bluetooth','Pil:10 Saat Kullanım'] as $sp)
+          @php [$k,$v]=explode(':',$sp); @endphp
+          <div class="hw-spec"><div class="hw-spec-k">{{ $k }}</div><div class="hw-spec-v">{{ $v }}</div></div>
+          @endforeach
+        </div>
+        <div class="hw-price">
+          <div class="hwp-amount">₺4.490</div>
+          <div class="hwp-old">₺5.800</div>
+        </div>
+        <a href="{{ route('pages.contact') }}" class="btn-o" style="width:100%;justify-content:center;">Teklif Al</a>
+      </div>
+    </div>
+    <div class="reveal" style="transition-delay:.2s;margin-top:20px;background:var(--sf);border:1.5px solid var(--br);border-radius:var(--r);padding:24px 32px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+      <i class="fa-solid fa-laptop" style="font-size:1.5rem;color:var(--p);"></i>
+      <div style="flex:1;"><div style="font-family:var(--ff-h);font-size:0.95rem;font-weight:700;color:var(--tx);">Kendi Cihazınızı Kullanın (BYOD)</div><div style="font-size:0.8rem;color:var(--txs);margin-top:3px;">Windows, macOS, iPad veya Android tablet — RezerVist herhangi bir modern cihazda çalışır. Tarayıcı tabanlı veya native uygulama desteği mevcuttur.</div></div>
+      <a href="{{ route('pages.contact') }}" class="btn-o" style="white-space:nowrap;">Uyumluluğu Kontrol Et</a>
+    </div>
+  </div>
+</section>
+
+<!-- =====================
+     COMPARISON
+===================== -->
+<section class="sec cmp-sec" id="comparison">
+  <div class="sec-in">
+    <div class="reveal" style="text-align:center;">
+      <span class="sec-tag">Karşılaştırma</span>
+      <h2 class="sec-h">RezerVist vs<br><em>Geleneksel POS</em></h2>
+      <p class="sec-sub" style="margin:0 auto;text-align:center;">Neden RezerVist? Yan yana bakıldığında cevap açık.</p>
+    </div>
+    <div class="cmp-table reveal" style="transition-delay:.1s;">
+      <div class="cmp-head">
+        <div class="cmp-th feat">Özellik</div>
+        <div class="cmp-th hero">RezerVist POS</div>
+        <div class="cmp-th">Geleneksel POS</div>
+        <div class="cmp-th">Manuel Sistem</div>
+      </div>
+      <div>
+        @php $rows=[
+          ['Anlık Senkronizasyon','Dahil (0.2ms)','<i class="fa-solid fa-times cn"></i>','<i class="fa-solid fa-times cn"></i>'],
+          ['Mutfak Ekranı (KDS)','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-minus cp"></i> Ek ücret','<i class="fa-solid fa-times cn"></i>'],
+          ['Çok Şube Yönetimi','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-minus cp"></i> Sınırlı','<i class="fa-solid fa-times cn"></i>'],
+          ['Offline Çalışma','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-times cn"></i>','<i class="fa-solid fa-check cy"></i>'],
+          ['AI Analitik','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-times cn"></i>','<i class="fa-solid fa-times cn"></i>'],
+          ['QR Dijital Menü','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-minus cp"></i> Ek ücret','<i class="fa-solid fa-times cn"></i>'],
+          ['Müşteri Sadakat Sistemi','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-minus cp"></i> Ek ücret','<i class="fa-solid fa-times cn"></i>'],
+          ['Mobil Yönetim Uygulaması','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-minus cp"></i> Sınırlı','<i class="fa-solid fa-times cn"></i>'],
+          ['Biyometrik Giriş','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-times cn"></i>','<i class="fa-solid fa-times cn"></i>'],
+          ['Kurulum Süresi','~8 dakika','~2-3 hafta','—'],
+          ['7/24 Destek','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-minus cp"></i> Mesai saatlerinde','<i class="fa-solid fa-times cn"></i>'],
+          ['Ücretsiz Güncelleme','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-times cn"></i>','—'],
+          ['Aylık Maliyet','₺990\'dan başlar','₺1.800-4.500','Personel maliyeti']
+        ]; @endphp
+        @foreach($rows as $r)
+        <div class="cmp-row">
+          <div class="cmp-cell feat">{{ $r[0] }}</div>
+          <div class="cmp-cell hero">{!! $r[1] !!}</div>
+          <div class="cmp-cell">{!! $r[2] !!}</div>
+          <div class="cmp-cell">{!! $r[3] !!}</div>
+        </div>
+        @endforeach
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =====================
+     INTEGRATIONS
+===================== -->
+<section class="sec" id="integrations" style="background:var(--bg2);">
+  <div class="sec-in">
+    <div class="reveal" style="text-align:center;">
+      <span class="sec-tag">Entegrasyonlar</span>
+      <h2 class="sec-h">Sınırsız<br><em>Ekosistem.</em></h2>
+      <p class="sec-sub" style="margin:0 auto;text-align:center;">Tüm araçlarınızla konuşur. Hepsini tek noktadan yönetirsiniz. 40+ hazır entegrasyon.</p>
+    </div>
+    <div class="int-grid reveal" style="transition-delay:.08s;">
+      @foreach([['fa-file-invoice-dollar','e-Fatura (GİB)'],['fa-motorcycle','Trendyol Yemek'],['fa-store','Getir Yemek'],['fa-truck','Yemeksepeti'],['fa-credit-card','İyzico'],['fa-credit-card','PayTR'],['fa-building-columns','Garanti BBVA'],['fa-building-columns','Ziraat Bankası'],['fa-qrcode','QR Menü Pro'],['fa-wifi','NFC / Temassız'],['fa-boxes-stacked','Mikro ERP'],['fa-cash-register','Parasut'],['fa-brands fa-whatsapp','WhatsApp Business'],['fa-envelope','E-posta SMTP'],['fa-chart-bar','Power BI'],['fa-brands fa-google','Google Analytics'],['fa-truck-fast','Kurye API'],['fa-barcode','Barkod / QR Okuyucu'],['fa-print','Fişyazıcı / Termal'],['fa-scale-balanced','Kasa Çekmecesi']] as $p)
+      <div class="int-pill"><i class="{{ $p[0] }}"></i> {{ $p[1] }}</div>
+      @endforeach
+    </div>
+    <div class="api-block reveal" style="transition-delay:.16s;">
+      <div class="api-l">
+        <div class="sec-tag" style="margin-bottom:10px;">Geliştirici API'si</div>
+        <div class="api-title">Kendi Yazılımınızı<br>Bağlayın.</div>
+        <p class="api-sub">RESTful API ve WebSocket desteğiyle mevcut sistemlerinizi dakikalar içinde entegre edin. 200+ endpoint, tam Swagger dokümantasyonu.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="/docs" class="btn-p"><i class="fa-solid fa-book" style="font-size:.72rem;"></i> API Dökümanları</a>
+          <a href="#" class="btn-o"><i class="fa-brands fa-github" style="font-size:.72rem;"></i> GitHub SDK</a>
+        </div>
+      </div>
+      <pre class="api-code"><span class="cm">POST</span> /api/v1/orders
+<span class="ck">Authorization:</span> <span class="cs">Bearer {api_key}</span>
+<span class="ck">Content-Type:</span> application/json
+
+{
+  <span class="ck">"table_id":</span>  <span class="cs">"T-07"</span>,
+  <span class="ck">"items":</span>    [
+    { <span class="cs">"id"</span>: 42, <span class="cs">"qty"</span>: 2 }
+  ],
+  <span class="ck">"status":</span>   <span class="cs">"confirmed"</span>,
+  <span class="ck">"note":</span>     <span class="cs">"Az pişmiş"</span>
+}
+
+<span class="cm">→ 200 OK</span> { "order_id": "ORD-2847" }</pre>
+    </div>
+  </div>
+</section>
+
+<!-- =====================
+     TESTIMONIALS
+===================== -->
+<section id="testimonials" class="sec" style="background:var(--sf);">
+  <div class="sec-in">
+    <div class="reveal" style="text-align:center;">
+      <span class="sec-tag">Müşteri Görüşleri</span>
+      <h2 class="sec-h">3.200+ İşletme<br><em>Konuşuyor.</em></h2>
     </div>
     <div class="testi-grid">
-      <div class="testi-card reveal">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-q">"Kurulumdan üç ay sonra sipariş kayıplarımız sıfıra indi. Mutfak ile kasa artık aynı dili konuşuyor. Bunu daha önce keşfetmediğime üzüldüm."</p>
-        <div class="testi-author">
-          <div class="testi-av">M</div>
-          <div><div class="testi-name">Mustafa Yılmaz</div><div class="testi-role">Lezzet Lokantası, İstanbul</div></div>
+      @php $testis=[
+        ['hl'=>true,'stars'=>5,'q'=>'"Kurulumdan üç ay sonra sipariş kayıplarımız sıfıra indi. Mutfak ile kasa artık aynı dili konuşuyor. Personel memnuniyeti de inanılmaz arttı."','name'=>'Mustafa Yılmaz','role'=>'Lezzet Lokantası, İstanbul','av'=>'M','grad'=>'var(--p),#A78BFA','metric'=>'+%34','metriclbl'=>'Sipariş Verimliliği'],
+        ['hl'=>false,'stars'=>5,'q'=>'"Analitik paneli inanılmaz. Menüyü yeniden düzenledik, fiyatları optimize ettik. Aylık ciro %31 arttı."','name'=>'Selin Kaya','role'=>'Café Aura, Ankara','av'=>'S','grad'=>'#0ABBA3,#06B6D4','metric'=>'+₺48K','metriclbl'=>'Aylık Ek Ciro'],
+        ['hl'=>false,'stars'=>5,'q'=>'"7 şubemizi tek panelden yönetiyorum. Stok uyarıları, personel raporları, anlık satış — hepsi elimde."','name'=>'Emre Demir','role'=>'Burger Zinciri, 7 Şube','av'=>'E','grad'=>'#F59E0B,#EF4444','metric'=>'7 Şube','metriclbl'=>'Tek Panelden'],
+        ['hl'=>false,'stars'=>5,'q'=>'"Kurulum ekibi 6 saat içinde tüm sistemi hazırladı. QR menü özelliği müşterilerimize profesyonel deneyim sunuyor."','name'=>'Ahmet Çelik','role'=>'Fıstık Cafe, Bursa','av'=>'A','grad'=>'var(--p),var(--pl)','metric'=>'6 Saat','metriclbl'=>'Tam Kurulum'],
+        ['hl'=>false,'stars'=>5,'q'=>'"Mutfak ekranı hayatımızı değiştirdi. Garsonlar artık mutfağa gidip sipariş sormak zorunda kalmıyor. Masa devir hızı %22 arttı."','name'=>'Fatma Arslan','role'=>'Deniz Restaurant, İzmir','av'=>'F','grad'=>'#10B981,#06B6D4','metric'=>'+%22','metriclbl'=>'Masa Devir Hızı'],
+        ['hl'=>false,'stars'=>5,'q'=>'"Haftalık raporlar artık otomatik geliyor. Vergi dönemleri artık kabus değil, muhasebeci ile entegrasyon mükemmel çalışıyor."','name'=>'Kemal Doğan','role'=>'Kebapçı Doğan, Gaziantep','av'=>'K','grad'=>'#F43F5E,#FB923C','metric'=>'%100','metriclbl'=>'Otomatik Rapor'],
+        ['hl'=>false,'stars'=>5,'q'=>'"Sadakat puanı sistemi sayesinde müşteri tekrar ziyaret oranımız %40 arttı. Doğum günü kampanyaları çok sevildi."','name'=>'Zeynep Aktaş','role'=>'Patisserie Zey, Eskişehir','av'=>'Z','grad'=>'var(--acc),var(--acc2)','metric'=>'+%40','metriclbl'=>'Tekrar Ziyaret'],
+        ['hl'=>false,'stars'=>5,'q'=>'"Stok yönetimi özelliği tedarikçilerimizle entegre oldu. Malzeme israfını %28 azalttık, bu büyük bir maliyet avantajı."','name'=>'Hasan Öztürk','role'=>'Mezes Restaurant, Antalya','av'=>'H','grad'=>'#059669,#10B981','metric'=>'-₺12K','metriclbl'=>'Aylık İsraf Tasarrufu'],
+        ['hl'=>false,'stars'=>5,'q'=>'"RezerVist mobil uygulaması ile tatildeyken bile işletmemi canlı takip edebiliyorum. Rahat tatil yapabiliyorum artık."','name'=>'Canan Şahin','role'=>'Şahin Kafeterya, Bodrum','av'=>'C','grad'=>'#7C3AED,#5B21B6','metric'=>'7/24','metriclbl'=>'Uzaktan Yönetim'],
+      ]; @endphp
+      @foreach($testis as $idx=>$t)
+      <div class="tcard {{ $t['hl']?'hl':'' }} reveal" style="transition-delay:{{ $idx*0.06 }}s;">
+        <div class="tstars">{{ str_repeat('★',$t['stars']) }}</div>
+        <p class="tquote">{{ $t['q'] }}</p>
+        <div class="tauthor">
+          <div class="tav" style="background:linear-gradient(135deg,{{ $t['grad'] }});">{{ $t['av'] }}</div>
+          <div><div class="tname">{{ $t['name'] }}</div><div class="trole">{{ $t['role'] }}</div></div>
+        </div>
+        <div class="tmetric"><div class="tm-val">{{ $t['metric'] }}</div><div class="tm-lbl">{{ $t['metriclbl'] }}</div></div>
+      </div>
+      @endforeach
+    </div>
+    <!-- Trust summary bar -->
+    <div class="reveal" style="transition-delay:.3s;margin-top:56px;background:var(--bg2);border:1.5px solid var(--br);border-radius:var(--r);padding:32px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center;">
+      @foreach([['4.9/5','Ortalama Puan','★★★★★'],['3.200+','Aktif Müşteri','Türkiye geneli'],['%97','Müşteri Memnuniyeti','Net Promoter Score'],['12 dk','Ortalama Destek','Yanıt süresi']] as $s)
+      <div><div style="font-family:var(--ff-h);font-size:1.8rem;font-weight:900;color:var(--p);letter-spacing:-0.04em;">{{ $s[0] }}</div><div style="font-size:0.85rem;font-weight:600;color:var(--tx);margin-top:3px;">{{ $s[1] }}</div><div style="font-size:0.72rem;color:var(--txm);margin-top:2px;">{{ $s[2] }}</div></div>
+      @endforeach
+    </div>
+  </div>
+</section>
+
+<!-- =====================
+     FAQ
+===================== -->
+<section class="sec" id="faq" style="background:var(--bg2);">
+  <div class="sec-in">
+    <div class="faq-wrap">
+      <div class="reveal">
+        <span class="sec-tag">SSS</span>
+        <h2 class="faq-aside-h">Aklınızdaki<br>Sorular.</h2>
+        <p class="faq-aside-sub">En sık sorulan soruları derledik. Bulamadığınız bir soru varsa destek hattımız 7/24 hizmetinizde.</p>
+        <a href="{{ route('pages.contact') }}" class="faq-cta"><i class="fa-solid fa-message" style="font-size:.72rem;"></i> Destek Hattı</a>
+        <div class="faq-contact-card">
+          <div class="fcc-title">Bize Ulaşın</div>
+          <div class="fcc-desc">Teknik destek, satış veya kurulum konularında size özel yardım alabileceğiniz kanallar.</div>
+          <div class="fcc-contacts">
+            <div class="fcc-c"><i class="fa-solid fa-phone"></i> +90 (212) 000 00 00</div>
+            <div class="fcc-c"><i class="fa-solid fa-envelope"></i> destek@rezervist.com</div>
+            <div class="fcc-c"><i class="fa-brands fa-whatsapp"></i> WhatsApp Destek Hattı</div>
+            <div class="fcc-c"><i class="fa-solid fa-clock"></i> 7/24 · 365 gün hizmet</div>
+          </div>
         </div>
       </div>
-      <div class="testi-card reveal" style="transition-delay:.1s;">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-q">"Analitik paneli inanılmaz. Hangi ürünün hangi saatte en çok satıldığını görünce menüyü ve çizelgeyi düzenledik. Ciro %31 arttı."</p>
-        <div class="testi-author">
-          <div class="testi-av" style="background:linear-gradient(135deg,#0ABBA3,#06B6D4);">S</div>
-          <div><div class="testi-name">Selin Kaya</div><div class="testi-role">Café Aura, Ankara</div></div>
+      <div class="faq-list reveal" style="transition-delay:.1s;">
+        @php $faqs=[
+          ['İnternet kesilince ne olur?','RezerVist hibrit altyapısı sayesinde yerel ağ üzerinden çalışmaya devam eder. Tüm siparişler ve işlemler lokal olarak kaydedilir, internet bağlantısı yeniden kurulduğunda otomatik olarak bulutla senkronize edilir. Hiçbir veri kaybolmaz.'],
+          ['Mevcut menümü nasıl aktarabilirim?','Excel veya CSV formatında hazırladığınız ürün listenizi sisteme toplu olarak import edebilirsiniz. Ekibimiz kurulum sürecinde menü aktarımı konusunda birebir destek sağlar. Fotoğraflı menüler için de QR menü şablonları mevcuttur.'],
+          ['Kaç terminal kullanabilirim?','Lisans tipinize göre; Lite\'da 1, Pro\'da 3, Elite\'ta sınırsız terminal. Tüm terminaller birbirleriyle anlık senkronize çalışır. Ek terminal her zaman eklenebilir.'],
+          ['Kurulum ne kadar sürer?','Ortalama 8 dakikada temel kurulum tamamlanır. Destek ekibimiz menü girişi, masa planı ve personel eğitimi dahil tam kurulumu genellikle aynı gün tamamlar.'],
+          ['Ödeme sistemleriyle entegrasyon var mı?','Evet. İyzico, Stripe, PayTR, Garanti BBVA ve diğer önde gelen ödeme altyapılarıyla entegrasyon mevcuttur. NFC/temassız ödeme ve QR kod ödeme de desteklenmektedir.'],
+          ['Verilerimi nasıl yedekliyor?','Tüm veriler her 15 dakikada bir buluta yedeklenir. Ek olarak yerel NVMe depolama üzerinde anlık snapshot tutulur. Son 90 günlük veri her zaman erişilebilir durumda.'],
+          ['KVKK kapsamında verilerimi nasıl yönetiyorsunuz?','Türkiye Kişisel Verilerin Korunması Kanunu (KVKK) kapsamında tüm işlemler kayıt altında tutulur. Veri işleme sözleşmesi, silme/dışa aktarma talepleri ve denetim logları dahildir. GDPR uyumluluğu da sağlanmaktadır.'],
+          ['Çok şube için özel fiyatlandırma var mı?','Elite plan ile sınırsız şube yönetimi standart dahildir. 10\'dan fazla şube için özel kurumsal paket sunarız. Satış ekibimizle iletişime geçerek özel teklif alabilirsiniz.'],
+          ['Hangi donanımla uyumludur?','Windows 10+, macOS 12+, iPad (iPadOS 15+), Android 8+ tablet ve telefonlarda çalışır. Termal yazıcı, barkod okuyucu, kasa çekmecesi gibi çevre birimleriyle de entegre olur.'],
+          ['AI özellikler nasıl çalışıyor?','Makine öğrenimi modelleri işletmenizin geçmiş verilerini analiz ederek satış öngörüsü, stok tahmini ve personel optimizasyonu yapar. Minimum 30 günlük veri gerektirir; veriler sisteminizde şifreli olarak saklanır, üçüncü taraflarla paylaşılmaz.'],
+        ]; @endphp
+        @foreach($faqs as $i=>$f)
+        <div class="faq-item{{ $i===0?' open':'' }}">
+          <div class="faq-q" onclick="toggleFaq(this)">{{ $f[0] }}<div class="faq-icon"><i class="fa-solid fa-plus"></i></div></div>
+          <div class="faq-a">{{ $f[1] }}</div>
         </div>
-      </div>
-      <div class="testi-card reveal" style="transition-delay:.2s;">
-        <div class="testi-stars">★★★★★</div>
-        <p class="testi-q">"7 şubemizi tek panelden yönetiyorum. Stok uyarıları, personel raporları, anlık satış — hepsi elimde. RezerVist olmadan nasıl çalıştım bilmiyorum."</p>
-        <div class="testi-author">
-          <div class="testi-av" style="background:linear-gradient(135deg,#F59E0B,#EF4444);">E</div>
-          <div><div class="testi-name">Emre Demir</div><div class="testi-role">Burger Zinciri, 7 Şube</div></div>
-        </div>
+        @endforeach
       </div>
     </div>
   </div>
 </section>
 
-<!-- ════════════════ CTA ════════════════ -->
-<section class="section cta-section" id="contact">
-  <div class="section-inner cta-inner">
-    <span class="section-tag" style="color:rgba(255,255,255,0.55);">Hazır Mısınız?</span>
-    <h2 class="cta-title">İşletmenizi Bugün<br>Dijitalleştirin.</h2>
-    <p class="cta-sub">14 gün ücretsiz deneyin. Kredi kartı gerekmez, kurulum desteği dahil.</p>
+<!-- =====================
+     CTA
+===================== -->
+<section class="sec cta-sec" id="contact">
+  <div class="sec-in cta-in">
+    <span class="sec-tag" style="color:rgba(255,255,255,0.5);">Hazır Mısınız?</span>
+    <h2 class="cta-h">İşletmenizi Bugün<br>Dijitalleştirin.</h2>
+    <p class="cta-sub">14 gün ücretsiz deneyin. Kredi kartı gerekmez. Kurulum desteği dahil. İstediğiniz zaman iptal.</p>
+    <!-- Countdown timer -->
+    <div style="text-align:center;margin-bottom:32px;">
+      <div style="font-size:0.7rem;font-weight:700;color:rgba(255,255,255,0.45);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;font-family:var(--ff-b);">Bu Haftaki Özel Teklif Bitiyor:</div>
+      <div class="trial-countdown">
+        <div class="tc-block"><div class="tc-num" id="ct-d">03</div><div class="tc-lbl">Gün</div></div>
+        <div class="tc-sep">:</div>
+        <div class="tc-block"><div class="tc-num" id="ct-h">14</div><div class="tc-lbl">Saat</div></div>
+        <div class="tc-sep">:</div>
+        <div class="tc-block"><div class="tc-num" id="ct-m">37</div><div class="tc-lbl">Dak</div></div>
+        <div class="tc-sep">:</div>
+        <div class="tc-block"><div class="tc-num" id="ct-s">22</div><div class="tc-lbl">Sn</div></div>
+      </div>
+    </div>
     <div class="cta-actions">
-      <a href="{{ route('register') }}" class="btn-white"><i class="fa-solid fa-rocket" style="font-size:.8rem;"></i> Ücretsiz Başlat</a>
-      <a href="{{ route('pages.contact') }}" class="btn-ghost-w">Demo Talep Et</a>
+      <a href="{{ route('register') }}" class="btn-w"><i class="fa-solid fa-rocket" style="font-size:.78rem;"></i> Ücretsiz Başlat</a>
+      <a href="{{ route('pages.contact') }}" class="btn-gl">Demo Talep Et <i class="fa-solid fa-arrow-right" style="font-size:.7rem;"></i></a>
+      <button class="btn-gl" onclick="document.getElementById('video-modal').classList.add('open')"><i class="fa-solid fa-play" style="font-size:.7rem;"></i> Demo İzle</button>
+    </div>
+    <div class="cta-trust">
+      <div class="cta-ti"><i class="fa-solid fa-shield-check"></i> PCI-DSS Uyumlu</div>
+      <div class="cta-ti"><i class="fa-solid fa-clock"></i> 7/24 Destek</div>
+      <div class="cta-ti"><i class="fa-solid fa-rotate-left"></i> Anında İptal</div>
+      <div class="cta-ti"><i class="fa-solid fa-lock"></i> KVKK Uyumlu</div>
+      <div class="cta-ti"><i class="fa-solid fa-users"></i> 3.200+ İşletme</div>
+    </div>
+    <!-- Mini testimonial -->
+    <div style="display:inline-flex;align-items:center;gap:14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:16px 24px;margin-top:8px;">
+      <div style="display:flex;margin-right:4px;">
+        @foreach(['var(--p),#A78BFA','#0ABBA3,#06B6D4','#F59E0B,#EF4444'] as $g)
+        <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,{{ $g }});border:2px solid rgba(255,255,255,0.2);margin-left:-8px;display:flex;align-items:center;justify-content:center;font-family:var(--ff-h);font-weight:900;font-size:0.75rem;color:white;">{{ ['M','S','E'][$loop->index] }}</div>
+        @endforeach
+      </div>
+      <div>
+        <div style="font-size:0.78rem;font-weight:700;color:white;">"İlk haftada fark ettik. Harika!"</div>
+        <div style="font-size:0.65rem;color:rgba(255,255,255,0.45);margin-top:2px;">3.200+ memnun işletme katıldı</div>
+      </div>
     </div>
   </div>
 </section>
+
+<!-- =====================
+     FOOTER
+===================== -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-top">
+      <!-- Brand col -->
+      <div>
+        <div class="footer-brand-logo">
+          <div class="fbl-mark">R</div>
+          <div class="fbl-name">RezerVist POS</div>
+        </div>
+        <p class="footer-brand-desc">Türkiye'nin en hızlı büyüyen restoran ve kafe POS sistemi. Rezervasyon, mutfak, stok ve analitik tek platformda.</p>
+        <div class="footer-socials">
+          @foreach([['fa-brands fa-instagram','#'],['fa-brands fa-linkedin','#'],['fa-brands fa-twitter','#'],['fa-brands fa-youtube','#'],['fa-brands fa-whatsapp','#']] as $s)
+          <a href="{{ $s[1] }}" class="fsoc"><i class="{{ $s[0] }}"></i></a>
+          @endforeach
+        </div>
+      </div>
+      <!-- Product col -->
+      <div>
+        <div class="footer-col-title">Ürün</div>
+        <div class="footer-links">
+          @foreach(['Özellikler:#features','Fiyatlandırma:#pricing','Demo İzle:javascript:document.getElementById(\'video-modal\').classList.add(\'open\')','Donanım:#hardware','Güvenlik:#security','Entegrasyonlar:#integrations','API Dökümanları:/docs','Sürüm Notları:'.route('pages.pos.versions')] as $l)
+          @php [$lt,$lh]=explode(':',$l,2); @endphp
+          <a href="{{ $lh }}" class="footer-link">{{ $lt }}</a>
+          @endforeach
+        </div>
+      </div>
+      <!-- Company col -->
+      <div>
+        <div class="footer-col-title">Şirket</div>
+        <div class="footer-links">
+          @foreach(['Hakkımızda:/about','Blog:/blog','Kariyer:/kariyer','Basın:/press','Ortaklık Programı:/partners','İletişim:'.route('pages.contact'),'Destek Merkezi:/support','Durum Sayfası:https://status.rezervist.com'] as $l)
+          @php [$lt,$lh]=explode(':',$l,2); @endphp
+          <a href="{{ $lh }}" class="footer-link">{{ $lt }}</a>
+          @endforeach
+        </div>
+      </div>
+      <!-- Legal col -->
+      <div>
+        <div class="footer-col-title">Hukuki</div>
+        <div class="footer-badge">KVKK Uyumlu</div>
+        <div class="footer-links" style="margin-top:8px;">
+          @foreach(['Gizlilik Politikası:/privacy','Kullanım Koşulları:/terms','Çerez Politikası:/cookies','KVKK Aydınlatma Metni:/kvkk','Veri İşleme Sözleşmesi:/dpa','Güvenlik Açığı Bildirimi:/security'] as $l)
+          @php [$lt,$lh]=explode(':',$l,2); @endphp
+          <a href="{{ $lh }}" class="footer-link">{{ $lt }}</a>
+          @endforeach
+        </div>
+      </div>
+    </div>
+    <!-- Footer middle: newsletter + certs -->
+    <div class="footer-mid">
+      <div>
+        <div style="font-family:var(--ff-h);font-size:0.95rem;font-weight:700;color:white;margin-bottom:8px;">Bültenimize Abone Olun</div>
+        <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);margin-bottom:14px;">POS haberleri, yeni özellikler ve sektör ipuçları için.</div>
+        <div class="footer-newsletter">
+          <input type="email" class="fn-input" placeholder="e-posta adresiniz">
+          <button class="fn-btn" onclick="this.textContent='✓ Kayıt Olundu!'">Abone Ol</button>
+        </div>
+        <div style="font-size:0.68rem;color:rgba(255,255,255,0.3);margin-top:8px;">Spam yok. İstediğiniz zaman aboneliği iptal edin.</div>
+      </div>
+      <div class="footer-cert">
+        @foreach([['fa-certificate','PCI-DSS Level 1'],['fa-shield-halved','ISO 27001'],['fa-check-circle','KVKK Uyumlu'],['fa-award','Microsoft Azure'],['fa-handshake','Trusted Partner']] as $c)
+        <div class="fcert"><i class="{{ $c[0] }}"></i> {{ $c[1] }}</div>
+        @endforeach
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="fb-copy">© {{ date('Y') }} RezerVist Systems A.Ş. Tüm hakları saklıdır. Türkiye'de üretildi 🇹🇷</div>
+      <div class="fb-links">
+        <a href="/privacy" class="fb-link">Gizlilik</a>
+        <a href="/terms" class="fb-link">Koşullar</a>
+        <a href="/cookies" class="fb-link">Çerezler</a>
+        <a href="/kvkk" class="fb-link">KVKK</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- =====================
+     KVKK BANNER
+===================== -->
+<div id="kvkk-banner">
+  <div class="kvkk-text">
+    🍪 Bu site, deneyiminizi geliştirmek için çerezler kullanmaktadır. <a href="/kvkk">KVKK Aydınlatma Metni</a> ve <a href="/cookies">Çerez Politikamızı</a> inceleyerek tercihlerinizi yönetebilirsiniz.
+  </div>
+  <div class="kvkk-actions">
+    <button class="kvkk-btn-no" onclick="document.getElementById('kvkk-banner').style.display='none'">Reddet</button>
+    <button class="kvkk-btn-ok" onclick="document.getElementById('kvkk-banner').style.display='none'">Kabul Et</button>
+  </div>
+</div>
+
+<!-- Live Chat Bubble -->
+<div id="chat-bubble" onclick="window.location='{{ route('pages.contact') }}'">
+  <i class="fa-solid fa-comments"></i>
+  <div class="cbadge">1</div>
+  <div class="chat-tooltip">7/24 Canlı Destek</div>
+</div>
 
 </div><!-- /main-page -->
 </div><!-- /x-data -->
 
 <script>
-  // Canlı saat
-  function tick() {
-    const el = document.getElementById('live-time');
-    if (el) el.textContent = new Date().toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' });
+// ============================
+// LIVE CLOCK
+// ============================
+function tick(){const el=document.getElementById('live-time');if(el)el.textContent=new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});}
+tick();setInterval(tick,1000);
+
+// ============================
+// REVEAL ON SCROLL
+// ============================
+const revIO=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});},{threshold:0.05});
+document.querySelectorAll('.reveal').forEach(el=>revIO.observe(el));
+
+// ============================
+// FAQ TOGGLE
+// ============================
+function toggleFaq(el){const item=el.parentElement;const isOpen=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));if(!isOpen)item.classList.add('open');}
+
+// ============================
+// DEMO: MASA TOGGLE
+// ============================
+const statusCycle={empty:'full',full:'busy',busy:'reserve',reserve:'cleaning',cleaning:'empty'};
+const statusLabels={empty:'Boş',full:'Dolu',busy:'Meşgul',reserve:'Rezerv',cleaning:'Temiz'};
+const statusNotifs={
+  full:{t:'Masa Doldu',s:'Sipariş alındı, mutfağa iletildi.',ic:'fa-utensils',cls:'notif-ic-p'},
+  busy:{t:'Masa Meşgul',s:'Hesap talep edildi.',ic:'fa-receipt',cls:'notif-ic-g'},
+  reserve:{t:'Rezervasyon Eklendi',s:'Masaya rezervasyon oluşturuldu.',ic:'fa-calendar-check',cls:'notif-ic-g'},
+  cleaning:{t:'Temizlik Modu',s:'Masa temizleniyor, yakında hazır.',ic:'fa-broom',cls:'notif-ic-y'},
+  empty:{t:'Masa Boşaldı',s:'Masa müsait duruma geçti.',ic:'fa-chair',cls:'notif-ic-p'},
+};
+let notifTimer=null;
+function toggleMasa(el){
+  const cur=el.dataset.status;const next=statusCycle[cur];
+  el.classList.remove(cur);el.classList.add(next);
+  el.dataset.status=next;
+  el.querySelector('.mc-lbl').textContent=statusLabels[next];
+  updateCounts();showNotif(statusNotifs[next],el);
+}
+function updateCounts(){
+  const cells=document.querySelectorAll('.masa-cell');
+  const c={full:0,busy:0,reserve:0,cleaning:0,empty:0};
+  cells.forEach(x=>c[x.dataset.status]=(c[x.dataset.status]||0)+1);
+  document.getElementById('full-count').textContent=c.full||0;
+  document.getElementById('busy-count').textContent=c.busy||0;
+  document.getElementById('res-count').textContent=c.reserve||0;
+  const cleanEl=document.getElementById('clean-count');if(cleanEl)cleanEl.textContent=c.cleaning||0;
+  document.getElementById('empty-count').textContent=c.empty||0;
+}
+function showNotif(n,tableEl){
+  const container=document.getElementById('demo-notif');
+  const div=document.createElement('div');div.className='notif-card';
+  div.innerHTML=`<div class="notif-ic ${n.cls}"><i class="fa-solid ${n.ic}"></i></div><div><div class="notif-t">${n.t}</div><div class="notif-s">${n.s}</div><div class="notif-prog"></div></div>`;
+  container.appendChild(div);
+  setTimeout(()=>{div.style.opacity='0';div.style.transform='translateX(120px)';div.style.transition='all 0.4s';setTimeout(()=>div.remove(),400);},3200);
+}
+
+// Demo filter
+function filterMasa(status,btn){
+  document.querySelectorAll('.mgh-fb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.masa-cell').forEach(c=>{
+    c.style.opacity=status==='all'||c.dataset.status===status?'1':'0.2';
+    c.style.pointerEvents=status==='all'||c.dataset.status===status?'auto':'none';
+  });
+}
+
+// ============================
+// PRICING TOGGLE
+// ============================
+let isYearly=false;
+const prices={lite:[990,792],pro:[1990,1592],elite:[3490,2792]};
+function toggleBilling(){
+  isYearly=!isYearly;
+  const sw=document.getElementById('billing-toggle');
+  sw.classList.toggle('yearly',isYearly);
+  document.getElementById('price-lite').textContent=prices.lite[isYearly?1:0].toLocaleString('tr-TR');
+  document.getElementById('price-pro').textContent=prices.pro[isYearly?1:0].toLocaleString('tr-TR');
+  document.getElementById('price-elite').textContent=prices.elite[isYearly?1:0].toLocaleString('tr-TR');
+}
+
+// ============================
+// ROI CALCULATOR
+// ============================
+function calcROI(){
+  const rev=parseInt(document.getElementById('roi-rev').value)||150000;
+  const tables=parseInt(document.getElementById('roi-tables').value)||24;
+  const turn=parseInt(document.getElementById('roi-turn').value)||55;
+  const staff=parseInt(document.getElementById('roi-staff').value)||8;
+  const extraIncome=Math.round(rev*0.28*(1+tables/100)*0.8);
+  const waste=Math.round(rev*0.055);
+  const efficiency=Math.round(18+tables*0.1);
+  const payback=(1990/extraIncome*30).toFixed(1);
+  document.getElementById('roi-income').textContent='₺'+extraIncome.toLocaleString('tr-TR');
+  document.getElementById('roi-efficiency').textContent='+%'+Math.min(efficiency,42);
+  document.getElementById('roi-waste').textContent='-₺'+waste.toLocaleString('tr-TR');
+  document.getElementById('roi-payback').textContent=payback+' ay';
+  document.getElementById('roi-annual').textContent='₺'+(extraIncome*12).toLocaleString('tr-TR');
+}
+calcROI();
+
+// ============================
+// COUNTDOWN TIMER
+// ============================
+(function(){
+  let end=new Date();end.setDate(end.getDate()+3);end.setHours(end.getHours()+14);end.setMinutes(end.getMinutes()+37);end.setSeconds(end.getSeconds()+22);
+  function updateCountdown(){
+    const diff=end-new Date();if(diff<=0)return;
+    const d=Math.floor(diff/86400000);const h=Math.floor((diff%86400000)/3600000);
+    const m=Math.floor((diff%3600000)/60000);const s=Math.floor((diff%60000)/1000);
+    ['d','h','m','s'].forEach((k,i)=>{const el=document.getElementById('ct-'+k);if(el)el.textContent=String([d,h,m,s][i]).padStart(2,'0');});
   }
-  tick(); setInterval(tick, 1000);
+  updateCountdown();setInterval(updateCountdown,1000);
+})();
 
-  // Scroll reveal
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+// ============================
+// KVKK
+// ============================
+if(!localStorage.getItem('kvkk_ok')){
+  setTimeout(()=>document.getElementById('kvkk-banner').classList.add('show'),1800);
+}
+document.querySelectorAll('.kvkk-btn-ok,.kvkk-btn-no').forEach(b=>{
+  b.addEventListener('click',()=>{localStorage.setItem('kvkk_ok','1');document.getElementById('kvkk-banner').classList.remove('show');});
+});
 
-  // ─── POS Intro Animation ───
-  function posIntro() {
-    return {
-      scene: 0,
-      done: false,
-      progress: 0,
-      totalScenes: 7,
-      timer: null,
-      progressTimer: null,
-      durations: [2000, 2200, 2500, 2800, 2800, 2800, 3500],
-
-      start() {
-        this.runScene(0);
-      },
-
-      runScene(index) {
-        if (index >= this.totalScenes) { this.finish(); return; }
-        this.scene = index;
-        const duration = this.durations[index];
-        const startProgress = (index / this.totalScenes) * 100;
-        const endProgress = ((index + 1) / this.totalScenes) * 100;
-
-        clearInterval(this.progressTimer);
-        const steps = 60;
-        const stepTime = duration / steps;
-        const stepSize = (endProgress - startProgress) / steps;
-        let step = 0;
-        this.progress = startProgress;
-        this.progressTimer = setInterval(() => {
-          step++;
-          this.progress = startProgress + (stepSize * step);
-          if (step >= steps) clearInterval(this.progressTimer);
-        }, stepTime);
-
-        clearTimeout(this.timer);
-        this.timer = setTimeout(() => this.runScene(index + 1), duration);
-      },
-
-      skip() {
-        clearTimeout(this.timer);
-        clearInterval(this.progressTimer);
-        this.progress = 100;
-        setTimeout(() => this.finish(), 300);
-      },
-
-      finish() {
-        clearTimeout(this.timer);
-        clearInterval(this.progressTimer);
-        this.done = true;
-        window.scrollTo(0, 0);
-      }
-    }
+// ============================
+// INTRO ALPINE
+// ============================
+function posIntro(){
+  return{
+    scene:0,done:false,progress:0,total:8,timer:null,progTimer:null,
+    durations:[1800,2200,2600,2800,2800,2600,2600,3600],
+    init(){this.runScene(0);},
+    runScene(idx){
+      if(idx>=this.total){this.finish();return;}
+      this.scene=idx;const dur=this.durations[idx];
+      const pS=(idx/this.total)*100;const pE=((idx+1)/this.total)*100;
+      clearInterval(this.progTimer);
+      const steps=60;const st=dur/steps;const ss=(pE-pS)/steps;
+      let s=0;this.progress=pS;
+      this.progTimer=setInterval(()=>{s++;this.progress=pS+ss*s;if(s>=steps)clearInterval(this.progTimer);},st);
+      clearTimeout(this.timer);this.timer=setTimeout(()=>this.runScene(idx+1),dur);
+    },
+    skip(){clearTimeout(this.timer);clearInterval(this.progTimer);this.progress=100;setTimeout(()=>this.finish(),300);},
+    finish(){clearTimeout(this.timer);clearInterval(this.progTimer);this.done=true;window.scrollTo(0,0);}
   }
+}
 </script>
 @endsection
