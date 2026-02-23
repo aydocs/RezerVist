@@ -1424,10 +1424,10 @@ pre.api-code{
         <div style="font-size:0.95rem;color:var(--txm);margin-top:10px;line-height:1.6;font-weight:500;">Hiçbir teknik bilgi gerekmez. Uzman ekibimiz ilk kurulumdan ürün girişine kadar her adımda size destek olur.</div>
       </div>
         <div style="display:flex;gap:14px;flex-wrap:wrap;">
-        <a href="{{ route('register') }}" class="btn-p">
+        <a href="{{ route('register') }}" class="btn-p btn-white">
             <i class="fa-solid fa-rocket"></i> Hemen Başla
         </a>
-        <a href="{{ route('pages.contact') }}" class="btn-o">
+        <a href="{{ route('pages.contact') }}" class="btn-o btn-white">
             <i class="fa-solid fa-circle-play"></i> Ücretsiz Demo Al
         </a>
         </div>
@@ -1596,94 +1596,6 @@ pre.api-code{
 
 <!-- Demo Notification container -->
 <div id="demo-notif"></div>
-
-<!-- =====================
-     PRICING
-===================== -->
-<section class="sec pricing-sec" id="pricing">
-  <div class="sec-in">
-    <div class="reveal" style="text-align:center;">
-      <span class="sec-tag">Fiyatlandırma</span>
-      <h2 class="sec-h">Şeffaf,<br><em>Adil Fiyatlar.</em></h2>
-      <p class="sec-sub" style="margin:0 auto 10px;text-align:center;">İşletmenizin büyüklüğüne göre plan seçin. İstediğiniz zaman yükseltin veya iptal edin.</p>
-    </div>
-    <div class="pricing-toggle reveal" style="transition-delay:.08s;">
-      <span class="pt-lbl">Aylık</span>
-      <div class="pt-switch" id="billing-toggle" onclick="toggleBilling()">
-        <div class="pt-thumb"></div>
-      </div>
-      <span class="pt-lbl">Yıllık</span>
-      <span class="pt-save">%20 Tasarruf</span>
-    </div>
-    <div class="pricing-grid reveal" style="transition-delay:.16s;">
-
-      <!-- Lite -->
-      <div class="pcard">
-        <div class="pcard-tier">Lite</div>
-        <div class="pcard-price">
-          <span class="price-cur">₺</span><span class="price-amount" id="price-lite">990</span><span class="price-per">/ay</span>
-        </div>
-        <p class="pcard-desc">Tek şube, düşük ciro hacmine sahip küçük işletmeler için ideal başlangıç planı.</p>
-        <a href="{{ route('register') }}" class="pcard-btn pb-outline">Ücretsiz Dene</a>
-        <div class="pcard-feats">
-          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>1 POS Terminali</div>
-          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>24 Masaya kadar</div>
-          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>Temel Raporlama</div>
-          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>QR Dijital Menü</div>
-          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>Stok Yönetimi</div>
-          <div class="pf pf-off"><div class="pf-ic pf-ic-no"><i class="fa-solid fa-minus"></i></div>Mutfak Ekranı (KDS)</div>
-          <div class="pf pf-off"><div class="pf-ic pf-ic-no"><i class="fa-solid fa-minus"></i></div>AI Analitik</div>
-          <div class="pf pf-off"><div class="pf-ic pf-ic-no"><i class="fa-solid fa-minus"></i></div>Çok Şube</div>
-        </div>
-        <div class="pcard-note">14 gün ücretsiz · Kart gerekmez</div>
-      </div>
-
-      <!-- Pro -->
-      <div class="pcard popular">
-        <div class="pcard-popular-badge">En Popüler</div>
-        <div class="pcard-tier">Pro</div>
-        <div class="pcard-price">
-          <span class="price-cur">₺</span><span class="price-amount" id="price-pro">1.990</span><span class="price-per">/ay</span>
-        </div>
-        <p class="pcard-desc">Orta büyüklükteki işletmeler ve büyüyen kafeler için kapsamlı çözüm paketi.</p>
-        <a href="{{ route('register') }}" class="pcard-btn pb-solid">Ücretsiz Başla</a>
-        <div class="pcard-feats">
-          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>3 POS Terminali</div>
-          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>Sınırsız Masa</div>
-          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>Gelişmiş Raporlama + PDF</div>
-          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>Mutfak Ekranı (KDS)</div>
-          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>Müşteri Sadakat Sistemi</div>
-          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>Whatsapp Entegrasyonu</div>
-          <div class="pf"><div class="pf-ic pf-ic-yes"><i class="fa-solid fa-check"></i></div>AI Temel Analitik</div>
-          <div class="pf pf-off"><div class="pf-ic pf-ic-no"><i class="fa-solid fa-minus"></i></div>Çok Şube (max 2)</div>
-        </div>
-        <div class="pcard-note">14 gün ücretsiz · Her zaman iptal</div>
-      </div>
-
-      <!-- Elite -->
-      <div class="pcard" style="background:linear-gradient(160deg,var(--tx) 0%,#1a1040 100%);border-color:var(--tx);">
-        <div class="pcard-tier" style="color:rgba(255,255,255,0.5);">Elite</div>
-        <div class="pcard-price">
-          <span class="price-cur" style="color:rgba(255,255,255,0.6);">₺</span><span class="price-amount" id="price-elite" style="color:white;">3.490</span><span class="price-per" style="color:rgba(255,255,255,0.4);">/ay</span>
-        </div>
-        <p class="pcard-desc" style="color:rgba(255,255,255,0.55);">Zincir mağaza ve çok şubeli restoranlar için maksimum güç ve sınırsız özellikler.</p>
-        <a href="{{ route('pages.contact') }}" class="pcard-btn" style="background:white;color:var(--p);border:none;">Teklif Al</a>
-        <div class="pcard-feats">
-          @foreach(['Sınırsız POS Terminali','Sınırsız Masa','Sınırsız Şube Yönetimi','AI Gelişmiş Analitik & Tahmin','Özel Entegrasyon Desteği','Öncelikli 7/24 Destek','Özel Eğitim & Onboarding','SLA Güvencesi (%99.9)'] as $f)
-          <div class="pf" style="color:rgba(255,255,255,0.7);"><div class="pf-ic" style="background:rgba(167,139,250,0.2);"><i class="fa-solid fa-check" style="color:var(--pl2);font-size:.48rem;"></i></div>{{ $f }}</div>
-          @endforeach
-        </div>
-        <div class="pcard-note" style="border-top-color:rgba(255,255,255,0.08);color:rgba(255,255,255,0.3);">Özel fiyatlandırma mevcuttur</div>
-      </div>
-
-    </div>
-    <!-- Compare link -->
-    <div class="reveal" style="transition-delay:.24s;text-align:center;margin-top:32px;">
-      <a href="#comparison" style="font-size:0.82rem;font-weight:700;color:var(--p);display:inline-flex;align-items:center;gap:6px;font-family:var(--ff-b);">Tüm özellikleri karşılaştır <i class="fa-solid fa-arrow-down" style="font-size:.7rem;"></i></a>
-    </div>
-  </div>
-</section>
-
 
 <!-- =====================
      SECURITY
