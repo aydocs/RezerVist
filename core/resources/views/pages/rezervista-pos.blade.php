@@ -1991,7 +1991,7 @@ pre.api-code{
     </div>
     <!-- Trust summary bar -->
     <div class="reveal" style="transition-delay:.3s;margin-top:56px;background:var(--bg2);border:1.5px solid var(--br);border-radius:var(--r);padding:32px 40px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center;">
-      @foreach([['4.9/5','Ortalama Puan','★★★★★'],['3.200+','Aktif Müşteri','Türkiye geneli'],['%97','Müşteri Memnuniyeti','Net Promoter Score'],['12 dk','Ortalama Destek','Yanıt süresi']] as $s)
+      @foreach([[$averageRating,'Ortalama Puan','★★★★★'],[$formattedBusinessesCount.$businessSuffix.'+','Aktif Müşteri','Türkiye geneli'],[$customerSatisfaction,'Müşteri Memnuniyeti','Net Promoter Score'],[$supportResponseTime,'Ortalama Destek','Yanıt süresi']] as $s)
       <div><div style="font-family:var(--ff-h);font-size:1.8rem;font-weight:900;color:var(--p);letter-spacing:-0.04em;">{{ $s[0] }}</div><div style="font-size:0.85rem;font-weight:600;color:var(--tx);margin-top:3px;">{{ $s[1] }}</div><div style="font-size:0.72rem;color:var(--txm);margin-top:2px;">{{ $s[2] }}</div></div>
       @endforeach
     </div>
@@ -2001,96 +2001,138 @@ pre.api-code{
 <!-- =====================
      FAQ
 ===================== -->
-<section class="sec" id="faq" style="background:var(--bg2);">
-  <div class="sec-in">
-    <div class="faq-wrap">
-      <div class="reveal">
-        <span class="sec-tag">SSS</span>
-        <h2 class="faq-aside-h">Aklınızdaki<br>Sorular.</h2>
-        <p class="faq-aside-sub">En sık sorulan soruları derledik. Bulamadığınız bir soru varsa destek hattımız 7/24 hizmetinizde.</p>
-        <a href="{{ route('pages.contact') }}" class="faq-cta"><i class="fa-solid fa-message" style="font-size:.72rem;"></i> Destek Hattı</a>
-        <div class="faq-contact-card">
-          <div class="fcc-title">Bize Ulaşın</div>
-          <div class="fcc-desc">Teknik destek, satış veya kurulum konularında size özel yardım alabileceğiniz kanallar.</div>
-          <div class="fcc-contacts">
-            <div class="fcc-c"><i class="fa-solid fa-phone"></i> +90 (212) 000 00 00</div>
-            <div class="fcc-c"><i class="fa-solid fa-envelope"></i> destek@rezervist.com</div>
-            <div class="fcc-c"><i class="fa-brands fa-whatsapp"></i> WhatsApp Destek Hattı</div>
-            <div class="fcc-c"><i class="fa-solid fa-clock"></i> 7/24 · 365 gün hizmet</div>
+<section class="sec" id="faq" style="position:relative;background:var(--bg);overflow:hidden;padding:120px 64px;">
+  <div style="position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(91,33,182,0.06) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
+  
+  <div class="sec-in" style="position:relative;z-index:2;max-width:1100px;">
+    <div class="reveal" style="text-align:center;margin-bottom:60px;">
+      <span class="sec-tag" style="background:rgba(91,33,182,0.1);padding:6px 14px;border-radius:100px;border:1px solid rgba(91,33,182,0.2);">SSS</span>
+      <h2 class="sec-h" style="font-size:3.2rem;margin-top:16px;">Aklınızdaki<br><em>Sorular.</em></h2>
+      <p class="sec-sub" style="margin:0 auto;max-width:500px;">Merak ettiklerinizi derledik. Bulamadığınız bir soru varsa, 7/24 destek ekibimiz yanınızda.</p>
+    </div>
+    
+    <div class="faq-list reveal" style="transition-delay:.1s;display:flex;flex-direction:column;gap:12px;">
+      @php $faqs=[
+        ['İnternet kesilince ne olur?','RezerVist hibrit altyapısı sayesinde yerel ağ üzerinden çalışmaya devam eder. Tüm siparişler ve işlemler lokal olarak kaydedilir, internet bağlantısı yeniden kurulduğunda otomatik olarak bulutla senkronize edilir. Hiçbir veri kaybolmaz.'],
+        ['Mevcut menümü nasıl aktarabilirim?','Excel veya CSV formatında hazırladığınız ürün listenizi sisteme toplu olarak import edebilirsiniz. Ekibimiz kurulum sürecinde menü aktarımı konusunda birebir destek sağlar. Fotoğraflı menüler için de QR menü şablonları mevcuttur.'],
+        ['Kaç terminal kullanabilirim?','Lisans tipinize göre; Lite\'da 1, Pro\'da 3, Elite\'ta sınırsız terminal. Tüm terminaller birbirleriyle anlık senkronize çalışır. Ek terminal her zaman eklenebilir.'],
+        ['Kurulum ne kadar sürer?','Ortalama 8 dakikada temel kurulum tamamlanır. Destek ekibimiz menü girişi, masa planı ve personel eğitimi dahil tam kurulumu genellikle aynı gün tamamlar.'],
+        ['Ödeme sistemleriyle entegrasyon var mı?','Evet. İyzico, Stripe, PayTR, Garanti BBVA ve diğer önde gelen ödeme altyapılarıyla entegrasyon mevcuttur. NFC/temassız ödeme ve QR kod ödeme de desteklenmektedir.'],
+        ['Verilerimi nasıl yedekliyor?','Tüm veriler her 15 dakikada bir buluta yedeklenir. Ek olarak yerel NVMe depolama üzerinde anlık snapshot tutulur. Son 90 günlük veri her zaman erişilebilir durumda.'],
+        ['KVKK kapsamında verilerimi nasıl yönetiyorsunuz?','Türkiye Kişisel Verilerin Korunması Kanunu (KVKK) kapsamında tüm işlemler kayıt altında tutulur. Veri işleme sözleşmesi, silme/dışa aktarma talepleri ve denetim logları dahildir. GDPR uyumluluğu da sağlanmaktadır.'],
+        ['Çok şube için özel fiyatlandırma var mı?','Elite plan ile sınırsız şube yönetimi standart dahildir. 10\'dan fazla şube için özel kurumsal paket sunarız. Satış ekibimizle iletişime geçerek özel teklif alabilirsiniz.'],
+        ['Hangi donanımla uyumludur?','Windows 10+, macOS 12+, iPad (iPadOS 15+), Android 8+ tablet ve telefonlarda çalışır. Termal yazıcı, barkod okuyucu, kasa çekmecesi gibi çevre birimleriyle de entegre olur.'],
+        ['AI özellikler nasıl çalışıyor?','Makine öğrenimi modelleri işletmenizin geçmiş verilerini analiz ederek satış öngörüsü, stok tahmini ve personel optimizasyonu yapar. Minimum 30 günlük veri gerektirir; veriler sisteminizde şifreli olarak saklanır, üçüncü taraflarla paylaşılmaz.'],
+      ]; @endphp
+      @foreach($faqs as $i=>$f)
+      <div class="faq-item new-faq-item{{ $i===0?' open':'' }}" style="background:var(--sf);border:1px solid var(--br);border-radius:16px;overflow:hidden;transition:all 0.35s ease;">
+        <div class="faq-q" onclick="toggleFaq(this)" style="padding:22px 30px;font-family:var(--ff-h);font-size:1.1rem;font-weight:700;color:var(--tx);cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all 0.3s;">
+          {{ $f[0] }}
+          <div class="faq-icon" style="width:36px;height:36px;border-radius:50%;background:rgba(91,33,182,0.08);color:var(--p);display:flex;align-items:center;justify-content:center;transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);flex-shrink:0;">
+            <i class="fa-solid fa-plus"></i>
           </div>
         </div>
-      </div>
-      <div class="faq-list reveal" style="transition-delay:.1s;">
-        @php $faqs=[
-          ['İnternet kesilince ne olur?','RezerVist hibrit altyapısı sayesinde yerel ağ üzerinden çalışmaya devam eder. Tüm siparişler ve işlemler lokal olarak kaydedilir, internet bağlantısı yeniden kurulduğunda otomatik olarak bulutla senkronize edilir. Hiçbir veri kaybolmaz.'],
-          ['Mevcut menümü nasıl aktarabilirim?','Excel veya CSV formatında hazırladığınız ürün listenizi sisteme toplu olarak import edebilirsiniz. Ekibimiz kurulum sürecinde menü aktarımı konusunda birebir destek sağlar. Fotoğraflı menüler için de QR menü şablonları mevcuttur.'],
-          ['Kaç terminal kullanabilirim?','Lisans tipinize göre; Lite\'da 1, Pro\'da 3, Elite\'ta sınırsız terminal. Tüm terminaller birbirleriyle anlık senkronize çalışır. Ek terminal her zaman eklenebilir.'],
-          ['Kurulum ne kadar sürer?','Ortalama 8 dakikada temel kurulum tamamlanır. Destek ekibimiz menü girişi, masa planı ve personel eğitimi dahil tam kurulumu genellikle aynı gün tamamlar.'],
-          ['Ödeme sistemleriyle entegrasyon var mı?','Evet. İyzico, Stripe, PayTR, Garanti BBVA ve diğer önde gelen ödeme altyapılarıyla entegrasyon mevcuttur. NFC/temassız ödeme ve QR kod ödeme de desteklenmektedir.'],
-          ['Verilerimi nasıl yedekliyor?','Tüm veriler her 15 dakikada bir buluta yedeklenir. Ek olarak yerel NVMe depolama üzerinde anlık snapshot tutulur. Son 90 günlük veri her zaman erişilebilir durumda.'],
-          ['KVKK kapsamında verilerimi nasıl yönetiyorsunuz?','Türkiye Kişisel Verilerin Korunması Kanunu (KVKK) kapsamında tüm işlemler kayıt altında tutulur. Veri işleme sözleşmesi, silme/dışa aktarma talepleri ve denetim logları dahildir. GDPR uyumluluğu da sağlanmaktadır.'],
-          ['Çok şube için özel fiyatlandırma var mı?','Elite plan ile sınırsız şube yönetimi standart dahildir. 10\'dan fazla şube için özel kurumsal paket sunarız. Satış ekibimizle iletişime geçerek özel teklif alabilirsiniz.'],
-          ['Hangi donanımla uyumludur?','Windows 10+, macOS 12+, iPad (iPadOS 15+), Android 8+ tablet ve telefonlarda çalışır. Termal yazıcı, barkod okuyucu, kasa çekmecesi gibi çevre birimleriyle de entegre olur.'],
-          ['AI özellikler nasıl çalışıyor?','Makine öğrenimi modelleri işletmenizin geçmiş verilerini analiz ederek satış öngörüsü, stok tahmini ve personel optimizasyonu yapar. Minimum 30 günlük veri gerektirir; veriler sisteminizde şifreli olarak saklanır, üçüncü taraflarla paylaşılmaz.'],
-        ]; @endphp
-        @foreach($faqs as $i=>$f)
-        <div class="faq-item{{ $i===0?' open':'' }}">
-          <div class="faq-q" onclick="toggleFaq(this)">{{ $f[0] }}<div class="faq-icon"><i class="fa-solid fa-plus"></i></div></div>
-          <div class="faq-a">{{ $f[1] }}</div>
+        <div class="faq-a" style="padding:0 30px;color:var(--txm);font-size:0.95rem;line-height:1.7;max-height:0;opacity:0;transition:all 0.4s cubic-bezier(0.4,0,0.2,1);overflow:hidden;">
+           <div style="padding-bottom:24px;">{{ $f[1] }}</div>
         </div>
-        @endforeach
+      </div>
+      @endforeach
+    </div>
+    
+    <div class="reveal" style="transition-delay:.2s;margin-top:40px;text-align:center;">
+      <div style="display:inline-flex;align-items:center;gap:16px;background:var(--sf);border:1px solid var(--br);padding:14px 28px;border-radius:100px;">
+        <div style="display:flex;align-items:center;">
+           <div style="width:12px;height:12px;background:var(--grn);border-radius:50%;margin-right:8px;box-shadow:0 0 10px var(--grn);animation:pulseGrn 2s infinite;"></div>
+           <span style="font-size:0.85rem;font-weight:600;color:var(--tx);font-family:var(--ff-b);">Destek Ekibi Çevrimiçi</span>
+        </div>
+        <div style="width:1px;height:24px;background:var(--br);"></div>
+        <a href="{{ route('pages.contact') }}" style="font-size:0.85rem;font-weight:700;color:var(--p);text-decoration:none;display:flex;align-items:center;gap:6px;">Bize Ulaşın <i class="fa-solid fa-arrow-right" style="font-size:.7rem;"></i></a>
       </div>
     </div>
   </div>
 </section>
 
+<style>
+.new-faq-item:hover { border-color:var(--p); box-shadow:0 12px 24px rgba(91,33,182,0.06); transform:translateY(-2px); }
+.new-faq-item.open .faq-icon { transform:rotate(45deg); background:var(--p); color:white; }
+.new-faq-item.open .faq-a { max-height:400px; opacity:1; }
+.new-faq-item.open .faq-q { color:var(--p); }
+</style>
+
 <!-- =====================
      CTA
 ===================== -->
-<section class="sec cta-sec" id="contact">
-  <div class="sec-in cta-in">
-    <span class="sec-tag" style="color:rgba(255,255,255,0.5);">Hazır Mısınız?</span>
-    <h2 class="cta-h">İşletmenizi Bugün<br>Dijitalleştirin.</h2>
-    <p class="cta-sub">14 gün ücretsiz deneyin. Kredi kartı gerekmez. Kurulum desteği dahil. İstediğiniz zaman iptal.</p>
-    <!-- Countdown timer -->
-    <div style="text-align:center;margin-bottom:32px;">
-      <div style="font-size:0.7rem;font-weight:700;color:rgba(255,255,255,0.45);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px;font-family:var(--ff-b);">Bu Haftaki Özel Teklif Bitiyor:</div>
-      <div class="trial-countdown">
-        <div class="tc-block"><div class="tc-num" id="ct-d">03</div><div class="tc-lbl">Gün</div></div>
-        <div class="tc-sep">:</div>
-        <div class="tc-block"><div class="tc-num" id="ct-h">14</div><div class="tc-lbl">Saat</div></div>
-        <div class="tc-sep">:</div>
-        <div class="tc-block"><div class="tc-num" id="ct-m">37</div><div class="tc-lbl">Dak</div></div>
-        <div class="tc-sep">:</div>
-        <div class="tc-block"><div class="tc-num" id="ct-s">22</div><div class="tc-lbl">Sn</div></div>
-      </div>
-    </div>
-    <div class="cta-actions">
-      <a href="{{ route('register') }}" class="btn-p" style="background:white;color:var(--p);box-shadow:0 12px 32px rgba(255,255,255,0.18);"><i class="fa-solid fa-rocket" style="font-size:.78rem;"></i> Ücretsiz Başlat</a>
-      <a href="{{ route('pages.contact') }}" class="btn-gl">Demo Talep Et <i class="fa-solid fa-arrow-right" style="font-size:.7rem;"></i></a>
-      <button class="btn-gl" onclick="document.getElementById('video-modal').classList.add('open')"><i class="fa-solid fa-play" style="font-size:.7rem;"></i> Demo İzle</button>
-    </div>
-    <div class="cta-trust">
-      <div class="cta-ti"><i class="fa-solid fa-shield-check"></i> PCI-DSS Uyumlu</div>
-      <div class="cta-ti"><i class="fa-solid fa-clock"></i> 7/24 Destek</div>
-      <div class="cta-ti"><i class="fa-solid fa-rotate-left"></i> Anında İptal</div>
-      <div class="cta-ti"><i class="fa-solid fa-lock"></i> KVKK Uyumlu</div>
-      <div class="cta-ti"><i class="fa-solid fa-users"></i> 3.200+ İşletme</div>
-    </div>
-    <!-- Mini testimonial -->
-    <div style="display:inline-flex;align-items:center;gap:14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:16px 24px;margin-top:8px;">
-      <div style="display:flex;margin-right:4px;">
-        @foreach(['var(--p),#A78BFA','#0ABBA3,#06B6D4','#F59E0B,#EF4444'] as $g)
-        <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,{{ $g }});border:2px solid rgba(255,255,255,0.2);margin-left:-8px;display:flex;align-items:center;justify-content:center;font-family:var(--ff-h);font-weight:900;font-size:0.75rem;color:white;">{{ ['M','S','E'][$loop->index] }}</div>
-        @endforeach
-      </div>
-      <div>
-        <div style="font-size:0.78rem;font-weight:700;color:white;">"İlk haftada fark ettik. Harika!"</div>
-        <div style="font-size:0.65rem;color:rgba(255,255,255,0.45);margin-top:2px;">3.200+ memnun işletme katıldı</div>
+<section class="sec" id="contact" style="padding:140px 64px;">
+  <div class="sec-in" style="max-width:1200px;">
+    <div class="cta-premium-box reveal" style="position:relative;background:linear-gradient(145deg, #1e0b3b 0%, #0a041a 100%);border-radius:32px;padding:80px 60px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);box-shadow:0 60px 120px rgba(10,4,26,0.6), inset 0 1px 0 rgba(255,255,255,0.15);">
+      
+      <!-- Background glows -->
+      <div style="position:absolute;top:-20%;left:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(167,139,250,0.2) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
+      <div style="position:absolute;bottom:-30%;right:-10%;width:700px;height:700px;background:radial-gradient(circle,rgba(6,182,212,0.15) 0%,transparent 70%);border-radius:50%;pointer-events:none;"></div>
+      
+      <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;text-align:center;">
+        
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);padding:8px 16px;border-radius:100px;color:white;font-size:0.75rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:24px;backdrop-filter:blur(10px);">
+          <i class="fa-solid fa-bolt" style="color:#F59E0B;"></i> Hazır Mısınız?
+        </div>
+        
+        <h2 style="font-family:var(--ff-h);font-size:clamp(2.8rem,5vw,4.5rem);font-weight:900;color:white;line-height:1.05;letter-spacing:-0.03em;margin-bottom:24px;">Hemen Bugün<br><span style="background:linear-gradient(135deg,#A78BFA 0%,#6EE7B7 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Dijitalleşin.</span></h2>
+        
+        <p style="font-size:1.1rem;color:rgba(255,255,255,0.6);max-width:600px;margin-bottom:40px;line-height:1.6;">14 gün boyunca tüm özellikleri ücretsiz deneyin. Kredi kartı gerekmez. Kurulum ekibimiz aynı gün sisteminizi hazır hale getirsin.</p>
+        
+        <!-- Premium Countdown -->
+        <div style="background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:24px 32px;display:inline-flex;flex-direction:column;align-items:center;margin-bottom:48px;backdrop-filter:blur(12px);">
+          <div style="font-size:0.7rem;font-weight:800;color:rgba(255,255,255,0.4);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:16px;font-family:var(--ff-b);">Lansmana Özel İndirim Bitiyor</div>
+          <div class="trial-countdown" style="display:flex;align-items:center;gap:16px;">
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:60px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.1);"><div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;" id="ct-d">03</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:700;margin-top:2px;">Gün</div></div>
+            <div style="color:rgba(255,255,255,0.2);font-size:1.5rem;font-weight:800;margin-top:-16px;">:</div>
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:60px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.1);"><div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;" id="ct-h">14</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:700;margin-top:2px;">Saat</div></div>
+            <div style="color:rgba(255,255,255,0.2);font-size:1.5rem;font-weight:800;margin-top:-16px;">:</div>
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:60px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.1);"><div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;" id="ct-m">37</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:700;margin-top:2px;">Dak</div></div>
+            <div style="color:rgba(255,255,255,0.2);font-size:1.5rem;font-weight:800;margin-top:-16px;">:</div>
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:60px;background:rgba(255,255,255,0.05);border-radius:12px;border:1px solid rgba(255,255,255,0.1);"><div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:white;" id="ct-s">22</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.4);text-transform:uppercase;font-weight:700;margin-top:2px;">Sn</div></div>
+          </div>
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:32px;">
+          <a href="{{ route('register') }}" style="display:inline-flex;align-items:center;gap:10px;padding:18px 36px;background:white;color:var(--p);font-weight:800;font-size:1rem;border-radius:100px;text-decoration:none;box-shadow:0 15px 35px rgba(255,255,255,0.15);transition:all 0.3s;position:relative;overflow:hidden;" class="premium-btn">
+            <span style="position:relative;z-index:2;"><i class="fa-solid fa-rocket"></i> Ücretsiz Başlat</span>
+          </a>
+          <button onclick="document.getElementById('video-modal').classList.add('open')" style="display:inline-flex;align-items:center;gap:10px;padding:18px 36px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:white;font-weight:700;font-size:1rem;border-radius:100px;cursor:pointer;backdrop-filter:blur(10px);transition:all 0.3s;" class="premium-btn-o">
+            <i class="fa-solid fa-play"></i> Demo İzle
+          </button>
+        </div>
+        
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center;">
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.75rem;color:rgba(255,255,255,0.45);font-weight:600;"><i class="fa-solid fa-shield-check"></i> PCI-DSS Uyumlu</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.75rem;color:rgba(255,255,255,0.45);font-weight:600;"><i class="fa-solid fa-headset"></i> 7/24 Destek</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.75rem;color:rgba(255,255,255,0.45);font-weight:600;"><i class="fa-solid fa-rotate-left"></i> Anında İptal</div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.75rem;color:rgba(255,255,255,0.45);font-weight:600;"><i class="fa-solid fa-users"></i> {{ $formattedBusinessesCount }}{{ $businessSuffix }}+ İşletme</div>
+        </div>
+        
+        <!-- Mini testimonial -->
+        <div style="display:inline-flex;align-items:center;gap:14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:16px 24px;margin-top:24px;">
+          <div style="display:flex;margin-right:4px;">
+            @foreach(['var(--p),#A78BFA','#0ABBA3,#06B6D4','#F59E0B,#EF4444'] as $g)
+            <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,{{ $g }});border:2px solid rgba(255,255,255,0.2);margin-left:-8px;display:flex;align-items:center;justify-content:center;font-family:var(--ff-h);font-weight:900;font-size:0.75rem;color:white;">{{ ['M','S','E'][$loop->index] }}</div>
+            @endforeach
+          </div>
+          <div style="text-align:left;">
+            <div style="font-size:0.78rem;font-weight:700;color:white;">"İlk haftada fark ettik. Harika!"</div>
+            <div style="font-size:0.65rem;color:rgba(255,255,255,0.45);margin-top:2px;">{{ $formattedBusinessesCount }}{{ $businessSuffix }}+ memnun işletme katıldı</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 </section>
+
+<style>
+.premium-btn:hover { transform:translateY(-3px); box-shadow:0 20px 45px rgba(255,255,255,0.25); background:#f8f9fa; }
+.premium-btn::after { content:''; position:absolute; top:0; left:-100%; width:50%; height:100%; background:linear-gradient(90deg,transparent,rgba(91,33,182,0.1),transparent); animation:shine 3s infinite 1s; }
+.premium-btn-o:hover { background:rgba(255,255,255,0.15); border-color:rgba(255,255,255,0.3); transform:translateY(-3px); }
+</style>
 
 </div><!-- /main-page -->
 </div><!-- /x-data -->
