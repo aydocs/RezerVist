@@ -49,6 +49,8 @@ class AppServiceProvider extends ServiceProvider
             'social_twitter' => 'https://twitter.com',
             'social_instagram' => 'https://instagram.com',
             'social_whatsapp' => '',
+            'social_appstore' => '#',
+            'social_googleplay' => '#',
             'system_maintenance' => '0',
             'google_analytics_id' => '',
             'seo_description' => 'Türkiye\'nin en seçkin rezervasyon platformu.',

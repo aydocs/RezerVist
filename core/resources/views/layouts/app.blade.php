@@ -1184,14 +1184,14 @@
                         </div>
                         
                         <div class="mt-10 flex gap-3">
-                            <a href="#" class="flex-1 bg-slate-900 rounded-2xl p-3 flex items-center gap-3 hover:bg-slate-800 transition-colors group">
+                            <a href="{{ $globalSettings['social_appstore'] ?? '#' }}" class="flex-1 bg-slate-900 rounded-2xl p-3 flex items-center gap-3 hover:bg-slate-800 transition-colors group">
                                 <i class="fa-brands fa-apple text-white text-xl"></i>
                                 <div class="flex flex-col">
                                     <span class="text-[9px] text-slate-400 font-bold uppercase leading-none">{{ __('common.header.app_store_pre') }}</span>
                                     <span class="text-[12px] text-white font-bold leading-tight">{{ __('common.footer.download_label') }}</span>
                                 </div>
                             </a>
-                            <a href="#" class="flex-1 bg-slate-900 rounded-2xl p-3 flex items-center gap-3 hover:bg-slate-800 transition-colors group">
+                            <a href="{{ $globalSettings['social_googleplay'] ?? '#' }}" class="flex-1 bg-slate-900 rounded-2xl p-3 flex items-center gap-3 hover:bg-slate-800 transition-colors group">
                                 <i class="fa-brands fa-google-play text-white text-lg"></i>
                                 <div class="flex flex-col">
                                     <span class="text-[9px] text-slate-400 font-bold uppercase leading-none">{{ __('common.header.google_play_pre') }}</span>

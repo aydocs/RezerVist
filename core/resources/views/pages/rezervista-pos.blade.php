@@ -131,35 +131,35 @@
    BUTTONS
 ============================ */
 .btn-p{
-  display:inline-flex;align-items:center;gap:9px;padding:14px 26px;
-  background:var(--p);color:white;font-weight:700;font-size:0.9375rem;
-  border-radius:13px;transition:all 0.25s;border:none;cursor:pointer;
-  letter-spacing:-0.01em;box-shadow:0 4px 18px rgba(91,33,182,0.25);
+  display:inline-flex;align-items:center;gap:10px;padding:15px 32px;
+  background:var(--p);color:white;font-weight:700;font-size:0.95rem;
+  border-radius:15px;transition:all 0.3s cubic-bezier(0.19,1,0.22,1);border:none;cursor:pointer;
+  letter-spacing:-0.01em;box-shadow:0 8px 24px rgba(98,0,238,0.22);
   position:relative;overflow:hidden;font-family:var(--ff-b);
 }
-.btn-p::after{content:'';position:absolute;top:0;left:-100%;width:55%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.14),transparent);animation:shine 3.5s ease infinite 2s;}
-.btn-p:hover{background:var(--pd);transform:translateY(-2px);box-shadow:0 12px 32px rgba(91,33,182,0.32);}
+.btn-p::after{content:'';position:absolute;top:0;left:-110%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);animation:shine 4s ease infinite 1s;}
+.btn-p:hover{background:var(--pd);transform:translateY(-3px);box-shadow:0 15px 38px rgba(98,0,238,0.3);}
 .btn-o{
-  display:inline-flex;align-items:center;gap:9px;padding:14px 26px;
-  border:1.5px solid var(--brh);color:var(--txs);font-weight:600;font-size:0.9375rem;
-  border-radius:13px;transition:all 0.2s;cursor:pointer;background:white;
+  display:inline-flex;align-items:center;gap:10px;padding:15px 32px;
+  border:1.5px solid var(--brh);color:var(--txm);font-weight:600;font-size:0.95rem;
+  border-radius:15px;transition:all 0.3s cubic-bezier(0.19,1,0.22,1);cursor:pointer;background:white;
   letter-spacing:-0.01em;font-family:var(--ff-b);
 }
-.btn-o:hover{border-color:var(--p);color:var(--p);background:var(--sf);}
+.btn-o:hover{border-color:var(--p);color:var(--p);background:var(--sf);transform:translateY(-3px);box-shadow:0 12px 30px var(--sh);}
 .btn-w{
-  display:inline-flex;align-items:center;gap:9px;padding:14px 28px;
-  background:white;color:var(--p);font-weight:700;font-size:0.9375rem;
-  border-radius:13px;transition:all 0.25s;letter-spacing:-0.01em;
-  box-shadow:0 8px 24px rgba(0,0,0,0.14);font-family:var(--ff-b);
+  display:inline-flex;align-items:center;gap:11px;padding:15px 32px;
+  background:white;color:var(--p);font-weight:700;font-size:0.95rem;
+  border-radius:15px;transition:all 0.3s cubic-bezier(0.19,1,0.22,1);letter-spacing:-0.01em;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);font-family:var(--ff-b);
 }
-.btn-w:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(0,0,0,0.18);}
+.btn-w:hover{transform:translateY(-4px);box-shadow:0 20px 48px rgba(0,0,0,0.16);color:var(--pd);}
 .btn-gl{
-  display:inline-flex;align-items:center;gap:9px;padding:14px 28px;
-  border:1.5px solid rgba(255,255,255,0.28);color:white;font-weight:600;
-  font-size:0.9375rem;border-radius:13px;transition:all 0.2s;
-  background:rgba(255,255,255,0.07);font-family:var(--ff-b);
+  display:inline-flex;align-items:center;gap:10px;padding:15px 32px;
+  border:1.5px solid rgba(255,255,255,0.22);color:white;font-weight:600;
+  font-size:0.95rem;border-radius:15px;transition:all 0.3s cubic-bezier(0.19,1,0.22,1);
+  background:rgba(255,255,255,0.08);font-family:var(--ff-b);backdrop-filter:blur(4px);
 }
-.btn-gl:hover{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.5);}
+.btn-gl:hover{background:rgba(255,255,255,0.16);border-color:rgba(255,255,255,0.5);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,0.2);}
 .btn-acc{
   display:inline-flex;align-items:center;gap:9px;padding:14px 26px;
   background:linear-gradient(135deg,var(--acc),var(--acc2));color:white;font-weight:700;
@@ -259,19 +259,19 @@
 
 /* Video modal trigger */
 .video-trigger{
-  display:inline-flex;align-items:center;gap:10px;
-  font-size:0.85rem;font-weight:700;color:var(--p);cursor:pointer;
+  display:inline-flex;align-items:center;gap:12px;
+  font-size:0.95rem;font-weight:700;color:var(--txm);cursor:pointer;
   padding:0;background:none;border:none;font-family:var(--ff-b);
-  transition:all 0.2s;
+  transition:all 0.3s cubic-bezier(0.19,1,0.22,1);
 }
-.video-trigger:hover{color:var(--pd);}
+.video-trigger:hover{color:var(--p);transform:translateX(5px);}
 .play-ring{
-  width:38px;height:38px;border-radius:50%;border:2px solid var(--p);
+  width:44px;height:44px;border-radius:50%;border:2px solid var(--br);
   display:flex;align-items:center;justify-content:center;
-  transition:all 0.25s;flex-shrink:0;background:rgba(91,33,182,0.05);
+  transition:all 0.3s cubic-bezier(0.19,1,0.22,1);flex-shrink:0;background:white;
 }
-.play-ring i{font-size:0.75rem;color:var(--p);margin-left:2px;}
-.video-trigger:hover .play-ring{background:var(--p);}
+.play-ring i{font-size:0.85rem;color:var(--p);margin-left:3px;}
+.video-trigger:hover .play-ring{background:var(--p);border-color:var(--p);box-shadow:0 10px 25px var(--sh);}
 .video-trigger:hover .play-ring i{color:white;}
 
 /* Video Modal */
@@ -430,13 +430,14 @@
 .afv{font-family:var(--ff-h);font-size:0.95rem;font-weight:700;color:var(--tx);margin-top:2px;}
 .app-stores{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
 .app-store-btn{
-  display:flex;align-items:center;gap:9px;padding:10px 18px;
-  background:var(--tx);color:white;border-radius:11px;transition:all 0.2s;
+  display:flex;align-items:center;gap:11px;padding:12px 22px;
+  background:var(--tx);color:white;border-radius:14px;transition:all 0.3s cubic-bezier(0.19,1,0.22,1);
+  border:1px solid rgba(255,255,255,0.05);box-shadow:0 10px 30px rgba(0,0,0,0.15);
 }
-.app-store-btn:hover{background:var(--p);}
-.asb-icon{font-size:1.3rem;opacity:0.85;}
-.asb-small{font-size:0.58rem;font-weight:500;opacity:0.7;}
-.asb-big{font-size:0.85rem;font-weight:700;line-height:1;}
+.app-store-btn:hover{background:var(--p);transform:translateY(-3px);box-shadow:0 15px 40px rgba(91,33,182,0.3);border-color:rgba(255,255,255,0.15);}
+.asb-icon{font-size:1.6rem;opacity:0.95;}
+.asb-small{font-size:0.6rem;font-weight:600;opacity:0.6;letter-spacing:0.02em;text-transform:uppercase;}
+.asb-big{font-size:0.95rem;font-weight:800;line-height:1.1;margin-top:1px;}
 .app-features{display:flex;flex-direction:column;gap:14px;margin-top:28px;}
 .app-feat{display:flex;align-items:flex-start;gap:14px;}
 .app-feat-ic{width:42px;height:42px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:0.95rem;}
@@ -1086,27 +1087,6 @@ pre.api-code{
 <div id="main-page" :class="{ 'on': done }">
 
 <!-- =====================
-     NAVBAR
-============================ -->
-<nav class="pos-nav" :class="{ 'on': done, 'scrolled': scrolled }">
-  <div class="nav-logo">
-    <div class="nav-logo-mark">R</div>
-    <span>RezerVist POS</span>
-  </div>
-  <div class="nav-links">
-    <a href="#features" class="nav-link">Özellikler</a>
-    <a href="#roi" class="nav-link">Kazanç</a>
-    <a href="#hardware" class="nav-link">Donanım</a>
-    <a href="#pricing" class="nav-link">Fiyatlar</a>
-    <a href="#faq" class="nav-link">Yardım</a>
-  </div>
-  <div class="nav-acts">
-    <a href="{{ route('pages.contact') }}" class="btn-nav-o">Demo Al</a>
-    <a href="{{ route('register') }}" class="btn-nav-p">Hemen Başla</a>
-  </div>
-</nav>
-
-<!-- =====================
      HERO
 ===================== -->
 <section class="hero">
@@ -1409,14 +1389,14 @@ pre.api-code{
       <div class="how-step reveal" style="transition-delay:.3s;"><div class="how-num">4</div><div class="how-icon-wrap"><i class="fa-solid fa-rocket"></i></div><h3 class="how-title">Hizmete Başlayın</h3><p class="how-desc">İlk siparişinizi alın. Mutfak ekranı, garson tableti ve kasa terminali anında senkronize olur.</p><div class="how-eta"><i class="fa-solid fa-check" style="font-size:.65rem;"></i> Hemen</div></div>
     </div>
     <!-- Timeline bar -->
-    <div class="reveal" style="transition-delay:.4s;margin-top:56px;background:var(--sf);border:1.5px solid var(--br);border-radius:var(--r);padding:32px 40px;display:flex;align-items:center;gap:28px;flex-wrap:wrap;">
-      <div style="flex:1;min-width:200px;">
-        <div style="font-family:var(--ff-h);font-size:1.5rem;font-weight:800;color:var(--tx);letter-spacing:-0.04em;">⏱ Ortalama <span style="color:var(--p);">8 dakika</span> kurulum</div>
-        <div style="font-size:0.85rem;color:var(--txs);margin-top:6px;">Teknik bilgi gerekmez. Herhangi bir noktada destek ekibimize ulaşabilirsiniz.</div>
+    <div class="reveal" style="transition-delay:.4s;margin-top:72px;background:white;border:1.5px solid var(--br);border-radius:var(--r2);padding:42px 48px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap;box-shadow:0 24px 56px var(--sh);">
+      <div style="flex:1;min-width:320px;">
+        <div style="font-family:var(--ff-h);font-size:1.8rem;font-weight:900;color:var(--tx);letter-spacing:-0.04em;line-height:1.1;">⏱ Ortalama <span style="background:linear-gradient(135deg,var(--p),var(--acc));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">8 dakikada</span><br>kurulum tamamlanır.</div>
+        <div style="font-size:0.95rem;color:var(--txm);margin-top:10px;line-height:1.6;font-weight:500;">Hiçbir teknik bilgi gerekmez. Uzman ekibimiz ilk kurulumdan ürün girişine kadar her adımda size destek olur.</div>
       </div>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;">
-        <a href="{{ route('register') }}" class="btn-p"><i class="fa-solid fa-rocket" style="font-size:.72rem;"></i> Hemen Başla</a>
-        <a href="{{ route('pages.contact') }}" class="btn-o">Kurulum Talep Et</a>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <a href="{{ route('register') }}" class="btn-p"><i class="fa-solid fa-rocket" style="font-size:.78rem;"></i> Hemen Başla</a>
+        <a href="{{ route('pages.contact') }}" class="btn-o">Ücretsiz Demo Al</a>
       </div>
     </div>
   </div>
@@ -1451,11 +1431,11 @@ pre.api-code{
           </div>
         </div>
         <div class="app-stores">
-          <a href="#" class="app-store-btn">
+          <a href="{{ $globalSettings['social_appstore'] ?? '#' }}" class="app-store-btn">
             <div class="asb-icon"><i class="fa-brands fa-apple"></i></div>
             <div><div class="asb-small">App Store'dan İndir</div><div class="asb-big">App Store</div></div>
           </a>
-          <a href="#" class="app-store-btn">
+          <a href="{{ $globalSettings['social_googleplay'] ?? '#' }}" class="app-store-btn">
             <div class="asb-icon"><i class="fa-brands fa-google-play"></i></div>
             <div><div class="asb-small">Google Play'den İndir</div><div class="asb-big">Google Play</div></div>
           </a>
@@ -1534,10 +1514,6 @@ pre.api-code{
           <div class="demo-stat"><div class="demo-sv" style="color:var(--ylw);" id="res-count">3</div><div class="demo-sl">Rezerv</div></div>
           <div class="demo-stat"><div class="demo-sv" style="color:var(--acc);" id="clean-count">2</div><div class="demo-sl">Temiz</div></div>
           <div class="demo-stat"><div class="demo-sv" id="empty-count">6</div><div class="demo-sl">Boş</div></div>
-        </div>
-        <div style="margin-top:20px;padding:16px;background:rgba(91,33,182,0.05);border:1.5px solid rgba(91,33,182,0.12);border-radius:12px;">
-          <div style="font-size:0.75rem;font-weight:700;color:var(--p);margin-bottom:4px;"><i class="fa-solid fa-circle-info" style="font-size:.7rem;"></i> Nasıl Kullanılır?</div>
-          <div style="font-size:0.78rem;color:var(--txs);">Herhangi bir masaya tıklayın → Durum otomatik döner. Bildirimler sağ alt köşede görünür.</div>
         </div>
       </div>
       <div class="reveal" style="transition-delay:.1s;">
@@ -2055,7 +2031,7 @@ pre.api-code{
       </div>
     </div>
     <div class="cta-actions">
-      <a href="{{ route('register') }}" class="btn-w"><i class="fa-solid fa-rocket" style="font-size:.78rem;"></i> Ücretsiz Başlat</a>
+      <a href="{{ route('register') }}" class="btn-p" style="background:white;color:var(--p);box-shadow:0 12px 32px rgba(255,255,255,0.18);"><i class="fa-solid fa-rocket" style="font-size:.78rem;"></i> Ücretsiz Başlat</a>
       <a href="{{ route('pages.contact') }}" class="btn-gl">Demo Talep Et <i class="fa-solid fa-arrow-right" style="font-size:.7rem;"></i></a>
       <button class="btn-gl" onclick="document.getElementById('video-modal').classList.add('open')"><i class="fa-solid fa-play" style="font-size:.7rem;"></i> Demo İzle</button>
     </div>
@@ -2080,99 +2056,6 @@ pre.api-code{
     </div>
   </div>
 </section>
-
-<!-- =====================
-     FOOTER
-===================== -->
-<footer class="footer">
-  <div class="footer-grid">
-    <div class="footer-top">
-      <div>
-        <div class="footer-brand-logo">
-          <div class="fbl-mark">R</div>
-          <div class="fbl-name">RezerVist POS</div>
-        </div>
-        <p class="footer-brand-desc">İşletmenizin sinir sistemi. Rezervasyon, mutfak, stok ve analitik süreçlerinizi tek noktadan yönetin.</p>
-        <div class="footer-socials">
-          <a href="#" class="fsoc"><i class="fa-brands fa-x-twitter"></i></a>
-          <a href="#" class="fsoc"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#" class="fsoc"><i class="fa-brands fa-linkedin"></i></a>
-          <a href="#" class="fsoc"><i class="fa-brands fa-facebook"></i></a>
-        </div>
-      </div>
-      <div>
-        <div class="footer-col-title">Ürün Çözümleri</div>
-        <div class="footer-links">
-          <a href="#features" class="footer-link">POS Terminali</a>
-          <a href="#hardware" class="footer-link">Donanım Paketleri</a>
-          <a href="#integrations" class="footer-link">Entegrasyonlar</a>
-          <a href="#demo" class="footer-link">Canlı Demo</a>
-          <a href="#roi" class="footer-link">Yatırım Getirisi</a>
-        </div>
-      </div>
-      <div>
-        <div class="footer-col-title">Kurumsal</div>
-        <div class="footer-links">
-          <a href="{{ route('pages.about') }}" class="footer-link">Hakkımızda</a>
-          <a href="{{ route('pages.contact') }}" class="footer-link">İletişim & Destek</a>
-          <a href="{{ route('pages.pos.versions') }}" class="footer-link">Sürüm Notları</a>
-          <a href="#" class="footer-link">İş Ortaklığı</a>
-          <a href="#" class="footer-link">Blog & Haberler</a>
-        </div>
-      </div>
-      <div>
-        <div class="footer-col-title">Müşteri Köşesi</div>
-        <div class="footer-links">
-          <a href="/docs" class="footer-link">Geliştirici dökümanları</a>
-          <a href="#" class="footer-link">Yardım Merkezi SSS</a>
-          <a href="#" class="footer-link">Kullanıcı Klavuzu</a>
-          <a href="#" class="footer-link">Topluluk Forumu</a>
-          <a href="#" class="footer-link">Sistem Durumu</a>
-        </div>
-      </div>
-    </div>
-    <div class="footer-mid">
-      <div>
-        <div class="footer-badge">BÜLTEN</div>
-        <div class="footer-col-title" style="margin-bottom:12px;">Yeniliklerden ve kampanyalardan haberdar olun</div>
-        <div class="footer-newsletter">
-          <input type="email" placeholder="E-posta adresiniz" class="fn-input">
-          <button class="fn-btn">Abone Ol</button>
-        </div>
-      </div>
-      <div class="footer-cert">
-        <div class="fcert"><i class="fa-solid fa-certificate"></i> PCI-DSS v4.0 Compliant</div>
-        <div class="fcert"><i class="fa-solid fa-shield"></i> ISO 27001 Certified</div>
-        <div class="fcert"><i class="fa-solid fa-lock"></i> AES-256 Encrypted Security</div>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="fb-copy">&copy; {{ date('Y') }} RezerVist Systems Inc. Tüm hakları saklıdır.</div>
-      <div class="fb-links">
-        <a href="#" class="fb-link">Kullanım Koşulları</a>
-        <a href="#" class="fb-link">Gizlilik Politikası</a>
-        <a href="#" class="fb-link">Çerez Politikası</a>
-        <a href="#" class="fb-link">KVKK Aydınlatma Metni</a>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<!-- KVKK Banner -->
-<div id="kvkk-banner">
-  <div class="kvkk-text">Deneyiminizi iyileştirmek ve kişiselleştirmek için çerezleri kullanıyoruz. <a href="#">Çerez Politikamızı</a> inceleyerek daha fazla bilgi edinebilirsiniz.</div>
-  <div class="kvkk-actions">
-    <button class="kvkk-btn-no">Reddet</button>
-    <button class="kvkk-btn-ok">Kabul Et</button>
-  </div>
-</div>
-
-<!-- Live Chat -->
-<div id="chat-bubble">
-  <i class="fa-solid fa-comment-dots"></i>
-  <div class="cbadge">1</div>
-  <div class="chat-tooltip">Merhaba! Size nasıl yardımcı olabiliriz?</div>
-</div>
 
 </div><!-- /main-page -->
 </div><!-- /x-data -->
