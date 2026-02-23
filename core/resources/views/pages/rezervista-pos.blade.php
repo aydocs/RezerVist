@@ -5,19 +5,19 @@
 @section('content')
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --p:#5B21B6;--pd:#3B0F8C;--pl:#7C3AED;--pl2:#A78BFA;
-  --acc:#0EA5E9;--acc2:#06B6D4;--grn:#10B981;--ylw:#F59E0B;--red:#EF4444;
-  --bg:#FAFAFA;--bg2:#FFFFFF;--sf:#F5F3FF;--sf2:#EDE9FE;--sf3:#F0FDF4;
-  --br:#E5E1F8;--brh:#C4B8F0;--brx:#A78BFA;
-  --tx:#0C0820;--txm:#7C6FA0;--txs:#4C4369;
-  --sh:rgba(91,33,182,0.09);--shd:rgba(91,33,182,0.18);
+  --p:#6200EE;--pd:#4B00B0;--pl:#7C3AED;--pl2:#A78BFA;
+  --acc:#0EA5E9;--acc2:#06B6D4;--grn:#10B981;--ylw:#F59E0B;--red:#FF3D71;
+  --bg:#FFFFFF;--bg2:#F8FAFC;--sf:#F1F5F9;--sf2:#E2E8F0;--sf3:#F0FDF4;
+  --br:rgba(15,23,42,0.08);--brh:rgba(98,0,238,0.15);--brx:#A78BFA;
+  --tx:#0F172A;--txm:#475569;--txs:#64748B;
+  --sh:rgba(98,0,238,0.09);--shd:rgba(98,0,238,0.18);
   --r:20px;--r2:28px;--r3:36px;
-  --ff-h:'Syne',sans-serif;
-  --ff-b:'Space Grotesk',sans-serif;
+  --ff-h:'Outfit',sans-serif;
+  --ff-b:'Outfit',sans-serif;
   --ff-c:'JetBrains Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -1038,7 +1038,7 @@ pre.api-code{
         <div style="background:var(--sf);border:1.5px solid var(--br);border-radius:14px;padding:18px 12px;text-align:center;transition:all 0.3s;" onmouseover="this.style.borderColor='rgba(91,33,182,0.3)';this.style.transform='translateY(-3px)';" onmouseout="this.style.borderColor='var(--br)';this.style.transform='translateY(0)';">
           <i class="fa-solid {{ $f[0] }}" style="color:var(--p);font-size:1.3rem;display:block;margin-bottom:8px;"></i>
           <div style="font-family:var(--ff-h);font-size:0.8rem;font-weight:700;color:var(--tx);">{{ $f[1] }}</div>
-          <div style="font-size:0.62rem;color:var(--txm);margin-top:3px;font-family:var(--ff-b);">{{ $f[2] }}</div>
+          <div style="font-size:0.62rem;color:var(--txm);margin-top:3px;font-family:var(--ff-c);">{{ $f[2] }}</div>
         </div>
         @endforeach
       </div>
@@ -1826,19 +1826,19 @@ pre.api-code{
       </div>
       <div>
         @php $rows=[
-          ['Anlık Senkronizasyon','Dahil (0.2ms)','<i class="fa-solid fa-times cn"></i>','<i class="fa-solid fa-times cn"></i>'],
-          ['Mutfak Ekranı (KDS)','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-minus cp"></i> Ek ücret','<i class="fa-solid fa-times cn"></i>'],
-          ['Çok Şube Yönetimi','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-minus cp"></i> Sınırlı','<i class="fa-solid fa-times cn"></i>'],
-          ['Offline Çalışma','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-times cn"></i>','<i class="fa-solid fa-check cy"></i>'],
-          ['AI Analitik','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-times cn"></i>','<i class="fa-solid fa-times cn"></i>'],
-          ['QR Dijital Menü','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-minus cp"></i> Ek ücret','<i class="fa-solid fa-times cn"></i>'],
-          ['Müşteri Sadakat Sistemi','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-minus cp"></i> Ek ücret','<i class="fa-solid fa-times cn"></i>'],
-          ['Mobil Yönetim Uygulaması','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-minus cp"></i> Sınırlı','<i class="fa-solid fa-times cn"></i>'],
-          ['Biyometrik Giriş','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-times cn"></i>','<i class="fa-solid fa-times cn"></i>'],
-          ['Kurulum Süresi','~8 dakika','~2-3 hafta','—'],
-          ['7/24 Destek','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-minus cp"></i> Mesai saatlerinde','<i class="fa-solid fa-times cn"></i>'],
-          ['Ücretsiz Güncelleme','<i class="fa-solid fa-check cy"></i>','<i class="fa-solid fa-times cn"></i>','—'],
-          ['Aylık Maliyet','₺990\'dan başlar','₺1.800-4.500','Personel maliyeti']
+          ['Senkronizasyon Hızı','<strong>15ms</strong> (Anlık)','5 - 10 Saniye','<i class="fa-solid fa-times cn"></i> Yok'],
+          ['Mutfak Ekranı (KDS)','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-minus cp"></i> Ek Ücret','<i class="fa-solid fa-times cn"></i> Yok'],
+          ['Çok Şube Yönetimi','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-minus cp"></i> Ücretli / Limitli','<i class="fa-solid fa-times cn"></i> Yok'],
+          ['Offline Mod','<i class="fa-solid fa-check cy"></i> Dahil (Anlık)','<i class="fa-solid fa-times cn"></i> Bağlantı Gerekli','<i class="fa-solid fa-check cy"></i> Manuel'],
+          ['AI Destekli Analitik','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-times cn"></i> Temel Rapor','<i class="fa-solid fa-times cn"></i> Yok'],
+          ['QR Dijital Menü','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-minus cp"></i> Ek Ücret','<i class="fa-solid fa-times cn"></i> Yok'],
+          ['Müşteri Sadakat Sistemi','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-minus cp"></i> Ek Ücret','<i class="fa-solid fa-times cn"></i> Yok'],
+          ['Mobil Uygulama','<i class="fa-solid fa-check cy"></i> Dahil (Native)','<i class="fa-solid fa-minus cp"></i> Kısıtlı Web','<i class="fa-solid fa-times cn"></i> Yok'],
+          ['Biyometrik Giriş','<i class="fa-solid fa-check cy"></i> Dahil','<i class="fa-solid fa-times cn"></i> Yok','<i class="fa-solid fa-times cn"></i> Yok'],
+          ['Kurulum Süresi','<strong>~8 Dakika</strong>','2 - 3 Hafta','—'],
+          ['Güncellemeler','<i class="fa-solid fa-check cy"></i> Sınırsız / Ücretsiz','<i class="fa-solid fa-minus cp"></i> Ücretli / Servis','—'],
+          ['Teknik Destek','<i class="fa-solid fa-check cy"></i> 7/24 Öncelikli','<i class="fa-solid fa-minus cp"></i> Mesai Saatleri','<i class="fa-solid fa-times cn"></i> Yok'],
+          ['Aylık Maliyet','<strong>₺990\'dan Başlar</strong>','₺1.800 - ₺4.500','Yüksek İş Gücü Kaybı']
         ]; @endphp
         @foreach($rows as $r)
         <div class="cmp-row">
