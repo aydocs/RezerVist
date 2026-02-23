@@ -290,8 +290,6 @@ class AdminController extends Controller
                     'phone' => $application->phone,
                     'email' => $application->email,
                     'description' => $application->description,
-                    'is_verified' => true,
-                    'verified_at' => now(),
                     'is_active' => true, // Make active immediately on approval
                     'latitude' => 41.0082, // Default coords
                     'longitude' => 28.9784,
