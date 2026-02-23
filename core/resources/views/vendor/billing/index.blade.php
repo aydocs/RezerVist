@@ -35,13 +35,23 @@
                     <div>
                         <div class="flex items-center gap-3 mb-2">
                             <span class="text-[10px] md:text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Kullanılan Paket</span>
-                            <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[9px] font-black tracking-widest border border-emerald-100 flex items-center gap-1.5">
-                                <span class="relative flex h-1.5 w-1.5">
-                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                            @if($subscription->status === 'trial' || $subscription->package->slug === 'free')
+                                <span class="px-3 py-1 bg-amber-50 text-amber-600 rounded-full text-[9px] font-black tracking-widest border border-amber-100 flex items-center gap-1.5">
+                                    <span class="relative flex h-1.5 w-1.5">
+                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                                        <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-amber-500"></span>
+                                    </span>
+                                    DENEME SÜRÜMÜ
                                 </span>
-                                AKTİF
-                            </span>
+                            @else
+                                <span class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[9px] font-black tracking-widest border border-emerald-100 flex items-center gap-1.5">
+                                    <span class="relative flex h-1.5 w-1.5">
+                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                        <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                                    </span>
+                                    AKTİF
+                                </span>
+                            @endif
                         </div>
                         <h2 class="text-3xl md:text-4xl font-[1000] text-slate-900 tracking-tight italic">{{ $subscription->package->name }}</h2>
                     </div>
@@ -174,7 +184,11 @@
                                         {{ ($subscription && $subscription->package_id == $package->id) ? 'disabled' : '' }}>
                                     @if($subscription && $subscription->package_id == $package->id)
                                         <i class="fa-solid fa-check-circle"></i>
-                                        AKTİF PAKET
+                                        @if($subscription->status === 'trial' || $package->slug === 'free')
+                                            DENEME SÜRÜMÜ AKTİF
+                                        @else
+                                            AKTİF PAKET
+                                        @endif
                                     @else
                                         ŞİMDİ BAŞLAT
                                         <i class="fa-solid fa-chevron-right text-[9px] group-hover:translate-x-1 transition-transform"></i>
