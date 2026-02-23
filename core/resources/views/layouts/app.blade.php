@@ -1689,7 +1689,8 @@
             
     @include('partials.cookie-consent')
 
-    @yield('scripts')    
+    @stack('scripts')
+    @yield('scripts')
     <!-- Page Loader Script -->
     <script>
         // Hide loader when page is fully loaded or after timeout

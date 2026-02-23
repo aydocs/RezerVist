@@ -292,7 +292,7 @@ class AdminController extends Controller
                     'description' => $application->description,
                     'is_verified' => true,
                     'verified_at' => now(),
-                    'is_active' => false, // Passive until setup is complete
+                    'is_active' => true, // Make active immediately on approval
                     'latitude' => 41.0082, // Default coords
                     'longitude' => 28.9784,
                 ]
