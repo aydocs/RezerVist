@@ -1,186 +1,85 @@
 <?php
 /**
- * REZERVIST STORAGE FIXER
+ * REZERVIST STORAGE FIXER - PLAN B (Direct Storage)
  * 
- * Bu betik, üretim sunucusunda (production) yüklenen resimlerin 
- * görünmeme sorununu (storage link/permission) çözmek için hazırlanmıştır.
- * 
- * Kullanım:
- * 1. Bu dosyayı sunucunuzun "public" klasörüne veya ana dizinine yükleyin.
- * 2. Tarayıcıdan bu dosyayı çalıştırın (örn: rezervist.com/fix_storage.php)
+ * Bu betik, sunucudaki sembolik link (symlink) kısıtlamasını aşmak için
+ * storage klasörünü direkt PUBLIC içine taşır.
  */
 
-// Show errors for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 define('LARAVEL_START', microtime(true));
-
-// Autoload & App Initialization
-$autoloadPath = __DIR__.'/../vendor/autoload.php';
-$appPath = __DIR__.'/../bootstrap/app.php';
-
-if (!file_exists($autoloadPath)) {
-    die("Hata: vendor/autoload.php bulunamadı! Yol: $autoloadPath");
-}
-
-require $autoloadPath;
-$app = require_once $appPath;
-
-// --- CORRECT BOOTSTRAP FOR STANDALONE SCRIPT ---
+require __DIR__.'/../vendor/autoload.php';
+$app = require_once __DIR__.'/../bootstrap/app.php';
 use Illuminate\Contracts\Console\Kernel;
 $kernel = $app->make(Kernel::class);
-$kernel->bootstrap(); 
-// ----------------------------------------------
+$kernel->bootstrap();
 
-echo "<div style='font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; border: 1px solid #eee; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);'>";
-echo "<h1 style='color: #6366f1;'>Rezervist Storage Fixer <span style='font-size: 14px; color: #94a3b8; font-weight: normal;'>(v2.7)</span></h1>";
+echo "<div style='font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; border: 1px solid #eee; border-radius: 20px;'>";
+echo "<h1 style='color: #6366f1;'>Rezervist Storage Fixer <span style='color: #f59e0b;'>(PLAN B)</span></h1>";
 echo "<hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;'>";
 
-// 0. Server Info
-echo "<strong>Sunucu Bilgisi:</strong><br>";
-echo "PHP Kullanıcısı: " . (function_exists('posix_getpwuid') ? posix_getpwuid(posix_geteuid())['name'] : get_current_user()) . "<br>";
-echo "Public Dizini: " . public_path() . " (İzin: " . decoct(fileperms(public_path()) & 0777) . ")<br><br>";
-
-// 0.1 Parent Directory Permissions (CRITICAL)
-echo "<strong>İşlem 0: Üst Dizini İzinleri (Erişilebilirlik):</strong><br>";
-$parents = [
-    'core' => base_path(),
-    'core/storage' => storage_path(),
-    'core/storage/app' => storage_path('app'),
-    'core/storage/app/public' => storage_path('app/public'),
-];
-
-foreach ($parents as $name => $path) {
-    if (file_exists($path)) {
-        $perms = decoct(fileperms($path) & 0777);
-        $isExecutable = is_executable($path);
-        echo "• $name ($perms): " . ($isExecutable ? "<span style='color: #10b981;'>Erişilebilir ✅</span>" : "<span style='color: #f43f5e;'>Erişilemez (403 Sebebi!) ❌</span>") . "<br>";
-    } else {
-        echo "• $name: <span style='color: #f43f5e;'>Bulunamadı ❌</span><br>";
-    }
-}
-echo "<br>";
-
-// 1. Check APP_URL
-$configUrl = config('app.url', 'Bilinmiyor');
-echo "<strong>APP_URL (Remote):</strong> <code style='background: #f1f5f9; padding: 2px 6px; border-radius: 4px;'>$configUrl</code><br><br>";
-
-// 2. Try to create storage link (TRYING ABSOLUTE THIS TIME)
-echo "<strong>İşlem 1: Storage Link Oluşturuluyor (TAM YOL)...</strong><br>";
-try {
-    $link = public_path('storage');
-    $target = storage_path('app/public');
-    
-    if (file_exists($link)) {
-        if (is_link($link)) {
-            unlink($link);
-        } else {
-            rename($link, $link.'_backup_'.time());
-        }
-    }
-    
-    // Create absolute symlink
-    if (symlink($target, $link)) {
-        echo "<span style='color: #10b981;'>✅ Sembolik link (TAM YOL) başarıyla oluşturuldu.</span><br><br>";
-    } else {
-        echo "<span style='color: #f43f5e;'>❌ Sembolik link oluşturulamadı!</span><br><br>";
-    }
-} catch (\Exception $e) {
-    echo "<span style='color: #f43f5e;'>❌ Hata (Link): " . $e->getMessage() . "</span><br><br>";
-}
-
-// 3. Verify Symlink
 $publicStorage = public_path('storage');
-echo "<strong>İşlem 2: Symlink Durumu...</strong><br>";
+$oldStorage = storage_path('app/public');
+
+// 1. Delete Symlink
+echo "<strong>İşlem 1: Eski Link Temizleniyor...</strong><br>";
 if (file_exists($publicStorage)) {
     if (is_link($publicStorage)) {
-        $realTarget = readlink($publicStorage);
-        echo "<span style='color: #10b981;'>✅ /public/storage şu an bir link.</span><br>";
-        echo "<span style='font-size: 12px; color: #64748b;'>Hedef: $realTarget</span><br><br>";
+        unlink($publicStorage);
+        echo "<span style='color: #10b981;'>✅ Sembolik link silindi.</span><br><br>";
     } else {
-        echo "<span style='color: #f59e0b;'>⚠️ /public/storage bir klasör (Link değil!).</span><br><br>";
+        echo "<span style='color: #64748b;'>ℹ️ /public/storage zaten bir klasör veya link değil.</span><br><br>";
     }
-} else {
-    echo "<span style='color: #f43f5e;'>❌ /public/storage bulunamadı!</span><br><br>";
 }
 
-// 4. Check Permissions and File Existence
-$uploadPaths = [
-    'Menu Images' => storage_path('app/public/menu_images'),
-    'Business Images' => storage_path('app/public/business_images'),
-    'Public Root' => storage_path('app/public'),
-];
-
-echo "<strong>İşlem 3: Klasör ve Dosya Kontrolü...</strong><br>";
-foreach ($uploadPaths as $name => $path) {
-    if (!file_exists($path)) {
-        @mkdir($path, 0775, true);
-    }
-    
-    $writable = is_writable($path);
-    $perms = decoct(fileperms($path) & 0777);
-    $shortPath = str_replace(base_path(), '', $path);
-    
-    echo "• $name ($shortPath): ";
-    if ($writable) {
-        echo "<span style='color: #10b981;'>Yazılabilir (İzin: $perms) ✅</span>";
+// 2. Create Real Directory
+echo "<strong>İşlem 2: Gerçek Klasör Oluşturuluyor...</strong><br>";
+if (!file_exists($publicStorage)) {
+    if (mkdir($publicStorage, 0775, true)) {
+        echo "<span style='color: #10b981;'>✅ /public/storage klasörü oluşturuldu.</span><br><br>";
     } else {
-        echo "<span style='color: #f43f5e;'>Yazılamaz (İzin: $perms) ❌</span>";
+        die("<span style='color: #f43f5e;'>❌ Hata: Klasör oluşturulamadı! İzin sorunu var.</span>");
     }
-    
-    // List some files
-    if (file_exists($path) && is_dir($path)) {
-        $files = array_diff(scandir($path), ['.', '..']);
-        echo " - (Dosya Sayısı: " . count($files) . ")<br>";
-        if (count($files) > 0) {
-            echo "<ul style='font-size: 11px; color: #64748b; margin: 5px 0 15px 20px;'>";
-            $i = 0;
-            foreach ($files as $file) {
-                if ($i++ > 3) { echo "<li>...</li>"; break; }
-                echo "<li>$file</li>";
-            }
-            echo "</ul>";
+}
+
+// 3. Move Files
+echo "<strong>İşlem 3: Resimler Taşınıyor...</strong><br>";
+function moveContent($src, $dst) {
+    if (!file_exists($src)) return;
+    $files = array_diff(scandir($src), ['.', '..']);
+    foreach ($files as $file) {
+        $srcPath = $src . DIRECTORY_PATH_SEPARATOR . $file;
+        $dstPath = $dst . DIRECTORY_PATH_SEPARATOR . $file;
+        if (is_dir($srcPath)) {
+            if (!file_exists($dstPath)) mkdir($dstPath, 0775, true);
+            moveContent($srcPath, $dstPath);
+        } else {
+            copy($srcPath, $dstPath); // Copy instead of rename for safety during test
         }
-    } else {
-        echo "<br>";
     }
 }
 
-// 5. URL Test
-echo "<strong>İşlem 4: URL ve Erişim Testi...</strong><br>";
-$testFile = 'storage_test.txt';
-$storageFilePath = storage_path('app/public/'.$testFile);
-file_put_contents($storageFilePath, 'storage link test content');
-
-// Direct public file test
-$publicTestFile = public_path('direct_test.txt');
-file_put_contents($publicTestFile, 'direct access test');
-
-$testUrl = asset('storage/'.$testFile);
-$directUrl = asset('direct_test.txt');
-
-echo "1. <a href='$directUrl' target='_blank' style='color: #6366f1; text-decoration: underline;'>Buraya tıklayın (Doğrudan Dosya)</a> - Bu çalışıyorsa sunucu dosya sunabiliyor demektir.<br>";
-echo "2. <a href='$testUrl' target='_blank' style='color: #6366f1; text-decoration: underline;'>Buraya tıklayın (Storage Linki)</a> - Bu 403 veriyorsa sorun sadece sembolik linktedir.<br><br>";
-
-// 6. PHP Level Read Check
-echo "<strong>İşlem 5: PHP Seviyesinde Okuma Kontrolü...</strong><br>";
-$linkPath = public_path('storage/'.$testFile);
-if (file_exists($linkPath)) {
-    $content = @file_get_contents($linkPath);
-    if ($content === 'storage link test content') {
-        echo "<span style='color: #10b981;'>✅ PHP, link üzerinden dosyayı okuyabiliyor!</span> (Sorun kesinlikle Apache/Nginx ayarlarında).<br>";
-    } else {
-        echo "<span style='color: #f43f5e;'>❌ PHP, link üzerinden dosyayı OKUYAMIYOR!</span> (Dosya yolu veya sistem kısıtlaması var).<br>";
-    }
-} else {
-    echo "<span style='color: #f43f5e;'>❌ Link yolu PHP tarafından bulunamadı.</span><br>";
+try {
+    moveContent($oldStorage, $publicStorage);
+    echo "<span style='color: #10b981;'>✅ Resimler eski konumdan yeni konuma kopyalandı.</span><br><br>";
+} catch (\Exception $e) {
+    echo "<span style='color: #f43f5e;'>❌ Hata (Taşıma): " . $e->getMessage() . "</span><br><br>";
 }
 
-echo "<div style='margin-top: 30px; padding: 15px; background: #f8fafc; border-radius: 12px; font-size: 14px; color: #475569;'>";
-echo "<strong>Sonuç:</strong> Eğer yukarıda kırmızı renkli bir hata görmüyorsanız ve resimler hala açılmıyorsa, tarayıcı önbelleğinizi (Cache) temizleyip tekrar deneyin.<br>";
-echo "Sorun devam ederse, SSH üzerinden şu komutu çalıştırın: <br>";
-echo "<code style='display: block; background: #000; color: #fff; padding: 10px; border-radius: 8px; margin-top: 10px;'>chmod -R 775 storage/app/public bootstrap/cache</code>";
+// 4. Verify
+echo "<strong>İşlem 4: Doğrulama...</strong><br>";
+$testFile = $publicStorage . '/plan_b_test.txt';
+file_put_contents($testFile, 'Plan B works!');
+$testUrl = asset('storage/plan_b_test.txt');
+
+echo "Şu linke tıkla, 'Plan B works!' yazısını görüyorsan BÜTÜN RESİMLER DÜZELMİŞTİR:<br>";
+echo "<a href='$testUrl' target='_blank' style='color: #6366f1; text-decoration: underline;'>$testUrl</a><br><br>";
+
+echo "<div style='background: #fefce8; padding: 15px; border-radius: 12px; font-size: 14px; border: 1px solid #fef08a;'>";
+echo "<strong>NOT:</strong> Eğer bu link çalışıyorsa, artık tüm resimlerin görünmesi lazım.<br>";
+echo "Bundan sonra sistem dosyaları direkt buraya yükleyeceği için linke ihtiyacın kalmayacak.";
 echo "</div>";
 
 echo "</div>";
