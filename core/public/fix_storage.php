@@ -34,13 +34,13 @@ $kernel->bootstrap();
 // ----------------------------------------------
 
 echo "<div style='font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; border: 1px solid #eee; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);'>";
-echo "<h1 style='color: #6366f1;'>Rezervist Storage Fixer <span style='font-size: 14px; color: #94a3b8; font-weight: normal;'>(v2.5)</span></h1>";
+echo "<h1 style='color: #6366f1;'>Rezervist Storage Fixer <span style='font-size: 14px; color: #94a3b8; font-weight: normal;'>(v2.6)</span></h1>";
 echo "<hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;'>";
 
 // 0. Server Info
 echo "<strong>Sunucu Bilgisi:</strong><br>";
 echo "PHP Kullanıcısı: " . (function_exists('posix_getpwuid') ? posix_getpwuid(posix_geteuid())['name'] : get_current_user()) . "<br>";
-echo "Public Dizini: " . public_path() . "<br><br>";
+echo "Public Dizini: " . public_path() . " (İzin: " . decoct(fileperms(public_path()) & 0777) . ")<br><br>";
 
 // 0.1 Parent Directory Permissions (CRITICAL)
 echo "<strong>İşlem 0: Üst Dizini İzinleri (Erişilebilirlik):</strong><br>";
@@ -149,12 +149,34 @@ foreach ($uploadPaths as $name => $path) {
 }
 
 // 5. URL Test
-echo "<strong>İşlem 4: Örnek URL Testi...</strong><br>";
+echo "<strong>İşlem 4: URL ve Erişim Testi...</strong><br>";
 $testFile = 'storage_test.txt';
-file_put_contents(storage_path('app/public/'.$testFile), 'storage link test content');
+$storageFilePath = storage_path('app/public/'.$testFile);
+file_put_contents($storageFilePath, 'storage link test content');
+
+// Direct public file test
+$publicTestFile = public_path('direct_test.txt');
+file_put_contents($publicTestFile, 'direct access test');
+
 $testUrl = asset('storage/'.$testFile);
-echo "Şu linke tıklayın, 'storage link test content' yazısını görüyorsanız link çalışıyordur:<br>";
-echo "<a href='$testUrl' target='_blank' style='color: #6366f1; text-decoration: underline;'>$testUrl</a><br><br>";
+$directUrl = asset('direct_test.txt');
+
+echo "1. <a href='$directUrl' target='_blank' style='color: #6366f1; text-decoration: underline;'>Buraya tıklayın (Doğrudan Dosya)</a> - Bu çalışıyorsa sunucu dosya sunabiliyor demektir.<br>";
+echo "2. <a href='$testUrl' target='_blank' style='color: #6366f1; text-decoration: underline;'>Buraya tıklayın (Storage Linki)</a> - Bu 403 veriyorsa sorun sadece sembolik linktedir.<br><br>";
+
+// 6. PHP Level Read Check
+echo "<strong>İşlem 5: PHP Seviyesinde Okuma Kontrolü...</strong><br>";
+$linkPath = public_path('storage/'.$testFile);
+if (file_exists($linkPath)) {
+    $content = @file_get_contents($linkPath);
+    if ($content === 'storage link test content') {
+        echo "<span style='color: #10b981;'>✅ PHP, link üzerinden dosyayı okuyabiliyor!</span> (Sorun kesinlikle Apache/Nginx ayarlarında).<br>";
+    } else {
+        echo "<span style='color: #f43f5e;'>❌ PHP, link üzerinden dosyayı OKUYAMIYOR!</span> (Dosya yolu veya sistem kısıtlaması var).<br>";
+    }
+} else {
+    echo "<span style='color: #f43f5e;'>❌ Link yolu PHP tarafından bulunamadı.</span><br>";
+}
 
 echo "<div style='margin-top: 30px; padding: 15px; background: #f8fafc; border-radius: 12px; font-size: 14px; color: #475569;'>";
 echo "<strong>Sonuç:</strong> Eğer yukarıda kırmızı renkli bir hata görmüyorsanız ve resimler hala açılmıyorsa, tarayıcı önbelleğinizi (Cache) temizleyip tekrar deneyin.<br>";
