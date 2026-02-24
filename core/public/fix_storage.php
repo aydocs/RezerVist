@@ -49,28 +49,54 @@ if (file_exists($publicStorage)) {
     echo "<span style='color: #f43f5e;'>❌ /public/storage bulunamadı! Link oluşturulamamış olabilir.</span><br><br>";
 }
 
-// 4. Check Permissions
+// 4. Check Permissions and File Existence
 $uploadPaths = [
-    storage_path('app/public'),
-    storage_path('app/public/menu_images'),
-    storage_path('app/public/business_images'),
+    'Menu Images' => storage_path('app/public/menu_images'),
+    'Business Images' => storage_path('app/public/business_images'),
+    'Public Root' => storage_path('app/public'),
 ];
 
-echo "<strong>İşlem 3: Klasör İzinleri Kontrolü...</strong><br>";
-foreach ($uploadPaths as $path) {
+echo "<strong>İşlem 3: Klasör ve Dosya Kontrolü...</strong><br>";
+foreach ($uploadPaths as $name => $path) {
     if (!file_exists($path)) {
-        mkdir($path, 0775, true);
+        @mkdir($path, 0775, true);
     }
     
     $writable = is_writable($path);
     $shortPath = str_replace(base_path(), '', $path);
     
+    echo "• $name ($shortPath): ";
     if ($writable) {
-        echo "<span style='color: #10b981;'>✅ Yazılabilir: $shortPath</span><br>";
+        echo "<span style='color: #10b981;'>Yazılabilir ✅</span>";
     } else {
-        echo "<span style='color: #f43f5e;'>❌ Yazılamaz: $shortPath</span><br>";
+        echo "<span style='color: #f43f5e;'>Yazılamaz ❌</span>";
+    }
+    
+    // List some files
+    if (file_exists($path) && is_dir($path)) {
+        $files = array_diff(scandir($path), ['.', '..']);
+        echo " - (Dosya Sayısı: " . count($files) . ")<br>";
+        if (count($files) > 0) {
+            echo "<ul style='font-size: 11px; color: #64748b; margin: 5px 0 15px 20px;'>";
+            $i = 0;
+            foreach ($files as $file) {
+                if ($i++ > 3) { echo "<li>...</li>"; break; }
+                echo "<li>$file</li>";
+            }
+            echo "</ul>";
+        }
+    } else {
+        echo "<br>";
     }
 }
+
+// 5. URL Test
+echo "<strong>İşlem 4: Örnek URL Testi...</strong><br>";
+$testFile = 'storage_test.txt';
+file_put_contents(storage_path('app/public/'.$testFile), 'storage link test content');
+$testUrl = asset('storage/'.$testFile);
+echo "Şu linke tıklayın, 'storage link test content' yazısını görüyorsanız link çalışıyordur:<br>";
+echo "<a href='$testUrl' target='_blank' style='color: #6366f1; text-decoration: underline;'>$testUrl</a><br><br>";
 
 echo "<div style='margin-top: 30px; padding: 15px; background: #f8fafc; border-radius: 12px; font-size: 14px; color: #475569;'>";
 echo "<strong>Sonuç:</strong> Eğer yukarıda kırmızı renkli bir hata görmüyorsanız ve resimler hala açılmıyorsa, tarayıcı önbelleğinizi (Cache) temizleyip tekrar deneyin.<br>";
