@@ -26,10 +26,15 @@ if (!file_exists($autoloadPath)) {
 
 require $autoloadPath;
 $app = require_once $appPath;
-$kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+
+// --- CORRECT BOOTSTRAP FOR STANDALONE SCRIPT ---
+use Illuminate\Contracts\Console\Kernel;
+$kernel = $app->make(Kernel::class);
+$kernel->bootstrap(); 
+// ----------------------------------------------
 
 echo "<div style='font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; border: 1px solid #eee; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);'>";
-echo "<h1 style='color: #6366f1;'>Rezervist Storage Fixer <span style='font-size: 14px; color: #94a3b8; font-weight: normal;'>(v2.1)</span></h1>";
+echo "<h1 style='color: #6366f1;'>Rezervist Storage Fixer <span style='font-size: 14px; color: #94a3b8; font-weight: normal;'>(v2.2)</span></h1>";
 echo "<hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;'>";
 
 // 1. Check APP_URL
