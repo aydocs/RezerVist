@@ -10,19 +10,30 @@
  * 2. Tarayıcıdan bu dosyayı çalıştırın (örn: rezervist.com/fix_storage.php)
  */
 
+// Show errors for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 define('LARAVEL_START', microtime(true));
 
 // Autoload & App Initialization
-require __DIR__.'/../vendor/autoload.php';
-$app = require_once __DIR__.'/../bootstrap/app.php';
+$autoloadPath = __DIR__.'/../vendor/autoload.php';
+$appPath = __DIR__.'/../bootstrap/app.php';
+
+if (!file_exists($autoloadPath)) {
+    die("Hata: vendor/autoload.php bulunamadı! Yol: $autoloadPath");
+}
+
+require $autoloadPath;
+$app = require_once $appPath;
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 
 echo "<div style='font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; border: 1px solid #eee; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);'>";
-echo "<h1 style='color: #6366f1;'>Rezervist Storage Fixer</h1>";
+echo "<h1 style='color: #6366f1;'>Rezervist Storage Fixer <span style='font-size: 14px; color: #94a3b8; font-weight: normal;'>(v2.1)</span></h1>";
 echo "<hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;'>";
 
 // 1. Check APP_URL
-$configUrl = config('app.url');
+$configUrl = config('app.url', 'Bilinmiyor');
 echo "<strong>APP_URL (Remote):</strong> <code style='background: #f1f5f9; padding: 2px 6px; border-radius: 4px;'>$configUrl</code><br><br>";
 
 // 2. Try to create storage link
