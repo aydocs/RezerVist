@@ -34,13 +34,33 @@ $kernel->bootstrap();
 // ----------------------------------------------
 
 echo "<div style='font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; border: 1px solid #eee; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);'>";
-echo "<h1 style='color: #6366f1;'>Rezervist Storage Fixer <span style='font-size: 14px; color: #94a3b8; font-weight: normal;'>(v2.4)</span></h1>";
+echo "<h1 style='color: #6366f1;'>Rezervist Storage Fixer <span style='font-size: 14px; color: #94a3b8; font-weight: normal;'>(v2.5)</span></h1>";
 echo "<hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;'>";
 
 // 0. Server Info
 echo "<strong>Sunucu Bilgisi:</strong><br>";
-echo "PHP Kullanıcısı: " . exec('whoami') . "<br>";
+echo "PHP Kullanıcısı: " . (function_exists('posix_getpwuid') ? posix_getpwuid(posix_geteuid())['name'] : get_current_user()) . "<br>";
 echo "Public Dizini: " . public_path() . "<br><br>";
+
+// 0.1 Parent Directory Permissions (CRITICAL)
+echo "<strong>İşlem 0: Üst Dizini İzinleri (Erişilebilirlik):</strong><br>";
+$parents = [
+    'core' => base_path(),
+    'core/storage' => storage_path(),
+    'core/storage/app' => storage_path('app'),
+    'core/storage/app/public' => storage_path('app/public'),
+];
+
+foreach ($parents as $name => $path) {
+    if (file_exists($path)) {
+        $perms = decoct(fileperms($path) & 0777);
+        $isExecutable = is_executable($path);
+        echo "• $name ($perms): " . ($isExecutable ? "<span style='color: #10b981;'>Erişilebilir ✅</span>" : "<span style='color: #f43f5e;'>Erişilemez (403 Sebebi!) ❌</span>") . "<br>";
+    } else {
+        echo "• $name: <span style='color: #f43f5e;'>Bulunamadı ❌</span><br>";
+    }
+}
+echo "<br>";
 
 // 1. Check APP_URL
 $configUrl = config('app.url', 'Bilinmiyor');
