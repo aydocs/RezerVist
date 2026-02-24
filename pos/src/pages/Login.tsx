@@ -12,7 +12,7 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [showSetup, setShowSetup] = useState(false);
-    const [baseUrl, setBaseUrl] = useState(localStorage.getItem('api_base_url') || 'http://localhost:8000/api');
+    const [baseUrl, setBaseUrl] = useState(localStorage.getItem('api_base_url') || 'https://rezervist.com/api');
     const navigate = useNavigate();
 
     const saveSetup = () => {
@@ -246,10 +246,10 @@ export default function Login() {
                                                 value={baseUrl}
                                                 onChange={(e) => setBaseUrl(e.target.value)}
                                                 className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent focus:border-primary focus:bg-white rounded-2xl transition-all font-bold text-gray-900 outline-none"
-                                                placeholder="http://localhost:8000/api"
+                                                placeholder="https://rezervist.com/api"
                                             />
                                             <p className="text-[9px] text-gray-400 font-bold leading-relaxed px-1">
-                                                * Normalde <b>http://localhost:8000/api</b> olmalıdır. Sonunda /pos olmamalıdır.
+                                                * Normalde <b>https://rezervist.com/api</b> olmalıdır. Sonunda /pos olmamalıdır.
                                             </p>
                                         </div>
 
