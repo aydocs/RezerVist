@@ -41,28 +41,44 @@ echo "<hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;'>";
 $configUrl = config('app.url', 'Bilinmiyor');
 echo "<strong>APP_URL (Remote):</strong> <code style='background: #f1f5f9; padding: 2px 6px; border-radius: 4px;'>$configUrl</code><br><br>";
 
-// 2. Try to create storage link
-echo "<strong>İşlem 1: Storage Link Oluşturuluyor...</strong><br>";
+// 2. Try to create storage link (FORCING RELATIVE)
+echo "<strong>İşlem 1: Storage Link Oluşturuluyor (Gelişmiş)...</strong><br>";
 try {
-    \Illuminate\Support\Facades\Artisan::call('storage:link');
-    echo "<span style='color: #10b981;'>✅ Artisan storage:link komutu başarıyla çalıştırıldı.</span><br><br>";
+    $link = public_path('storage');
+    $target = '../storage/app/public';
+    
+    if (file_exists($link)) {
+        if (is_link($link)) {
+            unlink($link);
+        } else {
+            // It's a directory! Backup it?
+            rename($link, $link.'_backup_'.time());
+        }
+    }
+    
+    // Create relative symlink
+    if (symlink($target, $link)) {
+        echo "<span style='color: #10b981;'>✅ Sembolik link (GÖRECELİ) başarıyla oluşturuldu.</span><br><br>";
+    } else {
+        echo "<span style='color: #f43f5e;'>❌ Sembolik link oluşturulamadı! (İzin sorunu olabilir)</span><br><br>";
+    }
 } catch (\Exception $e) {
-    echo "<span style='color: #f43f5e;'>❌ Hata (Artisan): " . $e->getMessage() . "</span><br><br>";
+    echo "<span style='color: #f43f5e;'>❌ Hata (Link): " . $e->getMessage() . "</span><br><br>";
 }
 
 // 3. Verify Symlink
 $publicStorage = public_path('storage');
-echo "<strong>İşlem 2: Symlink Kontrolü...</strong><br>";
+echo "<strong>İşlem 2: Symlink Durumu...</strong><br>";
 if (file_exists($publicStorage)) {
     if (is_link($publicStorage)) {
-        echo "<span style='color: #10b981;'>✅ /public/storage klasörü geçerli bir 'sembolik link' olarak mevcut.</span><br>";
-        echo "<span style='font-size: 12px; color: #64748b;'>Hedef: " . readlink($publicStorage) . "</span><br><br>";
+        $realTarget = readlink($publicStorage);
+        echo "<span style='color: #10b981;'>✅ /public/storage şu an bir link.</span><br>";
+        echo "<span style='font-size: 12px; color: #64748b;'>Hedef: $realTarget</span><br><br>";
     } else {
-        echo "<span style='color: #f59e0b;'>⚠️ /public/storage bir klasör olarak mevcut ama link değil!</span><br>";
-        echo "<span style='font-size: 12px; color: #64748b;'>Çözüm: Bu klasörü silip link olarak tekrar oluşturmanız gerekebilir.</span><br><br>";
+        echo "<span style='color: #f59e0b;'>⚠️ /public/storage bir klasör (Link değil!).</span><br><br>";
     }
 } else {
-    echo "<span style='color: #f43f5e;'>❌ /public/storage bulunamadı! Link oluşturulamamış olabilir.</span><br><br>";
+    echo "<span style='color: #f43f5e;'>❌ /public/storage bulunamadı!</span><br><br>";
 }
 
 // 4. Check Permissions and File Existence
