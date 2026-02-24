@@ -209,8 +209,8 @@
             @foreach($businesses as $business)
             <a href="/business/{{ $business->id }}" class="group block bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition duration-300">
                 <div class="h-48 bg-gray-100 relative">
-                    <!-- Placeholder Image -->
-                    <img src="https://source.unsplash.com/random/800x600/?restaurant,cafe&sig={{ $business->id }}" alt="{{ $business->name }}" class="w-full h-full object-cover">
+                    <!-- Business Image -->
+                    <img src="{{ $business->getImageUrl(true) }}" alt="{{ $business->name }}" class="w-full h-full object-cover">
                     <div class="absolute top-4 right-4 flex flex-col items-end gap-2">
                         <div class="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-sm font-bold text-gray-900 flex items-center shadow-sm">
                             <span class="mr-1 text-orange-500">★</span> {{ $business->rating }}

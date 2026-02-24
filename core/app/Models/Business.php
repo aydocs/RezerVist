@@ -488,4 +488,29 @@ class Business extends Model
     {
         return (int) $this->getSetting('max_ahead_days', 30);
     }
+
+    /**
+     * Get the primary image URL for the business.
+     * Fallback: Logo -> First Gallery Image -> Category Placeholder -> Default
+     */
+    public function getImageUrl($thumb = false): string
+    {
+        // 1. Check Logo
+        if ($this->logo) {
+            if (str_starts_with($this->logo, 'http')) {
+                return $this->logo;
+            }
+            return asset('storage/' . $this->logo);
+        }
+
+        // 2. Check Gallery
+        $firstImage = $this->images->first();
+        if ($firstImage) {
+            return $thumb ? $firstImage->thumb_url : $firstImage->url;
+        }
+
+        // 3. Fallback to Category/Default
+        $categorySlug = $this->category ? $this->category->slug : 'general';
+        return asset("images/placeholders/business-{$categorySlug}.jpg");
+    }
 }

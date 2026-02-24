@@ -4,7 +4,8 @@
     <!-- Image -->
     <div class="w-32 sm:w-48 lg:w-64 h-32 sm:h-40 lg:h-auto bg-gray-100 rounded-lg overflow-hidden relative flex-shrink-0">
         <!-- Mock Map or Image -->
-        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" alt="{{ $business->name }}" class="w-full h-full object-cover transition duration-500 group-hover:scale-105">
+        <!-- Business Image -->
+        <img src="{{ $business->getImageUrl(true) }}" alt="{{ $business->name }}" class="w-full h-full object-cover transition duration-500 group-hover:scale-105">
         
         <!-- Heart Icon (Moved to relative card corner on mobile) -->
         <button onclick="toggleFavorite({{ $business->id }}, this)" class="absolute top-2 right-2 p-1.5 bg-white rounded-full shadow hover:text-red-500 transition text-gray-400 z-10 sm:hidden">

@@ -130,13 +130,8 @@
 <!-- Business Banner (Hero) -->
 <div class="relative h-96 lg:h-[500px]">
     <div class="absolute inset-0">
-        @if($business->images->count() > 0)
-            <!-- Dynamically use uploaded image -->
-             <img src="{{ Storage::url($business->images->first()->image_path) }}" alt="{{ $business->name }}" class="w-full h-full object-cover">
-        @else
-             <!-- Fallback -->
-             <img src="https://source.unsplash.com/random/1600x900/?restaurant,interior&sig={{ $business->id }}" alt="{{ $business->name }}" class="w-full h-full object-cover">
-        @endif
+        <!-- Business Image Resolver -->
+        <img src="{{ $business->getImageUrl() }}" alt="{{ $business->name }}" class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
     </div>
     
