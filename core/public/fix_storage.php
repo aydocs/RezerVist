@@ -17,7 +17,7 @@ $kernel = $app->make(Kernel::class);
 $kernel->bootstrap();
 
 echo "<div style='font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; border: 1px solid #eee; border-radius: 20px;'>";
-echo "<h1 style='color: #6366f1;'>Rezervist Storage Fixer <span style='color: #f59e0b;'>(PLAN B)</span></h1>";
+echo "<h1 style='color: #6366f1;'>Rezervist Storage Fixer <span style='color: #f59e0b;'>(PLAN B v3.1)</span></h1>";
 echo "<hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;'>";
 
 $publicStorage = public_path('storage');
@@ -50,8 +50,8 @@ function moveContent($src, $dst) {
     if (!file_exists($src)) return;
     $files = array_diff(scandir($src), ['.', '..']);
     foreach ($files as $file) {
-        $srcPath = $src . DIRECTORY_PATH_SEPARATOR . $file;
-        $dstPath = $dst . DIRECTORY_PATH_SEPARATOR . $file;
+        $srcPath = $src . DIRECTORY_SEPARATOR . $file;
+        $dstPath = $dst . DIRECTORY_SEPARATOR . $file;
         if (is_dir($srcPath)) {
             if (!file_exists($dstPath)) mkdir($dstPath, 0775, true);
             moveContent($srcPath, $dstPath);
