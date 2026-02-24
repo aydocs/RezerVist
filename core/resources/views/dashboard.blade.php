@@ -95,7 +95,14 @@
                 <div class="w-10 h-10 rounded-xl bg-gray-50 text-gray-600 flex items-center justify-center mb-2 group-hover:bg-gray-600 group-hover:text-white transition">
                     <i class="fas fa-cog text-lg"></i>
                 </div>
-                <span class="text-xs font-bold text-gray-700">Ayarlar</span>
+                <span class="text-xs font-bold text-gray-700">Genel Ayarlar</span>
+            </a>
+
+            <a href="{{ route('vendor.settings.index') }}" class="flex flex-col items-center justify-center p-4 bg-white rounded-2xl shadow-sm border border-gray-100 ring-2 ring-primary/10 hover:border-primary hover:shadow-md transition group">
+                <div class="w-10 h-10 rounded-xl bg-primary/5 text-primary flex items-center justify-center mb-2 group-hover:bg-primary group-hover:text-white transition">
+                    <i class="fas fa-sliders-h text-lg"></i>
+                </div>
+                <span class="text-xs font-bold text-gray-700">Akıllı Ayarlar</span>
             </a>
         </div>
 
