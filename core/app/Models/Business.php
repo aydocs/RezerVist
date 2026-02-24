@@ -510,7 +510,8 @@ class Business extends Model
         }
 
         // 3. Fallback to Category/Default
-        $categorySlug = $this->category ? $this->category->slug : 'general';
+        $category = $this->businessCategory ?: $this->category;
+        $categorySlug = ($category && is_object($category)) ? $category->slug : 'general';
         return asset("images/placeholders/business-{$categorySlug}.jpg");
     }
 }
