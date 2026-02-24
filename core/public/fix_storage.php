@@ -34,7 +34,7 @@ $kernel->bootstrap();
 // ----------------------------------------------
 
 echo "<div style='font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; border: 1px solid #eee; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);'>";
-echo "<h1 style='color: #6366f1;'>Rezervist Storage Fixer <span style='font-size: 14px; color: #94a3b8; font-weight: normal;'>(v2.6)</span></h1>";
+echo "<h1 style='color: #6366f1;'>Rezervist Storage Fixer <span style='font-size: 14px; color: #94a3b8; font-weight: normal;'>(v2.7)</span></h1>";
 echo "<hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;'>";
 
 // 0. Server Info
@@ -66,26 +66,25 @@ echo "<br>";
 $configUrl = config('app.url', 'Bilinmiyor');
 echo "<strong>APP_URL (Remote):</strong> <code style='background: #f1f5f9; padding: 2px 6px; border-radius: 4px;'>$configUrl</code><br><br>";
 
-// 2. Try to create storage link (FORCING RELATIVE)
-echo "<strong>İşlem 1: Storage Link Oluşturuluyor (Gelişmiş)...</strong><br>";
+// 2. Try to create storage link (TRYING ABSOLUTE THIS TIME)
+echo "<strong>İşlem 1: Storage Link Oluşturuluyor (TAM YOL)...</strong><br>";
 try {
     $link = public_path('storage');
-    $target = '../storage/app/public';
+    $target = storage_path('app/public');
     
     if (file_exists($link)) {
         if (is_link($link)) {
             unlink($link);
         } else {
-            // It's a directory! Backup it?
             rename($link, $link.'_backup_'.time());
         }
     }
     
-    // Create relative symlink
+    // Create absolute symlink
     if (symlink($target, $link)) {
-        echo "<span style='color: #10b981;'>✅ Sembolik link (GÖRECELİ) başarıyla oluşturuldu.</span><br><br>";
+        echo "<span style='color: #10b981;'>✅ Sembolik link (TAM YOL) başarıyla oluşturuldu.</span><br><br>";
     } else {
-        echo "<span style='color: #f43f5e;'>❌ Sembolik link oluşturulamadı! (İzin sorunu olabilir)</span><br><br>";
+        echo "<span style='color: #f43f5e;'>❌ Sembolik link oluşturulamadı!</span><br><br>";
     }
 } catch (\Exception $e) {
     echo "<span style='color: #f43f5e;'>❌ Hata (Link): " . $e->getMessage() . "</span><br><br>";
