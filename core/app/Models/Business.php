@@ -162,6 +162,18 @@ class Business extends Model
         return $this->hasMany(Favorite::class);
     }
 
+    /**
+     * Check if a business is favorited by a user.
+     */
+    public function isFavoritedBy($userId): bool
+    {
+        if (!$userId) {
+            return false;
+        }
+
+        return $this->favorites()->where('user_id', $userId)->exists();
+    }
+
     public function resources()
     {
         return $this->hasMany(Resource::class);
