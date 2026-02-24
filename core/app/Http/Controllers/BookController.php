@@ -15,6 +15,10 @@ class BookController extends Controller
     // Show the checkout page
     public function index(Request $request, Business $business)
     {
+        if (!$business->isReservationsEnabled()) {
+            return redirect()->route('business.show', $business->slug)
+                ->with('error', 'İşletme şu anda online rezervasyon kabul etmemektedir.');
+        }
 
         // Pass query params (date, guests) to the view
         $date = $request->query('date', now()->format('Y-m-d'));
@@ -40,6 +44,11 @@ class BookController extends Controller
     // Process the reservation
     public function store(Request $request, Business $business)
     {
+        if (!$business->isReservationsEnabled()) {
+            return redirect()->route('business.show', $business->slug)
+                ->with('error', 'İşletme şu anda online rezervasyon kabul etmemektedir.');
+        }
+
         $validated = $request->validate([
             'date' => 'required|date',
             'time' => 'required',
@@ -80,7 +89,7 @@ class BookController extends Controller
         }
 
         // 3. Handle Loyalty Points
-        if ($request->boolean('use_points') && Auth::check()) {
+        if ($request->boolean('use_points') && Auth::check() && $business->isLoyaltyEnabled()) {
             $user = Auth::user();
             if ($user->points > 0) {
                 $points_spent = $user->points;
@@ -103,6 +112,7 @@ class BookController extends Controller
 
         $resource = $business->resources()
             ->where('is_available', true)
+            ->where('is_reservation_enabled', true) // NEW CHECK
             ->where('capacity', '>=', $validated['guests'])
             ->when($request->location_id, function ($q) use ($request) {
                 return $q->where('location_id', $request->location_id);
@@ -139,7 +149,7 @@ class BookController extends Controller
                     'staff_id' => $validated['staff_id'] ?? null,
                     'start_time' => $start_time,
                     'end_time' => $start_time->copy()->addHour(),
-                    'status' => 'confirmed',
+                    'status' => $business->isAutoConfirmEnabled() ? 'confirmed' : 'pending',
                     'note' => $validated['note'],
                     'price' => $total_amount + $discount_amount + $loyalty_discount,
                     'discount_amount' => $discount_amount,

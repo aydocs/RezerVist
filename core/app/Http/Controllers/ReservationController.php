@@ -256,18 +256,19 @@ class ReservationController extends Controller
             return back()->with('error', 'Bu rezervasyon iptal edilemez. Mevcut durum: '.ucfirst($reservation->status));
         }
 
-        // Cancellation policy - must be at least 24 hours before reservation
+        // Cancellation policy - dynamic based on business settings
         $hoursUntilReservation = now()->diffInHours($reservation->start_time, false);
+        $limit = $reservation->business->getCancellationWindow();
 
-        if ($hoursUntilReservation < 24) {
+        if ($hoursUntilReservation < $limit) {
             if ($request->wantsJson()) {
                 return response()->json([
-                    'message' => 'Rezervasyonlar en az 24 saat öncesinden iptal edilmelidir.',
+                    'message' => "Rezervasyonlar en az {$limit} saat öncesinden iptal edilmelidir.",
                     'hours_remaining' => $hoursUntilReservation,
                 ], 400);
             }
 
-            return back()->with('error', 'Rezervasyonlar en az 24 saat öncesinden iptal edilmelidir.');
+            return back()->with('error', "Rezervasyonlar en az {$limit} saat öncesinden iptal edilmelidir.");
         }
 
         // Store info for waitlist notification before updating

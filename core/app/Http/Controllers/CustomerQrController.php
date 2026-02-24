@@ -120,6 +120,13 @@ class CustomerQrController extends Controller
             $decrypted = Crypt::decryptString($encrypted);
             [$businessId, $resourceId] = explode('|', $decrypted);
 
+            $business = Business::findOrFail($businessId);
+
+            // Check if QR payments are enabled for this business
+            if (!$business->isQrPaymentsEnabled()) {
+                return redirect()->back()->with('error', 'Bu işletme şu anda QR menü üzerinden ödeme kabul etmemektedir. Lütfen garsona danışın.');
+            }
+
             $order = Order::where('business_id', $businessId)
                 ->where('resource_id', $resourceId)
                 ->where('status', 'active')

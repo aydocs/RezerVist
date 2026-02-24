@@ -165,6 +165,11 @@
                             </div>
                         </span>
                     @endif
+                    @if($business->isBusyMode())
+                        <span class="inline-flex items-center px-4 py-1.5 rounded-full text-xs md:text-sm font-black uppercase tracking-widest text-white bg-rose-600 shadow-lg shadow-rose-900/50 animate-pulse border border-rose-400/50">
+                            <i class="fas fa-bolt mr-2"></i> YOĞUNUZ
+                        </span>
+                    @endif
                 </h1>
 
                 <!-- Mobile Header Area (Aligning Rating and Favorite) -->

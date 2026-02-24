@@ -275,8 +275,25 @@ class BusinessController extends Controller
             return response()->json(['error' => 'Tarih gerekli'], 422);
         }
 
+        // Check if reservations are enabled globally for this business
+        if (! $business->isReservationsEnabled()) {
+            return response()->json([
+                'slots' => [],
+                'message' => 'İşletme şu anda online rezervasyon kabul etmemektedir.',
+                'is_closed' => true,
+                'disabled_by_owner' => true
+            ]);
+        }
+
         try {
             $carbonDate = \Carbon\Carbon::parse($date);
+
+            // Check Max Ahead Days
+            $maxDays = $business->getMaxBookingAheadDays();
+            if ($carbonDate->gt(now()->addDays($maxDays))) {
+                return response()->json(['slots' => [], 'message' => "En fazla {$maxDays} gün sonrasına rezervasyon yapabilirsiniz.", 'is_closed' => true]);
+            }
+
             // Translate dayOfWeek: Carbon 0=Sunday, 1=Monday. Match with DB.
             // As per BusinessHours creation, we likely use 0-6 or 1-7. Let's assume Carbon standard (0-6) for now.
             $dayOfWeek = $carbonDate->dayOfWeek;
@@ -330,18 +347,20 @@ class BusinessController extends Controller
                 $slotStart = $current->copy();
                 $slotEnd = $slotStart->copy()->addHours(2); // Assuming 2 hour duration for resource check
 
-                // If date is today, filter past times
+                // If date is today, filter past times and respect Min Advance Hours
                 $isFuture = true;
-                if ($carbonDate->isToday()) {
-                    if ($current->lte($now->copy()->addMinutes(15))) {
-                        $isFuture = false;
-                    }
+                $minAdvanceHours = $business->getMinAdvanceBookingTime();
+                $minTime = $now->copy()->addHours($minAdvanceHours)->addMinutes(15); 
+
+                if ($current->lte($minTime)) {
+                    $isFuture = false;
                 }
 
                 if ($isFuture) {
-                    // Accuracy: Check if at least ONE resource is free for this slot
+                    // Accuracy: Check if at least ONE resource is free for this slot AND has reservations enabled
                     $anyAvailable = \App\Models\Resource::where('business_id', $business->id)
                         ->where('is_available', true)
+                        ->where('is_reservation_enabled', true) // NEW CHECK
                         ->where('capacity', '>=', $guestCount)
                         ->whereDoesntHave('reservations', function ($q) use ($slotStart, $slotEnd) {
                             $q->where('start_time', '<', $slotEnd)

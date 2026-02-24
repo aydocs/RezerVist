@@ -111,6 +111,7 @@ class Business extends Model
         'pricing_type',
         'menu_theme',
         'menu_color',
+        'settings',
     ];
 
     protected $casts = [
@@ -123,6 +124,7 @@ class Business extends Model
         'last_occupancy_update' => 'datetime',
         'subscription_ends_at' => 'datetime',
         'device_registered_at' => 'datetime',
+        'settings' => 'array',
     ];
 
     public function owner()
@@ -405,5 +407,85 @@ class Business extends Model
         }
 
         return $package->features[$key] ?? $default;
+    }
+
+    /**
+     * Get a specific setting value.
+     */
+    public function getSetting($key, $default = null)
+    {
+        return $this->settings[$key] ?? $default;
+    }
+
+    /**
+     * Check if reservations are enabled globally.
+     */
+    public function isReservationsEnabled(): bool
+    {
+        return (bool) $this->getSetting('reservations_enabled', true);
+    }
+
+    /**
+     * Check if QR payments are enabled.
+     */
+    public function isQrPaymentsEnabled(): bool
+    {
+        return (bool) $this->getSetting('qr_payments_enabled', true);
+    }
+
+    /**
+     * Check if reservations are automatically confirmed.
+     */
+    public function isAutoConfirmEnabled(): bool
+    {
+        return (bool) $this->getSetting('auto_confirm', true);
+    }
+
+    /**
+     * Check if loyalty program is active.
+     */
+    public function isLoyaltyEnabled(): bool
+    {
+        return (bool) $this->getSetting('loyalty_enabled', true);
+    }
+
+    /**
+     * Check if waiter call via QR is enabled.
+     */
+    public function isWaiterCallEnabled(): bool
+    {
+        return (bool) $this->getSetting('qr_waiter_call', true);
+    }
+
+    /**
+     * Check if business is in busy mode.
+     */
+    public function isBusyMode(): bool
+    {
+        return (bool) $this->getSetting('busy_mode', false);
+    }
+
+    /**
+     * Get the cancellation window in hours.
+     */
+    public function getCancellationWindow(): int
+    {
+        return (int) $this->getSetting('cancellation_limit', 24);
+    }
+
+    /**
+     * Get the minimum advance booking time in hours.
+     */
+    public function getMinAdvanceBookingTime(): int
+    {
+        return (int) $this->getSetting('min_advance_hours', 0);
+    }
+
+    /**
+     * Get the maximum booking ahead days.
+     */
+    public function getMaxBookingAheadDays(): int
+    {
+        return (int) $this->getSetting('max_ahead_days', 30);
     }
 }

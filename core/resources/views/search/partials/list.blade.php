@@ -16,6 +16,12 @@
             {{ $business->status_text }}
         </div>
 
+        @if($business->isBusyMode())
+            <div class="absolute top-8 left-2 px-2 py-0.5 rounded text-[8px] sm:text-[10px] font-bold uppercase tracking-wider bg-rose-600 text-white shadow-sm z-10 animate-pulse border border-rose-400">
+                YOĞUNUZ
+            </div>
+        @endif
+
         @if(isset($business->distance))
             <div class="absolute bottom-2 left-2 bg-black/70 text-white text-[10px] sm:text-xs px-2 py-1 rounded backdrop-blur">
                 {{ number_format($business->distance, 1) }} km

@@ -91,7 +91,7 @@ class WaiterKioskController extends Controller
         $reservation->update(['status' => 'completed']);
 
         // Reward loyalty points upon completion if not already done
-        if ($reservation->user) {
+        if ($reservation->user && $reservation->business->isLoyaltyEnabled()) {
             $amount = $reservation->total_amount > 0 ? $reservation->total_amount : $reservation->price;
             $points = (int) $amount;
             if ($points > 0) {

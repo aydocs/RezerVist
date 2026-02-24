@@ -18,6 +18,7 @@ class Resource extends Model
         'stock',
         'requires_inventory',
         'is_available',
+        'is_reservation_enabled',
         'category',
         'rating',
         'rating_count',
@@ -25,6 +26,7 @@ class Resource extends Model
 
     protected $casts = [
         'is_available' => 'boolean',
+        'is_reservation_enabled' => 'boolean',
         'requires_inventory' => 'boolean',
         'stock' => 'integer',
         'rating' => 'decimal:2',

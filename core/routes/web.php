@@ -282,6 +282,8 @@ Route::middleware(['auth', 'role:business,admin'])->prefix('vendor')->name('vend
         Route::delete('/business/images/{id}', [\App\Http\Controllers\VendorController::class, 'deleteImage'])->name('business.images.delete');
         Route::get('/business/hours', [\App\Http\Controllers\VendorController::class, 'editHours'])->name('business.hours.edit');
         Route::put('/business/hours', [\App\Http\Controllers\VendorController::class, 'updateHours'])->name('business.hours.update');
+        Route::get('/settings', [\App\Http\Controllers\VendorSettingsController::class, 'index'])->name('settings.index');
+        Route::put('/settings', [\App\Http\Controllers\VendorSettingsController::class, 'update'])->name('settings.update');
         Route::get('/reservations', [\App\Http\Controllers\VendorController::class, 'reservations'])->name('reservations.index');
         Route::patch('/reservations/{id}', [\App\Http\Controllers\VendorController::class, 'updateReservation'])->name('reservations.update');
 
