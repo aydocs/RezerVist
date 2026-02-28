@@ -64,7 +64,7 @@ class _QrScannerScreenState extends ConsumerState<QrScannerScreen> {
   }
 
   /// Parse QR URL: rezervist://table/{business_id}/{resource_id}
-  /// or http://localhost:8000/qr/{business_id}/{resource_id}
+  /// or https://rezervist.com/qr/{business_id}/{resource_id}
   Map<String, int>? _parseQrUrl(String url) {
     try {
       // Try URI format

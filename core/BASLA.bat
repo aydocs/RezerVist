@@ -24,7 +24,7 @@ if not exist .env (
             echo APP_KEY=
             echo APP_DEBUG=true
             echo APP_TIMEZONE=UTC
-            echo APP_URL=http://localhost:8000
+            echo APP_URL=https://rezervist.com
             echo.
             echo DB_CONNECTION=sqlite
             echo DB_DATABASE=database/database.sqlite
@@ -90,8 +90,8 @@ echo ========================================
 echo    SERVER ÇALIŞIYOR!
 echo ========================================
 echo.
-echo    🌐 Ana Sayfa: http://localhost:8000
-echo    📱 API:       http://localhost:8000/api
+echo    🌐 Ana Sayfa: https://rezervist.com
+echo    📱 API:       https://rezervist.com/api
 echo.
 echo    Durdurmak için: Ctrl+C
 echo.

@@ -40,6 +40,6 @@ echo ===================================================
 echo    TÜM SİSTEMLER AKTİF!
 echo ===================================================
 echo.
-echo    Panele gitmek için tarayıcını aç: http://localhost:8000/dashboard
+echo    Panele gitmek için tarayıcını aç: https://rezervist.com/dashboard
 echo.
 pause

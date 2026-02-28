@@ -51,7 +51,7 @@ Rezervist.com/
 ```
 APP_NAME=Rezervist
 APP_ENV=local
-APP_URL=http://localhost:8000
+APP_URL=https://rezervist.com
 APP_LOCALE=tr
 
 DB_CONNECTION=mysql

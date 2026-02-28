@@ -8,7 +8,7 @@ export default defineConfig({
     workers: process.env.CI ? 1 : undefined,
     reporter: 'html',
     use: {
-        baseURL: process.env.APP_URL || 'http://localhost:8000',
+        baseURL: process.env.APP_URL || 'https://rezervist.com',
         trace: 'on-first-retry',
         viewport: { width: 1280, height: 720 },
     },
