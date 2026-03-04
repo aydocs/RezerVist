@@ -51,13 +51,14 @@ class WebAuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'phone' => 'nullable|string',
+            'phone' => 'nullable|string|unique:users,phone',
             'terms_accepted' => 'required|accepted',
             'referral_code' => 'nullable|string|exists:users,referral_code',
         ], [
             'terms_accepted.required' => 'Kullanım koşullarını ve gizlilik politikasını kabul etmelisiniz.',
             'terms_accepted.accepted' => 'Kullanım koşullarını ve gizlilik politikasını kabul etmelisiniz.',
             'referral_code.exists' => 'Girdiğiniz referans kodu geçersiz.',
+            'phone.unique' => 'Bu telefon numarası zaten başka bir hesap tarafından kullanılıyor.',
         ]);
 
         // Generate 6-digit OTP
