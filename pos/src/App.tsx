@@ -24,7 +24,8 @@ function App() {
       if (!token) return; // Don't prefetch if not logged in
 
       // Check cache first
-      if (CacheManager.get('menu')) return;
+      // Temporarily disabled to force refresh image paths if they were cached
+      // if (CacheManager.get('menu')) return;
 
       try {
         const res = await api.get('/menu');

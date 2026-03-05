@@ -104,7 +104,7 @@ export default function Menu() {
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                                         referrerPolicy="no-referrer"
                                                         onError={(e) => {
-                                                            (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=400&h=400';
+                                                            e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(item.name)}&background=f3f4f6&color=a1a1aa&size=400`;
                                                         }}
                                                     />
                                                 </React.Fragment>
