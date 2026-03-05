@@ -60,12 +60,20 @@ class PosApiController extends Controller
             return response('No path provided', 400);
         }
 
+        // Handle cases where frontend accidentally sends the entire full URL 
+        if (str_starts_with($path, 'http')) {
+            $parsed = parse_url($path);
+            if (isset($parsed['path'])) {
+                $path = str_replace('/storage/', '', $parsed['path']);
+            }
+        }
+
         // Clean path to prevent directory traversal
         $path = str_replace(['..', '.\\', './'], '', $path);
         
         // Allowed directories to serve from
-        if (!str_starts_with($path, 'menus/') && !str_starts_with($path, 'category/') && !str_starts_with($path, 'businesses/')) {
-             return response('Forbidden path', 403);
+        if (!str_starts_with($path, 'menus/') && !str_starts_with($path, 'menu_images/') && !str_starts_with($path, 'category/') && !str_starts_with($path, 'businesses/')) {
+             return response('Forbidden path: ' . $path, 403);
         }
 
         $fullPath = storage_path('app/public/' . ltrim($path, '/'));
