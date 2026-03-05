@@ -6,14 +6,28 @@ export const API_BASE_ROOT = 'https://rezervist.com';
 const API_BASE_URL = `${API_BASE_ROOT}/api/pos`;
 
 export const getImageUrl = (imagePath: string | null | undefined, imageUrl?: string | null) => {
-    let resolvedUrl = imageUrl || (imagePath?.startsWith('http') ? imagePath : (imagePath ? `${API_BASE_ROOT}/storage/${imagePath}` : undefined));
+    // If neither is provided, return undefined
+    if (!imagePath && !imageUrl) return undefined;
 
-    // In local development, rewrite proxy URLs to bypass CORP
-    if (import.meta.env.DEV && resolvedUrl && resolvedUrl.startsWith(API_BASE_ROOT + '/storage')) {
-        return resolvedUrl.replace(API_BASE_ROOT, '');
+    // Extract the relative path from the full URL if imagePath wasn't provided
+    let path = imagePath;
+    if (!path && imageUrl) {
+        if (imageUrl.includes('/storage/')) {
+            path = imageUrl.split('/storage/')[1];
+        } else {
+            // If it's a completely external URL (e.g. Unsplash), return it as-is
+            return imageUrl;
+        }
     }
 
-    return resolvedUrl;
+    // Return the safe API proxy endpoint that bypasses Cloudflare Hotlink protection
+    if (path) {
+        // Remove any leading slashes just in case
+        path = path.replace(/^\/+/, '');
+        return `${API_BASE_ROOT}/api/pos/image?path=${encodeURIComponent(path)}`;
+    }
+
+    return undefined;
 };
 
 const apiClient = axios.create({
