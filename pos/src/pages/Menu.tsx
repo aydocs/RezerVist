@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
-import { UtensilsCrossed, Search, Loader2, Star, CheckCircle2, XCircle } from 'lucide-react';
+import { Search, Loader2, Star, CheckCircle2, XCircle } from 'lucide-react';
 import api, { API_BASE_ROOT } from '../lib/api-client';
 
 interface MenuItem {
@@ -97,17 +97,16 @@ export default function Menu() {
                                         >
                                             <div className="h-48 bg-gray-100 relative overflow-hidden">
                                                 {/* Prioritize image_url if available (added via accessor), fallback to manual path construction if needed */}
-                                                {(item as any).image_url || item.image ? (
+                                                <React.Fragment>
                                                     <img
-                                                        src={(item as any).image_url || (item.image?.startsWith('http') ? item.image : API_BASE_ROOT + `/storage/${item.image}`)}
+                                                        src={(item as any).image_url || (item.image?.startsWith('http') ? item.image : (item.image ? API_BASE_ROOT + `/storage/${item.image}` : undefined))}
                                                         alt={item.name}
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                                        onError={(e) => {
+                                                            (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=400&h=400';
+                                                        }}
                                                     />
-                                                ) : (
-                                                    <div className="w-full h-full flex items-center justify-center text-gray-300">
-                                                        <UtensilsCrossed size={48} />
-                                                    </div>
-                                                )}
+                                                </React.Fragment>
                                                 <div className="absolute top-4 right-4 group-hover:scale-110 transition-transform">
                                                     {item.is_available ? (
                                                         <span className="bg-green-500 text-white px-2.5 py-1 rounded-full text-[10px] font-black uppercase flex items-center gap-1 shadow-lg">

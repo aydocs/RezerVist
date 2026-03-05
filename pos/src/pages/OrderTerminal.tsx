@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
     ChevronLeft,
@@ -155,7 +155,7 @@ export default function OrderTerminal() {
     const fetchData = async () => {
         // 1. Instant UI from Cache
         const cachedMenu = CacheManager.get('menu');
-        const cachedTables = CacheManager.get('tables');
+        CacheManager.get('tables');
 
         if (cachedMenu && categories.length === 0) {
             setCategories(cachedMenu);
@@ -686,17 +686,20 @@ export default function OrderTerminal() {
                                 style={product.background_color && product.background_color.startsWith('#') ? { backgroundColor: product.background_color + '25' } : {}}
                             >
                                 <div className="aspect-square rounded-3xl mb-4 overflow-hidden relative border border-gray-100/50 bg-gray-50/50 shadow-inner group-hover:shadow-none transition-all duration-700">
-                                    {product.image ? (
+                                    <React.Fragment>
                                         <img
-                                            src={product.image.startsWith('http') ? product.image : API_BASE_ROOT + `/storage/${product.image}`}
+                                            src={(product as any).image_url || (product.image?.startsWith('http') ? product.image : (product.image ? API_BASE_ROOT + `/storage/${product.image}` : undefined))}
                                             alt=""
                                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+                                            onError={(e) => {
+                                                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=400&h=400';
+                                            }}
                                         />
-                                    ) : (
-                                        <div className="w-full h-full flex items-center justify-center text-indigo-500/20 font-black text-5xl italic select-none">
-                                            {product.name[0]}
-                                        </div>
-                                    )}
+                                    </React.Fragment>
+                                    <div className="w-full h-full flex items-center justify-center text-indigo-500/20 font-black text-5xl italic select-none">
+                                        {product.name[0]}
+                                    </div>
+
                                     {/* Quick Add Overlay */}
                                     <div className="absolute inset-0 bg-white/10 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                                         <div className="bg-indigo-600 text-white p-3 rounded-2xl shadow-2xl transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
@@ -863,18 +866,20 @@ export default function OrderTerminal() {
                                     )}
 
                                     <div className="h-16 w-16 rounded-2xl bg-gray-50 flex items-center justify-center text-primary/40 shrink-0 relative overflow-hidden border border-gray-100 font-black text-lg select-none">
-                                        {item.image ? (
+                                        <React.Fragment>
                                             <img
-                                                src={item.image.startsWith('http') ? item.image : API_BASE_ROOT + `/storage/${item.image}`}
+                                                src={(item as any).image_url || (item as any).menu?.image_url || (item.image?.startsWith('http') ? item.image : (item.image ? API_BASE_ROOT + `/storage/${item.image}` : undefined))}
                                                 alt=""
                                                 className="w-full h-full object-cover"
+                                                onError={(e) => {
+                                                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=400&h=400';
+                                                }}
                                             />
-                                        ) : (
-                                            <div className="flex flex-col items-center">
-                                                <span className="leading-none">{item.name[0]}</span>
-                                                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent"></div>
-                                            </div>
-                                        )}
+                                        </React.Fragment>
+                                        <div className="flex flex-col items-center">
+                                            <span className="leading-none">{item.name[0]}</span>
+                                            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent"></div>
+                                        </div>
                                     </div>
 
                                     <div className="flex-1 min-w-0">
