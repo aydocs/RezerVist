@@ -5,6 +5,17 @@ import SecureStorage from './SecureStorage';
 export const API_BASE_ROOT = 'https://rezervist.com';
 const API_BASE_URL = `${API_BASE_ROOT}/api/pos`;
 
+export const getImageUrl = (imagePath: string | null | undefined, imageUrl?: string | null) => {
+    let resolvedUrl = imageUrl || (imagePath?.startsWith('http') ? imagePath : (imagePath ? `${API_BASE_ROOT}/storage/${imagePath}` : undefined));
+
+    // In local development, rewrite proxy URLs to bypass CORP
+    if (import.meta.env.DEV && resolvedUrl && resolvedUrl.startsWith(API_BASE_ROOT + '/storage')) {
+        return resolvedUrl.replace(API_BASE_ROOT, '');
+    }
+
+    return resolvedUrl;
+};
+
 const apiClient = axios.create({
     baseURL: API_BASE_URL,
     timeout: 30000,

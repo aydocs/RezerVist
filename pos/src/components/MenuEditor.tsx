@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Save, X, Grid } from 'lucide-react';
 import api from '../lib/api';
-import { API_BASE_ROOT } from '../lib/api-client';
+import { getImageUrl } from '../lib/api-client';
 
 interface Product {
     id: number;
@@ -288,8 +288,9 @@ export default function MenuEditor() {
                                         <div className="w-20 h-20 bg-gray-50 rounded-3xl overflow-hidden shrink-0 border border-gray-100 italic flex items-center justify-center text-indigo-500/20 font-black text-2xl shadow-inner group-hover:scale-105 transition-transform duration-500 relative">
                                             <React.Fragment>
                                                 <img
-                                                    src={(product as any).image_url || (product.image?.startsWith('http') ? product.image : (product.image ? API_BASE_ROOT + `/storage/${product.image}` : undefined))}
+                                                    src={getImageUrl(product.image, (product as any).image_url)}
                                                     className="w-full h-full object-cover"
+                                                    referrerPolicy="no-referrer"
                                                     onError={(e) => {
                                                         (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=400&h=400';
                                                     }}

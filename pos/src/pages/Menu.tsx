@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from '../components/DashboardLayout';
 import { Search, Loader2, Star, CheckCircle2, XCircle } from 'lucide-react';
-import api, { API_BASE_ROOT } from '../lib/api-client';
+import api, { getImageUrl } from '../lib/api-client';
 
 interface MenuItem {
     id: number;
@@ -99,9 +99,10 @@ export default function Menu() {
                                                 {/* Prioritize image_url if available (added via accessor), fallback to manual path construction if needed */}
                                                 <React.Fragment>
                                                     <img
-                                                        src={(item as any).image_url || (item.image?.startsWith('http') ? item.image : (item.image ? API_BASE_ROOT + `/storage/${item.image}` : undefined))}
+                                                        src={getImageUrl(item.image, (item as any).image_url)}
                                                         alt={item.name}
                                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                                        referrerPolicy="no-referrer"
                                                         onError={(e) => {
                                                             (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=400&h=400';
                                                         }}

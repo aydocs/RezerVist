@@ -8,6 +8,15 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    proxy: {
+      '/storage': {
+        target: 'https://rezervist.com',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
+  },
   define: {
     'process.env': {}, // Fix for some libs expecting process.env
     __APP_VERSION__: JSON.stringify(process.env.npm_package_version || '1.0.0'),

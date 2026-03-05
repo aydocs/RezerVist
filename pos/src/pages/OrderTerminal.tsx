@@ -16,8 +16,7 @@ import {
     Merge,
     LayoutGrid
 } from 'lucide-react';
-import api from '../lib/api';
-import { API_BASE_ROOT } from '../lib/api-client';
+import api, { getImageUrl } from '../lib/api-client';
 import PaymentModal from '../components/PaymentModal';
 import CacheManager from '../lib/cache';
 interface MenuItem {
@@ -688,9 +687,10 @@ export default function OrderTerminal() {
                                 <div className="aspect-square rounded-3xl mb-4 overflow-hidden relative border border-gray-100/50 bg-gray-50/50 shadow-inner group-hover:shadow-none transition-all duration-700">
                                     <React.Fragment>
                                         <img
-                                            src={(product as any).image_url || (product.image?.startsWith('http') ? product.image : (product.image ? API_BASE_ROOT + `/storage/${product.image}` : undefined))}
+                                            src={getImageUrl(product.image, (product as any).image_url)}
                                             alt=""
                                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+                                            referrerPolicy="no-referrer"
                                             onError={(e) => {
                                                 (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=400&h=400';
                                             }}
@@ -868,9 +868,10 @@ export default function OrderTerminal() {
                                     <div className="h-16 w-16 rounded-2xl bg-gray-50 flex items-center justify-center text-primary/40 shrink-0 relative overflow-hidden border border-gray-100 font-black text-lg select-none">
                                         <React.Fragment>
                                             <img
-                                                src={(item as any).image_url || (item as any).menu?.image_url || (item.image?.startsWith('http') ? item.image : (item.image ? API_BASE_ROOT + `/storage/${item.image}` : undefined))}
+                                                src={getImageUrl(item.image, (item as any).image_url || (item as any).menu?.image_url)}
                                                 alt=""
                                                 className="w-full h-full object-cover"
+                                                referrerPolicy="no-referrer"
                                                 onError={(e) => {
                                                     (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=400&h=400';
                                                 }}
