@@ -50,6 +50,45 @@ class PosApiController extends Controller
     }
 
     /**
+     * Serve image files bypassing Cloudflare bot checks for POS external loading.
+     */
+    public function serveImage(Request $request)
+    {
+        $path = $request->query('path');
+        
+        if (!$path) {
+            return response('No path provided', 400);
+        }
+
+        // Clean path to prevent directory traversal
+        $path = str_replace(['..', '.\\', './'], '', $path);
+        
+        // Allowed directories to serve from
+        if (!str_starts_with($path, 'menus/') && !str_starts_with($path, 'category/') && !str_starts_with($path, 'businesses/')) {
+             return response('Forbidden path', 403);
+        }
+
+        $fullPath = storage_path('app/public/' . ltrim($path, '/'));
+        
+        if (!file_exists($fullPath)) {
+            // Fallback to direct public path if not in storage/app/public
+            $fullPath = public_path('storage/' . ltrim($path, '/'));
+            if (!file_exists($fullPath)) {
+                return response('Image not found', 404);
+            }
+        }
+        
+        $mime = mime_content_type($fullPath);
+        
+        return response()->file($fullPath, [
+            'Content-Type' => $mime,
+            'Cache-Control' => 'public, max-age=86400',
+            // Disable Hotlink protection limits for this endpoint
+            'Access-Control-Allow-Origin' => '*'
+        ]);
+    }
+
+    /**
      * Initialize POS session for authenticated user.
      */
     public function init(Request $request)

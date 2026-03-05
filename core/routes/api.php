@@ -111,6 +111,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::prefix('pos')->group(function () {
     Route::get('/version', [\App\Http\Controllers\Api\PosApiController::class, 'checkVersion']);
+    Route::get('/image', [\App\Http\Controllers\Api\PosApiController::class, 'serveImage']);
 });
 
 Route::prefix('pos')->middleware(['auth:sanctum', 'subscribed:pos_access'])->group(function () {
