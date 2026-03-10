@@ -5,10 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Rezervist - Türkiye'nin Premium Rezervasyon Platformu</title>
-        <meta name="description" content="Türkiye'nin en kapsamlı online rezervasyon platformu. Restoran, kafe, kuaför ve güzellik merkezleri için saniyeler içinde ücretsiz rezervasyon yapın.">
-        <meta name="keywords" content="rezervasyon, online randevu, restoran rezervasyon, kuaför randevu, güzellik merkezi, rezervist">
+        <meta name="description" content="Türkiye'nin en kapsamlı online rezervasyon platformu. Restoran ve kafeler için saniyeler içinde ücretsiz rezervasyon yapın.">
+        <meta name="keywords" content="rezervasyon, online randevu, restoran rezervasyon, cafe rezervasyon, rezervist">
         <meta property="og:title" content="Rezervist - Türkiye'nin Premium Rezervasyon Platformu">
-        <meta property="og:description" content="En iyi restoran, kafe ve güzellik merkezlerini keşfedin, saniyeler içinde ücretsiz rezervasyon yapın.">
+        <meta property="og:description" content="En iyi restoran ve kafeleri keşfedin, saniyeler içinde ücretsiz rezervasyon yapın.">
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ url('/') }}">
         <meta property="og:image" content="{{ asset('images/og-image.jpg') }}">

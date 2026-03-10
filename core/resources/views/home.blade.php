@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title', ($globalSettings['site_name'] ?? 'Rezervist.com') . ' | Türkiye\'nin En İyi Online Rezervasyon Platformu | Restoran, Kuaför, Güzellik Merkezi Randevu')
-@section('meta_description', 'Türkiye\'nin lider online rezervasyon platformu. İstanbul, Ankara, İzmir ve tüm Türkiye\'de restoran rezervasyonu, kuaför randevusu, güzellik merkezi ve daha fazlası için hemen ücretsiz rezervasyon yapın. 7/24 hizmet!')
-@section('meta_keywords', 'online rezervasyon, restoran rezervasyon, masa rezervasyonu, kuaför randevu, güzellik merkezi randevu, istanbul restoran, ankara cafe, izmir kuaför, türkiye rezervasyon, ücretsiz rezervasyon, hemen rezervasyon yap')
+@section('title', ($globalSettings['site_name'] ?? 'Rezervist.com') . ' | Türkiye\'nin En İyi Online Rezervasyon Platformu | Restoran ve Kafe Rezervasyonu')
+@section('meta_description', 'Türkiye\'nin lider online rezervasyon platformu. İstanbul, Ankara, İzmir ve tüm Türkiye\'de restoran ve kafe rezervasyonu için hemen ücretsiz rezervasyon yapın. 7/24 hizmet!')
+@section('meta_keywords', 'online rezervasyon, restoran rezervasyon, masa rezervasyonu, cafe rezervasyon, istanbul restoran, ankara cafe, izmir restoran, türkiye rezervasyon, ücretsiz rezervasyon, hemen rezervasyon yap')
 
 @section('content')
 <!-- Hero Section -->

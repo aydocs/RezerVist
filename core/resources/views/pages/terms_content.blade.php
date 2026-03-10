@@ -5,7 +5,7 @@
 <div class="space-y-6">
     <div>
         <h4 class="font-black text-gray-900 mb-2">1. Taraflar ve Tanımlar</h4>
-        <p>Bu sözleşme, Rezervist (bundan böyle "PLATFORM" olarak anılacaktır) ile bu platformu kullanan kullanıcı (bundan böyle "KULLANICI" olarak anılacaktır) arasında akdedilmiştir. PLATFORM, restoran ve etkinlik rezervasyon hizmetleri sunan bir aracı hizmet sağlayıcıdır.</p>
+        <p>Bu sözleşme, Rezervist (bundan böyle "PLATFORM" olarak anılacaktır) ile bu platformu kullanan kullanıcı (bundan böyle "KULLANICI" olarak anılacaktır) arasında akdedilmiştir. PLATFORM, restoran ve kafe rezervasyon hizmetleri sunan bir aracı hizmet sağlayıcıdır.</p>
     </div>
 
     <div>

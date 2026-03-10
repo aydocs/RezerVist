@@ -136,9 +136,9 @@
                         <div class="flex gap-6 items-start">
                             <div class="w-10 h-10 bg-slate-900 text-white rounded-xl flex items-center justify-center font-black flex-shrink-0">2</div>
                             <div>
-                                <h4 class="text-lg font-black text-slate-900 uppercase tracking-tight mb-2">Lisans Anahtarı ile Eşleştirin</h4>
+                                <h4 class="text-lg font-black text-slate-900 uppercase tracking-tight mb-2">Terminali Eşleştirin</h4>
                                 <p class="text-slate-500 text-sm font-semibold mb-4 leading-relaxed">
-                                    İşletme Panelinizdeki "POS Cihazları" sekmesinden üreteceğiniz 64 karakterli anahtarı terminale yapıştırın.
+                                    İşletme Panelinizdeki "POS Cihazları" sekmesinden üreteceğiniz terminal anahtarını terminale girin.
                                 </p>
                                 <div class="bg-gray-900 p-4 rounded-xl text-emerald-400 font-mono text-xs overflow-x-auto border-l-4 border-emerald-500">
                                     fI1pZyjx6kHKmmGwphxqZcHESlWxmAsJSdgghc0UTTGw...

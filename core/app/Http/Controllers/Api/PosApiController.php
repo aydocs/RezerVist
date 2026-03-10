@@ -72,7 +72,16 @@ class PosApiController extends Controller
         $path = str_replace(['..', '.\\', './'], '', $path);
         
         // Allowed directories to serve from
-        if (!str_starts_with($path, 'menus/') && !str_starts_with($path, 'menu_images/') && !str_starts_with($path, 'category/') && !str_starts_with($path, 'businesses/')) {
+        $allowed = ['menus/', 'menu_images/', 'menu_items/', 'category/', 'businesses/', 'business_images/', 'staff_photos/'];
+        $isAllowed = false;
+        foreach ($allowed as $dir) {
+            if (str_starts_with($path, $dir)) {
+                $isAllowed = true;
+                break;
+            }
+        }
+
+        if (!$isAllowed) {
              return response('Forbidden path: ' . $path, 403);
         }
 

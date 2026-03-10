@@ -9,8 +9,8 @@
     <!-- Primary Meta Tags -->
     <title>@yield('title', ($globalSettings['site_name'] ?? 'Rezervist.com') . ' - ' . ($globalSettings['site_tagline'] ?? 'Türkiye\'nin Premium Rezervasyon Platformu'))</title>
     <meta name="title" content="@yield('title', ($globalSettings['site_name'] ?? 'Rezervist.com') . ' - Türkiye\'nin En İyi Rezervasyon Platformu')">
-    <meta name="description" content="@yield('meta_description', $globalSettings['seo_description'] ?? 'Türkiye\'nin en kapsamlı online rezervasyon platformu. Restoran, kafe, kuaför, güzellik merkezi ve daha fazlası için hemen rezervasyon yapın. 7/24 ücretsiz hizmet.')">
-    <meta name="keywords" content="@yield('meta_keywords', $globalSettings['seo_keywords'] ?? 'rezervasyon, online rezervasyon, restoran rezervasyon, masa rezervasyonu, kuaför randevu, güzellik merkezi, ankara restoran, istanbul cafe, izmir kuaför, türkiye rezervasyon')">
+    <meta name="description" content="@yield('meta_description', $globalSettings['seo_description'] ?? 'Türkiye\'nin en kapsamlı online rezervasyon platformu. Restoran ve kafeler için hemen rezervasyon yapın. 7/24 ücretsiz hizmet.')">
+    <meta name="keywords" content="@yield('meta_keywords', $globalSettings['seo_keywords'] ?? 'rezervasyon, online rezervasyon, restoran rezervasyon, masa rezervasyonu, cafe rezervasyon, istanbul restoran, ankara cafe, izmir restoran, türkiye rezervasyon')">
     <meta name="author" content="{{ $globalSettings['site_name'] ?? 'Rezervist.com' }}">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
@@ -1091,8 +1091,6 @@
                                 $exploreLinks = [
                                     ['name' => __('common.subcategories.restaurants'), 'url' => '/search?category=restoran'],
                                     ['name' => __('common.subcategories.cafes'), 'url' => '/search?category=kafe'],
-                                    ['name' => __('common.categories.beauty'), 'url' => '/search?category=guzellik'],
-                                    ['name' => __('common.categories.events'), 'url' => '/search?category=etkinlik'],
                                     ['name' => __('home.featured.title'), 'url' => '/search?sort=popular'],
                                 ];
                             @endphp

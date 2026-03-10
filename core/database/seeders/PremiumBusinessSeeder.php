@@ -27,9 +27,7 @@ class PremiumBusinessSeeder extends Seeder
         $this->ensureCategories();
 
         $this->createSaltBaeSteakhouse($owner);
-        $this->createLaDivaSpa($owner);
         $this->createSkyLoungeAndBar($owner);
-        $this->createGrandHotel($owner);
         $this->createGourmetFish($owner);
     }
 
@@ -38,9 +36,6 @@ class PremiumBusinessSeeder extends Seeder
         $categories = [
             ['name' => 'Restoran', 'slug' => 'restoran', 'type' => 'place', 'icon' => 'restaurant'],
             ['name' => 'Kafe', 'slug' => 'kafe', 'type' => 'place', 'icon' => 'cafe'],
-            ['name' => 'Güzellik Salonu', 'slug' => 'guzellik-salonu', 'type' => 'service', 'icon' => 'salon'],
-            ['name' => 'Otel', 'slug' => 'otel', 'type' => 'place', 'icon' => 'hotel'],
-            ['name' => 'Eğlence', 'slug' => 'eglence', 'type' => 'place', 'icon' => 'nightlife'],
         ];
 
         foreach ($categories as $cat) {
@@ -140,68 +135,6 @@ class PremiumBusinessSeeder extends Seeder
         Staff::create(['business_id' => $business->id, 'name' => 'Mehmet Şef', 'position' => 'Sous Chef']);
     }
 
-    private function createLaDivaSpa($owner)
-    {
-        $category = Category::where('slug', 'guzellik-salonu')->first();
-
-        $business = Business::create([
-            'owner_id' => $owner->id,
-            'category_id' => $category->id,
-            'name' => 'La Diva Spa & Wellness',
-            'slug' => 'la-diva-spa-wellness',
-            'description' => 'Şehrin gürültüsünden uzaklaşın. Geleneksel Türk hamamı, Bali masajı ve cilt bakımı hizmetlerimizle yenilenin.',
-            'address' => 'Bağdat Caddesi No:220, Suadiye, İstanbul',
-            'latitude' => 40.9632,
-            'longitude' => 29.0860,
-            'phone' => '02164445566',
-            'rating' => 4.8,
-            'is_active' => true,
-            'price_per_person' => 1500,
-        ]);
-
-        // Hours (Tue-Sun 10:00 - 20:00, Mon Closed)
-        for ($i = 0; $i <= 6; $i++) {
-            BusinessHour::create([
-                'business_id' => $business->id,
-                'day_of_week' => $i,
-                'open_time' => '10:00',
-                'close_time' => '20:00',
-                'is_closed' => ($i === 1), // Monday Closed
-            ]);
-        }
-
-        $images = [
-            'https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=1200', // Spa
-            'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1200', // Massage
-        ];
-
-        foreach ($images as $url) {
-            BusinessImage::create(['business_id' => $business->id, 'image_path' => $url]);
-        }
-
-        // Resources
-        Resource::create(['business_id' => $business->id, 'name' => 'Masaj Odası 1 (Bamboo)', 'type' => 'room', 'capacity' => 1]);
-        Resource::create(['business_id' => $business->id, 'name' => 'Masaj Odası 2 (Lotus)', 'type' => 'room', 'capacity' => 1]);
-        Resource::create(['business_id' => $business->id, 'name' => 'VIP Hamam', 'type' => 'room', 'capacity' => 2]);
-
-        Menu::create([
-            'business_id' => $business->id,
-            'category' => 'Masaj',
-            'name' => 'Klasik Bali Masajı (60 Dk)',
-            'description' => 'Aromatik yağlarla yapılan rahatlatıcı tüm vücut masajı.',
-            'price' => 1200,
-            'is_available' => true,
-        ]);
-        Menu::create([
-            'business_id' => $business->id,
-            'category' => 'Cilt Bakımı',
-            'name' => 'Hydrafacial',
-            'description' => 'Derinlemesine cilt temizliği ve anti-aging bakım.',
-            'price' => 1500,
-            'is_available' => true,
-        ]);
-    }
-
     private function createSkyLoungeAndBar($owner)
     {
         $category = Category::where('slug', 'kafe')->first() ?? Category::first();
@@ -260,45 +193,6 @@ class PremiumBusinessSeeder extends Seeder
         ]);
     }
 
-    private function createGrandHotel($owner)
-    {
-        $category = Category::where('slug', 'otel')->first();
-
-        $business = Business::create([
-            'owner_id' => $owner->id,
-            'category_id' => $category->id,
-            'name' => 'Ciragan Palace Kempinski',
-            'slug' => 'ciragan-palace',
-            'description' => 'Boğazın kıyısında tarihi bir sarayda konaklama deneyimi. 5 çayı, sonsuzluk havuzu ve kral dairesi.',
-            'address' => 'Çırağan Caddesi No:32, Beşiktaş, İstanbul',
-            'latitude' => 41.0438,
-            'longitude' => 29.0163,
-            'phone' => '02123264646',
-            'rating' => 5.0,
-            'is_active' => true,
-            'price_per_person' => 10000,
-        ]);
-
-        for ($i = 0; $i <= 6; $i++) {
-            BusinessHour::create([
-                'business_id' => $business->id,
-                'day_of_week' => $i,
-                'open_time' => '00:00',
-                'close_time' => '23:59',
-                'is_closed' => false,
-            ]);
-        }
-
-        BusinessImage::create(['business_id' => $business->id, 'image_path' => 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1200']); // Hotel
-
-        Menu::create([
-            'business_id' => $business->id,
-            'category' => 'Konaklama',
-            'name' => 'Deluxe Boğaz Manzaralı Oda',
-            'description' => '35m2, balkonlu ve panoramik boğaz manzaralı.',
-            'price' => 25000,
-            'is_available' => true,
-        ]);
     }
 
     private function createGourmetFish($owner)
