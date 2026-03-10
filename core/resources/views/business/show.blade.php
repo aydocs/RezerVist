@@ -1301,8 +1301,8 @@
                 this.calculateTotal();
                 
                 // Initialize all categories as open
-                const categories = @js($business->menus->pluck('category')->unique()->toArray());
-                this.openCategories = categories.map(c => c || '');
+                const categories = @js($business->menus->pluck('category')->unique()->values()->toArray());
+                this.openCategories = Array.isArray(categories) ? categories.map(c => c || '') : Object.values(categories).map(c => c || '');
 
                 this.$watch('searchQuery', (val) => {
                     // Open all categories if searching, close if empty (initial state)
