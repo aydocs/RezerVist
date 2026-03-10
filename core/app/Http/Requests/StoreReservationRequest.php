@@ -115,21 +115,19 @@ class StoreReservationRequest extends FormRequest
             return;
         }
 
-        // 4. Check if requested time is within the open/close range
+        // 4. Check if requested time is within the OPEN/CLOSE range of RESERVATION settings
+        $business = Business::find($businessId);
+        $reservationSettings = $business->getAvailableTimeSlots()[0] ?? ['start' => '10:00', 'end' => '23:00'];
+        
+        $openTimeStr = $reservationSettings['start'] ?? '10:00';
+        $closeTimeStr = $reservationSettings['end'] ?? '23:00';
+
         $requestedTime = Carbon::createFromFormat('H:i', $time);
-
-        // Robust time parsing (handling potential string or Carbon casts)
-        $openTimeStr = $businessHour->open_time instanceof Carbon ? $businessHour->open_time->format('H:i') : Carbon::parse($businessHour->open_time)->format('H:i');
-        $closeTimeStr = $businessHour->close_time instanceof Carbon ? $businessHour->close_time->format('H:i') : Carbon::parse($businessHour->close_time)->format('H:i');
-
         $openTime = Carbon::createFromFormat('H:i', $openTimeStr);
         $closeTime = Carbon::createFromFormat('H:i', $closeTimeStr);
 
-        // Handle cross-midnight closing (e.g., 09:00 - 02:00)
+        // Handle cross-midnight closing
         if ($closeTime->lessThan($openTime)) {
-            // If requested time is before opening AND after midnight, it might be in the "late night" window of the PREVIOUS day's booking logic,
-            // but here we check against the selected day's window.
-            // Simplified: if current request is >= open OR < close (if cross-midnight)
             $isValid = ($requestedTime->greaterThanOrEqualTo($openTime) || $requestedTime->lessThan($closeTime));
         } else {
             $isValid = ($requestedTime->greaterThanOrEqualTo($openTime) && $requestedTime->lessThan($closeTime));
@@ -138,7 +136,7 @@ class StoreReservationRequest extends FormRequest
         if (! $isValid) {
             $validator->errors()->add(
                 'reservation_time',
-                "İşletme bu saatte kapalıdır. Çalışma saatleri: {$openTimeStr} - {$closeTimeStr}"
+                "Seçilen saat işletmenin rezervasyon saatleri dışındadır. Rezervasyon saatleri: {$openTimeStr} - {$closeTimeStr}"
             );
         }
     }
