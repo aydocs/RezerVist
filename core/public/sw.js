@@ -34,7 +34,6 @@ self.addEventListener('notificationclick', function (event) {
     );
 });
 
-// Required for PWA Installability
-self.addEventListener('fetch', function (event) {
-    // This can be empty but must exist
-});
+// Fetch handler removed to resolve "no-op fetch handler" warning.
+// If PWA installability requires a fetch handler in the future, 
+// implement a proper caching strategy here instead of an empty listener.

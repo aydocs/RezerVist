@@ -114,18 +114,40 @@ class PaymentController extends Controller
         $firstBasketItem->setId('BI'.$reservation->id);
         $firstBasketItem->setName('Rezervasyon #'.$reservation->id);
         $firstBasketItem->setCategory1('Hizmet');
-        $firstBasketItem->setItemType(\Iyzipay\Model\BasketItemType::VIRTUAL);
-        $firstBasketItem->setPrice($price);
-
-        // MARKETPLACE LOGIC
-        // Only add subMerchantKey and subMerchantPrice if the business is a registered sub-merchant.
-        if (! empty($reservation->business->iyzico_submerchant_key)) {
-            $firstBasketItem->setSubMerchantKey($reservation->business->iyzico_submerchant_key);
-            // Calculate sub-merchant price (post-commission)
-            $commissionRate = $reservation->business->commission_rate ?? 0;
-            $subMerchantPrice = $price - ($price * ($commissionRate / 100));
-            $firstBasketItem->setSubMerchantPrice($subMerchantPrice);
+        // MARKETPLACE PRE-FLIGHT CHECK & LOGIC
+        // Iyzico Marketplace accounts REQUIRE a subMerchantKey.
+        if (empty($reservation->business->iyzico_submerchant_key)) {
+            \Log::warning("PAYMENT CANCELLED: Business #{$reservation->business->id} has no submerchant key.");
+            
+            return response()->make('
+                <html>
+                <head><meta name="viewport" content="width=device-width, initial-scale=1">
+                <style>
+                    body { font-family: -apple-system, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; background: #f8fafc; }
+                    .card { text-align: center; padding: 32px; max-width: 400px; background: white; border-radius: 24px; shadow: 0 4px 6px rgba(0,0,0,0.05); }
+                    .icon { font-size: 48px; margin-bottom: 16px; }
+                    h2 { color: #1e293b; margin-bottom: 8px; }
+                    p { color: #64748b; line-height: 1.5; margin-bottom: 24px; }
+                    .btn { background: #4f46e5; color: white; padding: 12px 24px; border-radius: 12px; text-decoration: none; font-weight: bold; display: inline-block; }
+                </style>
+                </head>
+                <body>
+                    <div class="card">
+                        <div class="icon">ℹ️</div>
+                        <h2>Ödeme Aktif Değil</h2>
+                        <p>Bu işletme henüz online ödeme altyapısını (iyzico) doğrulamadığı için şu an ödeme yapılamıyor. Lütfen işletme ile iletişime geçin.</p>
+                        <a href="/" class="btn">Anasayfaya Dön</a>
+                    </div>
+                </body>
+                </html>
+            ', 200, ['Content-Type' => 'text/html']);
         }
+
+        // Set the SubMerchantKey for Iyzico Marketplace logic
+        $firstBasketItem->setSubMerchantKey($reservation->business->iyzico_submerchant_key);
+        $commissionRate = $reservation->business->commission_rate ?? 0;
+        $subMerchantPrice = $price - ($price * ($commissionRate / 100));
+        $firstBasketItem->setSubMerchantPrice($subMerchantPrice);
 
         $basketItems[0] = $firstBasketItem;
         $request->setBasketItems($basketItems);
