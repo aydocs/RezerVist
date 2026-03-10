@@ -55,7 +55,8 @@
                         'title' => 'Rezervasyon Kurallarını Koy',
                         'desc' => 'Rezervasyon başlangıç/bitiş saatlerini ve masa periyotlarını ayarla.',
                         'icon' => 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
-                        'route' => 'vendor.business.edit', // This opens settings modal usually
+                        'route' => 'vendor.business.edit',
+                        'anchor' => 'reservation-settings',
                         'completed' => $onboarding['steps']['reservation_settings']
                     ],
                     [
@@ -79,7 +80,8 @@
                         'title' => 'Ödeme Almaya Başla (Iyzico)',
                         'desc' => 'Pazaryeri kaydını tamamla ve iyzico ile anında ödeme almaya başla.',
                         'icon' => 'M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z M12 2a10 10 0 100 20 10 10 0 000-20z M12 18V6',
-                        'route' => 'vendor.business.edit', // Modal again
+                        'route' => 'vendor.finance.index', 
+                        'params' => ['open_iyzico' => '1'],
                         'completed' => $onboarding['steps']['payments']
                     ],
                     [
@@ -138,7 +140,7 @@
                                     TAMAMLANDI
                                 </div>
                             @else
-                                <a href="{{ route($mission['route']) }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm transition-all shadow-lg shadow-indigo-200 active:scale-95">
+                                <a href="{{ route($mission['route'], $mission['params'] ?? []) }}{{ isset($mission['anchor']) ? '#' . $mission['anchor'] : '' }}" class="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm transition-all shadow-lg shadow-indigo-200 active:scale-95">
                                     Görevi Başlat
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                                 </a>

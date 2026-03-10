@@ -32,12 +32,18 @@ class IyzicoMarketplaceService
 
         $request->setSubMerchantType($data['submerchant_type']);
         $request->setAddress($business->address ?? 'Istanbul');
-        $request->setContactName($business->owner->name);
-        $request->setContactSurname($business->owner->name);
+        // Split name into name and surname
+        $fullName = $business->owner->name;
+        $nameParts = explode(' ', $fullName);
+        $surname = array_pop($nameParts);
+        $name = implode(' ', $nameParts) ?: $surname; // Fallback if no space
+
+        $request->setContactName($name);
+        $request->setContactSurname($surname);
         $request->setEmail($business->owner->email);
         $request->setGsmNumber($business->phone ?? '+905555555555');
         $request->setName($data['legal_company_name'] ?? $business->name);
-        $request->setIban(str_replace(' ', '', $data['iyzico_iban']));
+        $request->setIban(preg_replace('/[^A-Z0-9]/', '', $data['iyzico_iban']));
 
         if ($data['submerchant_type'] === 'PERSONAL') {
             $request->setIdentityNumber($data['identity_number'] ?? '11111111111');

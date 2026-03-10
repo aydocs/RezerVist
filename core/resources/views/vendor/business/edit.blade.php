@@ -192,7 +192,7 @@
 @endif
 
                     <!-- Reservation Time Slots Card -->
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 mb-8 relative z-20">
+                    <div id="reservation-settings" class="bg-white rounded-2xl shadow-sm border border-gray-100 mb-8 relative z-20">
                         <div class="p-6 border-b border-gray-100 bg-gray-50/50 flex items-center gap-3">
                             <div class="p-2 bg-amber-50 text-amber-600 rounded-lg">
                                 <i class="fa-solid fa-calendar-clock text-lg"></i>

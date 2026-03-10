@@ -647,7 +647,18 @@ class VendorController extends Controller
         $seriesNet = [];
         $commissionRate = $business->commission_rate ?? 1;
 
+        $labels = [];
+        $seriesGross = [];
+        $seriesComm = [];
+        $seriesNet = [];
+        $commissionRate = $business->commission_rate ?? 5; // Default to 5% if not set
+
+        // 1. Current Period Data
         if ($period === 'weekly') {
+            $startDate = now()->subDays(6)->startOfDay();
+            $prevStartDate = now()->subDays(13)->startOfDay();
+            $prevEndDate = now()->subDays(7)->endOfDay();
+            
             for ($i = 6; $i >= 0; $i--) {
                 $date = now()->subDays($i);
                 $labels[] = $date->locale('tr')->dayName;
@@ -657,6 +668,10 @@ class VendorController extends Controller
                 $seriesNet[] = (float) ($val - ($val * $commissionRate / 100));
             }
         } elseif ($period === 'monthly') {
+            $startDate = now()->startOfMonth();
+            $prevStartDate = now()->subMonth()->startOfMonth();
+            $prevEndDate = now()->subMonth()->endOfMonth();
+            
             $daysInMonth = now()->daysInMonth;
             for ($i = 1; $i <= $daysInMonth; $i++) {
                 $labels[] = $i;
@@ -670,6 +685,10 @@ class VendorController extends Controller
             }
         } else {
             // Yearly/All
+            $startDate = now()->startOfYear();
+            $prevStartDate = now()->subYear()->startOfYear();
+            $prevEndDate = now()->subYear()->endOfMonth();
+
             $labels = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
             for ($i = 1; $i <= 12; $i++) {
                 $val = (clone $query)->whereYear('created_at', now()->year)
@@ -685,9 +704,32 @@ class VendorController extends Controller
         $totalNet = array_sum($seriesNet);
         $totalCommission = array_sum($seriesComm);
 
-        $reservations = (clone $query)->get();
+        // 2. Previous Period for Growth Calculation
+        $prevQuery = Reservation::where('business_id', $business->id)
+            ->whereIn('status', ['completed', 'approved'])
+            ->whereBetween('created_at', [$prevStartDate, $prevEndDate]);
+            
+        if ($locationId) {
+            if ($locationId === 'main') {
+                $prevQuery->whereNull('location_id');
+            } else {
+                $prevQuery->where('location_id', $locationId);
+            }
+        }
+        
+        $prevTotalRevenue = $prevQuery->sum('total_amount');
+        $growth = 0;
+        if ($prevTotalRevenue > 0) {
+            $growth = (($totalRevenue - $prevTotalRevenue) / $prevTotalRevenue) * 100;
+        } elseif ($totalRevenue > 0) {
+            $growth = 100; // From 0 to something is 100% growth for visual
+        }
+        $growth = round($growth, 1);
+
+        $reservations = (clone $query)->where('created_at', '>=', $startDate)->get();
         $reservationCount = $reservations->count();
         $iyzicoEstimate = ($totalRevenue * 0.011) + ($reservationCount * 0.25);
+        $aov = $reservationCount > 0 ? $totalRevenue / $reservationCount : 0;
 
         // Daily Distribution
         $dailyDistribution = [
@@ -708,7 +750,7 @@ class VendorController extends Controller
 
         return view('vendor.finance.index', compact(
             'business', 'locations', 'period', 'labels', 'seriesGross', 'seriesComm', 'seriesNet',
-            'totalRevenue', 'totalNet', 'totalCommission', 'iyzicoEstimate',
+            'totalRevenue', 'totalNet', 'totalCommission', 'iyzicoEstimate', 'growth', 'aov',
             'dailyDistribution', 'reservations', 'withdrawals', 'walletTransactions'
         ));
     }
@@ -774,7 +816,7 @@ class VendorController extends Controller
             'tax_office' => 'required_if:submerchant_type,PRIVATE_COMPANY,LIMITED_OR_JOINT_STOCK_COMPANY',
             'tax_number' => 'required_if:submerchant_type,PRIVATE_COMPANY,LIMITED_OR_JOINT_STOCK_COMPANY',
             'identity_number' => 'required_if:submerchant_type,PERSONAL',
-            'iyzico_iban' => 'required|string|size:34', // Updated to handle spaces from auto-formatter
+            'iyzico_iban' => 'required|string|max:34', // Changed to max:34 to allow standard TR IBANs
         ]);
 
         // Clean spaces from IBAN
@@ -782,7 +824,7 @@ class VendorController extends Controller
 
         // For Iyzico, Identity Number (TCKN) is passed as tax_number for PERSONAL submerchants
         if ($validated['submerchant_type'] === 'PERSONAL') {
-            $validated['tax_number'] = $validated['identity_number'];
+            $validated['tax_number'] = $validated['identity_number'] ?? '11111111111';
         }
 
         $service = new \App\Services\IyzicoMarketplaceService;
@@ -791,6 +833,13 @@ class VendorController extends Controller
         if ($result['status'] === 'success') {
             return back()->with('success', 'Iyzico Pazaryeri kaydınız başarıyla tamamlandı. Artık hakedişleriniz otomatik olarak banka hesabınıza yatacaktır.');
         }
+
+        // Log the error for better debugging
+        \Log::error('Iyzico SubMerchant Registration Failed', [
+            'business_id' => $business->id,
+            'error' => $result['message'],
+            'input' => $request->except(['identity_number', 'tax_number'])
+        ]);
 
         return back()->with('error', 'Iyzico hatası: '.$result['message']);
     }

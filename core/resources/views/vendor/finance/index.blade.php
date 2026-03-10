@@ -63,7 +63,9 @@
                         <p id="hud_main_label" class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Cebinize Girecek Net</p>
                         <h2 id="hud_main_value" class="text-2xl font-black text-slate-900 tracking-tight">₺{{ number_format($totalNet, 2, ',', '.') }}</h2>
                         <div class="mt-4 flex items-center gap-2">
-                            <span class="text-xs font-bold text-emerald-500 bg-emerald-50 px-2 py-0.5 rounded-lg">+12.5%</span>
+                            <span class="text-xs font-bold {{ $growth >= 0 ? 'text-emerald-500 bg-emerald-50' : 'text-rose-500 bg-rose-50' }} px-2 py-0.5 rounded-lg">
+                                {{ $growth >= 0 ? '+' : '' }}{{ $growth }}%
+                            </span>
                             <span class="text-[10px] text-slate-400 font-medium">geçen döneme göre</span>
                         </div>
                     </div>
@@ -72,7 +74,7 @@
                     <div class="bg-white p-6 rounded-[32px] shadow-sm border border-slate-100 relative overflow-hidden group">
                         <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-50 rounded-full opacity-50 group-hover:scale-110 transition-transform"></div>
                         <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Ort. Sepet Tutarı (AOV)</p>
-                        <h2 id="hud_aov" class="text-2xl font-black text-slate-900 tracking-tight">₺{{ number_format($totalRevenue / max(1, count($reservations)), 2, ',', '.') }}</h2>
+                        <h2 id="hud_aov" class="text-2xl font-black text-slate-900 tracking-tight">₺{{ number_format($aov, 2, ',', '.') }}</h2>
                         <div class="mt-4 flex items-center gap-2">
                             <span class="text-xs font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-lg">Stabil</span>
                             <span class="text-[10px] text-slate-400 font-medium">ortalama değer</span>
@@ -432,6 +434,12 @@
     document.getElementById('revenueChart').addEventListener('wheel', function(e) {
         if (e.ctrlKey) e.preventDefault();
     }, { passive: false });
+
+    // Auto-open Iyzico Modal if requested via URL
+    if (new URLSearchParams(window.location.search).get('open_iyzico') === '1') {
+        const modal = document.getElementById('iyzicoModal');
+        if (modal) modal.classList.remove('hidden');
+    }
 </script>
 
 <!-- Iyzico Marketplace Modal (NEW) -->
