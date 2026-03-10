@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { Clock, CheckCircle, ChefHat, Bell, Flame, AlertOctagon } from 'lucide-react';
-import api, { API_BASE_ROOT } from '../lib/api-client';
+import api, { getImageUrl } from '../lib/api-client';
 import { playNotificationSound } from '../lib/sound';
 import classNames from 'classnames';
 
@@ -229,7 +229,7 @@ export default function KitchenDisplay() {
                                                             </div>
                                                             {item.menu && (item.menu.image || (item.menu as any).image_url) && (
                                                                 <img
-                                                                    src={(item.menu as any).image_url || API_BASE_ROOT + `/storage/${item.menu.image}`}
+                                                                    src={getImageUrl(item.menu.image, (item.menu as any).image_url)}
                                                                     alt={item.name}
                                                                     className="w-12 h-12 object-cover rounded-lg my-1 shadow-sm"
                                                                     onError={(e) => {

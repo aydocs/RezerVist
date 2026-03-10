@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Lock, Delete, ChevronRight, User, Loader2, LogOut } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Lock, Delete, ChevronRight, User, Loader2 } from 'lucide-react';
 import api from '../lib/api';
 
 interface StaffLockProps {
@@ -14,7 +13,6 @@ export default function StaffLock({ children }: StaffLockProps) {
     const [error, setError] = useState('');
     const [staffInfo, setStaffInfo] = useState < { name: string; position: string } | null > (null);
     const [loginMode, setLoginMode] = useState < 'staff' | 'master' > ('staff');
-    const navigate = useNavigate();
 
     useEffect(() => {
         const savedStaff = localStorage.getItem('pos_staff_session');
@@ -62,14 +60,7 @@ export default function StaffLock({ children }: StaffLockProps) {
         setStaffInfo(null);
     };
 
-    const handleChangeLicense = () => {
-        if (window.confirm('Lisans anahtarını değiştirmek istediğinize emin misiniz? Tüm oturumlar sonlandırılacaktır.')) {
-            localStorage.clear();
-            sessionStorage.clear();
-            navigate('/login');
-            window.location.reload();
-        }
-    };
+
 
     if (isLocked) {
         const slots = loginMode === 'staff' ? 4 : 8;
@@ -154,15 +145,7 @@ export default function StaffLock({ children }: StaffLockProps) {
                         </button>
                     </div>
 
-                    <div className="text-center">
-                        <button
-                            onClick={handleChangeLicense}
-                            className="inline-flex items-center gap-2 text-slate-500 hover:text-slate-300 transition-colors text-xs font-bold uppercase tracking-widest"
-                        >
-                            <LogOut className="w-4 h-4" />
-                            Lisans Anahtarını Değiştir
-                        </button>
-                    </div>
+
                 </div>
             </div>
         );

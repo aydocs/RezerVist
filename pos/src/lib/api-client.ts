@@ -6,18 +6,16 @@ export const API_BASE_ROOT = 'https://rezervist.com';
 const API_BASE_URL = `${API_BASE_ROOT}/api/pos`;
 
 export const getImageUrl = (imagePath: string | null | undefined, imageUrl?: string | null) => {
-    // If neither is provided, return undefined
-    if (!imagePath && !imageUrl) return undefined;
+    let path = imagePath || imageUrl;
 
-    // Extract the relative path from the full URL if imagePath wasn't provided
-    let path = imagePath;
-    if (!path && imageUrl) {
-        if (imageUrl.includes('/storage/')) {
-            path = imageUrl.split('/storage/')[1];
-        } else {
-            // If it's a completely external URL (e.g. Unsplash), return it as-is
-            return imageUrl;
-        }
+    if (!path) return undefined;
+
+    // If it's a full URL pointing to our storage, extract the relative path
+    if (path.includes('/storage/')) {
+        path = path.split('/storage/')[1];
+    } else if (path.startsWith('http')) {
+        // If it's a completely external URL (e.g. ui-avatars, unsplash), return it as-is
+        return path;
     }
 
     // Return the safe API proxy endpoint that bypasses Cloudflare Hotlink protection

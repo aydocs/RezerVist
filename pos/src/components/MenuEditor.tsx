@@ -85,10 +85,7 @@ export default function MenuEditor() {
 
         // Use global API base URL if available, else fallback
         const baseUrl = localStorage.getItem('api_base_url') || 'https://rezervist.com';
-        const imgUrl = product.image
-            ? (product.image.startsWith('http') ? product.image : `${baseUrl}/storage/${product.image}`)
-            : null;
-
+        const imgUrl = getImageUrl(product.image, (product as any).image_url) || null;
         setImagePreview(imgUrl);
         setIsAddingProduct(true);
         // Find category logic if needed, but usually we just keep the current one or let user change
