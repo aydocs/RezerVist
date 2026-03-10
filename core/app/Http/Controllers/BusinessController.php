@@ -300,24 +300,22 @@ class BusinessController extends Controller
 
             // First check for a specific date override (e.g. holidays or special openings)
 
+            // First check for a specific date override (e.g. holidays or special openings)
             $specialHours = \App\Models\BusinessHour::where('business_id', $business->id)
                 ->where('special_date', $carbonDate->format('Y-m-d'))
                 ->first();
 
             if ($specialHours) {
                 $hours = $specialHours;
-
             } else {
                 // Fallback to weekly schedule
                 $hours = \App\Models\BusinessHour::where('business_id', $business->id)
                     ->where('day_of_week', $dayOfWeek) // 0=Sunday
-                    ->whereNull('special_date') // Ensure we don't pick up a special date that coincidentally matches the day (unlikely due to unique constraint but safes)
+                    ->whereNull('special_date')
                     ->first();
-
             }
 
             if (! $hours || $hours->is_closed) {
-
                 return response()->json(['slots' => [], 'message' => 'İşletme bu tarihte kapalı.', 'is_closed' => true]);
             }
 
@@ -325,27 +323,26 @@ class BusinessController extends Controller
             $guestCount = (int) $request->input('guest_count', 1);
             $totalBasePrice = $business->calculatePrice($date, $guestCount);
 
-            $slots = [];
-            // Robust parsing: Database might return "09:00:00" string or Carbon object
-            $openTimeStr = $hours->open_time instanceof \Carbon\Carbon ? $hours->open_time->format('H:i') : \Carbon\Carbon::parse($hours->open_time)->format('H:i');
-            $closeTimeStr = $hours->close_time instanceof \Carbon\Carbon ? $hours->close_time->format('H:i') : \Carbon\Carbon::parse($hours->close_time)->format('H:i');
+            // Use specific reservation slots instead of general working hours
+            $reservationSettings = $business->getAvailableTimeSlots()[0] ?? ['start' => '10:00', 'end' => '23:00', 'slot_duration' => 60];
+            $openTimeStr = $reservationSettings['start'] ?? '10:00';
+            $closeTimeStr = $reservationSettings['end'] ?? '23:00';
+            $slotDuration = (int) ($reservationSettings['slot_duration'] ?? 60);
 
             $start = \Carbon\Carbon::parse($date.' '.$openTimeStr);
             $end = \Carbon\Carbon::parse($date.' '.$closeTimeStr);
 
-            // Handle cross-midnight hours if necessary, but assuming same-day for now.
             if ($end->lessThan($start)) {
                 $end->addDay();
             }
 
+            $slots = [];
             $current = $start->copy();
             $now = \Carbon\Carbon::now();
 
-            $guestCount = $request->input('guest_count', 1);
-
             while ($current->lt($end)) {
                 $slotStart = $current->copy();
-                $slotEnd = $slotStart->copy()->addHours(2); // Assuming 2 hour duration for resource check
+                $slotEnd = $slotStart->copy()->addMinutes($slotDuration);
 
                 // If date is today, filter past times and respect Min Advance Hours
                 $isFuture = true;
@@ -357,10 +354,9 @@ class BusinessController extends Controller
                 }
 
                 if ($isFuture) {
-                    // Accuracy: Check if at least ONE resource is free for this slot AND has reservations enabled
                     $anyAvailable = \App\Models\Resource::where('business_id', $business->id)
                         ->where('is_available', true)
-                        ->where('is_reservation_enabled', true) // NEW CHECK
+                        ->where('is_reservation_enabled', true)
                         ->where('capacity', '>=', $guestCount)
                         ->whereDoesntHave('reservations', function ($q) use ($slotStart, $slotEnd) {
                             $q->where('start_time', '<', $slotEnd)
@@ -373,7 +369,7 @@ class BusinessController extends Controller
                         $slots[] = $current->format('H:i');
                     }
                 }
-                $current->addHour();
+                $current->addMinutes($slotDuration);
             }
 
             return response()->json([
