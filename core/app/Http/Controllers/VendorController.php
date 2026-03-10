@@ -591,25 +591,31 @@ class VendorController extends Controller
         }
 
         // Dynamic Onboarding Progress Calculation
-        $reservations = Reservation::where('business_id', $business->id)->get();
-        $onboardingSteps = [
-            'profile' => ! empty($business->description) && ! empty($business->address),
-            'menu' => $business->menus()->count() > 0,
-            'hours' => $business->hours()->count() > 0,
-            'staff' => $business->staff()->count() > 0,
-            'first_sale' => $reservations->whereIn('status', ['completed', 'approved'])->count() > 0,
-        ];
+    $reservations = \App\Models\Reservation::where('business_id', $business->id)->get();
+    
+    $onboardingSteps = [
+        'profile' => ! empty($business->description) && ! empty($business->address) && ! empty($business->image),
+        'hours' => $business->hours()->whereNull('special_date')->count() >= 7, // All 7 days usually
+        'reservation_settings' => ! empty($business->reservation_time_slots),
+        'resources' => $business->resources()->count() > 0,
+        'menu' => $business->menus()->count() > 0,
+        'payments' => ! empty($business->iyzico_submerchant_key),
+        'staff' => $business->staff()->count() > 0,
+        'first_sale' => $reservations->whereIn('status', ['completed', 'approved', 'paid'])->count() > 0,
+    ];
 
-        $completedSteps = count(array_filter($onboardingSteps));
-        $totalSteps = count($onboardingSteps);
-        $onboardingPercent = round(($completedSteps / $totalSteps) * 100);
+    $completedSteps = count(array_filter($onboardingSteps));
+    $totalSteps = count($onboardingSteps);
+    $onboardingPercent = round(($completedSteps / $totalSteps) * 100);
 
-        $onboarding = [
-            'percent' => $onboardingPercent,
-            'steps' => $onboardingSteps,
-        ];
+    $onboarding = [
+        'percent' => $onboardingPercent,
+        'steps' => $onboardingSteps,
+        'completed_count' => $completedSteps,
+        'total_count' => $totalSteps,
+    ];
 
-        return view('vendor.setup.index', compact('business', 'onboarding'));
+    return view('vendor.setup.index', compact('business', 'onboarding'));
     }
 
     public function finance(Request $request)
