@@ -7,7 +7,7 @@ import Orders from './pages/Orders.tsx';
 import Menu from './pages/Menu.tsx';
 import Settings from './pages/Settings.tsx';
 import Reports from './pages/Reports.tsx';
-// import KitchenDisplay from './pages/KitchenDisplay.tsx';
+import KitchenDisplay from './pages/KitchenDisplay.tsx';
 import Invoices from './pages/Invoices.tsx';
 import SetupPin from './pages/SetupPin.tsx';
 import StaffLock from './components/StaffLock';
@@ -61,7 +61,7 @@ function App() {
                     <Route path="/orders" element={<Orders />} />
                     <Route path="/invoices" element={<Invoices />} />
                     <Route path="/menu" element={<Menu />} />
-                    {/* <Route path="/kds" element={<KitchenDisplay />} /> */}
+                    <Route path="/kds" element={<KitchenDisplay />} />
                     <Route path="/settings" element={<Settings />} />
                     <Route path="/reports" element={<Reports />} />
                     <Route path="/order/:tableId" element={<OrderTerminal />} />
