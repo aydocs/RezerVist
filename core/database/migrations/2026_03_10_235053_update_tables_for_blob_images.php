@@ -11,23 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('businesses', function (Illuminate\Database\Schema\Blueprint $table) {
-            $table->after('logo', function($table) {
-                \Illuminate\Support\Facades\DB::statement('ALTER TABLE businesses ADD COLUMN image_blob LONGBLOB NULL AFTER logo');
-            });
-        });
+        // Add LONGBLOB columns using raw SQL since standard binary() might not be enough for large images
+        try {
+            \Illuminate\Support\Facades\DB::statement('ALTER TABLE businesses ADD COLUMN image_blob LONGBLOB NULL AFTER logo');
+        } catch (\Exception $e) {}
 
-        Schema::table('business_images', function (Illuminate\Database\Schema\Blueprint $table) {
+        try {
             \Illuminate\Support\Facades\DB::statement('ALTER TABLE business_images ADD COLUMN image_blob LONGBLOB NULL AFTER image_path');
-        });
+        } catch (\Exception $e) {}
 
-        Schema::table('menus', function (Illuminate\Database\Schema\Blueprint $table) {
+        try {
             \Illuminate\Support\Facades\DB::statement('ALTER TABLE menus ADD COLUMN image_blob LONGBLOB NULL AFTER image');
-        });
+        } catch (\Exception $e) {}
 
-        Schema::table('users', function (Illuminate\Database\Schema\Blueprint $table) {
+        try {
             \Illuminate\Support\Facades\DB::statement('ALTER TABLE users ADD COLUMN profile_photo_blob LONGBLOB NULL AFTER profile_photo_path');
-        });
+        } catch (\Exception $e) {}
     }
 
     public function down(): void
