@@ -54,10 +54,45 @@ class PosApiController extends Controller
      */
     public function serveImage(Request $request)
     {
+        $id = $request->query('id');
+        $type = $request->query('type');
         $path = $request->query('path');
+
+        // Handle Database Blobs
+        if ($id && $type) {
+            $model = null;
+            $column = 'image_blob';
+
+            switch ($type) {
+                case 'business':
+                    $model = \App\Models\Business::find($id);
+                    break;
+                case 'business_image':
+                    $model = \App\Models\BusinessImage::find($id);
+                    break;
+                case 'menu':
+                    $model = \App\Models\Menu::find($id);
+                    break;
+                case 'user':
+                    $model = \App\Models\User::find($id);
+                    $column = 'profile_photo_blob';
+                    break;
+            }
+
+            if ($model && $model->$column) {
+                $blob = $model->$column;
+                $finfo = new \finfo(FILEINFO_MIME_TYPE);
+                $mimeType = $finfo->buffer($blob);
+
+                return response($blob)
+                    ->header('Content-Type', $mimeType)
+                    ->header('Cache-Control', 'public, max-age=86400')
+                    ->header('Access-Control-Allow-Origin', '*');
+            }
+        }
         
         if (!$path) {
-            return response('No path provided', 400);
+            return response('No path or ID provided', 400);
         }
 
         // Handle cases where frontend accidentally sends the entire full URL 

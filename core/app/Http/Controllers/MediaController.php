@@ -21,13 +21,15 @@ class MediaController extends Controller
         }
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('business_images', 'public');
+            $file = $request->file('image');
+            $path = $file->store('business_images', 'public');
 
             $image = $business->images()->create([
                 'image_path' => $path,
+                'image_blob' => file_get_contents($file->getRealPath()),
             ]);
 
-            return response()->json(['url' => asset('storage/'.$path), 'id' => $image->id]);
+            return response()->json(['url' => $image->url, 'id' => $image->id]);
         }
 
         return response()->json(['message' => 'Upload failed'], 500);

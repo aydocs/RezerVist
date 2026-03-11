@@ -14,7 +14,7 @@ export const getImageUrl = (imagePath: string | null | undefined, imageUrl?: str
     if (path.includes('/storage/')) {
         path = path.split('/storage/')[1];
     } else if (path.startsWith('http')) {
-        // If it's a completely external URL (e.g. ui-avatars, unsplash), return it as-is
+        // If it's a dynamic system URL or completely external, return it as-is
         return path;
     }
 

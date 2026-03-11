@@ -112,6 +112,7 @@ class Business extends Model
         'menu_theme',
         'menu_color',
         'settings',
+        'image_blob',
     ];
 
     protected $casts = [
@@ -507,6 +508,11 @@ class Business extends Model
      */
     public function getImageUrl($thumb = false): string
     {
+        // 0. Check Blob
+        if ($this->image_blob) {
+            return route('api.pos.image', ['id' => $this->id, 'type' => 'business', 't' => $this->updated_at?->timestamp]);
+        }
+
         // 1. Check Logo
         if ($this->logo) {
             if (str_starts_with($this->logo, 'http')) {

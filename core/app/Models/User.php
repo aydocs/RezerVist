@@ -43,6 +43,7 @@ class User extends Authenticatable
         'referral_code',
         'referred_by_id',
         'email_verified_at',
+        'profile_photo_blob',
     ];
 
     /**
@@ -132,6 +133,11 @@ class User extends Authenticatable
 
     public function getProfilePhotoUrlAttribute()
     {
+        // Prioritize blob photo
+        if ($this->profile_photo_blob) {
+            return route('api.pos.image', ['id' => $this->id, 'type' => 'user', 't' => $this->updated_at?->timestamp]);
+        }
+
         // Prioritize uploaded photo, then social avatar, then default
         if ($this->profile_photo_path) {
             return asset('storage/'.$this->profile_photo_path);

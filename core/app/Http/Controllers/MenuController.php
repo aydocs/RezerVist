@@ -39,8 +39,10 @@ class MenuController extends Controller
         $data = $request->except('image');
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('menus', 'public');
+            $file = $request->file('image');
+            $path = $file->store('menus', 'public');
             $data['image'] = $path;
+            $data['image_blob'] = file_get_contents($file->getRealPath());
         }
 
         $menu = Menu::create($data);
@@ -75,8 +77,10 @@ class MenuController extends Controller
             if ($menu->image) {
                 Storage::disk('public')->delete($menu->image);
             }
-            $path = $request->file('image')->store('menus', 'public');
+            $file = $request->file('image');
+            $path = $file->store('menus', 'public');
             $data['image'] = $path;
+            $data['image_blob'] = file_get_contents($file->getRealPath());
         }
 
         $menu->update($data);

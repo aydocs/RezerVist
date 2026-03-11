@@ -27,6 +27,7 @@ class Menu extends Model
         'stock_enabled',
         'stock_quantity',
         'low_stock_alert',
+        'image_blob',
     ];
 
     protected $casts = [
@@ -49,6 +50,10 @@ class Menu extends Model
 
     public function getImageUrlAttribute()
     {
+        if ($this->image_blob) {
+            return route('api.pos.image', ['id' => $this->id, 'type' => 'menu', 't' => $this->updated_at?->timestamp]);
+        }
+
         if (! $this->image) {
             return null;
         }
