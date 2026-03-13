@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Blog - Rezervist.com')
+@section('title', 'Blog - ' . ($globalSettings['site_name'] ?? config('app.name')))
 @section('meta_description', 'Rezervasyon dünyasından ipuçları, işletme hikayeleri ve sektör haberleri.')
 
 @section('content')
