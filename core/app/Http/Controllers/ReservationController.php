@@ -312,7 +312,7 @@ class ReservationController extends Controller
         // Send SMS Notification
         try {
             $smsService = new SmsService;
-            $smsMessage = "Rezervist: {$reservation->business->name} için rezervasyonunuz iptal edildi.";
+            $smsMessage = "RezerVist: {$reservation->business->name} için rezervasyonunuz iptal edildi.";
             $smsService->send($reservation->user->phone, $smsMessage);
         } catch (\Exception $e) {
             \Log::error('Failed to send cancellation sms: '.$e->getMessage());
@@ -375,7 +375,7 @@ class ReservationController extends Controller
 
             // Send SMS Notification
             $smsService = new SmsService;
-            $smsMessage = "Rezervist: {$reservation->business->name} rezervasyonunuz güncellendi. Yeni Tarih: {$reservation->start_time->format('d.m.Y H:i')}.";
+            $smsMessage = "RezerVist: {$reservation->business->name} rezervasyonunuz güncellendi. Yeni Tarih: {$reservation->start_time->format('d.m.Y H:i')}.";
             $smsService->send($reservation->user->phone, $smsMessage);
         } catch (\Exception $e) {
             \Log::error('Failed to send update email/sms: '.$e->getMessage());
