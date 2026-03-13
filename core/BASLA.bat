@@ -90,8 +90,8 @@ echo ========================================
 echo    SERVER ÇALIŞIYOR!
 echo ========================================
 echo.
-echo    🌐 Ana Sayfa: https://rezervist.com
-echo    📱 API:       https://rezervist.com/api
+echo    🌐 Ana Sayfa: http://localhost:8000
+echo    📱 API:       http://localhost:8000/api
 echo.
 echo    Durdurmak için: Ctrl+C
 echo.
