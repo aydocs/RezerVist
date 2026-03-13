@@ -94,7 +94,7 @@
                                     <i class="fa-solid fa-globe text-slate-400 text-[10px]"></i>
                                 </div>
                                 <div class="flex flex-col">
-                                    <span class="text-xs text-slate-800 font-bold">Rezervist Blog</span>
+                                    <span class="text-xs text-slate-800 font-bold">RezerVist Blog</span>
                                     <span class="text-[10px] text-slate-400">{{ request()->root() }}/blog/<span x-text="slugify(title)" class="text-purple-600"></span></span>
                                 </div>
                             </div>
