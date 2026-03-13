@@ -31,7 +31,7 @@ Route::get('/blog', [\App\Http\Controllers\BlogController::class, 'index'])->nam
 Route::get('/blog/{slug}', [\App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 
 // Admin Blog Routes
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:admin,developer'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/blog', [\App\Http\Controllers\Admin\BlogController::class, 'index'])->name('blog.index');
     Route::get('/blog/create', [\App\Http\Controllers\Admin\BlogController::class, 'create'])->name('blog.create');
     Route::post('/blog', [\App\Http\Controllers\Admin\BlogController::class, 'store'])->name('blog.store');
@@ -44,7 +44,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
 });
 
 // --- Subdomain Routes ---
-Route::domain('menu.rezervist.com')->group(function () {
+Route::domain(env('MENU_DOMAIN', 'menu.localhost'))->group(function () {
     Route::get('/', function () {
         return redirect(config('app.url')); // Redirect root subdomain to main site
     });
@@ -209,19 +209,13 @@ Route::get('/book/confirmation/{id}', [\App\Http\Controllers\BookController::cla
 Route::match(['get', 'post'], '/billing/callback', [\App\Http\Controllers\BillingController::class, 'callback'])->name('billing.callback')->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 Route::get('/billing/magic-login', [\App\Http\Controllers\BillingController::class, 'magicLogin'])->name('billing.magic-login');
 
-// Admin Routes
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+// Admin Routes (Staff: Admin, Developer, Support)
+Route::middleware(['auth', 'role:admin,developer,support'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [\App\Http\Controllers\AdminController::class, 'index'])->name('dashboard');
-    Route::get('/users', [\App\Http\Controllers\AdminController::class, 'users'])->name('users.index');
-    Route::get('/users/search', [\App\Http\Controllers\AdminController::class, 'searchUsers'])->name('users.search');
     Route::get('/applications', [\App\Http\Controllers\AdminController::class, 'applications'])->name('applications.index');
     Route::get('/applications/{id}', [\App\Http\Controllers\AdminController::class, 'showApplication'])->name('applications.show');
     Route::put('/applications/{id}', [\App\Http\Controllers\AdminController::class, 'updateApplication'])->name('applications.update');
     Route::get('/applications/{id}/document/{field}', [\App\Http\Controllers\AdminController::class, 'viewDocument'])->name('applications.document');
-
-    // New Routes
-    Route::get('/platform-activity', [\App\Http\Controllers\AdminController::class, 'platformActivity'])->name('platform-activity.index');
-    Route::get('/platform-activity/export', [\App\Http\Controllers\AdminController::class, 'exportActivityLog'])->name('platform-activity.export');
 
     Route::prefix('activities')->name('activities.')->group(function () {
         Route::get('/auth', [\App\Http\Controllers\AdminController::class, 'authActivities'])->name('auth');
@@ -229,14 +223,34 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         Route::get('/reservations', [\App\Http\Controllers\AdminController::class, 'reservationActivities'])->name('reservations');
         Route::get('/system', [\App\Http\Controllers\AdminController::class, 'systemActivities'])->name('system');
     });
-    Route::get('/activity-logs', [\App\Http\Controllers\ActivityLogController::class, 'index'])->name('activity-logs.index');
-    Route::resource('coupons', \App\Http\Controllers\AdminCouponController::class);
-    Route::post('/coupons/{coupon}/toggle', [\App\Http\Controllers\AdminCouponController::class, 'toggleStatus'])->name('coupons.toggle-status');
+
     Route::get('/popular-businesses', [\App\Http\Controllers\AdminController::class, 'popularBusinesses'])->name('popular-businesses.index');
     Route::get('/support-conversations', [\App\Http\Controllers\AdminController::class, 'contactMessages'])->name('contact-messages.index');
     Route::post('/support-conversations/{id}/reply', [\App\Http\Controllers\AdminController::class, 'replyToContactMessage'])->name('contact-messages.reply');
     Route::post('/support-conversations/{id}/close', [\App\Http\Controllers\AdminController::class, 'closeContactMessage'])->name('contact-messages.close');
     Route::post('/support-conversations/{id}/notes', [\App\Http\Controllers\AdminController::class, 'updateContactMessageNotes'])->name('contact-messages.notes');
+
+    // Withdrawal Management
+    Route::get('/withdrawals', [\App\Http\Controllers\Admin\WithdrawalAdminController::class, 'index'])->name('withdrawals.index');
+    Route::patch('/withdrawals/{withdrawal}', [\App\Http\Controllers\Admin\WithdrawalAdminController::class, 'update'])->name('withdrawals.update');
+
+    // Review Moderation
+    Route::get('/reviews', [\App\Http\Controllers\Admin\AdminReviewController::class, 'index'])->name('reviews.index');
+    Route::post('/reviews/{review}/approve', [\App\Http\Controllers\Admin\AdminReviewController::class, 'approve'])->name('reviews.approve');
+    Route::post('/reviews/{review}/reject', [\App\Http\Controllers\Admin\AdminReviewController::class, 'reject'])->name('reviews.reject');
+    Route::post('/reviews/{review}/keep', [\App\Http\Controllers\Admin\AdminReviewController::class, 'keep'])->name('reviews.keep');
+    Route::delete('/reviews/{review}', [\App\Http\Controllers\Admin\AdminReviewController::class, 'destroy'])->name('reviews.destroy');
+});
+
+// Admin Management Routes (Admin, Developer only)
+Route::middleware(['auth', 'role:admin,developer'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/users', [\App\Http\Controllers\AdminController::class, 'users'])->name('users.index');
+    Route::get('/users/search', [\App\Http\Controllers\AdminController::class, 'searchUsers'])->name('users.search');
+    Route::get('/platform-activity', [\App\Http\Controllers\AdminController::class, 'platformActivity'])->name('platform-activity.index');
+    Route::get('/platform-activity/export', [\App\Http\Controllers\AdminController::class, 'exportActivityLog'])->name('platform-activity.export');
+    Route::get('/activity-logs', [\App\Http\Controllers\ActivityLogController::class, 'index'])->name('activity-logs.index');
+    Route::resource('coupons', \App\Http\Controllers\AdminCouponController::class);
+    Route::post('/coupons/{coupon}/toggle', [\App\Http\Controllers\AdminCouponController::class, 'toggleStatus'])->name('coupons.toggle-status');
 
     // User Management
     Route::get('/users/{id}/edit', [\App\Http\Controllers\AdminController::class, 'editUser'])->name('users.edit');
@@ -249,17 +263,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/settings', [\App\Http\Controllers\AdminController::class, 'settings'])->name('settings.index');
     Route::put('/settings', [\App\Http\Controllers\AdminController::class, 'updateSettings'])->name('settings.update');
     Route::get('/health', [\App\Http\Controllers\AdminController::class, 'systemHealth'])->name('health');
-
-    // Withdrawal Management
-    Route::get('/withdrawals', [\App\Http\Controllers\Admin\WithdrawalAdminController::class, 'index'])->name('withdrawals.index');
-    Route::patch('/withdrawals/{withdrawal}', [\App\Http\Controllers\Admin\WithdrawalAdminController::class, 'update'])->name('withdrawals.update');
-
-    // Review Moderation
-    Route::get('/reviews', [\App\Http\Controllers\Admin\AdminReviewController::class, 'index'])->name('reviews.index');
-    Route::post('/reviews/{review}/approve', [\App\Http\Controllers\Admin\AdminReviewController::class, 'approve'])->name('reviews.approve');
-    Route::post('/reviews/{review}/reject', [\App\Http\Controllers\Admin\AdminReviewController::class, 'reject'])->name('reviews.reject');
-    Route::post('/reviews/{review}/keep', [\App\Http\Controllers\Admin\AdminReviewController::class, 'keep'])->name('reviews.keep');
-    Route::delete('/reviews/{review}', [\App\Http\Controllers\Admin\AdminReviewController::class, 'destroy'])->name('reviews.destroy');
 
     // User Moderation
     Route::post('/users/{user}/toggle-review-block', [\App\Http\Controllers\Admin\AdminReviewController::class, 'toggleBlock'])->name('users.toggle-review-block');
@@ -349,3 +352,10 @@ Route::post('/q/pay/callback/{payload}', [\App\Http\Controllers\CustomerQrContro
 Route::get('/b/{payload}', [\App\Http\Controllers\CustomerQrController::class, 'bill'])->name('qr.bill');
 
 
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/test-push', function () {
+        auth()->user()->notify(new \App\Notifications\TestPushNotification);
+        return 'Bildirim gönderildi! Lütfen tarayýcýnýzý kontrol edin.';
+    });
+});
