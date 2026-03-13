@@ -1,6 +1,6 @@
 {
     "appId": "com.RezerVist.pos",
-    "productName": "RezerVistA POS",
+    "productName": "RezerVist POS",
     "copyright": "Copyright © 2026 RezerVist",
     "directories": {
         "output": "release"
@@ -26,7 +26,7 @@
         "deleteAppDataOnUninstall": true,
         "createDesktopShortcut": true,
         "createStartMenuShortcut": true,
-        "shortcutName": "RezerVistA",
+        "shortcutName": "RezerVist",
         "runAfterFinish": true
     },
     "publish": [
