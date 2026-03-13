@@ -89,7 +89,7 @@ class SocialAuthController extends Controller
                 'email' => $socialUser->getEmail(),
                 $provider.'_id' => $socialUser->getId(),
                 'password' => bcrypt(Str::random(24)),
-                'role' => 'customer',
+                'role' => 'user',
             ];
 
             // Add avatar if available
