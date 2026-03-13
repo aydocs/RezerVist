@@ -29,10 +29,12 @@
                     </div>
                 </div>
                 <div class="h-10 w-px bg-slate-200"></div>
+                @if(!auth()->user()->isSupport())
                 <div class="text-right">
                     <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1 font-mono">DAILY VOLUME</p>
                     <p class="text-lg font-black text-slate-900 tracking-tighter">₺{{ number_format($stats['today_revenue'], 0, ',', '.') }}</p>
                 </div>
+                @endif
             </div>
         </div>
 
@@ -40,6 +42,7 @@
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             
             <!-- Revenue -->
+            @if(!auth()->user()->isSupport())
             <div class="bg-white border border-slate-200 rounded-[2rem] p-6 hover:border-purple-200 hover:shadow-xl hover:shadow-slate-200/40 transition-all group overflow-hidden relative">
                 <div class="absolute -right-4 -bottom-4 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
                     <i class="fa-solid fa-chart-line text-7xl"></i>
@@ -54,6 +57,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
             <!-- Active Businesses -->
             <div class="bg-white border border-slate-200 rounded-[2rem] p-6 hover:border-purple-200 hover:shadow-xl hover:shadow-slate-200/40 transition-all group overflow-hidden relative">
@@ -133,10 +137,12 @@
                         <p class="text-[10px] font-bold text-slate-400 mt-1 uppercase tracking-widest">Son 7 günlük veri akışı analizi</p>
                     </div>
                     <div class="flex gap-6">
+                        @if(!auth()->user()->isSupport())
                         <div class="flex items-center gap-2">
                             <div class="w-2 h-2 rounded-full bg-purple-600"></div>
                             <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">GELİR KAPASİTESİ</span>
                         </div>
+                        @endif
                         <div class="flex items-center gap-2">
                             <div class="w-2 h-2 rounded-full border border-slate-300"></div>
                             <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">İŞLEM ADEDİ</span>
@@ -259,12 +265,14 @@
                 @endphp
 
                 @foreach($utilities as $util)
+                    @if(Route::has($util['route']) && (auth()->user()->isDeveloper() || auth()->user()->isAdmin() || (auth()->user()->isSupport() && in_array($util['route'], ['admin.applications.index', 'admin.reviews.index', 'admin.contact-messages.index']))))
                     <a href="{{ route($util['route']) }}" class="flex flex-col items-center gap-4 group">
                         <div class="w-16 h-16 bg-white border border-slate-200 rounded-[1.5rem] flex items-center justify-center group-hover:bg-slate-900 group-hover:border-slate-900 transition-all duration-300 shadow-sm group-hover:shadow-xl group-hover:shadow-slate-200 group-hover:-translate-y-2">
                             <i class="fa-solid {{ $util['icon'] }} text-slate-400 group-hover:text-white text-lg transition-colors"></i>
                         </div>
                         <span class="text-[9px] font-black text-slate-400 group-hover:text-slate-900 uppercase tracking-widest transition-colors">{{ $util['label'] }}</span>
                     </a>
+                    @endif
                 @endforeach
             </div>
         </div>
@@ -296,7 +304,7 @@
                 datasets: [
                     {
                         label: 'GELİR',
-                        data: {!! json_encode($revenueData) !!},
+                        data: {!! auth()->user()->isSupport() ? '[]' : json_encode($revenueData) !!},
                         borderColor: '#8B5CF6',
                         borderWidth: 3,
                         pointRadius: 4,
