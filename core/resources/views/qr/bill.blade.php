@@ -76,7 +76,7 @@
                 {{-- Footer Info --}}
                 <div class="mt-12 flex flex-col items-center gap-4 opacity-40">
                     <div class="w-12 h-0.5 bg-gray-200 rounded-full"></div>
-                    <p class="text-[9px] text-gray-500 font-black uppercase tracking-[0.3em] text-center">HİZMET BEDELİ DAHİLDİR &bull; REZERVIST</p>
+                    <p class="text-[9px] text-gray-500 font-black uppercase tracking-[0.3em] text-center">HİZMET BEDELİ DAHİLDİR &bull; {{ strtoupper($globalSettings['site_name'] ?? config('app.name')) }}</p>
                 </div>
             @else
                 <div class="text-center py-16">
