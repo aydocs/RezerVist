@@ -5,218 +5,223 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Header -->
-        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-6">
-            <div>
-                <h1 class="text-3xl font-black text-slate-900 tracking-tight">Finansal Raporlar</h1>
-                <p class="text-slate-500 font-medium mt-1">İşletmenizin gelir analizi ve dönemlik performans.</p>
+        <div class="flex flex-col xl:flex-row justify-between items-start xl:items-center mb-10 gap-8">
+            <div class="w-full xl:w-auto">
+                <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">Finansal Raporlar</h1>
+                <p class="text-slate-500 font-medium mt-2">İşletmenizin gelir analizi ve dönemlik performans.</p>
             </div>
             
-            <div class="flex flex-wrap items-center gap-4">
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full xl:w-auto">
                 <!-- Location Filter -->
-                <div class="relative group">
-                    <div class="absolute -inset-0.5 bg-gradient-to-r from-gray-200 to-gray-300 rounded-xl blur opacity-0 group-hover:opacity-100 transition duration-200"></div>
+                <div class="relative group flex-1 sm:flex-initial">
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-slate-100 to-slate-200 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-200"></div>
                     <div class="relative flex items-center">
-                        <select id="location_filter" class="bg-white border-0 ring-1 ring-gray-200 rounded-xl pl-4 pr-10 py-3 text-sm font-bold text-gray-700 shadow-sm focus:ring-2 focus:ring-indigo-500 transition-all cursor-pointer outline-none min-w-[170px] appearance-none">
+                        <select id="location_filter" class="w-full bg-white border-0 ring-1 ring-slate-100 rounded-2xl pl-5 pr-12 py-3.5 text-xs font-black text-slate-700 shadow-sm focus:ring-2 focus:ring-indigo-500 transition-all cursor-pointer outline-none min-w-[180px] appearance-none uppercase tracking-widest">
                             <option value="">Tüm Şubeler</option>
                             <option value="main" {{ request('location_id') == 'main' ? 'selected' : '' }}>Merkez Şube</option>
                             @foreach($locations as $loc)
                                 <option value="{{ $loc->id }}" {{ request('location_id') == $loc->id ? 'selected' : '' }}>{{ $loc->name }}</option>
                             @endforeach
                         </select>
-                        <svg class="w-4 h-4 text-gray-400 absolute right-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        <i class="fas fa-chevron-down text-slate-400 absolute right-5 pointer-events-none text-[10px]"></i>
                     </div>
                 </div>
 
-            <div class="flex flex-wrap items-center gap-4">
-                <!-- Gross/Net Toggle -->
-                <div class="bg-slate-100 p-1 rounded-2xl flex items-center gap-1 border border-slate-200 shadow-inner">
-                    <button onclick="switchView('net')" id="btn-view-net" class="px-5 py-2.5 text-[10px] font-black rounded-xl transition-all duration-300 bg-white text-indigo-600 shadow-md">
-                        NET KAZANÇ
-                    </button>
-                    <button onclick="switchView('gross')" id="btn-view-gross" class="px-5 py-2.5 text-[10px] font-black rounded-xl transition-all duration-300 text-slate-500 hover:text-slate-700">
-                        BRÜT HASILAT
-                    </button>
-                </div>
+                <div class="flex flex-col xs:flex-row items-center gap-4 w-full sm:w-auto">
+                    <!-- Gross/Net Toggle -->
+                    <div class="bg-slate-100 p-1 rounded-2xl flex items-center gap-1 border border-slate-200/60 shadow-inner w-full xs:w-auto">
+                        <button onclick="switchView('net')" id="btn-view-net" class="flex-1 xs:flex-initial px-5 py-2.5 text-[10px] font-black rounded-xl transition-all duration-300 bg-white text-indigo-600 shadow-md">
+                            NET
+                        </button>
+                        <button onclick="switchView('gross')" id="btn-view-gross" class="flex-1 xs:flex-initial px-5 py-2.5 text-[10px] font-black rounded-xl transition-all duration-300 text-slate-500 hover:text-slate-700">
+                            BRÜT
+                        </button>
+                    </div>
 
-                <!-- Google Finance Style Period Switcher -->
-                <div class="bg-white p-1 rounded-xl shadow-sm border border-gray-100 flex items-center gap-1">
-                    @foreach(['1d' => '1G', '7d' => '7G', '1m' => '1A', '1y' => '1Y', 'all' => 'Tümü'] as $key => $label)
-                    <button onclick="updatePeriod('{{ $key }}')" 
-                            data-period="{{ $key }}"
-                            class="period-btn px-4 py-2 text-xs font-black rounded-lg transition-all duration-300 {{ $key === '7d' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-200' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50' }}">
-                        {{ $label }}
-                    </button>
-                    @endforeach
+                    <!-- Period Switcher -->
+                    <div class="bg-white p-1 rounded-2xl shadow-sm border border-slate-100 flex items-center gap-1 w-full xs:w-auto overflow-x-auto no-scrollbar">
+                        @foreach(['1d' => '1G', '7d' => '7G', '1m' => '1A', '1y' => '1Y', 'all' => 'ALL'] as $key => $label)
+                        <button onclick="updatePeriod('{{ $key }}')" 
+                                data-period="{{ $key }}"
+                                class="period-btn px-4 py-2 text-[10px] font-black rounded-xl transition-all duration-300 whitespace-nowrap {{ $key === '7d' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-100' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50' }}">
+                            {{ $label }}
+                        </button>
+                        @endforeach
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 xl:grid-cols-4 gap-8">
             <!-- Left: Main Chart & Detailed Stats -->
-            <div class="lg:col-span-3 space-y-8">
+            <div class="xl:col-span-3 space-y-8">
                  <!-- Stats Grid -->
-                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Total Revenue Card -->
-                    <div class="bg-white p-6 rounded-[32px] shadow-sm border border-slate-100 relative overflow-hidden group">
-                        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-emerald-50 rounded-full opacity-50 group-hover:scale-110 transition-transform"></div>
-                        <p id="hud_main_label" class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Cebinize Girecek Net</p>
-                        <h2 id="hud_main_value" class="text-2xl font-black text-slate-900 tracking-tight">₺{{ number_format($totalNet, 2, ',', '.') }}</h2>
-                        <div class="mt-4 flex items-center gap-2">
-                            <span class="text-xs font-bold {{ $growth >= 0 ? 'text-emerald-500 bg-emerald-50' : 'text-rose-500 bg-rose-50' }} px-2 py-0.5 rounded-lg">
+                    <div class="bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 relative overflow-hidden group">
+                        <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-emerald-50 rounded-full opacity-50 group-hover:scale-125 transition-transform duration-700"></div>
+                        <p id="hud_main_label" class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Cebinize Girecek Net</p>
+                        <h2 id="hud_main_value" class="text-3xl font-black text-slate-900 tracking-tighter">₺{{ number_format($totalNet, 2, ',', '.') }}</h2>
+                        <div class="mt-6 flex items-center gap-2">
+                            <span class="text-[10px] font-black {{ $growth >= 0 ? 'text-emerald-600 bg-emerald-50' : 'text-rose-600 bg-rose-50' }} px-2.5 py-1 rounded-lg">
                                 {{ $growth >= 0 ? '+' : '' }}{{ $growth }}%
                             </span>
-                            <span class="text-[10px] text-slate-400 font-medium">geçen döneme göre</span>
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">vs önceki dönem</span>
                         </div>
                     </div>
 
                     <!-- AOV Card -->
-                    <div class="bg-white p-6 rounded-[32px] shadow-sm border border-slate-100 relative overflow-hidden group">
-                        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-blue-50 rounded-full opacity-50 group-hover:scale-110 transition-transform"></div>
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Ort. Sepet Tutarı (AOV)</p>
-                        <h2 id="hud_aov" class="text-2xl font-black text-slate-900 tracking-tight">₺{{ number_format($aov, 2, ',', '.') }}</h2>
-                        <div class="mt-4 flex items-center gap-2">
-                            <span class="text-xs font-bold text-blue-500 bg-blue-50 px-2 py-0.5 rounded-lg">Stabil</span>
-                            <span class="text-[10px] text-slate-400 font-medium">ortalama değer</span>
+                    <div class="bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 relative overflow-hidden group">
+                        <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-blue-50 rounded-full opacity-50 group-hover:scale-125 transition-transform duration-700"></div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Ort. Sepet Tutarı (AOV)</p>
+                        <h2 id="hud_aov" class="text-3xl font-black text-slate-900 tracking-tighter">₺{{ number_format($aov, 2, ',', '.') }}</h2>
+                        <div class="mt-6 flex items-center gap-2">
+                            <span class="text-[10px] font-black text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg uppercase tracking-wider">Stabil</span>
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">ortalama değer</span>
                         </div>
                     </div>
 
                     <!-- Transactions Card -->
-                    <div class="bg-white p-6 rounded-[32px] shadow-sm border border-slate-100 relative overflow-hidden group">
-                        <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-indigo-50 rounded-full opacity-50 group-hover:scale-110 transition-transform"></div>
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">İşlem Sayısı</p>
-                        <h2 id="hud_transaction_count" class="text-2xl font-black text-slate-900 tracking-tight">{{ count($reservations) }}</h2>
-                        <div class="mt-4 flex items-center gap-2">
-                            <span class="text-xs font-bold text-indigo-500 bg-indigo-50 px-2 py-0.5 rounded-lg">Canlı</span>
-                            <span class="text-[10px] text-slate-400 font-medium">onaylı işlemler</span>
+                    <div class="bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 relative overflow-hidden group sm:col-span-2 lg:col-span-1">
+                        <div class="absolute -right-8 -bottom-8 w-32 h-32 bg-indigo-50 rounded-full opacity-50 group-hover:scale-125 transition-transform duration-700"></div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">İşlem Sayısı</p>
+                        <h2 id="hud_transaction_count" class="text-3xl font-black text-slate-900 tracking-tighter">{{ count($reservations) }}</h2>
+                        <div class="mt-6 flex items-center gap-2">
+                            <span class="text-[10px] font-black text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg uppercase tracking-wider">Canlı</span>
+                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">başarılı işlem</span>
                         </div>
                     </div>
                  </div>
- 
+  
                  <!-- Revenue Chart -->
-                  <div class="bg-white rounded-[40px] shadow-sm border border-gray-100 p-8 hover:shadow-2xl hover:shadow-indigo-500/5 transition-all duration-500">
-                     <div class="flex items-center justify-between mb-8">
+                  <div class="bg-white rounded-[3rem] shadow-xl shadow-slate-200/50 border border-slate-100 p-6 sm:p-10 hover:shadow-2xl hover:shadow-indigo-500/5 transition-all duration-500">
+                     <div class="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
                         <div>
-                            <h3 class="text-xl font-black text-slate-900 tracking-tighter">Finansal Performans</h3>
-                            <p class="text-sm text-slate-500 font-medium">İşlem tarihine göre detaylı gelir akışı</p>
+                            <h3 class="text-2xl font-black text-slate-900 tracking-tight">Finansal Performans</h3>
+                            <p class="text-sm text-slate-500 font-medium mt-1">İşlem tarihine göre detaylı gelir akışı</p>
                         </div>
-                        <div class="hidden sm:flex items-center gap-4 bg-slate-50 p-1.5 rounded-2xl">
-                            <div class="flex items-center gap-2 px-3 py-1 bg-white rounded-xl shadow-sm border border-slate-100">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                                <span class="text-[10px] font-black text-slate-600">BRÜT</span>
+                        <div class="flex items-center gap-4 bg-slate-50 p-1.5 rounded-2xl w-fit">
+                            <div class="flex items-center gap-2 px-3 py-1.5 bg-white rounded-xl shadow-sm border border-slate-100">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+                                <span class="text-[9px] font-black text-slate-600 uppercase tracking-widest">BRÜT</span>
                             </div>
-                            <div class="flex items-center gap-2 px-3 py-1">
-                                <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
-                                <span class="text-[10px] font-black text-slate-400">NET</span>
+                            <div class="flex items-center gap-2 px-3 py-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 opacity-40"></span>
+                                <span class="text-[9px] font-black text-slate-400 uppercase tracking-widest">NET</span>
                             </div>
                         </div>
                      </div>
-                     <div id="revenueChart" class="min-h-[400px]"></div>
-                     <div id="brushChart" class="h-20 mt-6 px-4 bg-slate-50/30 rounded-3xl border border-slate-100"></div>
+                     <div class="relative">
+                        <div id="revenueChart" class="min-h-[350px] sm:min-h-[450px]"></div>
+                        <div id="brushChart" class="h-16 mt-8 px-6 bg-slate-50/50 rounded-[2rem] border border-slate-100"></div>
+                     </div>
                   </div>
             </div>
 
             <!-- Right: Breakdown Summary -->
-            <div class="space-y-6">
-                <!-- Wallet Balance Card (NEW) -->
-                <div class="bg-gradient-to-br from-emerald-600 to-teal-700 rounded-[32px] shadow-2xl p-6 text-white relative overflow-hidden group">
-                    <div class="absolute -top-8 -right-8 w-32 h-32 bg-white/10 rounded-full blur-[50px]"></div>
+            <div class="space-y-8">
+                <!-- Wallet Balance Card -->
+                <div class="bg-slate-900 rounded-[2.5rem] shadow-2xl p-8 text-white relative overflow-hidden group">
+                    <div class="absolute -top-10 -right-10 w-40 h-40 bg-indigo-500/20 rounded-full blur-[60px] group-hover:scale-150 transition-transform duration-700"></div>
                     <div class="relative z-10">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 bg-white/15 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20">
-                                    <i class="fas fa-coins text-sm"></i>
-                                </div>
-                                <h3 class="text-sm font-black tracking-tight uppercase">Cüzdan Bakiyesi</h3>
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="w-12 h-12 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/15">
+                                <i class="fas fa-coins text-lg text-emerald-400"></i>
                             </div>
                             @if(!$business->iyzico_submerchant_key && (Auth::user()->balance ?? 0) >= 100)
-                                <button onclick="document.getElementById('withdrawalModal').classList.remove('hidden')" class="px-4 py-2 bg-white text-emerald-700 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-50 transition-all shadow-lg">
-                                    <i class="fa-solid fa-money-bill-transfer mr-1"></i> Para Çek
+                                <button onclick="document.getElementById('withdrawalModal').classList.remove('hidden')" class="px-5 py-2.5 bg-white text-slate-900 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-50 transition-all shadow-xl active:scale-95">
+                                    Para Çek
                                 </button>
                             @endif
                         </div>
-                        <div class="text-4xl font-black tracking-tighter">₺{{ number_format(Auth::user()->balance ?? 0, 2, ',', '.') }}</div>
-                        <p class="text-emerald-100 text-[10px] mt-3 font-medium opacity-80">
-                            @if($business->iyzico_submerchant_key)
-                                <i class="fas fa-check-circle mr-1"></i> Iyzico Pazaryeri hakedişlerinizi doğrudan banka hesabınıza aktarmaktadır.
-                            @else
-                                Platform içi kazançlarınız. 100 TL üzeri bakiyenizi çekebilirsiniz.
-                            @endif
-                        </p>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-1">Kullanılabilir Bakiye</p>
+                        <div class="text-4xl font-black tracking-tighter mb-4">₺{{ number_format(Auth::user()->balance ?? 0, 2, ',', '.') }}</div>
+                        <div class="p-4 bg-white/5 rounded-2xl border border-white/5">
+                            <p class="text-[10px] text-slate-400 font-medium leading-relaxed">
+                                @if($business->iyzico_submerchant_key)
+                                    <i class="fas fa-shield-alt text-emerald-400 mr-2"></i> Iyzico Pazaryeri hakedişlerinizi doğrudan banka hesabınıza aktarmaktadır.
+                                @else
+                                    <i class="fas fa-info-circle text-indigo-400 mr-2"></i> 100 TL üzeri bakiyenizi dilediğiniz zaman çekebilirsiniz.
+                                @endif
+                            </p>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Summary Card -->
-                <div class="bg-gradient-to-br from-indigo-700 via-indigo-600 to-violet-800 rounded-[40px] shadow-2xl p-8 text-white relative overflow-hidden group">
-                     <div class="absolute -top-10 -right-10 w-48 h-48 bg-white/10 rounded-full blur-[80px] transition-transform group-hover:scale-125"></div>
-                     <div class="absolute -bottom-20 -left-20 w-48 h-48 bg-emerald-400/20 rounded-full blur-[60px]"></div>
+                <div class="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 p-8 border border-slate-100 relative overflow-hidden group">
+                     <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-indigo-50 rounded-full opacity-50 blur-3xl"></div>
                      
-                     <div class="flex items-center gap-3 mb-8">
-                         <div class="w-10 h-10 bg-white/15 backdrop-blur-md rounded-2xl flex items-center justify-center border border-white/20">
-                             <i class="fas fa-wallet text-sm"></i>
+                     <div class="flex items-center gap-3 mb-10">
+                         <div class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-sm">
+                             <i class="fas fa-file-invoice-dollar"></i>
                          </div>
-                         <h3 class="text-lg font-black tracking-tight">Hesap Özeti</h3>
+                         <h3 class="text-xl font-black text-slate-900 tracking-tight">Dönem Özeti</h3>
                      </div>
 
-                      <div class="space-y-4 relative z-10">
-                        <div class="flex justify-between items-center group/item">
-                            <span class="text-indigo-100 font-bold text-[10px] uppercase tracking-widest opacity-60">Brüt Hasılat</span>
-                            <span class="font-bold text-white text-sm">₺{{ number_format($totalRevenue, 2, ',', '.') }}</span>
+                      <div class="space-y-6 relative z-10">
+                        <div class="flex justify-between items-center px-2">
+                            <span class="text-slate-400 font-black text-[10px] uppercase tracking-widest leading-none">Brüt Hasılat</span>
+                            <span class="font-black text-slate-900 text-sm">₺{{ number_format($totalRevenue, 2, ',', '.') }}</span>
                         </div>
-                        <div class="flex justify-between items-center group/item">
-                            <span class="text-indigo-100 font-bold text-[10px] uppercase tracking-widest opacity-60">Platform (%5)</span>
-                            <span class="font-bold text-indigo-200 text-sm">- ₺{{ number_format($totalCommission, 2, ',', '.') }}</span>
+                        <div class="flex justify-between items-center px-2">
+                            <span class="text-slate-400 font-black text-[10px] uppercase tracking-widest leading-none">Platform Payı</span>
+                            <span class="font-black text-rose-500 text-sm">-₺{{ number_format($totalCommission, 2, ',', '.') }}</span>
                         </div>
-                        <div class="flex justify-between items-center group/item">
-                            <span class="text-indigo-100 font-bold text-[10px] uppercase tracking-widest opacity-60">Iyzico Tahmini</span>
-                            <span class="font-bold text-indigo-300 text-sm">- ₺{{ number_format($iyzicoEstimate, 2, ',', '.') }}</span>
+                        <div class="flex justify-between items-center px-2">
+                            <span class="text-slate-400 font-black text-[10px] uppercase tracking-widest leading-none">Iyzico Tahmini</span>
+                            <span class="font-black text-rose-500 text-sm">-₺{{ number_format($iyzicoEstimate, 2, ',', '.') }}</span>
                         </div>
-                        <div class="pt-6 mt-4 border-t border-white/15">
-                            <div class="flex items-center gap-2 mb-1">
-                                <span class="text-[10px] font-black text-emerald-300 uppercase tracking-[0.2em] leading-none">Net Kazancınız</span>
+                        
+                        <div class="pt-8 mt-4 border-t border-slate-100">
+                            <div class="flex items-center gap-2 mb-2 px-2">
+                                <span class="text-[9px] font-black text-emerald-600 uppercase tracking-widest">NET KAZANCINIZ</span>
                                 <div class="group relative inline-block">
-                                    <i class="fas fa-info-circle text-[10px] text-white/40 cursor-help"></i>
-                                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block w-48 p-2 bg-slate-900 text-[9px] rounded-lg shadow-xl border border-white/10 leading-relaxed">
-                                        Iyzico kesintisi tahmini olup, gerçek dağılım ödeme anında Iyzico panelinde netleşir.
+                                    <i class="fas fa-info-circle text-[10px] text-slate-300 cursor-help"></i>
+                                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block w-48 p-3 bg-slate-900 text-[10px] text-white rounded-xl shadow-2xl z-20 leading-relaxed font-medium">
+                                        Iyzico kesintisi tahmini olup, gerçek dağılım ödeme anında netleşir.
                                     </div>
                                 </div>
                             </div>
-                            <span id="hud_net_earnings" class="text-4xl font-black text-white drop-shadow-xl inline-block transition-all hover:scale-105">₺{{ number_format($totalNet - $iyzicoEstimate, 2, ',', '.') }}</span>
+                            <div class="bg-slate-50 p-6 rounded-[2rem] border border-slate-100 text-center">
+                                <span id="hud_net_earnings" class="text-4xl font-black text-slate-900 tracking-tighter inline-block transition-transform hover:scale-105">₺{{ number_format($totalNet - $iyzicoEstimate, 2, ',', '.') }}</span>
+                            </div>
                         </div>
                      </div>
 
-                     <a href="{{ route('vendor.finance.export', request()->query()) }}" class="block w-full text-center mt-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-2xl text-xs font-black uppercase tracking-widest transition-all hover:shadow-lg">
-                         Tüm İşlemleri İndir (PDF)
+                     <a href="{{ route('vendor.finance.export', request()->query()) }}" class="flex items-center justify-center gap-2 w-full mt-8 py-5 bg-slate-900 hover:bg-slate-800 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl active:scale-95">
+                         <i class="fas fa-file-pdf"></i>
+                         Raporu İndir
                      </a>
                 </div>
 
-                 <!-- Iyzico Marketplace Activation (NEW) -->
-                <div class="bg-gradient-to-br from-slate-900 to-indigo-900 rounded-[32px] p-8 text-white shadow-2xl relative overflow-hidden group mb-8">
-                   <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+                 <!-- Iyzico Marketplace Activation -->
+                <div class="bg-indigo-600 rounded-[2.5rem] p-8 text-white shadow-2xl shadow-indigo-200 relative overflow-hidden group">
+                   <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-[2s]"></div>
                    
                    <div class="relative z-10">
-                       <div class="flex items-center gap-3 mb-4">
-                           <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center backdrop-blur-md">
-                               <i class="fas fa-university text-indigo-300"></i>
+                       <div class="flex items-center gap-3 mb-6">
+                           <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center backdrop-blur-md">
+                               <i class="fas fa-bolt text-indigo-100"></i>
                            </div>
                            <h3 class="font-black text-lg tracking-tight">Otomatik Ödeme</h3>
                        </div>
 
                        @if($business->iyzico_submerchant_key)
-                           <div class="bg-emerald-500/20 border border-emerald-500/30 rounded-2xl p-4 mb-4">
-                               <div class="flex items-center gap-2 text-emerald-300 mb-1">
-                                   <i class="fas fa-check-circle text-xs"></i>
+                           <div class="bg-white/10 border border-white/20 rounded-2xl p-5 mb-4 backdrop-blur-md">
+                               <div class="flex items-center gap-2 text-emerald-300 mb-2">
+                                   <i class="fas fa-check-circle"></i>
                                    <span class="text-[10px] font-black uppercase tracking-widest">AKTİF</span>
                                </div>
-                               <p class="text-xs font-medium text-emerald-100/80">Kazançlarınız otomatik olarak banka hesabınıza aktarılıyor.</p>
+                               <p class="text-xs font-medium text-indigo-100 leading-relaxed">Kazançlarınız otomatik olarak banka hesabınıza aktarılıyor.</p>
                            </div>
-                           <div class="space-y-2">
-                               <p class="text-[10px] font-black text-slate-400 uppercase">IBAN</p>
-                               <p class="text-xs font-mono text-indigo-200">{{ $business->iyzico_iban ?? 'TR...' }}</p>
+                           <div class="space-y-1.5 px-2">
+                               <p class="text-[9px] font-black text-indigo-300 uppercase tracking-widest">IBAN</p>
+                               <p class="text-xs font-mono text-white tracking-wider">{{ $business->iyzico_iban ?? 'TR...' }}</p>
                            </div>
                        @else
-                           <p class="text-sm text-slate-300 font-medium mb-6 leading-relaxed">Kazançlarınızın direkt banka hesabınıza yatması için Iyzico Pazaryeri kaydınızı tamamlayın.</p>
-                           <button onclick="document.getElementById('iyzicoModal').classList.remove('hidden')" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-2xl text-xs font-black uppercase tracking-widest transition-all shadow-lg shadow-indigo-900/50">
+                           <p class="text-sm text-indigo-50 font-medium mb-8 leading-relaxed">Kazançlarınızın direkt banka hesabınıza yatması için Iyzico Pazaryeri kaydınızı tamamlayın.</p>
+                           <button onclick="document.getElementById('iyzicoModal').classList.remove('hidden')" class="w-full py-5 bg-white text-indigo-600 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all shadow-xl hover:-translate-y-1 active:scale-95">
                                ŞİMDİ AKTİF ET
                            </button>
                        @endif
@@ -224,11 +229,11 @@
                 </div>
 
                 <!-- Distribution Chart -->
-                <div class="bg-white rounded-[40px] shadow-sm border border-gray-100 p-8">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Günlük Talep</h3>
+                <div class="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 p-8">
+                    <div class="flex items-center justify-between mb-8">
+                        <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none">Günlük Yoğunluk</h3>
                         <div class="w-8 h-8 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-100">
-                            <i class="fas fa-chart-bar text-slate-400 text-[10px]"></i>
+                            <i class="fas fa-clock text-slate-300 text-[10px]"></i>
                         </div>
                     </div>
                     <div id="distributionChart" class="min-h-[250px]"></div>
@@ -263,14 +268,14 @@
             chart: {
                 id: 'chart-main',
                 type: 'area',
-                height: 400,
+                height: window.innerWidth < 768 ? 300 : 450,
                 fontFamily: 'Inter, sans-serif',
                 toolbar: { show: false },
                 animations: { enabled: true, easing: 'easeinout', speed: 800 },
                 zoom: { enabled: true, type: 'x', autoScaleYaxis: true }
             },
             colors: ['#10b981', '#f43f5e', '#6366f1'],
-            stroke: { curve: 'smooth', width: [4, 2, 4], dashArray: [0, 5, 0] },
+            stroke: { curve: 'smooth', width: [3, 2, 3], dashArray: [0, 5, 0] },
             dataLabels: { enabled: false },
             fill: {
                 type: 'gradient',
@@ -286,22 +291,37 @@
                 categories: categories,
                 axisBorder: { show: false },
                 axisTicks: { show: false },
-                labels: { style: { colors: '#94a3b8', fontWeight: 700, fontSize: '10px' } }
+                labels: { 
+                    rotate: -45,
+                    rotateAlways: false,
+                    hideOverlappingLabels: true,
+                    style: { colors: '#94a3b8', fontWeight: 700, fontSize: '9px' } 
+                }
             },
             yaxis: {
                 labels: {
-                    style: { colors: '#94a3b8', fontWeight: 700, fontSize: '10px' },
-                    formatter: (value) => '₺' + value.toLocaleString('tr-TR')
+                    show: window.innerWidth > 480,
+                    style: { colors: '#94a3b8', fontWeight: 700, fontSize: '9px' },
+                    formatter: (value) => '₺' + Math.round(value).toLocaleString('tr-TR')
                 }
             },
-            grid: { borderColor: '#f1f5f9', strokeDashArray: 4, padding: { left: 20, right: 20 } },
+            grid: { borderColor: '#f1f5f9', strokeDashArray: 4, padding: { left: 10, right: 10, bottom: 0 } },
             tooltip: {
                 theme: 'dark',
                 shared: true,
                 intersect: false,
+                fixed: { enabled: false },
+                x: { show: true },
                 y: { formatter: (val) => '₺' + val.toLocaleString('tr-TR') }
             },
-            legend: { show: false }
+            legend: { show: false },
+            responsive: [{
+                breakpoint: 768,
+                options: {
+                    chart: { height: 320 },
+                    yaxis: { labels: { show: false } }
+                }
+            }]
         };
 
         revenueChart = new ApexCharts(document.querySelector("#revenueChart"), revenueOptions);
