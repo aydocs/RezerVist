@@ -80,7 +80,7 @@ class WebAuthController extends Controller
                 'user_name' => $validated['name'],
                 'user_avatar' => 'https://ui-avatars.com/api/?name='.urlencode($validated['name']).'&background=7c3aed&color=fff',
             ], function ($message) use ($email) {
-                $message->to($email)->subject('Rezervist - Doğrulama Kodunuz');
+                $message->to($email)->subject('RezerVist - Doğrulama Kodunuz');
             });
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Registration OTP Mail Error: '.$e->getMessage());
@@ -153,7 +153,7 @@ class WebAuthController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'phone' => $data['phone'] ?? null,
-            'role' => 'customer',
+            'role' => 'user',
             'email_verified_at' => now(), // Email is now verified
             'referred_by_id' => $referredById,
         ]);
@@ -165,7 +165,7 @@ class WebAuthController extends Controller
         Auth::login($user);
 
         // Onboarding Notifications
-        $user->notify(new \App\Notifications\OnboardingNotification('Rezervist\'e Hoş Geldiniz! Mekanları keşfetmeye hemen başlayın.', route('search.index')));
+        $user->notify(new \App\Notifications\OnboardingNotification('RezerVist\'e Hoş Geldiniz! Mekanları keşfetmeye hemen başlayın.', route('search.index')));
 
         // Audit Log
         \App\Models\ActivityLog::logUserCreated($user);
@@ -198,7 +198,7 @@ class WebAuthController extends Controller
                 'user_name' => $cachedData['data']['name'],
                 'user_avatar' => 'https://ui-avatars.com/api/?name='.urlencode($cachedData['data']['name']).'&background=7c3aed&color=fff',
             ], function ($message) use ($email) {
-                $message->to($email)->subject('Rezervist - Yeni Doğrulama Kodunuz');
+                $message->to($email)->subject('RezerVist - Yeni Doğrulama Kodunuz');
             });
 
             return response()->json(['success' => true, 'message' => 'Yeni kod başarıyla gönderildi.']);
@@ -234,7 +234,7 @@ class WebAuthController extends Controller
                 'user_name' => $user->name,
                 'user_avatar' => $user->profile_photo_url,
             ], function ($message) use ($email) {
-                $message->to($email)->subject('Rezervist - Şifre Sıfırlama Kodunuz');
+                $message->to($email)->subject('RezerVist - Şifre Sıfırlama Kodunuz');
             });
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Password Reset OTP Error: '.$e->getMessage());
