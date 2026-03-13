@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Cüzdanım - Premium Rezervasyon Deneyimi')
+@section('title', 'Cüzdanım - ' . ($globalSettings['site_name'] ?? config('app.name')))
 
 @section('content')
 <div class="bg-[#F8FAFC] min-h-screen py-8 lg:py-12 font-sans selection:bg-indigo-100 selection:text-indigo-900">
@@ -56,20 +56,20 @@
                 <!-- Hero Section: Virtual Card + Stats -->
                 <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
                     <!-- The Card -->
-                    <div class="relative group h-[280px]">
+                    <div class="relative group h-[220px] md:h-[280px]">
                         <div class="absolute inset-0 bg-gradient-to-br from-indigo-700 via-indigo-900 to-slate-900 rounded-[2.5rem] shadow-2xl shadow-indigo-900/40 transform group-hover:-rotate-1 transition-transform duration-500 overflow-hidden border border-white/10">
                             <!-- Background Textures -->
                             <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
                             <div class="absolute -right-20 -top-20 w-64 h-64 bg-primary/20 rounded-full blur-3xl animate-pulse"></div>
                             
                             <!-- Card Content -->
-                            <div class="relative p-10 h-full flex flex-col justify-between">
+                            <div class="relative p-7 md:p-10 h-full flex flex-col justify-between">
                                 <div class="flex justify-between items-start">
-                                    <div class="space-y-1">
-                                        <div class="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-300/60">RezerVist Premium</div>
-                                        <div class="text-2xl font-black text-white tracking-tighter">Virtual Card</div>
+                                    <div class="space-y-0.5 md:space-y-1">
+                                        <div class="text-[8px] md:text-[10px] font-black uppercase tracking-[0.4em] text-indigo-300/60">RezerVist Premium</div>
+                                        <h1 class="text-xl md:text-2xl font-black text-white italic tracking-tighter">{{ $globalSettings['site_name'] ?? config('app.name') }} <span class="text-secondary not-italic ml-1">PREMIUM</span></h1>
                                     </div>
-                                    <div class="w-14 h-10 bg-gradient-to-br from-indigo-400/20 to-white/5 backdrop-blur-md rounded-lg border border-white/10 flex items-center justify-center overflow-hidden">
+                                    <div class="w-10 h-7 md:w-14 md:h-10 bg-gradient-to-br from-indigo-400/20 to-white/5 backdrop-blur-md rounded-lg border border-white/10 flex items-center justify-center overflow-hidden">
                                         <div class="w-full h-full opacity-50 flex flex-col justify-around py-1.5 transform -skew-x-12">
                                             <div class="h-px bg-white w-full"></div>
                                             <div class="h-px bg-white w-full"></div>
@@ -79,22 +79,22 @@
                                 </div>
 
                                 <div>
-                                    <div class="text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-2">Mevcut Bakiye</div>
-                                    <div class="flex items-baseline gap-3">
-                                        <span class="text-5xl md:text-6xl font-black text-white tracking-tighter tabular-nums">₺{{ number_format($user->balance, 2, ',', '.') }}</span>
-                                        <span class="text-indigo-400 font-bold text-sm tracking-widest">TRY</span>
+                                    <div class="text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] text-white/40 mb-1 md:mb-2">Mevcut Bakiye</div>
+                                    <div class="flex items-baseline gap-2 md:gap-3">
+                                        <span class="text-3xl md:text-6xl font-black text-white tracking-tighter tabular-nums">₺{{ number_format($user->balance, 2, ',', '.') }}</span>
+                                        <span class="text-indigo-400 font-bold text-xs md:text-sm tracking-widest">TRY</span>
                                     </div>
                                 </div>
 
-                                <div class="flex justify-between items-end border-t border-white/10 pt-6">
-                                    <div class="flex gap-1.5">
-                                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span>
-                                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-500/50"></span>
-                                        <span class="w-2.5 h-2.5 rounded-full bg-indigo-500/20"></span>
+                                <div class="flex justify-between items-end border-t border-white/10 pt-4 md:pt-6">
+                                    <div class="flex gap-1 md:gap-1.5">
+                                        <span class="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-indigo-500"></span>
+                                        <span class="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-indigo-500/50"></span>
+                                        <span class="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-indigo-500/20"></span>
                                     </div>
                                     <div class="text-right">
-                                        <div class="text-[8px] font-black uppercase text-indigo-300/40 mb-1">Üye Adı</div>
-                                        <div class="text-xs font-bold text-white uppercase tracking-widest">{{ $user->name }}</div>
+                                        <div class="text-[7px] md:text-[8px] font-black uppercase text-indigo-300/40 mb-0.5 md:mb-1">Üye Adı</div>
+                                        <div class="text-[10px] md:text-xs font-bold text-white uppercase tracking-widest line-clamp-1">{{ $user->name }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -102,37 +102,37 @@
                     </div>
 
                     <!-- Statistics Summary -->
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-xl shadow-slate-200/40 flex flex-col justify-between group hover:border-indigo-100 transition-colors">
-                            <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 mb-6 group-hover:scale-110 transition-transform">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path></svg>
+                    <div class="grid grid-cols-2 gap-4 md:gap-6">
+                        <div class="bg-white rounded-[2.5rem] p-6 md:p-8 border border-slate-100 shadow-xl shadow-slate-200/40 flex flex-col justify-between group hover:border-indigo-100 transition-colors">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 mb-4 md:mb-6 group-hover:scale-110 transition-transform">
+                                <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11l5-5m0 0l5 5m-5-5v12"></path></svg>
                             </div>
                             <div>
-                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Toplam Yüklenen</h4>
-                                <p class="text-2xl font-black text-slate-900 tracking-tight">₺{{ number_format($totalLoaded ?? 0, 2, ',', '.') }}</p>
+                                <h4 class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest mb-1 text-[8px] sm:text-[10px] md:text-xs">Toplam Yüklenen</h4>
+                                <p class="text-lg md:text-2xl font-black text-slate-900 tracking-tight">₺{{ number_format($totalLoaded ?? 0, 2, ',', '.') }}</p>
                             </div>
                         </div>
-                        <div class="bg-white rounded-[2.5rem] p-8 border border-slate-100 shadow-xl shadow-slate-200/40 flex flex-col justify-between group hover:border-indigo-100 transition-colors">
-                            <div class="w-12 h-12 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-600 mb-6 group-hover:scale-110 transition-transform">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path></svg>
+                        <div class="bg-white rounded-[2.5rem] p-6 md:p-8 border border-slate-100 shadow-xl shadow-slate-200/40 flex flex-col justify-between group hover:border-indigo-100 transition-colors">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-600 mb-4 md:mb-6 group-hover:scale-110 transition-transform">
+                                <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 13l-5 5m0 0l-5-5m5 5V6"></path></svg>
                             </div>
                             <div>
-                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Toplam Harcanan</h4>
-                                <p class="text-2xl font-black text-slate-900 tracking-tight">₺{{ number_format($totalSpent ?? 0, 2, ',', '.') }}</p>
+                                <h4 class="text-[10px] md:text-xs font-bold text-slate-400 uppercase tracking-widest mb-1 text-[8px] sm:text-[10px] md:text-xs">Toplam Harcanan</h4>
+                                <p class="text-lg md:text-2xl font-black text-slate-900 tracking-tight">₺{{ number_format($totalSpent ?? 0, 2, ',', '.') }}</p>
                             </div>
                         </div>
-                        <div class="col-span-2 bg-slate-900 rounded-[2rem] p-6 flex items-center justify-between group hover:bg-black transition-all cursor-pointer shadow-xl shadow-slate-900/20 border-2 border-white/5 hover:border-white/20" onclick="window.dispatchEvent(new CustomEvent('open-topup-modal'))">
-                            <div class="flex items-center gap-4">
-                                <div class="w-14 h-14 rounded-2xl bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/30 border-2 border-white/20 group-hover:border-white transition-all">
-                                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        <div class="col-span-2 bg-slate-900 rounded-[2rem] p-5 md:p-6 flex items-center justify-between group hover:bg-black transition-all cursor-pointer shadow-xl shadow-slate-900/20 border-2 border-white/5 hover:border-white/20" onclick="window.dispatchEvent(new CustomEvent('open-topup-modal'))">
+                            <div class="flex items-center gap-3 md:gap-4">
+                                <div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/30 border-2 border-white/20 group-hover:border-white transition-all">
+                                    <svg class="w-6 h-6 md:w-8 md:h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                                 </div>
                                 <div>
-                                    <h4 class="text-white font-black tracking-tight">Anında Bakiye Yükle</h4>
-                                    <p class="text-indigo-300/50 text-xs font-bold uppercase tracking-wider">Komisyonsuz ve 7/24 hızlı yükleme</p>
+                                    <h4 class="text-white text-sm md:text-base font-black tracking-tight">Anında Bakiye Yükle</h4>
+                                    <p class="text-indigo-300/50 text-[10px] font-bold uppercase tracking-wider">Komisyonsuz ve 7/24 hızlı yükleme</p>
                                 </div>
                             </div>
-                            <div class="text-white/20 group-hover:text-white transition-colors mr-2">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            <div class="text-white/20 group-hover:text-white transition-colors mr-1 md:mr-2">
+                                <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                             </div>
                         </div>
                     </div>
@@ -140,28 +140,23 @@
 
                 <!-- Transaction History -->
                 <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-2xl shadow-slate-200/30 overflow-hidden">
-                    <div class="px-10 py-8 border-b border-slate-50 flex items-center justify-between">
+                    <div class="px-6 md:px-10 py-6 md:py-8 border-b border-slate-50 flex items-center justify-between">
                         <div>
-                            <h2 class="text-xl font-black text-slate-900 tracking-tight">İşlem Hareketleri</h2>
-                            <p class="text-slate-400 text-xs mt-1">Son yaptığınız finansal hareketlerin dökümü.</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <button class="p-2.5 rounded-xl border border-slate-100 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-all">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path></svg>
-                            </button>
+                            <h2 class="text-lg md:text-xl font-black text-slate-900 tracking-tight">İşlem Hareketleri</h2>
+                            <p class="text-slate-400 text-[10px] md:text-xs mt-1">Finansal hareketlerinizin dökümü.</p>
                         </div>
                     </div>
 
-                    <div class="overflow-x-auto px-6">
+                    <div class="overflow-x-auto px-2 md:px-6">
                         <table class="w-full">
                             <tbody class="divide-y divide-slate-50">
                                 @forelse($transactions as $tx)
                                 <tr class="group hover:bg-slate-50/80 transition-all rounded-3xl">
-                                    <td class="px-4 py-8">
-                                        <div class="flex items-center gap-6">
-                                            <div class="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 transition-all duration-300
+                                    <td class="px-3 md:px-4 py-6 md:py-8">
+                                        <div class="flex items-center gap-4 md:gap-6">
+                                            <div class="w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 transition-all duration-300
                                                 {{ in_array($tx->type, ['topup', 'earning']) ? 'bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white' : 'bg-rose-50 text-rose-600 group-hover:bg-rose-600 group-hover:text-white' }}">
-                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     @if(in_array($tx->type, ['topup', 'earning']))
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                                                     @else
@@ -170,22 +165,22 @@
                                                 </svg>
                                             </div>
                                             <div>
-                                                <div class="flex items-center gap-2 mb-1">
-                                                    <p class="text-sm font-black text-slate-800 tracking-tight">{{ $tx->description }}</p>
+                                                <div class="flex items-center gap-2 mb-0.5 md:mb-1">
+                                                    <p class="text-xs md:text-sm font-black text-slate-800 tracking-tight line-clamp-1">{{ $tx->description }}</p>
                                                     @if($tx->status == 'success')
                                                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
                                                     @endif
                                                 </div>
-                                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ $tx->created_at->translatedFormat('d F Y • H:i') }}</p>
+                                                <p class="text-[9px] md:text-[10px] font-bold text-slate-400 uppercase tracking-widest">{{ $tx->created_at->translatedFormat('d F Y • H:i') }}</p>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-8 text-right">
+                                    <td class="px-3 md:px-4 py-6 md:py-8 text-right">
                                         <div class="flex flex-col items-end">
-                                            <span class="text-lg font-black tracking-tighter tabular-nums {{ ($tx->amount > 0 && in_array($tx->type, ['topup', 'earning'])) ? 'text-emerald-600' : 'text-slate-900' }}">
+                                            <span class="text-sm md:text-lg font-black tracking-tighter tabular-nums {{ ($tx->amount > 0 && in_array($tx->type, ['topup', 'earning'])) ? 'text-emerald-600' : 'text-slate-900' }}">
                                                 {{ ($tx->amount > 0 && in_array($tx->type, ['topup', 'earning'])) ? '+' : '-' }}₺{{ number_format(abs($tx->amount), 2, ',', '.') }}
                                             </span>
-                                            <span class="text-[9px] font-black uppercase text-slate-300 tracking-widest mt-1">İşlem No: {{ substr($tx->reference_id, 0, 8) }}...</span>
+                                            <span class="hidden md:block text-[9px] font-black uppercase text-slate-300 tracking-widest mt-1">İşlem No: {{ substr($tx->reference_id, 0, 8) }}...</span>
                                         </div>
                                     </td>
                                 </tr>
