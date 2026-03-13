@@ -134,7 +134,7 @@
     <div class="wrapper">
         <div class="container">
             <div class="header">
-                <a href="{{ config('app.url') }}" class="logo">REZERVIST</a>
+                <a href="{{ config('app.url') }}" class="logo">{{ $globalSettings['site_name'] ?? config('app.name') }}</a>
             </div>
 
             <div class="content">
@@ -156,7 +156,7 @@
                     </a>
                 </div>
                 <div class="footer-text">
-                    &copy; {{ date('Y') }} Rezervist.com. Tüm hakları saklıdır.<br>
+                    &copy; {{ date('Y') }} {{ $globalSettings['site_name'] ?? config('app.name') }}. Tüm hakları saklıdır.<br>
                     Premium Rezervasyon Deneyimi
                 </div>
             </div>
