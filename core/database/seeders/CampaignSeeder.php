@@ -47,7 +47,7 @@ class CampaignSeeder extends Seeder
             [
                 'title' => 'Yeni Açılan Mekanları Keşfet',
                 'slug' => 'yeni-mekanlar',
-                'description' => 'Şehrin en yeni ve en trend mekanları Rezervist\'te! İlk rezervasyonunuza özel sürpriz ikramlar ve öncelikli masa avantajlarından yararlanmak için hemen keşfetmeye başlayın.',
+                'description' => 'Şehrin en yeni ve en trend mekanları RezerVist\'te! İlk rezervasyonunuza özel sürpriz ikramlar ve öncelikli masa avantajlarından yararlanmak için hemen keşfetmeye başlayın.',
                 'image' => 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
                 'discount_text' => 'SÜRPRİZ İKRAM',
                 'discount_code' => 'YENI25',
