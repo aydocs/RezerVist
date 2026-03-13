@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $business->name . ' - ' . ($business->city ?? 'Türkiye') . ' | Online Rezervasyon | Rezervist')
+@section('title', $business->name . ' - ' . ($business->city ?? 'Türkiye') . ' | Online Rezervasyon | RezerVist')
 @section('meta_description', Str::limit(strip_tags($business->description), 155) . ' ' . $business->address . ' - Hemen online rezervasyon yapın!')
 @section('meta_keywords', $business->name . ', ' . ($business->businessCategory->name ?? $business->category) . ', ' . ($business->city ?? '') . ' rezervasyon, online masa rezervasyonu, ' . ($business->businessCategory->name ?? '') . ' ' . ($business->city ?? ''))
 @section('meta_image', $business->images->first()?->image_path ? asset('storage/' . $business->images->first()->image_path) : asset('images/default-business.jpg'))
@@ -155,7 +155,7 @@
                             </svg>
                             <!-- Tooltip -->
                             <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-2 bg-gray-900 text-white text-[10px] md:text-xs font-bold rounded-lg opacity-0 invisible group-hover/verified:opacity-100 group-hover/verified:visible transition-all whitespace-nowrap z-50 shadow-2xl">
-                                {{ __('Rezervist Tarafından Doğrulanmış İşletme') }}
+                                {{ __('RezerVist Tarafından Doğrulanmış İşletme') }}
                                 <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-gray-900"></div>
                             </div>
                         </span>
@@ -297,12 +297,33 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pb-24 lg:pb-12" x-data="{ tab: 'details' }">
     <!-- Tabs Navigation -->
     <!-- Tabs Navigation -->
-    <div class="flex w-full border-b border-gray-200 mb-8">
-        <button @click="tab = 'details'" :class="{ 'border-primary text-primary': tab === 'details', 'border-transparent text-gray-500 hover:text-gray-800': tab !== 'details' }" class="flex-1 px-1 py-3 font-medium text-sm md:text-lg border-b-2 transition whitespace-nowrap text-center">{{ __('common.categories.about') }}</button>
-        <button @click="tab = 'menu'" :class="{ 'border-primary text-primary': tab === 'menu', 'border-transparent text-gray-500 hover:text-gray-800': tab !== 'menu' }" class="flex-1 px-1 py-3 font-medium text-sm md:text-lg border-b-2 transition whitespace-nowrap text-center">{{ __('common.categories.menu_services') }}</button>
-        <button @click="tab = 'gallery'" :class="{ 'border-primary text-primary': tab === 'gallery', 'border-transparent text-gray-500 hover:text-gray-800': tab !== 'gallery' }" class="flex-1 px-1 py-3 font-medium text-sm md:text-lg border-b-2 transition whitespace-nowrap text-center">{{ __('common.categories.gallery') }}</button>
-        <button @click="tab = 'reviews'" :class="{ 'border-primary text-primary': tab === 'reviews', 'border-transparent text-gray-500 hover:text-gray-800': tab !== 'reviews' }" class="flex-1 px-1 py-3 font-medium text-sm md:text-lg border-b-2 transition whitespace-nowrap text-center">{{ __('common.categories.reviews') }}</button>
+    <div class="relative mb-8">
+        <div class="flex w-full border-b border-gray-200 overflow-x-auto hide-scrollbar snap-x">
+            <button @click="tab = 'details'" 
+                    :class="{ 'border-primary text-primary': tab === 'details', 'border-transparent text-gray-500 hover:text-gray-800': tab !== 'details' }" 
+                    class="flex-1 min-w-[100px] whitespace-nowrap px-4 py-3 font-bold text-sm md:text-lg border-b-2 transition text-center snap-start">
+                {{ __('common.categories.about') }}
+            </button>
+            <button @click="tab = 'menu'" 
+                    :class="{ 'border-primary text-primary': tab === 'menu', 'border-transparent text-gray-500 hover:text-gray-800': tab !== 'menu' }" 
+                    class="flex-1 min-w-[120px] whitespace-nowrap px-4 py-3 font-bold text-sm md:text-lg border-b-2 transition text-center snap-start">
+                {{ __('common.categories.menu_services') }}
+            </button>
+            <button @click="tab = 'gallery'" 
+                    :class="{ 'border-primary text-primary': tab === 'gallery', 'border-transparent text-gray-500 hover:text-gray-800': tab !== 'gallery' }" 
+                    class="flex-1 min-w-[100px] whitespace-nowrap px-4 py-3 font-bold text-sm md:text-lg border-b-2 transition text-center snap-start">
+                {{ __('common.categories.gallery') }}
+            </button>
+            <button @click="tab = 'reviews'" 
+                    :class="{ 'border-primary text-primary': tab === 'reviews', 'border-transparent text-gray-500 hover:text-gray-800': tab !== 'reviews' }" 
+                    class="flex-1 min-w-[100px] whitespace-nowrap px-4 py-3 font-bold text-sm md:text-lg border-b-2 transition text-center snap-start">
+                {{ __('common.categories.reviews') }}
+            </button>
+        </div>
+        <!-- Shadow gradients for scrollable areas -->
+        <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent pointer-events-none sm:hidden"></div>
     </div>
+ Sarah navigation -->
 
     <!-- Details Tab -->
     <!-- Details Tab -->
