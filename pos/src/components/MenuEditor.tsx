@@ -84,7 +84,7 @@ export default function MenuEditor() {
         setImageFile(null);
 
         // Use global API base URL if available, else fallback
-        const baseUrl = localStorage.getItem('api_base_url') || 'https://rezervist.com';
+        const baseUrl = localStorage.getItem('api_base_url') || 'http://localhost:8000';
         const imgUrl = getImageUrl(product.image, (product as any).image_url) || null;
         setImagePreview(imgUrl);
         setIsAddingProduct(true);
