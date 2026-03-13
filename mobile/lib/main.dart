@@ -29,7 +29,7 @@ class RezervistApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
-      title: 'Rezervist.com',
+      title: 'RezerVist.com',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       localizationsDelegates: context.localizationDelegates,
