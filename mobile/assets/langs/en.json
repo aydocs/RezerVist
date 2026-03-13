@@ -1,5 +1,5 @@
 {
-  "app_title": "Rezervist.com",
+  "app_title": "RezerVist.com",
   "auth": {
     "login": {
       "title": "Login",
@@ -49,7 +49,7 @@
     "error_prefix": "Error: "
   },
   "home": {
-    "title": "Rezervist.com",
+    "title": "RezerVist.com",
     "no_address": "No address",
     "error_loading": "Error loading: "
   },
