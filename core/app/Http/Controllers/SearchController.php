@@ -22,7 +22,7 @@ class SearchController extends Controller
             });
         }
         // ...
-        $businesses = $query->with(['businessCategory', 'approvedReviews'])->where('is_active', true)->paginate(10)->withQueryString();
+
 
         // 2. Category Filter (handle both string and array)
         // 2. Category Filter (handle both string and array, IDs or slugs)
@@ -141,11 +141,12 @@ class SearchController extends Controller
 
         $businesses = $query->with(['businessCategory', 'approvedReviews'])->where('is_active', true)->paginate(10)->withQueryString();
         $categories = \App\Models\Category::all();
+        $searchQuery = $request->get('q');
 
         if ($request->ajax()) {
             return view('search.partials.list', compact('businesses'))->render();
         }
 
-        return view('search.index', compact('businesses', 'categories'));
+        return view('search.index', compact('businesses', 'categories', 'searchQuery'));
     }
 }
