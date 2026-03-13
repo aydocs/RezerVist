@@ -8,7 +8,7 @@
             GÜVENLİ GİRİŞ
         </div>
         <h1>Tekrar hoş geldiniz!</h1>
-        <p>Rezervist hesabınıza güvenli geçiş yapmak için aşağıdaki kodu kullanın.</p>
+        <p>RezerVist hesabınıza güvenli geçiş yapmak için aşağıdaki kodu kullanın.</p>
         
         <div class="card" style="text-align: center;">
             <div class="card-title">GİRİŞ KODU</div>
