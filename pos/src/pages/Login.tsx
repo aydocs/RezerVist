@@ -12,7 +12,7 @@ export default function Login() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [showSetup, setShowSetup] = useState(false);
-    const [baseUrl, setBaseUrl] = useState(localStorage.getItem('api_base_url') || 'https://rezervist.com/api');
+    const [baseUrl, setBaseUrl] = useState(localStorage.getItem('api_base_url') || 'http://localhost:8000/api');
     const navigate = useNavigate();
 
     const saveSetup = () => {
@@ -135,7 +135,7 @@ export default function Login() {
                     </h1>
 
                     <p className="text-xl text-white/80 mb-12 max-w-md leading-relaxed font-medium">
-                        RezerVistA ile siparişlerinizi yönetin, ödemelerinizi hızlandırın ve raporlayın.
+                        Bu sistemle siparişlerinizi yönetin, ödemelerinizi hızlandırın ve raporlayın.
                     </p>
                 </div>
             </div>
@@ -145,7 +145,7 @@ export default function Login() {
                 <div className="max-w-md w-full px-4">
                     <div className="mb-12">
                         <h2 className="text-4xl font-extrabold text-gray-900 mb-3 tracking-tight">Giriş Yap</h2>
-                        <p className="text-gray-500 font-medium text-lg">RezerVist hesabınızla giriş yapın.</p>
+                        <p className="text-gray-500 font-medium text-lg">Hesabınızla giriş yapın.</p>
                     </div>
 
                     <form onSubmit={handleLogin} className="space-y-6">
@@ -169,7 +169,7 @@ export default function Login() {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         className="w-full pl-12 pr-4 py-4 border-2 border-gray-100 rounded-2xl focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all font-medium text-lg text-gray-900 placeholder-gray-300 bg-white"
-                                        placeholder="ornek@rezervist.com"
+                                        placeholder="ornek@alanadiniz.com"
                                     />
                                 </div>
                             </div>
@@ -246,10 +246,10 @@ export default function Login() {
                                                 value={baseUrl}
                                                 onChange={(e) => setBaseUrl(e.target.value)}
                                                 className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent focus:border-primary focus:bg-white rounded-2xl transition-all font-bold text-gray-900 outline-none"
-                                                placeholder="https://rezervist.com/api"
+                                                placeholder="http://localhost:8000/api"
                                             />
                                             <p className="text-[9px] text-gray-400 font-bold leading-relaxed px-1">
-                                                * Normalde <b>https://rezervist.com/api</b> olmalıdır. Sonunda /pos olmamalıdır.
+                                                * Normalde <b>http://localhost:8000/api</b> olmalıdır. Sonunda /pos olmamalıdır.
                                             </p>
                                         </div>
 
@@ -274,7 +274,7 @@ export default function Login() {
                     )}
 
                     <p className="mt-12 text-center text-[10px] font-black text-gray-300 uppercase tracking-[0.2em]">
-                        &copy; 2026 RezerVist TEKNOLOJİ A.Ş.
+                        &copy; 2026 TEKNOLOJİ A.Ş.
                     </p>
                 </div>
             </div>
