@@ -135,7 +135,8 @@
         </div>
 
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <table class="min-w-full divide-y divide-gray-200">
+            <div class="hidden md:block overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
                         <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Müşteri</th>
@@ -386,6 +387,36 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
+
+            <!-- Mobile Cards -->
+            <div class="md:hidden divide-y divide-gray-100">
+                @forelse($reservations as $reservation)
+                <div class="p-4 hover:bg-gray-50 transition" onclick="document.getElementById('details-{{ $reservation->id }}').showModal()">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="h-10 w-10 border border-indigo-100 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold shrink-0">
+                                {{ substr($reservation->user->name, 0, 1) }}
+                            </div>
+                            <div>
+                                <div class="text-sm font-black text-slate-900">{{ $reservation->user->name }}</div>
+                                <div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{{ \Carbon\Carbon::parse($reservation->start_time)->format('H:i') }} • {{ $reservation->guest_count }} Kişi</div>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-lg text-[9px] font-black uppercase tracking-wide {{ $statusClasses[$reservation->status] ?? 'bg-gray-100 text-gray-800' }}">
+                            {{ $statusLabels[$reservation->status] ?? ucfirst($reservation->status) }}
+                        </span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-slate-400 font-bold">{{ \Carbon\Carbon::parse($reservation->start_time)->format('d.m.Y') }}</span>
+                        <span class="font-black text-slate-900">₺{{ number_format($reservation->price, 2) }}</span>
+                    </div>
+                </div>
+                @empty
+                <div class="p-8 text-center text-slate-400 italic font-medium">Rezervasyon bulunamadı.</div>
+                @endforelse
+            </div>
+
             <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
                 {{ $reservations->links() }}
             </div>
