@@ -7,11 +7,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
     <!-- Primary Meta Tags -->
-    <title>@yield('title', ($globalSettings['site_name'] ?? 'Rezervist.com') . ' - ' . ($globalSettings['site_tagline'] ?? 'Türkiye\'nin Premium Rezervasyon Platformu'))</title>
-    <meta name="title" content="@yield('title', ($globalSettings['site_name'] ?? 'Rezervist.com') . ' - Türkiye\'nin En İyi Rezervasyon Platformu')">
-    <meta name="description" content="@yield('meta_description', $globalSettings['seo_description'] ?? 'Türkiye\'nin en kapsamlı online rezervasyon platformu. Restoran ve kafeler için hemen rezervasyon yapın. 7/24 ücretsiz hizmet.')">
-    <meta name="keywords" content="@yield('meta_keywords', $globalSettings['seo_keywords'] ?? 'rezervasyon, online rezervasyon, restoran rezervasyon, masa rezervasyonu, cafe rezervasyon, istanbul restoran, ankara cafe, izmir restoran, türkiye rezervasyon')">
-    <meta name="author" content="{{ $globalSettings['site_name'] ?? 'Rezervist.com' }}">
+    <title>@yield('title', ($globalSettings['site_name'] ?? config('app.name')) . ' - ' . ($globalSettings['site_tagline'] ?? 'Premium Rezervasyon Platformu'))</title>
+    <meta name="title" content="@yield('title', ($globalSettings['site_name'] ?? config('app.name')) . ' - En İyi Rezervasyon Platformu')">
+    <meta name="description" content="@yield('meta_description', $globalSettings['seo_description'] ?? 'RezerVist: Türkiye\'nin en kapsamlı online rezervasyon platformu. Restoran ve kafeler için hemen rezervasyon yapın. 7/24 ücretsiz hizmet.')">
+    <meta name="keywords" content="@yield('meta_keywords', $globalSettings['seo_keywords'] ?? 'RezerVist, rezervasyon, online rezervasyon, restoran rezervasyon, masa rezervasyonu, cafe rezervasyon, istanbul restoran, ankara cafe, izmir restoran, türkiye rezervasyon')">
+    <meta name="author" content="{{ $globalSettings['site_name'] ?? config('app.name') }}">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <meta name="googlebot" content="index, follow">
     <meta name="bingbot" content="index, follow">
@@ -32,31 +32,31 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:title" content="@yield('title', ($globalSettings['site_name'] ?? 'Rezervist.com') . ' - Türkiye\'nin Premium Rezervasyon Platformu')">
+    <meta property="og:title" content="@yield('title', ($globalSettings['site_name'] ?? config('app.name')) . ' - Premium Rezervasyon Platformu')">
     <meta property="og:description" content="@yield('meta_description', $globalSettings['seo_description'] ?? 'Türkiye\'nin en kapsamlı online rezervasyon platformu. Hemen ücretsiz rezervasyon yapın!')">
     <meta property="og:image" content="@yield('meta_image', isset($business->id) ? route('business.og-image', $business) : asset('images/og-image.jpg'))">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:locale" content="tr_TR">
-    <meta property="og:site_name" content="{{ $globalSettings['site_name'] ?? 'Rezervist.com' }}">
+    <meta property="og:site_name" content="{{ $globalSettings['site_name'] ?? config('app.name') }}">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="{{ url()->current() }}">
-    <meta name="twitter:title" content="@yield('title', ($globalSettings['site_name'] ?? 'Rezervist.com'))">
+    <meta name="twitter:title" content="@yield('title', ($globalSettings['site_name'] ?? config('app.name')))">
     <meta name="twitter:description" content="@yield('meta_description', $globalSettings['seo_description'] ?? 'Türkiye\'nin en kapsamlı online rezervasyon platformu.')">
     <meta name="twitter:image" content="@yield('meta_image', isset($business->id) ? route('business.og-image', $business) : asset('images/og-image.jpg'))">
     @if(!empty($globalSettings['social_twitter']))
     <meta name="twitter:site" content="{{ '@' . basename($globalSettings['social_twitter']) }}">
     @endif
 
-    <!-- Favicons -->
+    <!-- PWA & Favicons -->
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
-    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
-    <meta name="theme-color" content="#6200EE">
-    <meta name="msapplication-TileColor" content="#6200EE">
+    <link rel="manifest" href="{{ asset('manifest.json') }}">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <!-- Preconnect to External Resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -90,8 +90,8 @@
         $websiteSchema = [
             "@context" => "https://schema.org",
             "@type" => "WebSite",
-            "name" => $globalSettings['site_name'] ?? 'Rezervist.com',
-            "alternateName" => "Rezervist",
+            "name" => $globalSettings['site_name'] ?? config('app.name'),
+            "alternateName" => config('app.name'),
             "url" => config('app.url'),
             "description" => $globalSettings['seo_description'] ?? 'Türkiye\'nin en kapsamlı online rezervasyon platformu',
             "inLanguage" => "tr-TR",
@@ -108,7 +108,7 @@
         $organizationSchema = [
             "@context" => "https://schema.org",
             "@type" => "Organization",
-            "name" => $globalSettings['site_name'] ?? 'Rezervist.com',
+            "name" => $globalSettings['site_name'] ?? config('app.name'),
             "url" => config('app.url'),
             "logo" => asset('images/logo.png'),
             "description" => "Türkiye'nin lider online rezervasyon ve işletme yönetim platformu",
@@ -116,7 +116,7 @@
             "founders" => [
                 [
                     "@type" => "Person",
-                    "name" => "Rezervist Team"
+                    "name" => "System Team"
                 ]
             ],
             "address" => [
@@ -162,7 +162,7 @@
         });
 
         function initializeGoogleAnalytics() {
-            const preferences = JSON.parse(localStorage.getItem('rezervist_cookie_preferences'));
+            const preferences = JSON.parse(localStorage.getItem('cookie_preferences'));
             
             if (preferences && preferences.analytics) {
                 // Update consent status
@@ -375,26 +375,26 @@
     <div id="page-loader">
         <div class="loader-content">
             <div class="loader-spinner"></div>
-            <div class="loader-text">{{ $globalSettings['site_name'] ?? 'Rezervist.com' }}</div>
+            <div class="loader-text">{{ $globalSettings['site_name'] ?? config('app.name') }}</div>
         </div>
     </div>
     <div class="min-h-screen flex flex-col">
         <!-- Top Info Bar -->
-        <div class="bg-gradient-to-r from-primary to-purple-700 text-white py-2">
-            <div class="w-full px-6 lg:px-12">
-                <div class="flex flex-wrap items-center justify-between text-sm">
-                    <div class="flex items-center space-x-6">
-                        <a href="tel:{{ str_replace(' ', '', $globalSettings['contact_phone']) }}" class="flex items-center hover:text-secondary transition">
-                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                            {{ $globalSettings['contact_phone'] }}
+        <div class="bg-gradient-to-r from-primary to-purple-700 text-white py-2 hidden sm:block">
+            <div class="w-full px-4 lg:px-12">
+                <div class="flex flex-wrap items-center justify-between text-xs sm:text-sm">
+                    <div class="flex items-center space-x-4 sm:space-x-6">
+                        <a href="tel:{{ str_replace(' ', '', $globalSettings['contact_phone'] ?? '08505551234') }}" class="flex items-center hover:text-secondary transition text-[10px] sm:text-sm whitespace-nowrap">
+                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                            {{ $globalSettings['contact_phone'] ?? '0850 555 1234' }}
                         </a>
-                        <a href="mailto:{{ $globalSettings['contact_email'] }}" class="hidden sm:flex items-center hover:text-secondary transition">
-                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                            {{ $globalSettings['contact_email'] }}
+                        <a href="mailto:{{ $globalSettings['contact_email'] ?? 'iletisim@rezervist.com' }}" class="hidden md:flex items-center hover:text-secondary transition text-[10px] sm:text-sm whitespace-nowrap">
+                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            {{ $globalSettings['contact_email'] ?? 'iletisim@rezervist.com' }}
                         </a>
                     </div>
-                    <div class="flex items-center space-x-6">
-                        <div class="flex items-center">
+                    <div class="flex items-center space-x-4 sm:space-x-6">
+                        <div class="hidden sm:flex items-center">
                             <svg class="w-4 h-4 mr-1.5 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             <span class="font-medium tracking-tight">{{ __('common.header.support') }}</span>
                     </div>
@@ -586,7 +586,14 @@
                                     <div class="px-4 py-3 border-b border-gray-100">
                                         <p class="text-xs text-gray-500">{{ __('common.menu.logged_in_as') }}</p>
                                         <p class="text-sm font-bold text-gray-900 truncate">{{ Auth::user()->name }}</p>
-                                        <p class="text-[10px] text-primary uppercase font-bold tracking-wider mt-0.5">{{ Auth::user()->role === 'business' ? __('common.roles.business') : (Auth::user()->role === 'admin' ? __('common.roles.admin') : __('common.roles.customer')) }}</p>
+                                        <p class="text-[10px] text-primary uppercase font-bold tracking-wider mt-0.5">
+                                            @if(Auth::user()->isDeveloper()) Geliştirici
+                                            @elseif(Auth::user()->isAdmin()) Yönetici
+                                            @elseif(Auth::user()->isSupport()) Destek Ekibi
+                                            @elseif(Auth::user()->isBusiness()) İşletme Sahibi
+                                            @else Müşteri
+                                            @endif
+                                        </p>
                                     </div>
 
                                     <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
@@ -624,17 +631,19 @@
                                         {{ __('common.menu.support') }}
                                     </a>
 
-                                    @if(Auth::user()->role === 'admin')
+                                    @if(Auth::user()->isAdmin() || Auth::user()->isSupport())
                                         <div class="border-t border-gray-100 my-1"></div>
-                                        <div class="px-4 py-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ __('common.roles.admin') }}</div>
+                                        <div class="px-4 py-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ Auth::user()->isSupport() ? 'Destek Paneli' : __('common.roles.admin') }}</div>
                                         <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                                             {{ __('common.menu.admin_panel') }}
                                         </a>
+                                        @if(Auth::user()->isAdmin())
                                         <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                                             {{ __('common.menu.user_management') }}
                                         </a>
+                                        @endif
                                         <a href="{{ route('admin.applications.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                                             {{ __('common.menu.business_applications') }}
@@ -643,6 +652,7 @@
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                                             {{ __('common.admin.dashboard.contact_messages') }}
                                         </a>
+                                        @if(Auth::user()->isAdmin())
                                         <a href="{{ route('admin.platform-activity.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                             {{ __('common.admin.dashboard.platform_activity') }}
@@ -651,7 +661,8 @@
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                                             {{ __('common.menu.settings') }}
                                         </a>
-                                    @elseif(Auth::user()->role === 'business')
+                                        @endif
+                                    @elseif(Auth::user()->isBusiness())
                                         <div class="border-t border-gray-100 my-1"></div>
                                         <div class="px-4 py-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ __('common.menu.business_management') }}</div>
                                         <a href="{{ route('vendor.dashboard') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary transition flex items-center gap-2">
@@ -1051,9 +1062,9 @@
         </main>
 
         <!-- Detailed Footer -->
-        <footer class="bg-white border-t border-gray-100 pt-20 pb-10 mt-auto">
-            <div class="w-full px-6 lg:px-12">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-10 gap-12 mb-20">
+        <footer class="bg-white border-t border-gray-100 pt-12 sm:pt-20 pb-10 mt-auto">
+            <div class="w-full px-4 lg:px-12">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-10 gap-8 sm:gap-12 mb-12 sm:mb-20">
                     
                     <!-- Brand & Identity (3 Columns) -->
                     <div class="lg:col-span-3">
@@ -1061,7 +1072,7 @@
                             <div class="w-12 h-12 bg-gradient-to-br from-primary to-purple-700 rounded-2xl flex items-center justify-center text-white font-bold text-2xl shadow-xl shadow-primary/20 transition-transform group-hover:scale-110 duration-500">
                                 {{ substr($globalSettings['site_name'] ?? 'R', 0, 1) }}
                             </div>
-                            <span class="text-2xl font-black text-slate-900 tracking-tighter">{{ $globalSettings['site_name'] ?? 'Rezervist.com' }}</span>
+                            <span class="text-2xl font-black text-slate-900 tracking-tighter">{{ $globalSettings['site_name'] ?? config('app.name') }}</span>
                         </a>
                         <p class="text-slate-500 text-sm leading-relaxed mb-8 max-w-sm">
                             {{ $globalSettings['site_tagline'] ?? __('common.footer.slogan') }}
@@ -1128,7 +1139,7 @@
                         </ul>
                     </div>
 
-                    <div class="lg:col-span-3">
+                    <div class="lg:col-span-3 sm:col-span-2 lg:block">
                         <h4 class="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] mb-8">{{ __('common.footer.support') }}</h4>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
                             <ul class="space-y-4">
@@ -1205,51 +1216,51 @@
                 </div>
 
                 <!-- Contact & Logistics Info Bar -->
-                <div class="py-12 border-t border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                    <div class="flex items-center gap-5 group">
-                        <div class="w-12 h-12 rounded-2xl bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500">
-                            <i class="fa-solid fa-phone-volume text-lg"></i>
+                <div class="py-8 sm:py-12 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
+                    <div class="flex items-center gap-4 sm:gap-5 group">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500">
+                            <i class="fa-solid fa-phone-volume text-base sm:text-lg"></i>
                         </div>
                         <div class="flex flex-col">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{{ __('common.footer.customer_line') }}</span>
-                            <span class="text-base font-bold text-slate-900">{{ $globalSettings['contact_phone'] ?? '+90 (212) 000 00 00' }}</span>
+                            <span class="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5 sm:mb-1">{{ __('common.footer.customer_line') }}</span>
+                            <span class="text-sm sm:text-base font-bold text-slate-900">{{ $globalSettings['contact_phone'] ?? '+90 (212) 000 00 00' }}</span>
                         </div>
                     </div>
-                    <div class="flex items-center gap-5 group">
-                        <div class="w-12 h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500">
-                            <i class="fa-solid fa-envelope-open-text text-lg"></i>
+                    <div class="flex items-center gap-4 sm:gap-5 group">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500">
+                            <i class="fa-solid fa-envelope-open-text text-base sm:text-lg"></i>
                         </div>
-                        <div class="flex flex-col">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{{ __('common.form.email') }}</span>
-                            <span class="text-base font-bold text-slate-900">{{ $globalSettings['contact_email'] ?? 'iletisim@rezervist.com' }}</span>
+                        <div class="flex-1 flex flex-col min-w-0">
+                            <span class="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5 sm:mb-1">{{ __('common.form.email') }}</span>
+                            <span class="text-sm sm:text-base font-bold text-slate-900 truncate">{{ $globalSettings['contact_email'] ?? 'iletisim@rezervist.com' }}</span>
                         </div>
                     </div>
-                    <div class="flex items-center gap-5 group">
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-500">
-                            <i class="fa-solid fa-location-dot text-lg"></i>
+                    <div class="flex items-center gap-4 sm:gap-5 group sm:col-span-2 lg:col-span-1">
+                        <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-500">
+                            <i class="fa-solid fa-location-dot text-base sm:text-lg"></i>
                         </div>
                         <div class="flex flex-col">
-                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">{{ __('common.footer.head_office') }}</span>
-                            <span class="text-base font-bold text-slate-900 leading-tight">{{ $globalSettings['contact_address'] ?? 'İstanbul, Türkiye' }}</span>
+                            <span class="text-[9px] sm:text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5 sm:mb-1">{{ __('common.footer.head_office') }}</span>
+                            <span class="text-sm sm:text-base font-bold text-slate-900 leading-tight">{{ $globalSettings['contact_address'] ?? 'İstanbul, Türkiye' }}</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Legal & Copyright -->
-                <div class="pt-10 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="pt-8 sm:pt-10 border-t border-slate-100 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8">
                     <div class="flex flex-col md:flex-row items-center gap-4 text-center md:text-left">
-                        <p class="text-slate-400 text-[13px] font-medium">
-                            &copy; {{ date('Y') }} <span class="text-slate-900 font-bold font-black">{{ $globalSettings['site_name'] ?? 'Rezervist.com' }}</span>. {{ __('common.footer.rights') }}
+                        <p class="text-slate-400 text-[12px] sm:text-[13px] font-medium leading-relaxed">
+                            &copy; {{ date('Y') }} <span class="text-slate-900 font-bold">{{ $globalSettings['site_name'] ?? config('app.name') }}</span>. {{ __('common.footer.rights') }}
                         </p>
                     </div>
                     
                     <!-- Trust Indicators -->
-                    <div class="flex items-center gap-8 opacity-30 hover:opacity-100 transition-opacity duration-500 grayscale hover:grayscale-0">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="Visa" class="h-4 w-auto">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Mastercard" class="h-6 w-auto">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/1200px-PayPal.svg.png" alt="PayPal" class="h-4 w-auto">
-                        <div class="h-8 w-px bg-slate-200 mx-2"></div>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Ssl-logo.svg/1200px-Ssl-logo.svg.png" alt="SSL" class="h-6 w-auto">
+                    <div class="flex flex-wrap justify-center items-center gap-4 sm:gap-8 opacity-30 hover:opacity-100 transition-opacity duration-500 grayscale hover:grayscale-0">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" alt="Visa" class="h-3 sm:h-4 w-auto">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Mastercard" class="h-4 sm:h-6 w-auto">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/1200px-PayPal.svg.png" alt="PayPal" class="h-3 sm:h-4 w-auto">
+                        <div class="hidden sm:block h-8 w-px bg-slate-200 mx-2"></div>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Ssl-logo.svg/1200px-Ssl-logo.svg.png" alt="SSL" class="h-4 sm:h-6 w-auto">
                     </div>
                 </div>
             </div>
