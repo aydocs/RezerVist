@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Hikayemiz - Rezervist')
+@section('title', 'Hikayemiz - RezerVist')
 
 @section('content')
 <div class="bg-white overflow-hidden">
@@ -18,7 +18,7 @@
                 Yolculuğumuz
             </h1>
             <p class="mt-6 text-lg leading-8 text-gray-300 max-w-2xl mx-auto">
-                Bir fikirle başladı, bir tutkuya dönüştü. İşte Rezervist'in dünü, bugünü ve yarını.
+                Bir fikirle başladı, bir tutkuya dönüştü. İşte RezerVist'in dünü, bugünü ve yarını.
             </p>
         </div>
     </div>
@@ -42,7 +42,7 @@
                     
                     <div class="space-y-6 text-lg leading-relaxed text-gray-600">
                         <p>
-                            Rezervist, modern yaşamın karmaşasında "zaman" kavramını yeniden tanımlamak için yola çıktı. Bizim için rezervasyon, sadece bir masa ayırtmak değil; sevdiklerinizle geçireceğiniz kaliteli zamanın garantisidir.
+                            RezerVist, modern yaşamın karmaşasında "zaman" kavramını yeniden tanımlamak için yola çıktı. Bizim için rezervasyon, sadece bir masa ayırtmak değil; sevdiklerinizle geçireceğiniz kaliteli zamanın garantisidir.
                         </p>
                         <p>
                             2020 yılında küçük bir girişim olarak başladığımız bu yolda, bugün binlerce işletme ve yüz binlerce kullanıcıyı buluşturan devasa bir aileye dönüştük.
