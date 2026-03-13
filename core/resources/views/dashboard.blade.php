@@ -192,9 +192,7 @@
                         <a href="{{ route('vendor.reservations.index') }}" class="px-5 py-2.5 rounded-xl bg-slate-50 text-slate-700 font-black hover:bg-slate-200 border-2 border-slate-100 hover:border-slate-300 transition text-xs uppercase tracking-wide">
                             Tümünü Gör
                         </a>
-                    </div>
-                    
-                    <div class="overflow-x-auto">
+                                    <div class="hidden md:block overflow-x-auto">
                         <table class="w-full text-left">
                             <thead class="bg-slate-50/50 border-b border-gray-100">
                                 <tr>
@@ -265,7 +263,7 @@
                                     <td colspan="6" class="px-6 py-12 text-center">
                                         <div class="flex flex-col items-center justify-center">
                                             <div class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mb-4">
-                                                <svg class="w-8 h-8 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                <svg class="w-8 h-8 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v12a2 2 0 002 2z"></path></svg>
                                             </div>
                                             <p class="text-slate-500 font-medium">Henüz bir talep bulunmuyor.</p>
                                         </div>
@@ -274,6 +272,46 @@
                                 @endforelse
                             </tbody>
                         </table>
+                    </div>
+
+                    <!-- Mobile Cards List -->
+                    <div class="md:hidden divide-y divide-gray-100">
+                        @forelse($recentReservations as $reservation)
+                            <div class="p-6 hover:bg-gray-50 transition-colors" onclick="document.getElementById('details-{{ $reservation->id }}').showModal()">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="h-12 w-12 rounded-2xl bg-indigo-50 flex items-center justify-center text-indigo-600 font-black text-lg border border-indigo-100">
+                                            {{ strtoupper(substr($reservation->user->name ?? 'M', 0, 1)) }}
+                                        </div>
+                                        <div>
+                                            <div class="font-black text-slate-900">{{ $reservation->user->name ?? 'Misafir' }}</div>
+                                            <div class="text-xs text-slate-400 font-bold uppercase tracking-wider">{{ \Carbon\Carbon::parse($reservation->start_time)->format('H:i') }} • {{ $reservation->guest_count }} Kişi</div>
+                                        </div>
+                                    </div>
+                                    @php
+                                        $statuses = [
+                                            'pending' => ['bg' => 'bg-amber-100', 'text' => 'text-amber-700', 'label' => 'Bekliyor'],
+                                            'approved' => ['bg' => 'bg-emerald-100', 'text' => 'text-emerald-700', 'label' => 'Onaylandı'],
+                                            'rejected' => ['bg' => 'bg-rose-100', 'text' => 'text-rose-700', 'label' => 'Reddedildi'],
+                                            'cancelled' => ['bg' => 'bg-slate-100', 'text' => 'text-slate-600', 'label' => 'İptal'],
+                                            'completed' => ['bg' => 'bg-blue-100', 'text' => 'text-blue-700', 'label' => 'Tamamlandı'],
+                                        ];
+                                        $st = $statuses[$reservation->status] ?? ['bg'=>'bg-gray-100','text'=>'text-gray-600','label'=>$reservation->status];
+                                    @endphp
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wide {{ $st['bg'] }} {{ $st['text'] }}">
+                                        {{ $st['label'] }}
+                                    </span>
+                                </div>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-slate-400 font-medium">{{ \Carbon\Carbon::parse($reservation->start_time)->format('d.m.Y') }}</span>
+                                    <span class="font-black text-slate-900">₺{{ number_format($reservation->total_amount, 2) }}</span>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="px-6 py-12 text-center text-slate-500">Talep bulunmuyor.</div>
+                        @endforelse
+                    </div>
+         </table>
                     </div>
                 </div>
 
