@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', ($globalSettings['site_name'] ?? 'Rezervist.com') . ' | Türkiye\'nin En İyi Online Rezervasyon Platformu | Restoran ve Kafe Rezervasyonu')
+@section('title', ($globalSettings['site_name'] ?? config('app.name')) . ' | En İyi Online Rezervasyon Platformu | Restoran ve Kafe Rezervasyonu')
 @section('meta_description', 'Türkiye\'nin lider online rezervasyon platformu. İstanbul, Ankara, İzmir ve tüm Türkiye\'de restoran ve kafe rezervasyonu için hemen ücretsiz rezervasyon yapın. 7/24 hizmet!')
 @section('meta_keywords', 'online rezervasyon, restoran rezervasyon, masa rezervasyonu, cafe rezervasyon, istanbul restoran, ankara cafe, izmir restoran, türkiye rezervasyon, ücretsiz rezervasyon, hemen rezervasyon yap')
 
@@ -23,17 +23,17 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-40 relative z-10 text-center w-full">
 
-        <h1 class="text-5xl md:text-8xl font-black mb-8 tracking-tighter text-white leading-[1.1]">
+        <h1 class="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-6 sm:mb-8 tracking-tighter text-white leading-[1.1] sm:leading-[1.1]">
             <span class="inline-block opacity-90 mr-2 lg:mr-4">{{ __('home.hero.title_prefix') }}</span>
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-300 drop-shadow-2xl">
                 {{ __('home.hero.title_highlight') }}
             </span>
-            <span class="block mt-2 opacity-95 text-4xl md:text-6xl font-bold tracking-tight text-white/80">
+            <span class="block mt-2 opacity-95 text-xl sm:text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white/80">
                 {{ __('home.hero.title_suffix') }}
             </span>
         </h1>
         
-        <p class="text-lg md:text-xl text-white/50 mb-16 max-w-2xl mx-auto font-medium leading-relaxed tracking-wide">
+        <p class="text-base sm:text-lg md:text-xl text-white/50 mb-10 sm:mb-16 max-w-2xl mx-auto font-medium leading-relaxed tracking-wide px-4">
             {{ __('home.hero.subtitle') }}
         </p>
         
@@ -180,9 +180,12 @@
                 </div>
                 <!-- Button -->
                 <div class="md:col-span-2">
-                     <button type="submit" class="w-full h-[60px] md:h-full bg-primary hover:bg-primary/95 text-white font-black text-lg rounded-2xl md:rounded-r-lg border-2 border-white/30 hover:border-white transition-all flex items-center justify-center gap-3 active:scale-95 shadow-xl shadow-primary/20">
+                     <button type="submit" class="w-full h-[56px] sm:h-[60px] md:h-full bg-primary hover:bg-primary/95 text-white font-black text-lg rounded-2xl md:rounded-r-lg border-2 border-white/30 hover:border-white transition-all flex items-center justify-center gap-3 active:scale-95 shadow-xl shadow-primary/20">
                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                         {{ __('home.search.button') }}
+                         <span class="md:hidden lg:inline">{{ __('home.search.button') }}</span>
+                         <span class="hidden md:inline lg:hidden">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                         </span>
                      </button>
                 </div>
             </form>
@@ -191,13 +194,16 @@
 </div>
 
 <!-- Featured Section -->
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-    <div class="flex justify-between items-end mb-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-8">
         <div>
-            <h2 class="text-3xl font-bold text-gray-900">{{ __('home.featured.title') }}</h2>
-            <p class="text-gray-500 mt-2">{{ __('home.featured.subtitle') }}</p>
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">{{ __('home.featured.title') }}</h2>
+            <p class="text-gray-500 mt-1 sm:mt-2 text-sm sm:text-base">{{ __('home.featured.subtitle') }}</p>
         </div>
-        <a href="/explore" class="text-primary font-semibold hover:text-primary/80 transition">{{ __('home.featured.view_all') }} </a>
+        <a href="/explore" class="text-primary font-semibold hover:text-primary/80 transition flex items-center gap-2">
+            {{ __('home.featured.view_all') }}
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+        </a>
     </div>
 
     @if($businesses->isEmpty())
