@@ -15,7 +15,7 @@
                 Nasıl Yardımcı Olabiliriz?
             </h1>
             <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                Rezervist deneyiminizi mükemmelleştirmek için buradayız. Sorularınızı, önerilerinizi veya yaşadığınız sorunları bizimle paylaşın.
+                RezerVist deneyiminizi mükemmelleştirmek için buradayız. Sorularınızı, önerilerinizi veya yaşadığınız sorunları bizimle paylaşın.
             </p>
         </div>
 
