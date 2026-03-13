@@ -164,7 +164,7 @@ class CustomerQrController extends Controller
             $buyer = new \Iyzipay\Model\Buyer();
             $buyer->setId($user->id);
             $buyer->setName($user->name ?: 'Müşteri');
-            $buyer->setSurname($user->surname ?: 'Rezervist');
+            $buyer->setSurname($user->surname ?: 'RezerVist');
             $buyer->setGsmNumber($user->phone ?: '+905555555555');
             $buyer->setEmail($user->email);
             $buyer->setIdentityNumber('11111111111');
