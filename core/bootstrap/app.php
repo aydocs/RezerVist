@@ -32,6 +32,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        \Sentry\Laravel\Integration::handles($exceptions);
+        
         // Log critical errors to database
         $exceptions->report(function (Throwable $e) {
             try {
