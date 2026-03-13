@@ -7,7 +7,7 @@
         <div style="display: inline-block; background-color: #F5F3FF; color: #7C3AED; font-size: 12px; font-weight: 700; padding: 6px 16px; border-radius: 100px; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px;">
             ARAMIZA HOŞ GELDİNİZ
         </div>
-        <h1>Rezervist'e Hoş Geldin, {{ $user->name }}!</h1>
+        <h1>RezerVist'e Hoş Geldin, {{ $user->name }}!</h1>
         <p>Modern rezervasyon dünyasına ilk adımını attın. Seni burada görmek harika! En iyi mekanlarda yerini saniyeler içinde ayırtmaya hazır mısın?</p>
 
         <div class="card" style="text-align: center; background-color: #F0F9FF; border-color: #BAE6FD;">
