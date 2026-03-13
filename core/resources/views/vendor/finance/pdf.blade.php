@@ -26,7 +26,7 @@
 </head>
 <body>
     <div class="header">
-        <div class="logo">Rezervist <span style="font-size: 14px; color: #94a3b8; font-weight: normal;">| Finansal Rapor</span></div>
+        <div class="logo">{{ $globalSettings['site_name'] ?? config('app.name') }} <span style="font-size: 14px; color: #94a3b8; font-weight: normal;">| Finansal Rapor</span></div>
         <div class="meta">
             {{ $business->name }} • {{ now()->translatedFormat('d F Y H:i') }}
         </div>
