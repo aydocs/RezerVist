@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Resource extends Model
 {
-    use HasFactory;
+    use HasFactory, \App\Traits\HasBusinessScope;
 
     protected $fillable = [
         'business_id',
