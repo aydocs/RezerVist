@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dokümantasyon | Rezervist')
+@section('title', 'Dokümantasyon | RezerVist')
 
 @section('content')
 <div class="bg-white min-h-screen font-sans selection:bg-primary/10 selection:text-primary" x-data="{ currentTab: 'intro', sidebarOpen: true }">
@@ -87,7 +87,7 @@
                         </div>
                         <h2 class="text-6xl font-black text-slate-900 tracking-tighter leading-none mb-8 italic uppercase">Geleceğİn <br> İşletme Yönetİmİ.</h2>
                         <p class="text-xl text-slate-500 font-medium leading-relaxed italic">
-                            Rezervist, restoranınızın veya kafenizin tüm operasyonlarını tek bir merkezden yönetmenizi sağlayan premium bir ekosistemdir.
+                            RezerVist, restoranınızın veya kafenizin tüm operasyonlarını tek bir merkezden yönetmenizi sağlayan premium bir ekosistemdir.
                         </p>
                     </div>
 
@@ -118,7 +118,7 @@
                     <div>
                         <h2 class="text-5xl font-black text-slate-900 tracking-tighter mb-6 uppercase italic">Terminal Kurulumu.</h2>
                         <p class="text-lg text-slate-500 font-medium leading-relaxed italic">
-                            Windows cihazınıza RezerVistA POS Terminali'ni kurmak sadece 60 saniye sürer.
+                            Windows cihazınıza RezerVist POS Terminali'ni kurmak sadece 60 saniye sürer.
                         </p>
                     </div>
 
