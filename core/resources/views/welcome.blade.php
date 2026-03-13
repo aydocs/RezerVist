@@ -4,10 +4,10 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Rezervist - Türkiye'nin Premium Rezervasyon Platformu</title>
-        <meta name="description" content="Türkiye'nin en kapsamlı online rezervasyon platformu. Restoran ve kafeler için saniyeler içinde ücretsiz rezervasyon yapın.">
-        <meta name="keywords" content="rezervasyon, online randevu, restoran rezervasyon, cafe rezervasyon, rezervist">
-        <meta property="og:title" content="Rezervist - Türkiye'nin Premium Rezervasyon Platformu">
+        <title>@yield('title', ($globalSettings['site_name'] ?? config('app.name')) . ' - ' . ($globalSettings['site_tagline'] ?? 'Premium Rezervasyon Platformu'))</title>
+        <meta name="description" content="En kapsamlı online rezervasyon platformu. Restoran ve kafeler için hemen rezervasyon yapın. 7/24 ücretsiz hizmet.">
+        <meta name="keywords" content="rezervasyon, online randevu, restoran rezervasyon, cafe rezervasyon, {{ strtolower($globalSettings['site_name'] ?? config('app.name')) }}">
+        <meta property="og:title" content="{{ $globalSettings['site_name'] ?? config('app.name') }} - Premium Rezervasyon Platformu">
         <meta property="og:description" content="En iyi restoran ve kafeleri keşfedin, saniyeler içinde ücretsiz rezervasyon yapın.">
         <meta property="og:type" content="website">
         <meta property="og:url" content="{{ url('/') }}">
