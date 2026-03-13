@@ -14,6 +14,20 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use \App\Traits\LogsActivity, HasApiTokens, HasFactory, HasPushSubscriptions, \Illuminate\Database\Eloquent\SoftDeletes, Notifiable;
 
+    // Role Constants
+    const ROLE_DEVELOPER = 'developer';
+    const ROLE_ADMIN = 'admin';
+    const ROLE_USER = 'user';
+    const ROLE_BUSINESS = 'business';
+    const ROLE_SUPPORT = 'support';
+
+    // Role Helpers
+    public function isDeveloper() { return $this->role === self::ROLE_DEVELOPER; }
+    public function isAdmin() { return $this->role === self::ROLE_ADMIN || $this->role === self::ROLE_DEVELOPER; }
+    public function isUser() { return $this->role === self::ROLE_USER; }
+    public function isBusiness() { return $this->role === self::ROLE_BUSINESS; }
+    public function isSupport() { return $this->role === self::ROLE_SUPPORT; }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -206,5 +220,12 @@ class User extends Authenticatable
     public function referrals()
     {
         return $this->hasMany(User::class, 'referred_by_id');
+    }
+
+    public function badges()
+    {
+        return $this->belongsToMany(Badge::class, 'user_badges')
+                    ->withPivot('earned_at')
+                    ->withTimestamps();
     }
 }
