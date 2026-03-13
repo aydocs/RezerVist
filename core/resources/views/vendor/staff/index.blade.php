@@ -19,13 +19,12 @@
                 </li>
             </ol>
         </nav>
-
-        <div class="flex items-center justify-between mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
             <div>
-                <h1 class="text-3xl font-black text-gray-900 tracking-tight">Personel Yönetimi</h1>
-                <p class="mt-2 text-sm text-gray-600">İşletmenizin personellerini ekleyin, düzenleyin ve rezervasyonlara atayın.</p>
+                <h1 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">Personel Yönetimi</h1>
+                <p class="mt-2 text-sm text-gray-600">İşletmenizin personelerini yönetin ve rezervasyonlara atayın.</p>
             </div>
-            <a href="{{ route('vendor.staff.create') }}" class="inline-flex items-center px-6 py-4 bg-primary text-white rounded-[2rem] font-black text-sm shadow-xl shadow-purple-200 hover:bg-purple-700 transition-all hover:scale-105 active:scale-95">
+            <a href="{{ route('vendor.staff.create') }}" class="inline-flex items-center justify-center px-6 py-4 bg-primary text-white rounded-[2rem] font-black text-sm shadow-xl shadow-purple-200 hover:bg-purple-700 transition-all hover:scale-105 active:scale-95 w-full sm:w-auto">
                 <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                 Yeni Personel Ekle
             </a>
@@ -33,9 +32,9 @@
 
         <!-- Filters -->
         <div class="mb-6 flex flex-wrap items-center gap-4">
-            <div class="flex-1 min-w-[200px]">
-                <form action="{{ route('vendor.staff.index') }}" method="GET" class="flex gap-2">
-                    <select name="location_id" onchange="this.form.submit()" class="bg-white border-none rounded-2xl px-6 py-3 text-sm font-bold text-slate-700 shadow-sm focus:ring-2 focus:ring-primary/20 transition-all appearance-none cursor-pointer">
+            <div class="w-full sm:w-auto sm:flex-1">
+                <form action="{{ route('vendor.staff.index') }}" method="GET" class="w-full">
+                    <select name="location_id" onchange="this.form.submit()" class="w-full sm:w-auto min-w-[200px] bg-white border-none rounded-2xl px-6 py-3 text-sm font-bold text-slate-700 shadow-sm focus:ring-2 focus:ring-primary/20 transition-all appearance-none cursor-pointer">
                         <option value="">Tüm Şubeler</option>
                         <option value="main" {{ request('location_id') == 'main' ? 'selected' : '' }}>Merkez / Ana Şube</option>
                         @foreach($locations as $loc)
@@ -46,8 +45,9 @@
             </div>
         </div>
 
-        <div class="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
-            <div class="overflow-x-auto">
+        <div class="bg-white rounded-[2rem] sm:rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+            <!-- Desktop Table -->
+            <div class="hidden md:block overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-slate-50/50">
@@ -92,7 +92,7 @@
                             <td class="px-8 py-6">
                                 <div class="space-y-1">
                                     <p class="text-sm font-bold text-slate-700 flex items-center gap-2">
-                                        <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                                        <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2-2v10a2 2 0 002 2z"></path></svg>
                                         {{ $member->email ?? '-' }}
                                     </p>
                                     <p class="text-sm font-bold text-slate-700 flex items-center gap-2">
@@ -127,22 +127,74 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="px-8 py-12 text-center">
-                                <div class="max-w-xs mx-auto">
-                                    <div class="w-16 h-16 bg-slate-50 rounded-3xl flex items-center justify-center text-slate-200 mx-auto mb-4">
-                                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                                    </div>
-                                    <h3 class="text-sm font-black text-slate-900 mb-1">Henüz Personel Yok</h3>
-                                    <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-6">İşletmenize personel ekleyerek yönetmeye başlayın.</p>
-                                    <a href="{{ route('vendor.staff.create') }}" class="inline-flex items-center px-5 py-3 bg-slate-900 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-800 transition-all">
-                                        İlk Personelini Ekle
-                                    </a>
-                                </div>
-                            </td>
+                            <td colspan="6" class="px-8 py-12 text-center text-slate-400 italic">Personel bulunamadı.</td>
                         </tr>
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Mobile Card Layout -->
+            <div class="md:hidden divide-y divide-slate-100">
+                @forelse($staff as $member)
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="relative">
+                                @if($member->photo_path)
+                                    <img src="{{ asset('storage/' . $member->photo_path) }}" class="w-12 h-12 rounded-2xl object-cover">
+                                @else
+                                    <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary font-black">
+                                        {{ substr($member->name, 0, 1) }}
+                                    </div>
+                                @endif
+                                <div class="absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-white {{ $member->is_active ? 'bg-emerald-500' : 'bg-slate-300' }}"></div>
+                            </div>
+                            <div>
+                                <p class="font-black text-slate-900">{{ $member->name }}</p>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{{ $member->position ?? 'Pozisyon Yok' }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                             <a href="{{ route('vendor.staff.edit', $member->id) }}" class="p-2 text-slate-400 hover:bg-slate-100 rounded-xl transition-all">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <div class="bg-slate-50 p-3 rounded-2xl">
+                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Şube</p>
+                            <p class="text-[11px] font-bold text-slate-700">{{ $member->location->name ?? 'Merkez' }}</p>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-2xl">
+                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Durum</p>
+                            <form action="{{ route('vendor.staff.toggle-status', $member->id) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="text-[11px] font-black uppercase {{ $member->is_active ? 'text-emerald-500' : 'text-slate-400' }}">
+                                    {{ $member->is_active ? 'Aktif' : 'Pasif' }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 p-4 rounded-2xl space-y-2">
+                         <div class="flex items-center gap-2 text-[11px] font-medium text-slate-600">
+                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                             {{ $member->email ?? '-' }}
+                         </div>
+                         <div class="flex items-center gap-2 text-[11px] font-medium text-slate-600">
+                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                             {{ $member->phone ?? '-' }}
+                         </div>
+                    </div>
+                </div>
+                @empty
+                 <div class="p-8 text-center text-slate-400 italic">Personel bulunamadı.</div>
+                @endforelse
+            </div>
+e>
             </div>
             @if($staff->hasPages())
                 <div class="px-8 py-6 bg-slate-50/50 border-t border-slate-100">
