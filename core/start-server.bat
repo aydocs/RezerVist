@@ -16,7 +16,7 @@ if not exist .env (
             echo APP_KEY=
             echo APP_DEBUG=true
             echo APP_TIMEZONE=UTC
-            echo APP_URL=https://rezervist.com
+            echo APP_URL=http://localhost:8000
             echo.
             echo DB_CONNECTION=sqlite
             echo DB_DATABASE=database/database.sqlite
@@ -56,7 +56,7 @@ echo.
 
 echo ✅ Kurulum tamamlandı!
 echo.
-echo 🌐 Server başlatılıyor: https://rezervist.com
+echo 🌐 Server başlatılıyor: http://localhost:8000
 echo.
 php artisan serve --host=0.0.0.0 --port=8000
 
