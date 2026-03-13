@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'RezerVistA POS — Akıllı İşletme Terminali')
+@section('title', 'RezerVist POS — Akıllı İşletme Terminali')
 
 @section('content')
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -203,8 +203,8 @@
 /* Terminal */
 .terminal-wrap{position:relative;display:flex;align-items:center;justify-content:center;}
 .term-glow{position:absolute;width:460px;height:460px;background:radial-gradient(circle,rgba(91,33,182,0.1) 0%,transparent 70%);border-radius:50%;animation:orb 8s ease-in-out infinite;}
-.terminal{
-  position:relative;z-index:1;width:400px;background:white;border-radius:24px;
+  .terminal{
+  position:relative;z-index:1;width:min(400px, 100%);background:white;border-radius:24px;
   border:1.5px solid var(--br);overflow:hidden;
   box-shadow:0 32px 80px rgba(91,33,182,0.12),0 6px 20px rgba(0,0,0,0.06),inset 0 0 0 1px rgba(255,255,255,0.9);
   transform:perspective(1100px) rotateY(-6deg) rotateX(2deg);
@@ -308,7 +308,7 @@
    STATS BAR
 ============================ */
 .stats-wrap{background:var(--bg2);padding:72px 64px;}
-.stats-grid{max-width:1380px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:0;background:var(--br);border:1.5px solid var(--br);border-radius:var(--r2);overflow:hidden;}
+.stats-grid{max-width:1380px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:0;background:var(--br);border:1.5px solid var(--br);border-radius:var(--r2);overflow:hidden;}
 .sblock{background:white;padding:42px 38px;position:relative;overflow:hidden;transition:background 0.25s;}
 .sblock:hover{background:var(--sf);}
 .sblock::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:linear-gradient(90deg,var(--p),var(--acc));opacity:0;transition:opacity 0.25s;}
@@ -941,7 +941,7 @@ pre.api-code{
         <div style="width:36px;height:36px;background:var(--p);border-radius:10px;display:flex;align-items:center;justify-content:center;"><span style="color:white;font-family:var(--ff-h);font-weight:900;font-size:1.1rem;">R</span></div>
         <span style="font-size:0.68rem;font-weight:800;color:var(--txm);letter-spacing:0.22em;text-transform:uppercase;font-family:var(--ff-b);">Satış Noktası Çözümü</span>
       </div>
-      <h1 class="i-type" style="font-family:var(--ff-h);font-size:clamp(2.4rem,6vw,4.5rem);font-weight:900;color:var(--tx);letter-spacing:-0.05em;margin:0 auto;">RezerVistA POS</h1>
+      <h1 class="i-type" style="font-family:var(--ff-h);font-size:clamp(2.4rem,6vw,4.5rem);font-weight:900;color:var(--tx);letter-spacing:-0.05em;margin:0 auto;">RezerVist POS</h1>
       <div class="a-f d9" style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:28px;">
         <div class="i-statcard" style="text-align:center;"><div class="i-sv" style="color:var(--p);">v1.0</div><div class="i-sl">Sürüm</div></div>
         <div class="i-statcard" style="text-align:center;"><div class="i-sv" style="color:var(--grn);">Aktif</div><div class="i-sl">Durum</div></div>
@@ -1115,7 +1115,7 @@ pre.api-code{
       <div class="terminal">
         <div class="t-hdr">
           <div class="t-dots"><div class="t-dot td-r"></div><div class="t-dot td-o"></div><div class="t-dot td-g"></div></div>
-          <span class="t-lbl">RezerVistA POS v1.0</span>
+          <span class="t-lbl">RezerVist POS v1.0</span>
           <div style="width:32px;"></div>
         </div>
         <div class="t-body">
@@ -1574,7 +1574,7 @@ pre.api-code{
     </div>
     <div class="security-grid">
       <div class="sec-feats reveal" style="transition-delay:.08s;">
-        @php $secfeats=[['fa-lock','sf-ic-p','AES-256 Uçtan Uca Şifreleme','Tüm veriler, aktarım sırasında ve depolamada 256-bit AES ile şifrelenir. Kimse, Anthropic dahil, verilerinizi okuyamaz.'],['fa-fingerprint','sf-ic-g','Biyometrik Kimlik Doğrulama','Parmak izi veya yüz tanıma ile güvenli personel girişi. Her işlem bir kimlikle ilişkilendirilir ve loglanır.'],['fa-shield-check','sf-ic-a','PCI-DSS Level 1 Uyumu','Ödeme kartı endüstrisinin en üst güvenlik standardına uygun altyapı. Kart verileri asla sunucularımızda saklanmaz.'],['fa-eye-slash','sf-ic-p','KVKK & GDPR Uyumluluğu','Türkiye KVKK ve Avrupa GDPR standartlarına tam uyumluluk. Veri sahibi hakları otomatik yönetilir.']]; @endphp
+        @php $secfeats=[['fa-lock','sf-ic-p','AES-256 Uçtan Uca Şifreleme','Tüm veriler, aktarım sırasında ve depolamada 256-bit AES ile şifrelenir. Kimse verilerinizi okuyamaz.'],['fa-fingerprint','sf-ic-g','Biyometrik Kimlik Doğrulama','Parmak izi veya yüz tanıma ile güvenli personel girişi. Her işlem bir kimlikle ilişkilendirilir ve loglanır.'],['fa-shield-check','sf-ic-a','PCI-DSS Level 1 Uyumu','Ödeme kartı endüstrisinin en üst güvenlik standardına uygun altyapı. Kart verileri asla sunucularımızda saklanmaz.'],['fa-eye-slash','sf-ic-p','KVKK & GDPR Uyumluluğu','Türkiye KVKK ve Avrupa GDPR standartlarına tam uyumluluk. Veri sahibi hakları otomatik yönetilir.']]; @endphp
         @foreach($secfeats as $f)
         <div class="sec-feat">
           <div class="sec-feat-ic {{ $f[1] }}"><i class="fa-solid {{ $f[0] }}"></i></div>
@@ -1604,7 +1604,7 @@ pre.api-code{
         </div>
         <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:12px;padding:18px;display:flex;align-items:center;gap:14px;">
           <div style="width:40px;height:40px;border-radius:50%;background:rgba(16,185,129,0.2);display:flex;align-items:center;justify-content:center;animation:pulseGrn 2s infinite;flex-shrink:0;"><i class="fa-solid fa-check" style="color:#6EE7B7;"></i></div>
-          <div><div style="font-size:0.85rem;font-weight:700;color:white;">Tüm Sistemler Çalışıyor</div><div style="font-size:0.72rem;color:rgba(255,255,255,0.45);margin-top:2px;">Son kontrol: {{ date('H:i') }} — status.rezervist.com</div></div>
+          <div><div style="font-size:0.85rem;font-weight:700;color:white;">Tüm Sistemler Çalışıyor</div><div style="font-size:0.72rem;color:rgba(255,255,255,0.45);margin-top:2px;">Son kontrol: {{ date('H:i') }}</div></div>
         </div>
       </div>
     </div>
