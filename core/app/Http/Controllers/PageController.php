@@ -74,7 +74,7 @@ class PageController extends Controller
     public function help()
     {
         $faqs = [
-            ['q' => 'Rezervasyon yapmak ücretli mi?', 'a' => 'Hayır, Rezervist üzerinden yapacağınız tüm rezervasyonlar tamamen ücretsizdir.'],
+            ['q' => 'Rezervasyon yapmak ücretli mi?', 'a' => 'Hayır, RezerVist üzerinden yapacağınız tüm rezervasyonlar tamamen ücretsizdir.'],
             ['q' => 'Rezervasyonumu iptal edebilir miyim?', 'a' => 'Evet, rezervasyon saatinizden 1 saat öncesine kadar profilinizden iptal işlemi gerçekleştirebilirsiniz.'],
             ['q' => 'İşletme hesabımı nasıl oluşturabilirim?', 'a' => 'İşletme Ortağımız Olun sayfasındaki başvuru formunu doldurarak sürecinizi başlatabilirsiniz.'],
             ['q' => 'Rezervasyon onayımı nasıl görebilirim?', 'a' => 'Rezervasyonunuz onaylandığında size hem e-posta gönderilir hem de Profil -> Rezervasyonlarım sekmesinden durumunu takip edebilirsiniz.'],
@@ -102,7 +102,7 @@ class PageController extends Controller
                 'subject' => $validated['subject'],
                 'contact_message' => $validated['message'],
             ], function ($mail) use ($validated) {
-                $mail->from('no-reply@rezervist.com', 'Rezervist İletişim Formu')
+                $mail->from('no-reply@rezervist.com', 'RezerVist İletişim Formu')
                     ->replyTo($validated['email'], $validated['name'])
                     ->to('iletisim@rezervist.com')
                     ->subject('🔔 Yeni İletişim Formu Mesajı: '.$validated['subject']);
@@ -113,9 +113,9 @@ class PageController extends Controller
                 'name' => $validated['name'],
                 'contact_message' => $validated['message'],
             ], function ($mail) use ($validated) {
-                $mail->from(config('mail.from.address'), 'Rezervist İletişim')
+                $mail->from(config('mail.from.address'), 'RezerVist İletişim')
                     ->to($validated['email'])
-                    ->subject('Mesajınızı Aldık - Rezervist');
+                    ->subject('Mesajınızı Aldık - RezerVist');
             });
         } catch (\Exception $e) {
             \Log::error('Contact form mail error: '.$e->getMessage());
