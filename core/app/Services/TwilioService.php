@@ -66,9 +66,9 @@ class TwilioService
 
         // Prepare message based on type
         $messages = [
-            'registration' => "Rezervist doğrulama kodunuz: {$verification->code}\n\nBu kod 10 dakika geçerlidir.",
-            'login' => "Rezervist giriş kodunuz: {$verification->code}\n\nBu kod 10 dakika geçerlidir.",
-            'reservation' => "Rezervist doğrulama kodunuz: {$verification->code}",
+            'registration' => "RezerVist doğrulama kodunuz: {$verification->code}\n\nBu kod 10 dakika geçerlidir.",
+            'login' => "RezerVist giriş kodunuz: {$verification->code}\n\nBu kod 10 dakika geçerlidir.",
+            'reservation' => "RezerVist doğrulama kodunuz: {$verification->code}",
         ];
 
         $message = $messages[$type] ?? $messages['registration'];
@@ -144,7 +144,7 @@ class TwilioService
      */
     public function sendReservationNotification($phone, $businessName, $dateTime)
     {
-        $message = "Rezervist: {$businessName} için rezervasyonunuz onaylandı.\n\nTarih: {$dateTime}\n\nİyi eğlenceler!";
+        $message = "RezerVist: {$businessName} için rezervasyonunuz onaylandı.\n\nTarih: {$dateTime}\n\nİyi eğlenceler!";
 
         return $this->sendSMS($phone, $message);
     }
@@ -154,7 +154,7 @@ class TwilioService
      */
     public function sendCancellationNotification($phone, $businessName)
     {
-        $message = "Rezervist: {$businessName} için rezervasyonunuz iptal edildi.";
+        $message = "RezerVist: {$businessName} için rezervasyonunuz iptal edildi.";
 
         return $this->sendSMS($phone, $message);
     }
@@ -164,7 +164,7 @@ class TwilioService
      */
     public function sendReminderSMS($phone, $businessName, $time)
     {
-        $message = "Rezervist: Yarın {$time}'de {$businessName} için rezervasyonunuz var. Unutmayın!";
+        $message = "RezerVist: Yarın {$time}'de {$businessName} için rezervasyonunuz var. Unutmayın!";
 
         return $this->sendSMS($phone, $message);
     }
