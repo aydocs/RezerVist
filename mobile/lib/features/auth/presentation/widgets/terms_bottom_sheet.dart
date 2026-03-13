@@ -94,13 +94,13 @@ class _TermsBottomSheetState extends State<TermsBottomSheet> {
                   children: [
                     _buildWebDocumentTitle('1. KULLANIM KOŞULLARI'),
                     _buildWebDocumentText(
-                        'Lütfen Rezervist platformunu kullanmadan önce bu sözleşmeyi dikkatlice okuyunuz. Bu siteyi kullanan ve alışveriş yapan müşterilerimiz aşağıdaki şartları kabul etmiş varsayılmaktadır.'),
+                        'Lütfen RezerVist platformunu kullanmadan önce bu sözleşmeyi dikkatlice okuyunuz. Bu siteyi kullanan ve alışveriş yapan müşterilerimiz aşağıdaki şartları kabul etmiş varsayılmaktadır.'),
                     _buildWebSectionHeader('1.1 Taraflar ve Tanımlar'),
                     _buildWebDocumentText(
-                        'Bu sözleşme, Rezervist (PLATFORM) ile bu platformu kullanan kullanıcı (KULLANICI) arasında akdedilmiştir. PLATFORM, restoran ve etkinlik rezervasyon hizmetleri sunan bir aracı hizmet sağlayıcıdır.'),
+                        'Bu sözleşme, RezerVist (PLATFORM) ile bu platformu kullanan kullanıcı (KULLANICI) arasında akdedilmiştir. PLATFORM, restoran ve etkinlik rezervasyon hizmetleri sunan bir aracı hizmet sağlayıcıdır.'),
                     _buildWebSectionHeader('1.2 Hizmetin Kapsamı'),
                     _buildWebDocumentText(
-                        'Rezervist, kullanıcıların anlaşmalı işletmelerde rezervasyon yapmasını, işletmeleri incelemesini ve puanlamasını sağlayan bir dijital platformdur. Rezervist, hizmet sağlayıcı (restoran vb.) değildir; yalnızca kullanıcı ile işletme arasında rezervasyon köprüsü kurar.'),
+                        'RezerVist, kullanıcıların anlaşmalı işletmelerde rezervasyon yapmasını, işletmeleri incelemesini ve puanlamasını sağlayan bir dijital platformdur. RezerVist, hizmet sağlayıcı (restoran vb.) değildir; yalnızca kullanıcı ile işletme arasında rezervasyon köprüsü kurar.'),
                     _buildWebSectionHeader('1.3 Kullanıcı Yükümlülükleri'),
                     _buildWebBulletPoint(
                         'Kullanıcı, platforma üye olurken verdiği bilgilerin doğru olduğunu taahhüt eder.'),
@@ -114,7 +114,7 @@ class _TermsBottomSheetState extends State<TermsBottomSheet> {
                     const SizedBox(height: 32),
                     _buildWebDocumentTitle('2. GİZLİLİK POLİTİKASI (KVKK)'),
                     _buildWebDocumentText(
-                        'Rezervist olarak kişisel verilerinizin güvenliğine ve gizliliğine önem veriyoruz. Bu politika, 6698 sayılı KVKK kapsamında verilerinizin nasıl işlendiğini açıklar.'),
+                        'RezerVist olarak kişisel verilerinizin güvenliğine ve gizliliğine önem veriyoruz. Bu politika, 6698 sayılı KVKK kapsamında verilerinizin nasıl işlendiğini açıklar.'),
                     _buildWebSectionHeader('2.1 İşlenen Kişisel Verileriniz'),
                     _buildWebBulletPoint('Kimlik Bilgileri: Ad, soyad.'),
                     _buildWebBulletPoint(
