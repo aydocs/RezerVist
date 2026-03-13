@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $business->name }} - Menü | Rezervist</title>
+    <title>{{ $business->name }} - {{ $globalSettings['site_name'] ?? config('app.name') }} Menü</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -27,7 +27,7 @@
             scroll-behavior: smooth; 
         }
 
-        /* Official Rezervist Glassmorphism */
+        /* Official RezerVist Glassmorphism */
         .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(229, 231, 235, 0.5); }
         
         /* Immersive Hero */
