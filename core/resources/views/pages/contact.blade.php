@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Bize Ulaşın - Rezervist.com')
+@section('title', 'Bize Ulaşın - ' . ($globalSettings['site_name'] ?? config('app.name')))
 
 @section('content')
 <div class="bg-gray-50 min-h-screen py-16">
@@ -19,7 +19,7 @@
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">E-posta Gönderin</h3>
                     <p class="text-gray-500 mb-4">Sorularınız için bize e-posta yoluyla ulaşabilirsiniz.</p>
-                    <a href="mailto:{{ $globalSettings['contact_email'] ?? '' }}" class="text-primary font-bold hover:underline">{{ $globalSettings['contact_email'] ?? 'iletisim@rezervist.com' }}</a>
+                    <a href="mailto:{{ $globalSettings['contact_email'] ?? '' }}" class="text-primary font-bold hover:underline">{{ $globalSettings['contact_email'] ?? 'destek@rezervist.com' }}</a>
                 </div>
 
                 <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 transition-all hover:shadow-xl hover:shadow-primary/5 group">
@@ -28,7 +28,7 @@
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">Bizi Arayın</h3>
                     <p class="text-gray-500 mb-4">Müşteri hizmetlerimiz haftanı 7 günü hizmetinizdedir.</p>
-                    <a href="tel:{{ str_replace(' ', '', $globalSettings['contact_phone'] ?? '') }}" class="text-gray-900 font-bold hover:underline">{{ $globalSettings['contact_phone'] ?? '+90 (555) 000 00 00' }}</a>
+                    <a href="tel:{{ str_replace(' ', '', $globalSettings['contact_phone'] ?? '') }}" class="text-gray-900 font-bold hover:underline">{{ $globalSettings['contact_phone'] ?? '0850 555 1234' }}</a>
                 </div>
 
                 <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 transition-all hover:shadow-xl hover:shadow-primary/5 group text-left">
