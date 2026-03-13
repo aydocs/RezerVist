@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Profilim - Rezervist')
+@section('title', 'Profilim - ' . ($globalSettings['site_name'] ?? config('app.name')))
 
 @section('content')
 @php
@@ -21,10 +21,10 @@
             <!-- Main Content Area -->
             <div class="lg:col-span-9">
                 <!-- Header -->
-                <div class="mb-8 flex items-end justify-between">
+                <div class="mb-6 md:mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
                     <div>
-                        <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Profil Ayarları</h1>
-                        <p class="text-gray-500 mt-2">Kişisel bilgilerinizi ve hesap ayarlarınızı buradan yönetebilirsiniz.</p>
+                        <h1 class="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">Profil Ayarları</h1>
+                        <p class="text-sm text-gray-500 mt-1 md:mt-2">Kişisel bilgilerinizi ve hesap ayarlarınızı yönetin.</p>
                     </div>
                 </div>
 
@@ -322,8 +322,8 @@
                     </div>
 
                     <!-- Action Bar -->
-                    <div class="flex items-center justify-end">
-                        <button type="submit" class="bg-gray-900 text-white px-10 py-4 rounded-2xl font-black text-lg border-2 border-white/10 hover:border-white transition shadow-xl shadow-gray-900/20 hover:scale-[1.02] active:scale-[0.98] transform duration-200 flex items-center gap-3">
+                    <div class="flex items-center justify-center md:justify-end mt-4">
+                        <button type="submit" class="w-full md:w-auto bg-gray-900 text-white px-10 py-4 rounded-2xl font-black text-lg border-2 border-white/10 hover:border-white transition shadow-xl shadow-gray-900/20 hover:scale-[1.02] active:scale-[0.98] transform duration-200 flex items-center justify-center gap-3">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                             Değişiklikleri Kaydet
                         </button>
