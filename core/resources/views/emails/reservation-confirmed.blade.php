@@ -52,7 +52,7 @@
 
         <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid #F1F5F9;">
             <p style="font-size: 14px; color: #94A3B8; margin-bottom: 12px;">Takviminize eklemek ister misiniz?</p>
-            <a href="https://www.google.com/calendar/render?action=TEMPLATE&text={{ urlencode($reservation->business->name . ' Rezervasyonu') }}&dates={{ $reservation->start_time->format('Ymd\THis') }}/{{ $reservation->start_time->copy()->addHour()->format('Ymd\THis') }}&details={{ urlencode('Rezervist üzerinden yapılan rezervasyon.') }}&location={{ urlencode($reservation->business->address) }}" style="color: #6200EE; text-decoration: none; font-weight: 700; font-size: 14px;">
+            <a href="https://www.google.com/calendar/render?action=TEMPLATE&text={{ urlencode($reservation->business->name . ' Rezervasyonu') }}&dates={{ $reservation->start_time->format('Ymd\THis') }}/{{ $reservation->start_time->copy()->addHour()->format('Ymd\THis') }}&details={{ urlencode('RezerVist üzerinden yapılan rezervasyon.') }}&location={{ urlencode($reservation->business->address) }}" style="color: #6200EE; text-decoration: none; font-weight: 700; font-size: 14px;">
                 Google Takvim'e Ekle
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-left: 4px;"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </a>
