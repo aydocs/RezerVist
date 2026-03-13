@@ -19,6 +19,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Register Observers for real-time sync (Section 7.4)
+        \App\Models\Order::observe(\App\Observers\OrderObserver::class);
+
         // Fix for MySQL key length error
         \Illuminate\Support\Facades\Schema::defaultStringLength(191);
 
@@ -38,10 +41,10 @@ class AppServiceProvider extends ServiceProvider
 
         // Set default values if keys are missing
         $defaults = [
-            'site_name' => 'Rezervist',
+            'site_name' => 'RezerVist',
             'site_tagline' => 'Premium Rezervasyon Platformu',
             'site_description' => 'Türkiye\'nin en seçkin rezervasyon platformu.',
-            'site_copyright' => 'Rezervist - Tüm Hakları Saklıdır.',
+            'site_copyright' => 'RezerVist - Tüm Hakları Saklıdır.',
             'contact_phone' => '0850 555 1234',
             'contact_email' => 'iletisim@rezervist.com',
             'contact_address' => '',
