@@ -5,30 +5,26 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Steps Indicator -->
-        <div class="mb-8">
-            <div class="flex items-center justify-between relative">
-                <div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-1 bg-gray-200 -z-10"></div>
-                <div class="absolute left-0 top-1/2 transform -translate-y-1/2 h-1 bg-primary -z-10 transition-all duration-500" :style="'width: ' + ((step - 1) * 50) + '%'"></div>
+        <div class="mb-8 md:mb-12">
+            <div class="flex items-center justify-between max-w-2xl mx-auto relative px-2">
+                <div class="absolute top-1/2 left-0 w-full h-0.5 bg-gray-200 -translate-y-1/2 z-0"></div>
                 
                 <!-- Step 1 -->
-                <div class="flex flex-col items-center bg-gray-50 px-2">
-                    <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white transition-colors duration-300" 
-                         :class="step >= 1 ? 'bg-primary' : 'bg-gray-300'">1</div>
-                    <span class="text-xs font-semibold mt-2 text-gray-600">Seçim</span>
+                <div class="relative z-10 flex flex-col items-center">
+                    <div :class="step >= 1 ? 'bg-primary text-white ring-4 ring-primary/20' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 md:w-12 md:h-12 rounded-full flex items-center justify-center font-bold transition-all duration-300">1</div>
+                    <span :class="step >= 1 ? 'text-primary font-bold' : 'text-gray-400'" class="mt-2 text-[10px] md:text-xs uppercase tracking-wider">Hizmet</span>
                 </div>
-                
+
                 <!-- Step 2 -->
-                <div class="flex flex-col items-center bg-gray-50 px-2">
-                    <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white transition-colors duration-300" 
-                         :class="step >= 2 ? 'bg-primary' : 'bg-gray-300'">2</div>
-                    <span class="text-xs font-semibold mt-2 text-gray-600">Bilgiler</span>
+                <div class="relative z-10 flex flex-col items-center">
+                    <div :class="step >= 2 ? 'bg-primary text-white ring-4 ring-primary/20' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 md:w-12 md:h-12 rounded-full flex items-center justify-center font-bold transition-all duration-300">2</div>
+                    <span :class="step >= 2 ? 'text-primary font-bold' : 'text-gray-400'" class="mt-2 text-[10px] md:text-xs uppercase tracking-wider text-center">Bilgiler</span>
                 </div>
 
                 <!-- Step 3 -->
-                <div class="flex flex-col items-center bg-gray-50 px-2">
-                    <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white transition-colors duration-300" 
-                         :class="step >= 3 ? 'bg-primary' : 'bg-gray-300'">3</div>
-                    <span class="text-xs font-semibold mt-2 text-gray-600">Ödeme</span>
+                <div class="relative z-10 flex flex-col items-center">
+                    <div :class="step >= 3 ? 'bg-primary text-white ring-4 ring-primary/20' : 'bg-gray-200 text-gray-500'" class="w-8 h-8 md:w-12 md:h-12 rounded-full flex items-center justify-center font-bold transition-all duration-300">3</div>
+                    <span :class="step >= 3 ? 'text-primary font-bold' : 'text-gray-400'" class="mt-2 text-[10px] md:text-xs uppercase tracking-wider">Ödeme</span>
                 </div>
             </div>
         </div>
