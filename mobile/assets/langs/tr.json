@@ -1,5 +1,5 @@
 {
-  "app_title": "Rezervist.com",
+  "app_title": "RezerVist.com",
   "auth": {
     "login": {
       "title": "Hesabınız yok mu?",
@@ -53,7 +53,7 @@
     "error_unknown": "Bilinmeyen bir hata oluştu"
   },
   "home": {
-    "title": "Rezervist.com",
+    "title": "RezerVist.com",
     "hero_title_prefix": "Türkiye'nin",
     "hero_title_highlight": "Premium",
     "hero_title_suffix": "Rezervasyon Platformu",
