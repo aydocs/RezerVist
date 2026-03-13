@@ -248,7 +248,7 @@ class AdminController extends Controller
 
         if (! $user && $request->status === 'approved') {
             // Check if phone already exists
-            if (\App\Models\User::where('phone', $application->phone)->exists()) {
+            if (\App\Models\User::whereNotIn('role', [\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_DEVELOPER])->where('phone', $application->phone)->exists()) {
                 return redirect()->back()->with('error', 'Bu telefon numarası ('.$application->phone.') sistemde kayıtlı başka bir kullanıcıya ait. Lütfen kullanıcının bilgilerini kontrol edin veya manuel olarak düzenleyin.');
             }
 
@@ -349,7 +349,7 @@ public function viewDocument($id, $field)
 {
     $application = BusinessApplication::findOrFail($id);
 
-    if (auth()->user()->role !== 'admin') {
+    if (!auth()->user()->isAdmin()) {
         abort(403, 'Yetkisiz erişim.');
     }
 
@@ -437,13 +437,7 @@ public function viewDocument($id, $field)
     public function searchUsers(Request $request)
     {
         $searchQuery = $request->get('q', '');
-        $role = $request->get('role', '');
-
-        if (strlen($searchQuery) < 1) {
-            return response()->json([]);
-        }
-
-        $query = \App\Models\User::where('role', '!=', 'admin');
+        $query = \App\Models\User::whereNotIn('role', [\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_DEVELOPER]);
 
         if (! empty($role)) {
             $query->where('role', $role);
@@ -462,7 +456,7 @@ public function viewDocument($id, $field)
 
     public function users(Request $request)
     {
-        $query = \App\Models\User::where('role', '!=', 'admin');
+        $query = \App\Models\User::whereNotIn('role', [\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_DEVELOPER]);
 
         // Role Filter
         if ($request->filled('role')) {
@@ -492,9 +486,9 @@ public function viewDocument($id, $field)
             ->appends($request->all());
 
         // Stats for filters
-        $totalUsers = \App\Models\User::where('role', '!=', 'admin')->count();
-        $businessUsersCount = \App\Models\User::where('role', 'business')->count();
-        $customerUsersCount = \App\Models\User::where('role', 'customer')->count();
+        $totalUsers = \App\Models\User::whereNotIn('role', [\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_DEVELOPER])->count();
+        $businessUsersCount = \App\Models\User::where('role', User::ROLE_BUSINESS)->count();
+        $customerUsersCount = \App\Models\User::where('role', User::ROLE_USER)->count();
 
         return view('admin.users.index', compact('users', 'totalUsers', 'businessUsersCount', 'customerUsersCount'));
     }
@@ -515,7 +509,7 @@ public function viewDocument($id, $field)
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,'.$id,
             'phone' => 'nullable|string|max:20',
-            'role' => 'required|in:customer,business,admin',
+            'role' => 'required|in:'.User::ROLE_USER.','.User::ROLE_BUSINESS.','.User::ROLE_ADMIN.','.User::ROLE_SUPPORT.','.User::ROLE_DEVELOPER,
             'password' => 'nullable|min:6',
         ]);
 
@@ -745,19 +739,17 @@ public function viewDocument($id, $field)
     {
         $activities = collect();
         // Recent New Users (Last 50)
-        \App\Models\User::where('role', '!=', 'admin')
+        \App\Models\User::whereNotIn('role', [\App\Models\User::ROLE_ADMIN, \App\Models\User::ROLE_DEVELOPER])
             ->latest()
             ->take(50)
             ->get()
             ->each(function ($user) use ($activities) {
                 $roleText = match ($user->role) {
-                    'business' => 'İşletme Sahibi', // ## Faz 6: İşletme Sahibi (Vendor) Özellikleri [/]
-                    // - [ ] İşletme analitikleri (Dashboard & Grafikler) [/]
-                    // - [ ] Personel yönetim sistemi (CRUD & Atama) [ ]
-                    // - [ ] Kapasite planlama & Masa/Yer Yönetimi [ ]
-                    // - [ ] Müşteri veritabanı (CRM) [ ]
-                    'customer' => 'Müşteri',
-                    'admin' => 'Yönetici',
+                    User::ROLE_BUSINESS => 'İşletme Sahibi',
+                    User::ROLE_USER => 'Müşteri',
+                    User::ROLE_ADMIN => 'Yönetici',
+                    User::ROLE_SUPPORT => 'Destek Ekibi',
+                    User::ROLE_DEVELOPER => 'Geliştirici',
                     default => 'Kullanıcı'
                 };
 
@@ -1033,7 +1025,7 @@ public function viewDocument($id, $field)
 
             try {
                 // 1. Update Database FIRST (Ensure data persistence)
-                $messsageUpdated = $message->update([
+                $messageUpdated = $message->update([
                     'replied_at' => now(), // Keep track of last reply time
                     'is_read' => true,
                     'status' => 'replied',
