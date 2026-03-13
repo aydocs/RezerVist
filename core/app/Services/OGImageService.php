@@ -38,7 +38,7 @@ class OGImageService
         });
 
         // Add Website Name
-        $image->text('Rezervist.com', 600, 550, function ($font) {
+        $image->text($globalSettings['site_name'] ?? config('app.name'), 600, 550, function ($font) {
             $font->file(public_path('fonts/Outfit-Light.ttf'));
             $font->size(30);
             $font->color('rgba(255, 255, 255, 0.6)');
