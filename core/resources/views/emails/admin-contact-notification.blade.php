@@ -35,6 +35,6 @@
             </div>
         </div>
 
-        <p style="font-size: 12px; color: #94A3B8; margin-top: 32px;">Rezervist Yönetim Sistemi • Otomatik Bildirim</p>
+        <p style="font-size: 12px; color: #94A3B8; margin-top: 32px;">RezerVist Yönetim Sistemi • Otomatik Bildirim</p>
     </div>
 @endsection
