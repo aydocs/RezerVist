@@ -10,7 +10,7 @@ class AdminResetSeeder extends Seeder
 {
     public function run(): void
     {
-        $email = 'admin@Rezervist.com';
+        $email = 'admin@rezervist.com';
 
         // Force delete if exists to start fresh (optional, but safer to update)
         // User::where('email', $email)->delete();
