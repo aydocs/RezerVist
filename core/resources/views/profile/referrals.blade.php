@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Arkadaşını Davet Et - Rezervist')
+@section('title', 'Arkadaşını Davet Et - ' . ($globalSettings['site_name'] ?? config('app.name')))
 
 @section('content')
 @php
@@ -61,9 +61,9 @@
                             <h3 class="text-2xl font-black mb-2">Sana Özel Davet Kodun</h3>
                             <p class="text-indigo-100 mb-6 max-w-md">Bu kodu arkadaşlarınla paylaş. Onlar kayıt olurken bu kodu girdiklerinde ve ilk rezervasyonlarını tamamladıklarında kazanmaya başla!</p>
                             
-                            <div class="flex items-center gap-3 justify-center md:justify-start">
-                                <span class="bg-white/20 backdrop-blur-md border border-white/30 px-6 py-3 rounded-xl font-mono text-2xl tracking-widest font-bold select-all" id="referralCode">{{ $user->referral_code }}</span>
-                                <button onclick="copyCode()" class="bg-white text-indigo-700 px-6 py-3 rounded-xl font-bold hover:bg-indigo-50 transition shadow-lg flex items-center gap-2 group">
+                            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 justify-center md:justify-start">
+                                <span class="bg-white/20 backdrop-blur-md border border-white/30 px-4 py-3 rounded-xl font-mono text-xl md:text-2xl tracking-widest font-bold select-all text-center" id="referralCode">{{ $user->referral_code }}</span>
+                                <button onclick="copyCode()" class="bg-white text-indigo-700 px-6 py-3 rounded-xl font-bold hover:bg-indigo-50 transition shadow-lg flex items-center justify-center gap-2 group">
                                     <i class="fa-regular fa-copy group-hover:scale-110 transition-transform"></i>
                                     <span>Kopyala</span>
                                 </button>
