@@ -17,7 +17,7 @@ $kernel = $app->make(Kernel::class);
 $kernel->bootstrap();
 
 echo "<div style='font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; border: 1px solid #eee; border-radius: 20px;'>";
-echo "<h1 style='color: #6366f1;'>Rezervist Storage Fixer <span style='color: #f59e0b;'>(PLAN B v3.1)</span></h1>";
+echo "<h1 style='color: #6366f1;'>RezerVist Storage Fixer <span style='color: #f59e0b;'>(PLAN B v3.1)</span></h1>";
 echo "<hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;'>";
 
 $publicStorage = public_path('storage');
