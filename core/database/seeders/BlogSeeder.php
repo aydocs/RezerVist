@@ -24,7 +24,7 @@ class BlogSeeder extends Seeder
 
         // Kategoriler
         $categoriesInput = [
-            'Sistem Özellikleri' => 'Rezervist panelinin güçlü özelliklerini keşfedin.',
+            'Sistem Özellikleri' => 'RezerVist panelinin güçlü özelliklerini keşfedin.',
             'İşletme Yönetimi' => 'İşletmenizi büyütmek için ipuçları ve stratejiler.',
             'Dijitalleşme' => 'Kağıt-kalemden dijital dünyaya geçiş rehberleri.',
             'Müşteri İlişkileri' => 'Müşteri memnuniyetini artırmanın yolları.',
@@ -46,7 +46,7 @@ class BlogSeeder extends Seeder
                 'category' => 'Sistem Özellikleri',
                 'image' => 'blog/post_1.jpg',
                 'content' => '
-                    <p>Müşterilerinizin randevularını unutması, işletmeniz için hem zaman hem de gelir kaybıdır. Rezervist\'in otomatik SMS bildirim sistemi sayesinde bu sorun tarih oluyor.</p>
+                    <p>Müşterilerinizin randevularını unutması, işletmeniz için hem zaman hem de gelir kaybıdır. RezerVist\'in otomatik SMS bildirim sistemi sayesinde bu sorun tarih oluyor.</p>
                     
                     <h3>Nasıl Çalışır?</h3>
                     <p>Müşteriniz randevu oluşturduğunda anında bir onay SMS\'i alır. Randevu saatinden 24 saat ve 2 saat önce gönderilen hatırlatma mesajlarıyla katılım oranı %90\'a kadar artar.</p>
@@ -62,7 +62,7 @@ class BlogSeeder extends Seeder
                 'category' => 'İşletme Yönetimi',
                 'image' => 'blog/post_2.jpg',
                 'content' => '
-                    <p>Hangi hizmet daha çok kazandırıyor? Hangi personel daha verimli? Rezervist\'in detaylı raporlama araçlarıyla işletmenizin röntgenini çekin.</p>
+                    <p>Hangi hizmet daha çok kazandırıyor? Hangi personel daha verimli? RezerVist\'in detaylı raporlama araçlarıyla işletmenizin röntgenini çekin.</p>
 
                     <h2>Neleri Raporlayabilirsiniz?</h2>
                     <ul>
@@ -79,7 +79,7 @@ class BlogSeeder extends Seeder
                 'category' => 'Sistem Özellikleri',
                 'image' => 'blog/post_3.jpg',
                 'content' => '
-                    <p>İşletmenizi yönetmek için bilgisayar başında olmanıza gerek yok. Rezervist Mobil Uygulaması ile özgürlüğün tadını çıkarın.</p>
+                    <p>İşletmenizi yönetmek için bilgisayar başında olmanıza gerek yok. RezerVist Mobil Uygulaması ile özgürlüğün tadını çıkarın.</p>
                     
                     <h3>Özellikler</h3>
                     <ul>
@@ -108,7 +108,7 @@ class BlogSeeder extends Seeder
                 'category' => 'Sistem Özellikleri',
                 'image' => 'blog/post_5.jpg',
                 'content' => '
-                    <p>No-Show (Randevuya gelmeme) oranlarını azaltmanın en etkili yolu ön ödeme almaktır. Rezervist, güvenli ödeme altyapısıyla bunu kolaylaştırır.</p>
+                    <p>No-Show (Randevuya gelmeme) oranlarını azaltmanın en etkili yolu ön ödeme almaktır. RezerVist, güvenli ödeme altyapısıyla bunu kolaylaştırır.</p>
                     
                     <p>Müşterileriniz randevu alırken hizmet bedelinin tamamını veya bir kısmını kapora olarak ödeyebilir. Bu sayede randevu ciddiyeti artar ve geliriniz garanti altına alınır.</p>
                 ',
@@ -131,7 +131,7 @@ class BlogSeeder extends Seeder
                 'content' => '
                     <p>Telefon trafiğinden kurtulun. Müşterileriniz gecenin 3\'ünde bile web siteniz veya uygulamanız üzerinden müsaitlik durumunu görüp randevu alabilsin.</p>
                     
-                    <p>Bu özellik sayesinde randevu alma bariyerleri kalkar ve potansiyel müşteri kaybı önlenir. Sanal asistanınız Rezervist, 7/24 resepsiyon görevi görür.</p>
+                    <p>Bu özellik sayesinde randevu alma bariyerleri kalkar ve potansiyel müşteri kaybı önlenir. Sanal asistanınız RezerVist, 7/24 resepsiyon görevi görür.</p>
                 ',
             ],
             [
@@ -149,7 +149,7 @@ class BlogSeeder extends Seeder
                 'category' => 'Dijitalleşme',
                 'image' => 'blog/post_9.jpg',
                 'content' => '
-                    <p>Rezervist, size sadece bir panel değil, aynı zamanda modern ve SEO uyumlu bir web sitesi sunar. İşletmenizin fotoğraflarını, ekibini ve hizmetlerini en şık şekilde sergileyin.</p>
+                    <p>RezerVist, size sadece bir panel değil, aynı zamanda modern ve SEO uyumlu bir web sitesi sunar. İşletmenizin fotoğraflarını, ekibini ve hizmetlerini en şık şekilde sergileyin.</p>
                     
                     <p>Google haritalar entegrasyonu ve sosyal medya bağlantılarıyla müşterilerinizin size ulaşmasını kolaylaştırın.</p>
                 ',
@@ -183,7 +183,7 @@ class BlogSeeder extends Seeder
                 'featured_image' => $post['image'],
                 'meta_title' => $post['title'],
                 'meta_description' => Str::limit(strip_tags($post['content']), 150),
-                'tags' => ['rezervist', 'sistem', Str::slug($post['category']), 'yönetim'],
+                'tags' => ['rezerwist', 'sistem', Str::slug($post['category']), 'yönetim'],
             ]);
         }
     }
