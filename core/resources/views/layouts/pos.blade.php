@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
-    <title>@yield('title', 'RezerVistA POS Terminal')</title>
-    <meta name="description" content="@yield('meta_description', 'RezerVistA POS - Yeni Nesil Restoran Yönetim Sistemi')">
+    <title>@yield('title', 'RezerVist POS Terminal')</title>
+    <meta name="description" content="@yield('meta_description', 'RezerVist POS - Yeni Nesil Restoran Yönetim Sistemi')">
     <meta name="keywords" content="@yield('meta_keywords', 'pos, restoran pos, adisyon sistemi')">
 
     <!-- Fonts -->
@@ -49,7 +49,7 @@
                     <div class="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-primary/30">
                         R
                     </div>
-                    <span class="text-xl font-black text-slate-900 tracking-tighter">Rezervist</span>
+                    <span class="text-xl font-black text-slate-900 tracking-tighter">RezerVist</span>
                 </a>
 
                 <div class="hidden md:flex items-center gap-8">
@@ -67,8 +67,8 @@
 
     <footer class="bg-white border-t border-slate-100 py-12">
         <div class="max-w-7xl mx-auto px-6 text-center">
-            <p class="text-slate-400 text-sm font-medium">
-                &copy; {{ date('Y') }} Rezervist. Tüm hakları saklıdır.
+            <p class="text-lg text-slate-500 font-medium leading-relaxed italic">
+                Windows cihazınıza RezerVist POS Terminali'ni kurmak sadece 60 saniye sürer.
             </p>
         </div>
     </footer>
