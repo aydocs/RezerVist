@@ -15,7 +15,20 @@ class Review extends Model
 
     const STATUS_REJECTED = 'rejected';
 
-    protected $fillable = ['user_id', 'business_id', 'staff_id', 'resource_id', 'rating', 'comment', 'status', 'is_reported', 'reported_at'];
+    protected $fillable = [
+        'user_id', 
+        'business_id', 
+        'staff_id', 
+        'resource_id', 
+        'rating', 
+        'comment', 
+        'status', 
+        'is_reported', 
+        'reported_at',
+        'is_in_moment',
+        'business_response',
+        'responded_at',
+    ];
 
     protected static function booted()
     {
