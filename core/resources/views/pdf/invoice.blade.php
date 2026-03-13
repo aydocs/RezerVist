@@ -22,7 +22,7 @@
 <body>
     <div class="invoice-box">
         <div class="header">
-            <div class="logo">RezerVist</div>
+            <div class="logo">{{ $globalSettings['site_name'] ?? config('app.name') }}</div>
             <div class="business-info">
                 <strong>{{ $reservation->business->name }}</strong><br>
                 {{ $reservation->business->address }}<br>
