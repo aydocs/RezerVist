@@ -13,7 +13,7 @@
             <!-- Content -->
             <div class="p-8" x-data="{ active: 0 }">
                 <p class="text-gray-600 mb-8 leading-relaxed">
-                    Rezervist platformunun kullanımına ilişkin tüm yasal sözleşmeler ve koşullar aşağıda yer almaktadır. Hizmetlerimizi kullanarak bu sözleşmeleri kabul etmiş sayılırsınız.
+                    RezerVist platformunun kullanımına ilişkin tüm yasal sözleşmeler ve koşullar aşağıda yer almaktadır. Hizmetlerimizi kullanarak bu sözleşmeleri kabul etmiş sayılırsınız.
                 </p>
 
                 <div class="space-y-4">
@@ -22,7 +22,7 @@
                             'title' => '1. Kullanıcı Sözleşmesi',
                             'content' => '
                                 <h4 class="font-bold mb-2">1. Taraflar</h4>
-                                <p class="mb-2">İşbu sözleşme, Rezervist (bundan böyle "PLATFORM" olarak anılacaktır) ile platforma üye olan kullanıcı ("KULLANICI") arasında akdedilmiştir.</p>
+                                <p class="mb-2">İşbu sözleşme, RezerVist (bundan böyle "PLATFORM" olarak anılacaktır) ile platforma üye olan kullanıcı ("KULLANICI") arasında akdedilmiştir.</p>
                                 
                                 <h4 class="font-bold mb-2">2. Konu</h4>
                                 <p class="mb-2">İşbu sözleşmenin konusu, kullanıcının platform üzerinden sunulan rezervasyon hizmetlerinden faydalanma şartlarının belirlenmesidir.</p>
