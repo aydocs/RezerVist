@@ -5,7 +5,7 @@
     <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-xl">
         <div class="text-center">
             <h2 class="mt-6 text-3xl font-extrabold text-gray-900">Güvenli Ödeme</h2>
-            <p class="mt-2 text-sm text-gray-600">Rezervist.com ile Güvenli İşlem (Simülasyon)</p>
+            <p class="mt-2 text-sm text-gray-600">{{ $globalSettings['site_name'] ?? config('app.name') }} ile Güvenli İşlem (Simülasyon)</p>
         </div>
         
         <div class="bg-blue-50 p-4 rounded-lg flex justify-between items-center">
