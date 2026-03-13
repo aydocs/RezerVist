@@ -8,7 +8,7 @@
             GÜVENLİ DOĞRULAMA
         </div>
         <h1>Doğrulama Kodunuz</h1>
-        <p>Merhaba <strong>{{ $user_name }}</strong>,<br>Rezervist ailesine hoş geldiniz! Hesabınızı aktifleştirmek için aşağıdaki 6 haneli güvenlik kodunu kullanın.</p>
+        <p>Merhaba <strong>{{ $user_name }}</strong>,<br>RezerVist ailesine hoş geldiniz! Hesabınızı aktifleştirmek için aşağıdaki 6 haneli güvenlik kodunu kullanın.</p>
         
         <div class="card" style="text-align: center;">
             <div class="card-title">GÜVENLİK KODU</div>
