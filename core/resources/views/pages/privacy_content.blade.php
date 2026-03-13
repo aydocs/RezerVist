@@ -1,11 +1,11 @@
 <p class="text-gray-600 mb-8 leading-relaxed">
-    Rezervist olarak kişisel verilerinizin güvenliğine ve gizliliğine önem veriyoruz. Bu politika, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") kapsamında verilerinizin nasıl işlendiğini açıklar.
+    RezerVist olarak kişisel verilerinizin güvenliğine ve gizliliğine önem veriyoruz. Bu politika, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") kapsamında verilerinizin nasıl işlendiğini açıklar.
 </p>
 
 <div class="space-y-6">
     <div>
         <h4 class="font-black text-gray-900 mb-2">1. Veri Sorumlusu</h4>
-        <p>Rezervist, KVKK kapsamında "Veri Sorumlusu" sıfatıyla kişisel verilerinizi işlemektedir.</p>
+        <p>RezerVist, KVKK kapsamında "Veri Sorumlusu" sıfatıyla kişisel verilerinizi işlemektedir.</p>
     </div>
 
     <div>
@@ -66,5 +66,5 @@
 </div>
 
 <div class="mt-8 pt-8 border-t border-gray-100 text-center">
-    <p class="text-xs text-gray-500">KVKK başvurularınız için kvkk@Rezervist.com adresine e-posta gönderebilirsiniz.</p>
+    <p class="text-xs text-gray-500">KVKK başvurularınız için kvkk@rezervist.com adresine e-posta gönderebilirsiniz.</p>
 </div>
