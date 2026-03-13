@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Rezervasyonlarım - Rezervist')
+@section('title', 'Rezervasyonlarım - ' . ($globalSettings['site_name'] ?? config('app.name')))
 
 @section('content')
 @php
@@ -41,17 +41,17 @@
                 @else
                     <div class="space-y-6">
                         @foreach($reservations as $reservation)
-                        <div class="bg-white rounded-3xl p-6 border border-gray-100 shadow-lg shadow-gray-100/50 hover:shadow-xl hover:border-primary/20 transition-all duration-300 group">
+                        <div class="bg-white rounded-3xl p-5 md:p-6 border border-gray-100 shadow-lg shadow-gray-100/50 hover:shadow-xl hover:border-primary/20 transition-all duration-300 group">
                             <div class="flex flex-col md:flex-row md:items-start justify-between gap-6">
-                                <div class="flex items-start space-x-5 flex-1">
-                                    <div class="flex-shrink-0">
+                                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 flex-1">
+                                    <div class="shrink-0">
                                         <div class="w-20 h-20 bg-gradient-to-br from-primary to-purple-700 rounded-2xl flex items-center justify-center text-3xl shadow-lg shadow-primary/20 text-white">
                                             {{ substr($reservation->business->name, 0, 1) }}
                                         </div>
                                     </div>
-                                    <div class="flex-1 min-w-0 py-1">
-                                        <h4 class="font-bold text-gray-900 text-xl mb-2 group-hover:text-primary transition-colors">{{ $reservation->business->name }}</h4>
-                                        <div class="flex flex-wrap gap-4 text-sm text-gray-600">
+                                    <div class="flex-1 min-w-0 text-center sm:text-left py-1">
+                                        <h4 class="font-bold text-gray-900 text-xl mb-3 group-hover:text-primary transition-colors line-clamp-1">{{ $reservation->business->name }}</h4>
+                                        <div class="flex flex-wrap justify-center sm:justify-start gap-2 md:gap-4 text-sm text-gray-600">
                                             <div class="flex items-center bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-100">
                                                 <svg class="w-4 h-4 mr-2 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                                 <span class="font-semibold">{{ $reservation->start_time->format('d M Y') }}</span>
@@ -66,15 +66,15 @@
                                             </div>
                                         </div>
                                         @if($reservation->note)
-                                            <div class="mt-3 flex items-start gap-2 text-sm text-gray-500 bg-gray-50 p-3 rounded-xl border border-gray-100">
-                                                <svg class="w-4 h-4 mt-0.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg>
-                                                <span class="italic">{{ $reservation->note }}</span>
+                                            <div class="mt-3 flex items-start gap-2 text-sm text-gray-500 bg-gray-50 p-3 rounded-xl border border-gray-100 text-left">
+                                                <svg class="w-4 h-4 mt-0.5 shrink-0 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg>
+                                                <span class="italic line-clamp-2 md:line-clamp-none">{{ $reservation->note }}</span>
                                             </div>
                                         @endif
                                     </div>
                                 </div>
-                                <div class="flex flex-col items-end gap-3 min-w-[140px]">
-                                    <span class="px-4 py-2 rounded-xl text-sm font-bold uppercase tracking-wider
+                                <div class="flex flex-row md:flex-col items-center md:items-end justify-between md:justify-start gap-3 min-w-[140px]">
+                                    <span class="px-4 py-2 rounded-xl text-[10px] md:text-sm font-bold uppercase tracking-wider
                                         @if($reservation->status == 'approved' || $reservation->status == 'confirmed') bg-green-100 text-green-700 border border-green-200
                                         @elseif($reservation->status == 'pending') bg-yellow-100 text-yellow-700 border border-yellow-200
                                         @elseif($reservation->status == 'pending_payment') bg-orange-100 text-orange-700 border border-orange-200
@@ -95,7 +95,7 @@
                                             {{ ucfirst($reservation->status) }}
                                         @endif
                                     </span>
-                                    <span class="text-xl font-bold text-gray-900">₺{{ number_format($reservation->price, 2) }}</span>
+                                    <span class="text-xl font-black text-gray-900 tabular-nums">₺{{ number_format($reservation->price, 2) }}</span>
                                 </div>
                             </div>
 
@@ -104,26 +104,26 @@
                                              && now()->diffInHours($reservation->start_time, false) >= 24;
                             @endphp
 
-                            <div class="mt-6 pt-5 border-t border-gray-100 flex flex-wrap gap-3 justify-end">
+                            <div class="mt-6 pt-5 border-t border-gray-100 flex flex-wrap items-center justify-center sm:justify-end gap-2 md:gap-3">
                                 @if($canCancel)
                                     <button onclick="openRescheduleModal({{ $reservation->id }}, '{{ $reservation->start_time->format('Y-m-d') }}', '{{ $reservation->start_time->format('H:i') }}')" 
-                                            class="inline-flex items-center px-5 py-2.5 bg-blue-50 text-blue-700 font-black rounded-xl hover:bg-blue-100 hover:border-blue-400 transition gap-2 border-2 border-blue-100">
+                                            class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2.5 bg-blue-50 text-blue-700 text-sm font-black rounded-xl hover:bg-blue-100 transition gap-2 border-2 border-blue-100 whitespace-nowrap">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
-                                        Yeniden Planla
+                                        Planla
                                     </button>
-                                    <form method="POST" action="{{ route('reservations.cancel', $reservation->id) }}" class="inline" id="cancelForm-{{ $reservation->id }}">
+                                    <form method="POST" action="{{ route('reservations.cancel', $reservation->id) }}" class="flex-1 sm:flex-none inline" id="cancelForm-{{ $reservation->id }}">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" onclick="confirmCancellation('cancelForm-{{ $reservation->id }}')" class="inline-flex items-center px-5 py-2.5 bg-red-50 text-red-700 font-black rounded-xl hover:bg-red-100 hover:border-red-400 transition gap-2 border-2 border-red-100">
+                                        <button type="button" onclick="confirmCancellation('cancelForm-{{ $reservation->id }}')" class="w-full inline-flex items-center justify-center px-4 py-2.5 bg-red-50 text-red-700 text-sm font-black rounded-xl hover:bg-red-100 transition gap-2 border-2 border-red-100 whitespace-nowrap">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                                             İptal Et
                                         </button>
                                     </form>
                                 @elseif($reservation->status == 'cancelled')
-                                    <p class="text-sm font-medium text-gray-500 bg-gray-50 px-4 py-2 rounded-lg">Bu rezervasyon iptal edilmiştir.</p>
+                                    <p class="text-xs font-bold text-gray-400 bg-gray-50 px-4 py-2 rounded-lg border border-gray-100">İptal edildi</p>
                                 @elseif($reservation->status == 'completed')
                                     <button onclick="openReviewModal({{ $reservation->business_id }}, '{{ $reservation->business->name }}')" 
-                                            class="inline-flex items-center px-5 py-2.5 bg-yellow-50 text-yellow-700 font-black rounded-xl hover:bg-yellow-100 hover:border-yellow-400 transition gap-2 shadow-sm border-2 border-yellow-100">
+                                            class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2.5 bg-yellow-50 text-yellow-700 text-sm font-black rounded-xl hover:bg-yellow-100 transition gap-2 border-2 border-yellow-100 whitespace-nowrap">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
                                         Değerlendir
                                     </button>
@@ -131,28 +131,22 @@
 
                                 @if(in_array($reservation->status, ['approved', 'confirmed', 'completed']))
                                     <a href="{{ route('reservations.invoice', $reservation->id) }}" 
-                                       class="inline-flex items-center px-5 py-2.5 bg-gray-50 text-gray-700 font-bold rounded-xl hover:bg-gray-100 transition gap-2 border border-gray-200">
+                                       class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2.5 bg-gray-50 text-gray-700 text-sm font-bold rounded-xl hover:bg-gray-100 transition gap-2 border border-gray-200">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                                        Dekont İndir
+                                        Dekont
                                     </a>
                                 @endif
                                 <a href="{{ route('messages.chat', $reservation->business->owner_id) }}" 
-                                   class="inline-flex items-center px-5 py-2.5 bg-indigo-50 text-indigo-700 font-black rounded-xl hover:bg-indigo-100 hover:border-indigo-400 transition gap-2 border-2 border-indigo-100">
+                                   class="flex-1 sm:flex-none inline-flex items-center justify-center px-4 py-2.5 bg-indigo-50 text-indigo-700 text-sm font-black rounded-xl hover:bg-indigo-100 transition gap-2 border-2 border-indigo-100 whitespace-nowrap">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
-                                    İşletmeye Yaz
+                                    Mesaj
                                 </a>
                                 @if($reservation->status == 'pending_payment')
                                     <a href="{{ route('payment.checkout', $reservation->id) }}" 
-                                       class="inline-flex items-center px-5 py-2.5 bg-primary text-white font-black rounded-xl border-2 border-white/20 hover:border-white transition gap-2 shadow-lg shadow-primary/20">
+                                       class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3 bg-primary text-white text-sm font-black rounded-xl border-2 border-white/20 hover:border-white transition gap-2 shadow-lg shadow-primary/20">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
-                                        Ödemeyi Tamamla
+                                        Öde
                                     </a>
-                                @endif
-                                @if(now()->diffInHours($reservation->start_time, false) < 24 && !in_array($reservation->status, ['cancelled', 'completed']))
-                                    <div class="flex items-center px-4 py-2 bg-red-50 text-red-600 text-xs font-bold rounded-xl border border-red-100" title="Rezervasyona 24 saatten az kaldığı için iptal edilemez.">
-                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                                        İptal Süresi Doldu (< 24s)
-                                    </div>
                                 @endif
                             </div>
                         </div>
