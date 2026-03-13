@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $post->meta_title ?: $post->title . ' - Rezervist Blog')
+@section('title', $post->meta_title ?: $post->title . ' - RezerVist Blog')
 @section('meta_description', $post->meta_description ?: Str::limit(strip_tags($post->content), 160))
 @section('meta_image', $post->featured_image ? asset('storage/' . $post->featured_image) : null)
 
