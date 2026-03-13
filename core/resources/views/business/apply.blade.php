@@ -19,7 +19,7 @@
             <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-indigo-600 to-purple-600">Dijitale Taşıyın</span>
         </h1>
         <p class="max-w-2xl mx-auto text-lg md:text-xl text-slate-600 mb-10 leading-relaxed">
-            Rezervist ile binlerce yeni müşteriye ulaşın, rezervasyon süreçlerinizi otomatikleştirin ve gelirinizi artırın. Şimdi başvurun.
+            RezerVist ile binlerce yeni müşteriye ulaşın, rezervasyon süreçlerinizi otomatikleştirin ve gelirinizi artırın. Şimdi başvurun.
         </p>
     </div>
 
@@ -222,7 +222,7 @@
     <div class="bg-white py-24 border-t border-slate-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
             <div class="text-center max-w-3xl mx-auto mb-16">
-                <h2 class="text-3xl font-bold text-slate-900 mb-4">Neden Rezervist?</h2>
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Neden RezerVist?</h2>
                 <p class="text-slate-600">İşletmenizi modern çağın gerekliliklerine taşıyın, operasyonel yükünüzü hafifletin.</p>
             </div>
 
@@ -262,7 +262,7 @@
             
             <div class="space-y-4" x-data="{ active: null }">
                 @foreach([
-                    ['q' => 'Başvuru ücretli mi?', 'a' => 'Hayır, Rezervist\'e katılmak için herhangi bir giriş veya başvuru ücreti ödemezsiniz. İlk 3 ay boyunca tüm özelliklerden tamamen ücretsiz yararlanabilirsiniz.'],
+                    ['q' => 'Başvuru ücretli mi?', 'a' => 'Hayır, RezerVist\'e katılmak için herhangi bir giriş veya başvuru ücreti ödemezsiniz. İlk 3 ay boyunca tüm özelliklerden tamamen ücretsiz yararlanabilirsiniz.'],
                     ['q' => 'Ödemeler ne zaman hesabıma geçer?', 'a' => 'İşletmenizde gerçekleşen rezervasyonların ödemeleri, operasyonun tamamlanmasını takip eden ilk iş gününde (Ertesi Gün Ödeme) banka hesabınıza otomatik olarak aktarılır.'],
                     ['q' => 'Hangi belgeler gerekli?', 'a' => 'Yasal olarak faaliyet gösterebilmeniz için Vergi Levhası, Ticaret Sicil Gazetesi (veya İmza Sirküsü) ve İşyeri Açma Ruhsatı gibi temel ticari belgelerin PDF formatında yüklenmesi yeterlidir.'],
                     ['q' => 'Teknik destek sağlıyor musunuz?', 'a' => 'Evet, her bir işletme ortağımıza özel bir portföy yöneticisi atanır. Ayrıca 7/24 canlı destek hattımız üzerinden her türlü teknik ve operasyonel sorunuza anında yanıt alabilirsiniz.']
