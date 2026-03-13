@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Favorilerim - Rezervist')
+@section('title', 'Favorilerim - ' . ($globalSettings['site_name'] ?? config('app.name')))
 
 @section('content')
 @php
