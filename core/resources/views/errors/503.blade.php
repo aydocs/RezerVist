@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bakım Modu - Rezervist</title>
+    <title>Bakım Modu - RezerVist</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -18,7 +18,7 @@
             </div>
         </div>
         <h1 class="text-4xl font-bold text-gray-900 mb-4">Kısa Bir Mola Veriyoruz</h1>
-        <p class="text-gray-600 text-lg mb-8">Rezervist şu anda planlı bakım çalışması nedeniyle hizmet verememektedir. Size daha iyi hizmet sunabilmek için sistemlerimizi güncelliyoruz. Lütfen kısa bir süre sonra tekrar deneyin.</p>
+        <p class="text-gray-600 text-lg mb-8">RezerVist şu anda planlı bakım çalışması nedeniyle hizmet verememektedir. Size daha iyi hizmet sunabilmek için sistemlerimizi güncelliyoruz. Lütfen kısa bir süre sonra tekrar deneyin.</p>
         
         <div class="inline-flex items-center text-sm text-gray-400">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
@@ -26,7 +26,7 @@
         </div>
         
         <div class="mt-12 text-sm text-gray-400">
-            &copy; {{ date('Y') }} Rezervist. Tüm hakları saklıdır.
+            &copy; {{ date('Y') }} RezerVist. Tüm hakları saklıdır.
         </div>
     </div>
 </body>
