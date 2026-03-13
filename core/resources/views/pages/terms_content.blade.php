@@ -1,16 +1,16 @@
 <p class="text-gray-600 mb-8 leading-relaxed">
-    Lütfen Rezervist platformunu kullanmadan önce bu sözleşmeyi dikkatlice okuyunuz. Bu siteyi kullanan ve alışveriş yapan müşterilerimiz aşağıdaki şartları kabul etmiş varsayılmaktadır.
+    Lütfen RezerVist platformunu kullanmadan önce bu sözleşmeyi dikkatlice okuyunuz. Bu siteyi kullanan ve alışveriş yapan müşterilerimiz aşağıdaki şartları kabul etmiş varsayılmaktadır.
 </p>
 
 <div class="space-y-6">
     <div>
         <h4 class="font-black text-gray-900 mb-2">1. Taraflar ve Tanımlar</h4>
-        <p>Bu sözleşme, Rezervist (bundan böyle "PLATFORM" olarak anılacaktır) ile bu platformu kullanan kullanıcı (bundan böyle "KULLANICI" olarak anılacaktır) arasında akdedilmiştir. PLATFORM, restoran ve kafe rezervasyon hizmetleri sunan bir aracı hizmet sağlayıcıdır.</p>
+        <p>Bu sözleşme, RezerVist (bundan böyle "PLATFORM" olarak anılacaktır) ile bu platformu kullanan kullanıcı (bundan böyle "KULLANICI" olarak anılacaktır) arasında akdedilmiştir. PLATFORM, restoran ve kafe rezervasyon hizmetleri sunan bir aracı hizmet sağlayıcıdır.</p>
     </div>
 
     <div>
         <h4 class="font-black text-gray-900 mb-2">2. Hizmetin Kapsamı</h4>
-        <p>Rezervist, kullanıcıların anlaşmalı işletmelerde rezervasyon yapmasını, işletmeleri incelemesini ve puanlamasını sağlayan bir dijital platformdur. Rezervist, hizmet sağlayıcı (restoran vb.) değildir; yalnızca kullanıcı ile işletme arasında rezervasyon köprüsü kurar.</p>
+        <p>RezerVist, kullanıcıların anlaşmalı işletmelerde rezervasyon yapmasını, işletmeleri incelemesini ve puanlamasını sağlayan bir dijital platformdur. RezerVist, hizmet sağlayıcı (restoran vb.) değildir; yalnızca kullanıcı ile işletme arasında rezervasyon köprüsü kurar.</p>
     </div>
 
     <div>
@@ -41,17 +41,17 @@
 
     <div>
         <h4 class="font-black text-gray-900 mb-2">7. Fikri Mülkiyet Hakları</h4>
-        <p>Rezervist platformunda yer alan tüm tasarımlar, yazılımlar, logolar ve içerikler Rezervist mülkiyetindedir. İzinsiz kopyalanması, dağıtılması veya tersine mühendislik yapılması yasaktır.</p>
+        <p>RezerVist platformunda yer alan tüm tasarımlar, yazılımlar, logolar ve içerikler RezerVist mülkiyetindedir. İzinsiz kopyalanması, dağıtılması veya tersine mühendislik yapılması yasaktır.</p>
     </div>
 
     <div>
         <h4 class="font-black text-gray-900 mb-2">8. Sorumluluk Reddi</h4>
-        <p>Rezervist, işletmelerin sunduğu hizmetin kalitesi, hijyeni veya sunumu konusunda doğrudan sorumlu değildir. Yaşanacak olumsuzluklarda işletme ile kullanıcı arasındaki hukuk geçerlidir.</p>
+        <p>RezerVist, işletmelerin sunduğu hizmetin kalitesi, hijyeni veya sunumu konusunda doğrudan sorumlu değildir. Yaşanacak olumsuzluklarda işletme ile kullanıcı arasındaki hukuk geçerlidir.</p>
     </div>
 
     <div>
         <h4 class="font-black text-gray-900 mb-2">9. Sözleşme Değişiklikleri</h4>
-        <p>Rezervist, işbu sözleşme koşullarını dilediği zaman değiştirme hakkını saklı tutar. Değişiklikler sitede yayınlandığı tarihte yürürlüğe girer.</p>
+        <p>RezerVist, işbu sözleşme koşullarını dilediği zaman değiştirme hakkını saklı tutar. Değişiklikler sitede yayınlandığı tarihte yürürlüğe girer.</p>
     </div>
 
     <div>
@@ -61,5 +61,5 @@
 </div>
 
 <div class="mt-8 pt-8 border-t border-gray-100 text-center">
-    <p class="text-xs text-gray-500">Herhangi bir sorunuz varsa lütfen hukuk@Rezervist.com adresi ile iletişime geçiniz.</p>
+    <p class="text-xs text-gray-500">Herhangi bir sorunuz varsa lütfen hukuk@rezervist.com adresi ile iletişime geçiniz.</p>
 </div>
