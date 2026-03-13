@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>@yield('title') - {{ $business->name ?? 'Rezervist' }}</title>
+    <title>@yield('title') - {{ $business->name ?? ($globalSettings['site_name'] ?? config('app.name')) }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -73,7 +73,7 @@
                                 {{ Auth::user()->initials }}
                             </div>
                         @endif
-                        <span class="text-[11px] font-black text-gray-500 group-hover:text-primary transition-colors lowercase hidden sm:block">Rezervist.com</span>
+                        <span class="text-[11px] font-black text-gray-500 group-hover:text-primary transition-colors lowercase hidden sm:block">{{ $globalSettings['site_name'] ?? config('app.name') }}</span>
                     </a>
                 @endauth
 
@@ -134,7 +134,7 @@
     <div class="fixed bottom-6 left-0 right-0 flex justify-center z-40 pointer-events-none">
         <div class="bg-white/90 backdrop-blur-md text-gray-800 border border-primary/10 px-4 py-2 rounded-full shadow-soft flex items-center gap-2 pointer-events-auto transform hover:scale-105 transition-transform">
             <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Powered by</span>
-            <span class="font-black text-xs tracking-tight text-primary">Rezervist</span>
+            <span class="font-black text-xs tracking-tight text-primary">{{ $globalSettings['site_name'] ?? config('app.name') }}</span>
         </div>
     </div>
 
