@@ -1,10 +1,9 @@
 @extends('layouts.app')
 
 @php
-    $searchQuery = request('q');
     $seoTitle = $searchQuery 
-        ? $searchQuery . ' için Sonuçlar | ' . ($globalSettings['site_name'] ?? 'Rezervist.com')
-        : 'Tüm İşletmeler | Restoran, Kafe, Kuaför Rezervasyonu | ' . ($globalSettings['site_name'] ?? 'Rezervist.com');
+        ? $searchQuery . ' için Sonuçlar | ' . ($globalSettings['site_name'] ?? config('app.name'))
+        : 'Tüm İşletmeler | Restoran, Kafe, Kuaför Rezervasyonu | ' . ($globalSettings['site_name'] ?? config('app.name'));
     $seoDescription = $searchQuery
         ? $searchQuery . ' araması için ' . $businesses->total() . ' sonuç bulundu. Türkiye\'nin en iyi işletmelerini keşfedin ve online rezervasyon yapın.'
         : 'Türkiye\'nin en popüler restoranları, kafeleri, kuaförleri ve daha fazlasını keşfedin. Hemen online rezervasyon yapın!';
@@ -161,9 +160,12 @@
 
             <!-- Main Results -->
             <div class="lg:col-span-3">
-                <div class="flex justify-between items-center mb-4">
-                    <h1 class="text-2xl font-bold text-gray-900">{{ __('search.found_results', ['count' => $businesses->total()]) }}</h1>
-                    <form action="/search" method="GET" id="sortForm" class="relative inline-block text-left">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                    <h1 class="text-xl sm:text-2xl font-black text-gray-900 leading-tight">
+                        <span class="text-primary">{{ $businesses->total() }}</span> 
+                        <span class="uppercase tracking-tighter">{{ __('search.results_found_short') ?? 'İşletme Bulundu' }}</span>
+                    </h1>
+                    <form action="/search" method="GET" id="sortForm" class="relative inline-block text-left w-full sm:w-auto">
                         <!-- Preserve all query params -->
                         @foreach(request()->except('sort') as $key => $value)
                             @if(is_array($value))
@@ -181,7 +183,7 @@
                         <button
                             type="button"
                             id="sortButton"
-                            class="inline-flex justify-between w-48 items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm text-gray-600 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary"
+                            class="inline-flex justify-between w-full sm:w-48 items-center rounded-xl sm:rounded-md border-2 border-primary/10 bg-white px-4 py-3 sm:py-2 text-sm text-gray-600 shadow-sm hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                         >
                             <span id="sortLabel">
                                 @switch(request('sort'))
@@ -350,16 +352,16 @@
          x-transition:leave-start="opacity-100"
          x-transition:leave-end="opacity-0">
         
-        <div class="bg-white w-full max-w-6xl h-[80vh] rounded-[3rem] overflow-hidden relative shadow-2xl flex flex-col" @click.away="showMap = false">
+        <div class="bg-white w-full max-w-6xl h-[90vh] sm:h-[80vh] rounded-3xl sm:rounded-[3rem] overflow-hidden relative shadow-2xl flex flex-col" @click.away="showMap = false">
             
             <!-- Modal Header -->
-            <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-white z-10">
+            <div class="px-6 sm:px-8 py-4 sm:py-6 border-b border-gray-100 flex justify-between items-center bg-white z-10">
                 <div>
-                    <h2 class="text-2xl font-bold text-gray-900">{{ __('search.map_view') }}</h2>
-                    <p class="text-sm text-gray-500">{{ __('search.found_results_map', ['count' => $businesses->total()]) }}</p>
+                    <h2 class="text-xl sm:text-2xl font-bold text-gray-900">{{ __('search.map_view') }}</h2>
+                    <p class="text-xs sm:text-sm text-gray-500">{{ __('search.found_results_map', ['count' => $businesses->total()]) }}</p>
                 </div>
                 <button @click="showMap = false" class="p-2 hover:bg-gray-100 rounded-full transition-colors">
-                    <svg class="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-6 h-6 sm:w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
