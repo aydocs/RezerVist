@@ -1,39 +1,19 @@
-self.addEventListener('push', function (event) {
-    if (!(self.Notification && self.Notification.permission === 'granted')) {
-        return;
-    }
+const CACHE_NAME = 'rezervist-v1';
+const ASSETS = [
+  '/',
+  '/assets/css/app.css',
+  '/assets/js/app.js',
+  '/assets/images/logo.png'
+];
 
-    var data = {};
-    if (event.data) {
-        data = event.data.json();
-    }
-
-    console.log('Push received:', data);
-
-    var title = data.title || 'RezerVist Bildirimi';
-    var message = data.body || 'Yeni bir bildiriminiz var.';
-    var icon = data.icon || '/icon.png';
-    var url = data.action_url || '/';
-
-    event.waitUntil(
-        self.registration.showNotification(title, {
-            body: message,
-            icon: icon,
-            badge: icon,
-            data: {
-                url: url
-            }
-        })
-    );
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+  );
 });
 
-self.addEventListener('notificationclick', function (event) {
-    event.notification.close();
-    event.waitUntil(
-        clients.openWindow(event.notification.data.url)
-    );
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => response || fetch(event.request))
+  );
 });
-
-// Fetch handler removed to resolve "no-op fetch handler" warning.
-// If PWA installability requires a fetch handler in the future, 
-// implement a proper caching strategy here instead of an empty listener.
