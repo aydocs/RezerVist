@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\HasBusinessScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
 {
-    use \App\Traits\LogsActivity, HasFactory, \Illuminate\Database\Eloquent\SoftDeletes;
+    use \App\Traits\LogsActivity, HasFactory, \Illuminate\Database\Eloquent\SoftDeletes, HasBusinessScope;
 
     protected $fillable = [
         'business_id',
