@@ -151,11 +151,18 @@
             },
             
             init() {
-                const stored = localStorage.getItem('rezervist_cookie_preferences');
+                const key = '{{ strtolower($globalSettings['site_name'] ?? config('app.name')) }}_cookie_consent';
+                const stored = localStorage.getItem(key);
                 if (stored) {
-                    this.consented = true;
-                    this.preferences = JSON.parse(stored);
-                    this.dispatchUpdate();
+                    try {
+                        this.preferences = JSON.parse(stored);
+                        this.consented = true;
+                        this.dispatchUpdate();
+                    } catch (e) {
+                        console.warn('Cookie Consent: Invalid storage data, resetting...');
+                        localStorage.removeItem(key);
+                        this.showBanner = true;
+                    }
                 } else {
                     setTimeout(() => {
                         this.showBanner = true;
@@ -181,7 +188,7 @@
             },
 
             saveToStorage() {
-                localStorage.setItem('rezervist_cookie_preferences', JSON.stringify(this.preferences));
+                localStorage.setItem('{{ strtolower($globalSettings['site_name'] ?? config('app.name')) }}_cookie_consent', JSON.stringify(this.preferences));
                 this.consented = true;
                 this.showModal = false;
                 this.showBanner = false;
