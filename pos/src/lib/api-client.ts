@@ -2,7 +2,7 @@ import axios from 'axios';
 import SecureStorage from './SecureStorage';
 
 // Production API URL
-export const API_BASE_ROOT = 'https://rezervist.com';
+export const API_BASE_ROOT = 'http://localhost:8000';
 const API_BASE_URL = `${API_BASE_ROOT}/api/pos`;
 
 export const getImageUrl = (imagePath: string | null | undefined, imageUrl?: string | null) => {
