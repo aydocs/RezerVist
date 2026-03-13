@@ -179,7 +179,7 @@ export default function UpdateNotifier() {
                 </div>
 
                 <div className="bg-gray-50/50 px-6 py-4 flex items-center justify-between border-t border-white/50">
-                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">RezerVistA Auto-Sync v2</span>
+                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">RezerVist Auto-Sync v2</span>
                     <ChevronRight size={14} className="text-gray-300" />
                 </div>
             </div>
