@@ -55,7 +55,7 @@ class PhoneVerificationController extends Controller
         $verification = \App\Models\PhoneVerification::createForPhone($phone, $type);
 
         // Prepare message
-        $message = "Rezervist doğrulama kodunuz: {$verification->code}\nBu kod 10 dakika geçerlidir.";
+        $message = "RezerVist doğrulama kodunuz: {$verification->code}\nBu kod 10 dakika geçerlidir.";
 
         // Send SMS via VatanSMS
         $sent = $this->smsService->send($phone, $message);
