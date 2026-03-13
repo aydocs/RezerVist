@@ -193,8 +193,6 @@ class PremiumBusinessSeeder extends Seeder
         ]);
     }
 
-    }
-
     private function createGourmetFish($owner)
     {
         $category = Category::where('slug', 'restoran')->first();
