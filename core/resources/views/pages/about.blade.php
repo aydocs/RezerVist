@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Hakkımızda - Rezervist')
+@section('title', 'Hakkımızda - RezerVist')
 
 @section('content')
 <div class="bg-white overflow-hidden">
@@ -17,7 +17,7 @@
                         Rezervasyonun Geleceği
                     </h1>
                     <p class="mt-6 text-lg leading-8 text-gray-600">
-                        Rezervist olarak, işletmeler ve müşteriler arasındaki buluşmayı kusursuz, hızlı ve dijital bir deneyime dönüştürüyoruz. Sadece bir masa değil, unutulmaz anlar rezerve ediyoruz.
+                        RezerVist olarak, işletmeler ve müşteriler arasındaki buluşmayı kusursuz, hızlı ve dijital bir deneyime dönüştürüyoruz. Sadece bir masa değil, unutulmaz anlar rezerve ediyoruz.
                     </p>
                     <div class="mt-10 flex items-center justify-center gap-x-6">
                         <a href="{{ route('register') }}" class="rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/30 hover:bg-primary-600 hover:scale-105 transition-all duration-300">Hemen Başlayın</a>
@@ -43,7 +43,7 @@
                 <div>
                     <h2 class="text-3xl font-black text-slate-900 sm:text-4xl mb-6">Vizyonumuz & <span class="text-primary">Amacımız</span></h2>
                     <p class="text-lg text-slate-600 leading-relaxed mb-8">
-                        Rezervist, sadece bir rezervasyon aracı değil; sosyal etkileşimin ve işletme verimliliğinin merkezinde yer alan bir teknoloji ekosistemidir. Amacımız, dünyadaki her işletmenin dijital çağın hızına yetişmesini sağlamaktır.
+                        RezerVist, sadece bir rezervasyon aracı değil; sosyal etkileşimin ve işletme verimliliğinin merkezinde yer alan bir teknoloji ekosistemidir. Amacımız, dünyadaki her işletmenin dijital çağın hızına yetişmesini sağlamaktır.
                     </p>
                     <div class="space-y-4">
                         <div class="flex items-start gap-4">
@@ -98,7 +98,7 @@
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-400">Kesintisiz</span> Deneyim
             </h2>
             <p class="mx-auto max-w-2xl text-lg leading-8 text-gray-300">
-                Rezervist altyapısı, yoğun saatlerde bile pürüzsüz çalışacak şekilde tasarlandı. Siz işinize odaklanın, teknolojiyi bize bırakın.
+                RezerVist altyapısı, yoğun saatlerde bile pürüzsüz çalışacak şekilde tasarlandı. Siz işinize odaklanın, teknolojiyi bize bırakın.
             </p>
         </div>
     </div>
