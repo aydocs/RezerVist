@@ -24,7 +24,7 @@ class ThemeDemoController extends Controller
         $business->name = "Lezzet Köşesi (Demo)";
         $business->description = "İşletmenizin harika yemekleri burada görünecek. Modern ve şık bir deneyim sunun.";
         $business->phone = "+90 212 555 1234";
-        $business->address = "Rezervist Bulvarı, Teknoloji Sitesi No:1";
+        $business->address = "RezerVist Bulvarı, Teknoloji Sitesi No:1";
         $business->menu_theme = $theme;
         $business->menu_color = $request->get('color', '#7c3aed'); // Default to purple
         $business->logo = null;
