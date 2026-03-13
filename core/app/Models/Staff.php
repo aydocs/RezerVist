@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Staff extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, \App\Traits\HasBusinessScope;
 
     protected $fillable = [
         'business_id',
@@ -54,5 +54,10 @@ class Staff extends Model
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    public function schedules()
+    {
+        return $this->hasMany(StaffSchedule::class);
     }
 }
