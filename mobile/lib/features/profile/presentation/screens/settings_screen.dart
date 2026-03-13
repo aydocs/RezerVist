@@ -143,7 +143,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               child: Column(
                 children: [
                   Text(
-                    'Rezervist.com',
+                    'RezerVist.com',
                     style: GoogleFonts.outfit(
                       fontSize: 16,
                       fontWeight: FontWeight.w800,
