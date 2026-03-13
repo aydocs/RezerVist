@@ -13,21 +13,33 @@ class PushSubscriptionController extends Controller
      */
     public function subscribe(Request $request)
     {
-        $this->validate($request, [
-            'endpoint' => 'required',
-            'keys.auth' => 'required',
-            'keys.p256dh' => 'required',
-        ]);
+        try {
+            $this->validate($request, [
+                'endpoint' => 'required',
+                'keys.auth' => 'required',
+                'keys.p256dh' => 'required',
+            ]);
 
-        $endpoint = $request->endpoint;
-        $key = $request->keys['p256dh'];
-        $token = $request->keys['auth'];
-        $contentEncoding = $request->getContentEncoding(); // For older versions or manual handling
+            $endpoint = $request->endpoint;
+            $key = $request->keys['p256dh'];
+            $token = $request->keys['auth'];
 
-        $user = $request->user();
-        $user->updatePushSubscription($endpoint, $key, $token);
+            $user = $request->user();
+            if (!$user) {
+                \Log::error('Push subscription failed: User not authenticated');
+                return response()->json(['error' => 'Unauthenticated'], 401);
+            }
 
-        return response()->json(['success' => true]);
+            $user->updatePushSubscription($endpoint, $key, $token);
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            \Log::error('Push subscription error: ' . $e->getMessage(), [
+                'exception' => $e,
+                'request' => $request->all()
+            ]);
+            return response()->json(['error' => 'Server Error', 'message' => $e->getMessage()], 500);
+        }
     }
 
     /**
@@ -37,10 +49,18 @@ class PushSubscriptionController extends Controller
      */
     public function unsubscribe(Request $request)
     {
-        $this->validate($request, ['endpoint' => 'required']);
+        try {
+            $this->validate($request, ['endpoint' => 'required']);
 
-        $request->user()->deletePushSubscription($request->endpoint);
+            $user = $request->user();
+            if ($user) {
+                $user->deletePushSubscription($request->endpoint);
+            }
 
-        return response()->json([], 204);
+            return response()->json([], 204);
+        } catch (\Exception $e) {
+            \Log::error('Push unsubscription error: ' . $e->getMessage());
+            return response()->json(['error' => 'Server Error'], 500);
+        }
     }
 }
