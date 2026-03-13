@@ -71,10 +71,11 @@ class Business extends Model
     }
 
     protected $fillable = [
-        'owner_id',
         'category_id',
+        'organization_id',
         'name',
         'slug',
+        'email',
         'description',
         'address',
         'latitude',
@@ -238,6 +239,11 @@ class Business extends Model
         return $this->is_open ? 'Açık' : 'Kapalı';
     }
 
+    public function organization()
+    {
+        return $this->belongsTo(Organization::class);
+    }
+
     public function getCityAttribute()
     {
         return null;
@@ -248,58 +254,8 @@ class Business extends Model
     // ... (unchanged code) ...
     public function calculatePrice($date, $guests, $time = null)
     {
-        $basePrice = $this->price_per_person > 0 ? $this->price_per_person : 0;
-
-        // Pricing Logic: Fixed vs Per Person
-        if ($this->pricing_type === 'per_person') {
-            $total = $basePrice * $guests;
-        } else {
-            // Default: Fixed price (Reservation Fee) regardless of guest count
-            $total = $basePrice;
-        }
-
-        // 1. Weekend Surcharge (20% increase)
-        $dateObj = \Carbon\Carbon::parse($date);
-        $dayOfWeek = $dateObj->dayOfWeek;
-        if (in_array($dayOfWeek, [\Carbon\Carbon::SATURDAY, \Carbon\Carbon::SUNDAY])) {
-            $total *= 1.2;
-        }
-
-        // 2. Happy Hour Discount
-        if ($time) {
-            $hour = $this->hours()
-                ->where('day_of_week', $dayOfWeek)
-                ->where('is_closed', false)
-                ->where('open_time', '<=', $time)
-                ->where('close_time', '>=', $time)
-                ->whereNotNull('discount_percent')
-                ->first();
-
-            if ($hour) {
-                $total *= (1 - ($hour->discount_percent / 100));
-            }
-        }
-
-        // 3. Surge Pricing (Dynamic Demand)
-        if ($this->waiter_kiosk_enabled && $this->surge_threshold > 0) {
-            $currentGuests = $this->reservations()
-                ->whereDate('start_time', $date)
-                ->whereTime('start_time', $time)
-                ->whereNotIn('status', ['cancelled', 'rejected'])
-                ->sum('guest_count');
-
-            $totalCapacity = $this->resources()->sum('capacity');
-
-            if ($totalCapacity > 0) {
-                $occupancyRate = ($currentGuests / $totalCapacity) * 100;
-
-                if ($occupancyRate >= $this->surge_threshold) {
-                    $total *= ($this->surge_multiplier ?: 1.5);
-                }
-            }
-        }
-
-        return round($total, 2);
+        $dateTime = \Carbon\Carbon::parse($date . ' ' . $time);
+        return app(\App\Services\DynamicPricingService::class)->calculate($this, $dateTime, (int) $guests);
     }
 
     /**
